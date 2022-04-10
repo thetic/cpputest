@@ -1,6 +1,7 @@
 # 2.6.3 is needed for ctest support
 # 3.1 is needed for target_sources
-cmake_minimum_required(VERSION 3.1)
+# 3.13 needed for LINK_OPTIONS', CMP0077
+cmake_minimum_required(VERSION 3.13)
 
 project(CppUTest)
 
