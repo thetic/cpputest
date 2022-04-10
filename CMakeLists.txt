@@ -1,7 +1,7 @@
 # 2.6.3 is needed for ctest support
 # 3.1 is needed for target_sources
 # 3.13 needed for LINK_OPTIONS', CMP0077
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.17)
 
 project(CppUTest)
 
@@ -73,11 +73,10 @@ endif(LIBNAME_POSTFIX_BITSIZE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CppUTestRootDirectory}/cmake/Modules)
 
-include("${CppUTestRootDirectory}/cmake/Modules/CppUTestConfigurationOptions.cmake")
+include(CppUTestConfigurationOptions)
 include(CTest)
-#include("${CppUTestRootDirectory}/cmake/Modules/CheckFunctionExists.cmake")
-include("${CppUTestRootDirectory}/cmake/Modules/CppUTestBuildTimeDiscoverTests.cmake")
-include("${CppUTestRootDirectory}/cmake/Modules/CppUTestNormalizeTestOutputLocation.cmake")
+include(CppUTestBuildTimeDiscoverTests)
+include(CppUTestNormalizeTestOutputLocation)
 include(GNUInstallDirs)
 
 enable_testing()
