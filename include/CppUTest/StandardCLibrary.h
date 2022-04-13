@@ -79,10 +79,19 @@ typedef long unsigned int size_t;
 #endif
 
 #define NULL (0)
-extern void*	malloc(size_t);
-extern void     free(void *);
 
-#define _bnd(X, bnd)            (((sizeof (X)) + (bnd)) & (~(bnd)))
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern void *malloc(size_t);
+extern void free(void *);
+
+#ifdef __cplusplus
+}
+#endif
+
+#define _bnd(X, bnd) (((sizeof(X)) + (bnd)) & (~(bnd)))
 
 #define va_list __builtin_va_list
 #define va_copy __builtin_va_copy
