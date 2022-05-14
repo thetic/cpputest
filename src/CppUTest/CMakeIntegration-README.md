@@ -10,9 +10,10 @@ project(trying_CppUtest)
 
 SET(CppUTestRootDirectory /path/to/cpputest)
 
-# Either set CPP_PLATFORM to one of the provided platforms under
-# ${CppUTestRootDirectory}/src/Platforms/, or provide a project-specific
-# platform.cpp (as shown below)
+# Either set CPPUTEST_PLATFORM to one of the provided platforms under
+# ${CppUTestRootDirectory}/src/Platforms/, or set it to OFF and provide
+# a project-specific platform.cpp (as shown below)
+set(CPPUTEST_PLATFORM OFF CACHE BOOL "" FORCE)
 add_subdirectory(${CppUTestRootDirectory}/src/CppUTest CppUTest)
 target_sources(CppUTest
 	PRIVATE

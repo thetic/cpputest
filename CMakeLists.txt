@@ -41,6 +41,32 @@ option(LIBNAME_POSTFIX_DEBUG "Add indication of debug compilation to the library
 option(HAS_INF "Compiler has Inf value for float" ON)
 option(HAS_NAN "Compiler has NaN value for float" ON)
 
+# Deduce a default platform.
+if(DEFINED CPP_PLATFORM)
+  message(DEPRECATION
+    "The \"CPP_PLATFORM\" variable has been deprecated. "
+    "Assign the \"CPPUTEST_PLATFORM\" cache variable instead."
+  )
+elseif(MSVC)
+  set(CPP_PLATFORM VisualCpp)
+elseif (IAR)
+  set(CPP_PLATFORM Iar)
+elseif(BORLAND)
+  set(CPP_PLATFORM Borland)
+elseif (STD_C)
+  set(CPP_PLATFORM Gcc)
+else()
+  set(CPP_PLATFORM GccNoStdC)
+endif()
+set(CPPUTEST_PLATFORM ${CPP_PLATFORM} CACHE STRING "CppUTest platform implmentation")
+set_property(
+  CACHE CPPUTEST_PLATFORM
+  PROPERTY STRINGS
+    # Supported options:
+    OFF # Used to disable. User must provide implementation.
+    armcc Borland C2000 Dos Gcc GccNoStdC Iar Keil Symbian VisualCpp
+)
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "What kind of build this is" FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
@@ -260,6 +286,7 @@ Current compiler options:
     CppUTest LDFLAGS:                   ${CPPUTEST_LD_FLAGS}
 
 Features configured in CppUTest:
+    Platform Implementation:            ${CPPUTEST_PLATFORM}
     Memory Leak Detection:              ${MEMORY_LEAK_DETECTION}
     Compiling Extensions:               ${EXTENSIONS}
     Support Long Long:                  ${LONGLONG}
