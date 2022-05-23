@@ -59,17 +59,16 @@ set_target_properties(CppUTest PROPERTIES
     PUBLIC_HEADER "${CppUTest_headers}"
 )
 
-#[[Set CPP_PLATFORM in a parent CMakeLists.txt if reusing one of the provided platforms, else supply the missing definitions]]
-if (CPP_PLATFORM)
+if (CPPUTEST_PLATFORM)
     target_sources(CppUTest
         PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/../Platforms/${CPP_PLATFORM}/UtestPlatform.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/../Platforms/${CPPUTEST_PLATFORM}/UtestPlatform.cpp
     )
     target_include_directories(CppUTest
         PUBLIC
-            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/Platforms/${CPP_PLATFORM}>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../../include/Platforms/${CPP_PLATFORM}>
     )
-endif(CPP_PLATFORM)
+endif()
 
 #[[Arrange for the include directory to be added to the include paths of any CMake target depending on CppUTest.]]
 target_include_directories(CppUTest
