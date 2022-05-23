@@ -5,7 +5,7 @@
 #cmakedefine CPPUTEST_USE_LONG_LONG
 #cmakedefine CPPUTEST_HAVE_LONG_LONG_INT
 
-#cmakedefine CPPUTEST_HAVE_FENV
+#cmakedefine01 CPPUTEST_HAVE_FENV
 #cmakedefine CPPUTEST_NO_INF
 #cmakedefine CPPUTEST_NO_NAN
 
