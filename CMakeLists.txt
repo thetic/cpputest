@@ -130,7 +130,7 @@ if(PROJECT_IS_TOP_LEVEL)
 
   install(
       FILES cmake/Modules/CppUTestBuildTimeDiscoverTests/discover.cmake
-      DESTINATION "${CPPUTEST_CMAKE_CONFIG_DESTINATION}"
+      DESTINATION "${CPPUTEST_CMAKE_CONFIG_DESTINATION}/CppUTestBuildTimeDiscoverTests"
   )
 endif()
 
