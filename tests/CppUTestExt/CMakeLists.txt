@@ -1,32 +1,62 @@
-set(CppUTestExtTests_src
-    AllTests.cpp
-    CodeMemoryReporterTest.cpp
+set(CppUTestExtTests_src1
+    ExpectedFunctionsListTest.cpp
     GMockTest.cpp
     GTest1Test.cpp
-    IEEE754PluginTest.cpp
-    IEEE754PluginTest_c.c
+    GTest2ConvertorTest.cpp
+)
+
+set(CppUTestExtTests_src2
     MemoryReportAllocatorTest.cpp
-    MemoryReporterPluginTest.cpp
     MemoryReportFormatterTest.cpp
+    MemoryReporterPluginTest.cpp
     MockActualCallTest.cpp
     MockCheatSheetTest.cpp
-    MockCallTest.cpp
     MockComparatorCopierTest.cpp
     MockExpectedCallTest.cpp
+    MockHierarchyTest.cpp
+)
+
+set(CppUTestExtTests_src3
+    CodeMemoryReporterTest.cpp
+    OrderedTestTest.cpp
+    OrderedTestTest_c.c
+)
+
+set(CppUTestExtTests_src4
+    MockReturnValueTest.cpp
+    MockNamedValueTest.cpp
+)
+
+set(CppUTestExtTests_src5
+    MockPluginTest.cpp
+    MockSupport_cTest.cpp
+    MockSupport_cTestCFile.c
+)
+
+set(CppUTestExtTests_src6
     ExpectedFunctionsListTest.cpp
-    MockFailureReporterForTest.cpp
+    MockCallTest.cpp
+)
+
+set(CppUTestExtTests_src7
+    MockComparatorCopierTest.cpp
+    MockHierarchyTest.cpp
+    MockParameterTest.cpp
+)
+
+set(CppUTestExtTests_src8
+    IEEE754PluginTest.cpp
+    IEEE754PluginTest_c.c
+    MockComparatorCopierTest.cpp
+)
+
+set(CppUTestExtTests_src9
     MockFailureTest.cpp
     MockHierarchyTest.cpp
-    MockNamedValueTest.cpp
-    MockParameterTest.cpp
     MockPluginTest.cpp
-    MockSupportTest.cpp
-    MockSupport_cTestCFile.c
-    MockSupport_cTest.cpp
-    MockStrictOrderTest.cpp
     MockReturnValueTest.cpp
-    OrderedTestTest_c.c
-    OrderedTestTest.cpp
+    MockStrictOrderTest.cpp
+    MockSupportTest.cpp
 )
 
 if (MINGW)
@@ -34,10 +64,44 @@ if (MINGW)
     set(THREAD_LIB "pthread")
 endif (MINGW)
 
-add_executable(CppUTestExtTests ${CppUTestExtTests_src})
-cpputest_normalize_test_output_location(CppUTestExtTests)
-target_link_libraries(CppUTestExtTests ${CppUTestLibName} ${CppUTestExtLibName} ${THREAD_LIB} ${CPPUNIT_EXTERNAL_LIBRARIES})
+add_library(CppUTestExtTests_main OBJECT
+    AllTests.cpp
+    MockFailureReporterForTest.cpp
+)
 
-if (TESTS_BUILD_DISCOVER)
-    cpputest_buildtime_discover_tests(CppUTestExtTests)
+target_link_libraries(CppUTestExtTests_main
+    PUBLIC
+        ${CppUTestLibName}
+        ${CppUTestExtLibName}
+        ${THREAD_LIB} ${CPPUNIT_EXTERNAL_LIBRARIES}
+)
+
+set(cpputestext_test_executables)
+if(CPPUTEST_SPLIT_TESTS)
+    foreach(i RANGE 1 9)
+        add_executable(CppUTestExtTests${i} ${CppUTestExtTests_src${i}})
+        list(APPEND cpputestext_test_executables CppUTestExtTests${i})
+    endforeach()
+else()
+    add_executable(CppUTestExtTests
+        ${CppUTestExtTests_src1}
+        ${CppUTestExtTests_src2}
+        ${CppUTestExtTests_src3}
+        ${CppUTestExtTests_src4}
+        ${CppUTestExtTests_src5}
+        ${CppUTestExtTests_src6}
+        ${CppUTestExtTests_src7}
+        ${CppUTestExtTests_src8}
+        ${CppUTestExtTests_src9}
+    )
+    list(APPEND cpputestext_test_executables CppUTestExtTests)
 endif()
+
+foreach(tgt IN LISTS cpputestext_test_executables)
+    target_link_libraries(${tgt} PUBLIC CppUTestExtTests_main)
+
+    cpputest_normalize_test_output_location(${tgt})
+    if (TESTS_BUILD_DISCOVER)
+        cpputest_buildtime_discover_tests(${tgt})
+    endif()
+endforeach()

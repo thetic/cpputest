@@ -1,39 +1,60 @@
-set(CppUTestTests_src
-    AllTests.cpp
-    SetPluginTest.cpp
+set(CppUTestTests_src1
+    AllocLetTestFree.c
+    AllocLetTestFreeTest.cpp
     CheatSheetTest.cpp
-    SimpleStringTest.cpp
-    SimpleStringCacheTest.cpp
     CompatabilityTests.cpp
     CommandLineArgumentsTest.cpp
-    TestFailureTest.cpp
-    TestFailureNaNTest.cpp
     CommandLineTestRunnerTest.cpp
+    JUnitOutputTest.cpp
+)
+
+set(CppUTestTests_src2
+    DummyMemoryLeakDetector.cpp
+    MemoryLeakWarningTest.cpp
+    PluginTest.cpp
+    PreprocessorTest.cpp
+    SetPluginTest.cpp
+    SimpleMutexTest.cpp
+    TestFailureNaNTest.cpp
+    TestFailureTest.cpp
+    TestResultTest.cpp
+
+)
+
+set(CppUTestTests_src3
+    MemoryLeakDetectorTest.cpp
+    SimpleStringTest.cpp
+    SimpleStringCacheTest.cpp
+)
+
+set(CppUTestTests_src4
+    TestOutputTest.cpp
+    TestRegistryTest.cpp
+)
+
+set(CppUTestTests_src5
+    AllocationInCFile.c
+    AllocationInCppFile.cpp
+    MemoryOperatorOverloadTest.cpp
+    TeamCityOutputTest.cpp
+)
+
+set(CppUTestTests_src6
     TestFilterTest.cpp
     TestHarness_cTest.cpp
-    JUnitOutputTest.cpp
     TestHarness_cTestCFile.c
-    DummyMemoryLeakDetector.cpp
-    MemoryLeakDetectorTest.cpp
     TestInstallerTest.cpp
-    AllocLetTestFree.c
-    MemoryOperatorOverloadTest.cpp
+)
+
+set(CppUTestTests_src7
     TestMemoryAllocatorTest.cpp
-    MemoryLeakWarningTest.cpp
-    TestOutputTest.cpp
-    AllocLetTestFreeTest.cpp
-    TestRegistryTest.cpp
-    AllocationInCFile.c
-    PluginTest.cpp
-    TestResultTest.cpp
-    PreprocessorTest.cpp
     TestUTestMacro.cpp
-    TestUTestStringMacro.cpp
-    AllocationInCppFile.cpp
-    UtestTest.cpp
-    SimpleMutexTest.cpp
+
+)
+set(CppUTestTests_src8
     UtestPlatformTest.cpp
-    TeamCityOutputTest.cpp
+    UtestTest.cpp
+    TestUTestStringMacro.cpp
 )
 
 if (MSVC)
@@ -52,10 +73,39 @@ if (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD")
    set (THREAD_LIB "pthread")
 endif ()
 
-add_executable(CppUTestTests ${CppUTestTests_src})
-cpputest_normalize_test_output_location(CppUTestTests)
-target_link_libraries(CppUTestTests ${CppUTestLibName} ${THREAD_LIB})
+add_library(CppUTestTests_main OBJECT AllTests.cpp)
 
-if (TESTS_BUILD_DISCOVER)
-    cpputest_buildtime_discover_tests(CppUTestTests)
+target_link_libraries(CppUTestTests_main
+    PUBLIC
+        ${CppUTestLibName}
+        ${THREAD_LIB}
+)
+
+set(cpputest_test_executables)
+if(CPPUTEST_SPLIT_TESTS)
+    foreach(i RANGE 1 8)
+        add_executable(CppUTestTests${i} ${CppUTestTests_src${i}})
+        list(APPEND cpputest_test_executables CppUTestTests${i})
+    endforeach()
+else()
+    add_executable(CppUTestTests
+        ${CppUTestTests_src1}
+        ${CppUTestTests_src2}
+        ${CppUTestTests_src3}
+        ${CppUTestTests_src4}
+        ${CppUTestTests_src5}
+        ${CppUTestTests_src6}
+        ${CppUTestTests_src7}
+        ${CppUTestTests_src8}
+    )
+    list(APPEND cpputest_test_executables CppUTestTests)
 endif()
+
+foreach(tgt IN LISTS cpputest_test_executables)
+    target_link_libraries(${tgt} PRIVATE CppUTestTests_main)
+
+    cpputest_normalize_test_output_location(${tgt})
+    if (TESTS_BUILD_DISCOVER)
+        cpputest_buildtime_discover_tests(${tgt})
+    endif()
+endforeach()

@@ -49,13 +49,15 @@ jobs:
           cmake
           -B cpputest_build
           -S .
-          -D CMAKE_TOOLCHAIN_FILE=cmake/watcom-dos.toolchain.cmake
-          -D CMAKE_BUILD_TYPE=MINSIZEREL
-          --verbose
+          -D TESTS_BUILD_DISCOVER=OFF
+          -D CMAKE_BUILD_TYPE=MinSizeRel
+          -D CMAKE_SYSTEM_NAME=DOS
+          -D CMAKE_SYSTEM_PROCESSOR=I86
+          -D CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
         env:
+          CC: wcl
+          CXX: wcl
           CFLAGS: -ml -zm
           CXXFLAGS: -ml -zm -xds
       - name: Build
-        run: cmake --build cpputest_build
-      - name: Test
-        run: "false" # TODO
+        run: cmake --build cpputest_build --verbose
