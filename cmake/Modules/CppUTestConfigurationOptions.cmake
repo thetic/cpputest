@@ -38,9 +38,9 @@ endif ()
 
 if (NOT STD_CPP)
     set(CPPUTEST_STD_CPP_LIB_DISABLED 1)
-    if (STD_C AND NOT MSVC)
+    if (STD_C AND NOT MSVC AND NOT DOS)
         set(CPPUTEST_CXX_FLAGS "${CPPUTEST_CXX_FLAGS} -nostdinc++")
-    endif (STD_C AND NOT MSVC)
+    endif ()
 endif (NOT STD_CPP)
 
 if (MEMORY_LEAK_DETECTION)

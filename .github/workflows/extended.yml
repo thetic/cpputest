@@ -33,3 +33,32 @@ jobs:
           cmake --build build
           ctest --test-dir build
           coveralls -b build -r . -i "src" -i "include" --gcov-options="-lbc" || true
+
+  cmake_dos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Install tools
+        run: |
+          sudo apt-get install -y dosbox
+          git clone https://github.com/cpputest/watcom-compiler.git watcom
+          echo "WATCOM=$GITHUB_WORKSPACE/watcom" >> $GITHUB_ENV
+          echo "$GITHUB_WORKSPACE/watcom/binl" >> $GITHUB_PATH
+          echo "CPPUTEST_HOME=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      - name: Configure
+        run: >
+          cmake
+          -B cpputest_build
+          -S .
+          -D CMAKE_TOOLCHAIN_FILE=cmake/watcom-dos.toolchain.cmake
+          -D STD_CPP=OFF
+          -D MEMORY_LEAK_DETECTION=OFF
+          -D CMAKE_BUILD_TYPE=MINSIZEREL
+        env:
+          CFLAGS: -ml -zm
+          CXXFLAGS: -ml -zm -xds
+      - name: Build
+        run: cmake --build cpputest_build
+      - name: Test
+        run: "false" # TODO
