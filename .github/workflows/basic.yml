@@ -106,7 +106,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
       - name: Configure
-        run: cmake -B cpputest_build -S . -G Xcode -DWERROR=ON
+        run: cmake -B cpputest_build -S . -G Xcode -DWERROR=ON -DCMAKE_CXX_STANDARD=98
       - name: Build
         run: cmake --build cpputest_build
       - name: Test
