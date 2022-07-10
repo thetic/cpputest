@@ -85,6 +85,7 @@ test-driver
 platforms/iar/settings
 cpputest_*.xml
 generated/
+/cpputest_build/
 *.deps/
 *.dirstamp
 *.trs

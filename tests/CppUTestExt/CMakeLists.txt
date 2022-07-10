@@ -80,11 +80,6 @@ set(cpputestext_test_executables)
 if(CPPUTEST_SPLIT_TESTS)
     foreach(i RANGE 1 9)
         add_executable(CppUTestExtTests${i} ${CppUTestExtTests_src${i}})
-
-        set_target_properties(CppUTestExtTests${i} PROPERTIES
-            OUTPUT_NAME CPPUX${i}
-        )
-
         list(APPEND cpputestext_test_executables CppUTestExtTests${i})
     endforeach()
 else()
