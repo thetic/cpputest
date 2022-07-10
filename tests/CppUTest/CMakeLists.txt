@@ -85,6 +85,9 @@ set(cpputest_test_executables)
 if(CPPUTEST_SPLIT_TESTS)
     foreach(i RANGE 1 8)
         add_executable(CppUTestTests${i} ${CppUTestTests_src${i}})
+        set_target_properties(CppUTestTests${i} PROPERTIES
+            OUTPUT_NAME CPPU${i}
+        )
         list(APPEND cpputest_test_executables CppUTestTests${i})
     endforeach()
 else()
