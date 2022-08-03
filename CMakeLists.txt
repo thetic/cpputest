@@ -24,15 +24,29 @@ else()
 endif()
 
 include(CMakeDependentOption)
-option(CPPUTEST_MEMORY_LEAK_DETECTION "Enable memory leak detection")
-cmake_dependent_option(CPPUTEST_USE_LONG_LONG "Support long long"
-    ON "CPPUTEST_HAVE_LONG_LONG_INT" OFF)
-option(CPPUTEST_EXAMPLES "Build examples" ${PROJECT_IS_TOP_LEVEL})
+
 option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
-cmake_dependent_option(CPPUTEST_BUILD_TESTING "Build CppUTest tests"
-    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING" OFF)
 option(CPPUTEST_STD_C "Use the standard C library" ON)
-option(CPPUTEST_STD_CPP "Use the standard C++ library" ON)
+cmake_dependent_option(CPPUTEST_USE_LONG_LONG
+    "Support long long"
+    ON "CPPUTEST_HAVE_LONG_LONG_INT" OFF
+)
+cmake_dependent_option(CPPUTEST_BUILD_TESTING
+    "Build CppUTest tests"
+    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING;CPPUTEST_EXTENSIONS;CPPUTEST_STD_C" OFF
+)
+cmake_dependent_option(CPPUTEST_STD_CPP
+    "Use the standard C++ library"
+    ON "CPPUTEST_STD_C" OFF
+)
+cmake_dependent_option(CPPUTEST_MEMORY_LEAK_DETECTION
+    "Enable memory leak detection"
+    ON "CPPUTEST_STD_C" OFF
+)
+cmake_dependent_option(CPPUTEST_EXAMPLES
+    "Build examples"
+    ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP" OFF
+)
 
 add_subdirectory(CppUTest)
 

@@ -1,0 +1,41 @@
+{
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21
+  },
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "defaults",
+      "hidden": true,
+      "binaryDir": "build/${presetName}",
+      "generator": "Ninja"
+    },
+    {
+      "name": "gcc",
+      "inherits": ["defaults"],
+      "environment": {
+        "CC": "gcc",
+        "CXX": "g++"
+      }
+    },
+    {
+      "name": "no long long",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CPPUTEST_USE_LONG_LONG": false
+      }
+    },
+    {
+      "name": "no stdc",
+      "inherits": ["gcc"],
+      "environment": {
+        "CFLAGS": "-nostdinc",
+        "CXXFLAGS": "-nostdinc -fno-exceptions -fno-rtti"
+      },
+      "cacheVariables": {
+        "CPPUTEST_STD_C": false
+      }
+    }
+  ]
+}

@@ -4,7 +4,6 @@ add_executable(CppUTestExtTests
     include/MockSupport_cTestCFile.h
     include/OrderedTestTest.h
     src/AllTests.cpp
-    src/CMakeLists.txt
     src/CodeMemoryReporterTest.cpp
     src/ExpectedFunctionsListTest.cpp
     src/GMockTest.cpp
