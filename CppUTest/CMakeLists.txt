@@ -50,9 +50,31 @@ add_library(CppUTest
 
 target_include_directories(CppUTest PUBLIC include)
 
+include(CheckCXXSymbolExists)
+include(CheckCXXSourceCompiles)
+
+check_cxx_symbol_exists(INFINITY "math.h" HAS_INF)
+check_cxx_symbol_exists(NAN "math.h" HAS_NAN)
+check_cxx_source_compiles(
+    [[#include "fenv.h"
+    int main() {feclearexcept(FE_ALL_EXCEPT);}]]
+    HAVE_FENV
+)
+
+target_compile_definitions(CppUTest
+    PUBLIC
+        $<$<NOT:$<BOOL:CPPUTEST_MEM_LEAK_DETECTION_DISABLED>>:CPPUTEST_MEM_LEAK_DETECTION_DISABLED>
+        $<$<NOT:$<BOOL:CPPUTEST_STD_C>>:CPPUTEST_STD_C_LIB_DISABLED>
+        $<$<NOT:$<BOOL:CPPUTEST_STD_CPP>>:CPPUTEST_STD_CPP_LIB_DISABLED>
+        $<$<NOT:$<BOOL:HAS_INF>>:CPPUTEST_NO_INF>
+        $<$<NOT:$<BOOL:HAS_NAN>>:CPPUTEST_NO_NAN>
+        $<$<BOOL:HAVE_FENV>:CPPUTEST_HAVE_FENV>
+        $<$<BOOL:CPPUTEST_USE_LONG_LONG>:CPPUTEST_USE_LONG_LONG>
+        $<$<BOOL:HAVE_LONGLONG>:CPPUTEST_HAVE_LONG_LONG_INT>
+)
+
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 
-add_subdirectory(config)
 add_subdirectory(Platforms)
 
 if(CPPUTEST_BUILD_TESTING)

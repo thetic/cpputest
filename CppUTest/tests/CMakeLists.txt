@@ -55,7 +55,7 @@ target_link_libraries(CppUTestTests
         CppUTest::CppUTestExt
 )
 
-add_test(
-    NAME CppUTest
-    COMMAND CppUTestTests
+include(CppUTest)
+CppUTest_discover_tests(CppUTestTests
+    TEST_PREFIX CppUTest::
 )

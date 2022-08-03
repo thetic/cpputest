@@ -17,11 +17,6 @@ endif()
 
 include(CheckTypeSize)
 check_type_size("long long" LONGLONG LANGUAGE CXX)
-if(HAVE_LONGLONG)
-    set(CPPUTEST_HAVE_LONG_LONG_INT ON)
-else()
-    unset(CPPUTEST_HAVE_LONG_LONG_INT)
-endif()
 
 include(CMakeDependentOption)
 
@@ -29,7 +24,7 @@ option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
 option(CPPUTEST_STD_C "Use the standard C library" ON)
 cmake_dependent_option(CPPUTEST_USE_LONG_LONG
     "Support long long"
-    ON "CPPUTEST_HAVE_LONG_LONG_INT" OFF
+    ON "HAVE_LONGLONG" OFF
 )
 cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
@@ -47,6 +42,11 @@ cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
     ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP" OFF
 )
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+if(NOT PROJECT_IS_TOP_LEVEL)
+    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
+endif()
 
 add_subdirectory(CppUTest)
 

@@ -18,7 +18,7 @@ target_link_libraries(AllTests
         ApplicationLib
 )
 
-add_test(
-    NAME Example
-    COMMAND AllTests
+include(CppUTest)
+CppUTest_discover_tests(AllTests
+    TEST_PREFIX Example::
 )
