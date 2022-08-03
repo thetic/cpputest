@@ -42,6 +42,6 @@ target_link_libraries(CppUTestExt PUBLIC CppUTest::CppUTest)
 
 add_library(CppUTest::CppUTestExt ALIAS CppUTestExt)
 
-if(BUILD_TESTING)
+if(CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)
 endif()

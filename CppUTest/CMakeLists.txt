@@ -52,8 +52,9 @@ target_include_directories(CppUTest PUBLIC include)
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 
+add_subdirectory(config)
 add_subdirectory(Platforms)
 
-if(BUILD_TESTING)
+if(CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)
 endif()

@@ -1,15 +1,17 @@
-if(DOS)
-    add_subdirectory(DOS)
+if(NOT CPPUTEST_STD_C)
+    add_subdirectory(NoStdC) # TODO
+elseif(DOS)
+    add_subdirectory(DOS) # TODO
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
-    add_subdirectory(IAR)
+    add_subdirectory(IAR) # TODO
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "TI")
-    add_subdirectory(TI)
+    add_subdirectory(TI) # TODO
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_subdirectory(MSVC)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "BORLAND")
-    add_subdirectory(Borland)
+    add_subdirectory(MSVC) # TODO
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Borland")
+    add_subdirectory(Borland) # TODO
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "ARMCC")
-    add_subdirectory(ARMCC)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_subdirectory(ARMCC) # TODO
+else()
     add_subdirectory(GNU)
 endif()
