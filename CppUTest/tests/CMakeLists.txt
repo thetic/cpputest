@@ -45,8 +45,8 @@ target_include_directories(CppUTestTests PUBLIC include)
 
 target_compile_definitions(CppUTestTests
     PRIVATE
-        $<$<BOOL:CPPUTEST_HAVE_FORK>:CPPUTEST_HAVE_FORK>
-        $<$<BOOL:CPPUTEST_HAVE_WAITPID>:CPPUTEST_HAVE_WAITPID>
+        $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
+        $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
 )
 
 target_link_libraries(CppUTestTests

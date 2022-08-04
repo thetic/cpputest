@@ -14,9 +14,9 @@
     {
       "name": "gcc",
       "inherits": ["defaults"],
-      "environment": {
-        "CC": "gcc",
-        "CXX": "g++"
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
       }
     },
     {
@@ -29,12 +29,22 @@
     {
       "name": "no stdc",
       "inherits": ["gcc"],
-      "environment": {
-        "CFLAGS": "-nostdinc",
-        "CXXFLAGS": "-nostdinc -fno-exceptions -fno-rtti"
-      },
       "cacheVariables": {
+        "CMAKE_C_FLAGS_INIT": "-nostdinc",
+        "CMAKE_CXX_FLAGS_INIT": "-nostdinc -nostdinc++ -fno-exceptions -fno-rtti",
         "CPPUTEST_STD_C": false
+      }
+    },
+    {
+      "name": "mingw",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_PROCESSOR": "x86_64",
+        "CMAKE_C_COMPILER": "x86_64-w64-mingw32-gcc",
+        "CMAKE_CXX_COMPILER": "x86_64-w64-mingw32-g++",
+        "CMAKE_EXE_LINKER_FLAGS_INIT": "-static",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "wine"
       }
     }
   ]

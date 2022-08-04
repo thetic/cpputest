@@ -24,22 +24,27 @@ option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
 option(CPPUTEST_STD_C "Use the standard C library" ON)
 cmake_dependent_option(CPPUTEST_USE_LONG_LONG
     "Support long long"
+    # Depends on long long support
     ON "HAVE_LONGLONG" OFF
 )
 cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
+    # Depends on extensions and standard library
     ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING;CPPUTEST_EXTENSIONS;CPPUTEST_STD_C" OFF
 )
 cmake_dependent_option(CPPUTEST_STD_CPP
     "Use the standard C++ library"
+    # Depends on libc
     ON "CPPUTEST_STD_C" OFF
 )
 cmake_dependent_option(CPPUTEST_MEMORY_LEAK_DETECTION
     "Enable memory leak detection"
+    # Depends on libc
     ON "CPPUTEST_STD_C" OFF
 )
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
+    # Depends on extensions and standard lib
     ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP" OFF
 )
 
