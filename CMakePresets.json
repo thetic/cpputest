@@ -9,7 +9,11 @@
       "name": "defaults",
       "hidden": true,
       "binaryDir": "build/${presetName}",
-      "generator": "Ninja"
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_EXTENSIONS": false,
+        "CMAKE_CXX_EXTENSIONS": false
+      }
     },
     {
       "name": "gcc",
@@ -20,18 +24,62 @@
       }
     },
     {
-      "name": "no long long",
+      "name": "clang",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gnu-arm-embedded",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "arm-none-eabi-gcc",
+        "CMAKE_CXX_COMPILER": "arm-none-eabi-g++",
+        "CMAKE_C_FLAGS_INIT": "-mcpu=cortex-m4",
+        "CMAKE_CXX_FLAGS_INIT": "-mcpu=cortex-m4",
+        "CMAKE_EXE_LINKER_FLAGS_INIT": "-specs=nano.specs --specs=rdimon.specs",
+        "CMAKE_SYSTEM_NAME": "Generic-ELF",
+        "CMAKE_SYSTEM_PROCESSOR": "cortex-m4",
+        "CPPUTEST_DISCOVER": false
+      }
+    },
+    {
+      "name": "openwatcom",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "DOS",
+        "CMAKE_SYSTEM_PROCESSOR": "I86",
+        "CMAKE_C_COMPILER": "wcl",
+        "CMAKE_C_FLAGS_INIT": "-zm -ml -d0",
+        "CMAKE_CXX_COMPILER": "wcl",
+        "CMAKE_CXX_FLAGS_INIT": "-zm -ml -xds -d0",
+        "CPPUTEST_STD_CPP": false,
+        "CPPUTEST_DISCOVER": false,
+        "CPPUTEST_MEMORY_LEAK_DETECTION": false
+      }
+    },
+    {
+      "name": "no-long-long",
       "inherits": ["defaults"],
       "cacheVariables": {
         "CPPUTEST_USE_LONG_LONG": false
       }
     },
     {
-      "name": "no stdc",
+      "name": "no-std-cpp",
       "inherits": ["gcc"],
       "cacheVariables": {
+        "CMAKE_CXX_FLAGS_INIT": "-nostdinc++ -fno-rtti -fno-exceptions",
+        "CPPUTEST_STD_CPP": false
+      }
+    },
+    {
+      "name": "no-std-c",
+      "inherits": ["no-std-cpp"],
+      "cacheVariables": {
         "CMAKE_C_FLAGS_INIT": "-nostdinc",
-        "CMAKE_CXX_FLAGS_INIT": "-nostdinc -nostdinc++ -fno-exceptions -fno-rtti",
         "CPPUTEST_STD_C": false
       }
     },

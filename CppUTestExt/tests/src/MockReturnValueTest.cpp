@@ -28,6 +28,8 @@
 #include "CppUTest/TestHarness.h"
 #include "MockFailureReporterForTest.h"
 
+#include <limits.h>
+
 TEST_GROUP(MockReturnValueTest)
 {
   void teardown() _override
