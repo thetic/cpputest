@@ -63,16 +63,13 @@ if(reporter)
 endif()
 
 # Parse output
-foreach(line ${output})
-    set(test ${line})
-    set(test_name ${test})
-
-    # ...and add to script
+foreach(test ${output})
+    # add to script
     add_command(add_test
         "${prefix}${test}${suffix}"
         ${TEST_EXECUTOR}
         "${TEST_EXECUTABLE}"
-        -g "${test_name}"
+        -g "${test}"
         ${extra_args}
         "${reporter_arg}"
         "${output_dir_arg}"

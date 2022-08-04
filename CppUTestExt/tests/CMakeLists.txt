@@ -39,7 +39,14 @@ target_include_directories(CppUTestExtTests PRIVATE include)
 
 target_link_libraries(CppUTestExtTests PRIVATE CppUTest::CppUTestExt)
 
-include(CppUTest)
-CppUTest_discover_tests(CppUTestExtTests
-    TEST_PREFIX CppUTestExt::
-)
+if(CPPUTEST_DISCOVER)
+    include(CppUTest)
+    CppUTest_discover_tests(CppUTestExtTests
+        TEST_PREFIX CppUTestExt.
+    )
+else()
+    add_test(
+        NAME CppUTestExt
+        COMMAND CppUTestExtTests
+    )
+endif()

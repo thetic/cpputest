@@ -45,7 +45,12 @@ cmake_dependent_option(CPPUTEST_MEMORY_LEAK_DETECTION
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
     # Depends on extensions and standard lib
-    ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP" OFF
+    ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP;CPPUTEST_BUILD_TESTING" OFF
+)
+cmake_dependent_option(CPPUTEST_DISCOVER
+    "Dynamically register tests at build-time"
+    # Depends on actually building the tests
+    ON "CPPUTEST_BUILD_TESTING" OFF
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
