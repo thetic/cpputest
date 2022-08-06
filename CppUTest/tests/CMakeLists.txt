@@ -42,10 +42,16 @@ add_executable(CppUTestTests
 
 target_include_directories(CppUTestTests PUBLIC include)
 
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(NAN "math.h" HAS_NAN)
+check_cxx_symbol_exists(INFINITY "math.h" HAS_INF)
+
 target_compile_definitions(CppUTestTests
     PRIVATE
         $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
         $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
+        CPPUTEST_HAS_NAN=$<BOOL:${HAS_NAN}>
+        CPPUTEST_HAS_INF=$<BOOL:${HAS_INF}>
 )
 
 target_link_libraries(CppUTestTests
