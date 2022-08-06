@@ -19,6 +19,6 @@ jobs:
       - name: Configure
         run: cmake --preset defaults
       - name: Build
-        run: cmake --build build/defaults -j
+        run: cmake --build build/defaults -j --verbose
       - name: Test
-        run: ctest --test-dir build/defaults
+        run: ctest --test-dir build/defaults -V
