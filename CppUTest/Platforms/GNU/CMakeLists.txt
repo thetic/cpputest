@@ -10,6 +10,7 @@ include(CheckCXXSymbolExists)
 check_cxx_symbol_exists(fork "unistd.h" HAVE_FORK)
 check_cxx_symbol_exists(waitpid "sys/wait.h" HAVE_WAITPID)
 check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
+check_cxx_symbol_exists(localtime_s "time.h" HAVE_LOCALTIME_S)
 include(CheckStructHasMember)
 check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC)
 
@@ -19,14 +20,15 @@ set(CPPUTEST_HAVE_WAITPID ${HAVE_WAITPID} CACHE INTERNAL "")
 
 target_link_libraries(CppUTest
     PRIVATE
-        $<$<BOOL:${Threads_FOUND}>:Threads::Threads>
+        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:Threads::Threads>
 )
 
 target_compile_definitions(CppUTest
     PRIVATE
-        $<$<BOOL:${Threads_FOUND}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
+        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
         $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
         $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
         $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         $<$<AND:$<BOOL:${MINGW}>,$<BOOL:${HAVE_STRUCT_TIMESPEC}>>:_TIMESPEC_DEFINED>
+        $<$<AND:$<BOOL:${WIN32}>,$<BOOL:${HAVE_LOCALTIME_S}>>:MINGW_HAS_SECURE_API>
 )

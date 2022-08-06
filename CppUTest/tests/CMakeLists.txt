@@ -59,6 +59,11 @@ target_link_libraries(CppUTestTests
         CppUTest::CppUTest
 )
 
+target_link_options(CppUTestTests
+    PRIVATE
+        $<$<BOOL:${MINGW}>:-static>
+)
+
 if(CPPUTEST_DISCOVER)
     include(CppUTest)
     CppUTest_discover_tests(CppUTestTests

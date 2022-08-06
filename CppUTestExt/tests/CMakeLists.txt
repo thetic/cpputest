@@ -37,7 +37,15 @@ add_executable(CppUTestExtTests
 
 target_include_directories(CppUTestExtTests PRIVATE include)
 
-target_link_libraries(CppUTestExtTests PRIVATE CppUTest::CppUTestExt)
+target_link_libraries(CppUTestExtTests
+    PRIVATE
+        CppUTest::CppUTestExt
+)
+
+target_link_options(CppUTestExtTests
+    PRIVATE
+        $<$<BOOL:${MINGW}>:-static>
+)
 
 if(CPPUTEST_DISCOVER)
     include(CppUTest)

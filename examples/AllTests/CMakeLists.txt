@@ -18,6 +18,11 @@ target_link_libraries(AllTests
         ApplicationLib
 )
 
+target_link_options(AllTests
+    PRIVATE
+        $<$<BOOL:${MINGW}>:-static>
+)
+
 if(CPPUTEST_DISCOVER)
     include(CppUTest)
     CppUTest_discover_tests(AllTests

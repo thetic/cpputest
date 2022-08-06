@@ -22,3 +22,32 @@ jobs:
         run: cmake --build build/defaults -j --verbose
       - name: Test
         run: ctest --test-dir build/defaults -V
+
+  gnu:
+    strategy:
+      matrix:
+        preset:
+          - gcc
+          - clang
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        cxx_standard:
+          - 98
+          - 11
+          - 14
+          - 17
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Configure
+        run: >
+          cmake
+          --preset ${{ matrix.preset }}
+          -DCMAKE_CXX_STANDARD=${{ matrix.cxx_standard }}
+      - name: Build
+        run: cmake --build build/${{ matrix.preset }} -j --verbose
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
