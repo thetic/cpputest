@@ -37,7 +37,6 @@ add_executable(CppUTestTests
     include/AllocationInCFile.h
     include/AllocationInCppFile.h
     include/AllocLetTestFree.h
-    include/AllTests.h
     include/DummyMemoryLeakDetector.h
 )
 
