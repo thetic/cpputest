@@ -7,9 +7,7 @@
   "configurePresets": [
     {
       "name": "defaults",
-      "hidden": true,
       "binaryDir": "build/${presetName}",
-      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_C_EXTENSIONS": false,
         "CMAKE_CXX_EXTENSIONS": false
