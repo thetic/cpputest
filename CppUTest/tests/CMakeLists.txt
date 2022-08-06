@@ -51,7 +51,6 @@ target_compile_definitions(CppUTestTests
 target_link_libraries(CppUTestTests
     PRIVATE
         CppUTest::CppUTest
-        CppUTest::CppUTestExt
 )
 
 if(CPPUTEST_DISCOVER)

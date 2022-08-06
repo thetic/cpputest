@@ -61,6 +61,13 @@
       }
     },
     {
+      "name": "no-extensions",
+      "inherits": ["defaults"],
+      "cacheVariables": {
+        "CPPUTEST_EXTENSIONS": false
+      }
+    },
+    {
       "name": "no-long-long",
       "inherits": ["defaults"],
       "cacheVariables": {

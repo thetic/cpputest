@@ -30,7 +30,7 @@ cmake_dependent_option(CPPUTEST_USE_LONG_LONG
 cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
     # Depends on extensions and standard library
-    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING;CPPUTEST_EXTENSIONS;CPPUTEST_STD_C" OFF
+    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING;CPPUTEST_STD_C" OFF
 )
 cmake_dependent_option(CPPUTEST_STD_CPP
     "Use the standard C++ library"
