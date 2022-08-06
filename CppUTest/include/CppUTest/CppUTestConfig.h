@@ -28,10 +28,6 @@
 #ifndef CPPUTESTCONFIG_H_
 #define CPPUTESTCONFIG_H_
 
-#ifndef CPPUTEST_USE_OWN_CONFIGURATION
-#include "CppUTestGeneratedConfig.h"
-#endif
-
 /*
  * This file is added for some specific CppUTest configurations that earlier were spread out into multiple files.
  *

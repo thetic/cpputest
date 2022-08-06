@@ -2,7 +2,6 @@ add_library(CppUTest
     include/CppUTest/CommandLineArguments.h
     include/CppUTest/CommandLineTestRunner.h
     include/CppUTest/CppUTestConfig.h
-    include/CppUTest/CppUTestGeneratedConfig.h
     include/CppUTest/JUnitTestOutput.h
     include/CppUTest/MemoryLeakDetector.h
     include/CppUTest/MemoryLeakDetectorMallocMacros.h
