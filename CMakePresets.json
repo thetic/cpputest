@@ -17,7 +17,6 @@
     {
       "name": "gcc",
       "inherits": ["defaults"],
-      "generator": "Unix Makefiles",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++",

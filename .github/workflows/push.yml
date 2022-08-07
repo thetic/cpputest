@@ -46,6 +46,7 @@ jobs:
         run: >
           cmake
           --preset ${{ matrix.preset }}
+          -G "Unix Makefiles"
           -DCMAKE_CXX_STANDARD=${{ matrix.cxx_standard }}
       - name: Build
         run: cmake --build build/${{ matrix.preset }} -j --verbose
