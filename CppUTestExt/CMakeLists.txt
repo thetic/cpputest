@@ -1,9 +1,5 @@
 add_library(CppUTestExt
     include/CppUTestExt/CodeMemoryReportFormatter.h
-    include/CppUTestExt/GMock.h
-    include/CppUTestExt/GTest.h
-    include/CppUTestExt/GTestConvertor.h
-    include/CppUTestExt/GTestSupport.h
     include/CppUTestExt/IEEE754ExceptionsPlugin.h
     include/CppUTestExt/MemoryReportAllocator.h
     include/CppUTestExt/MemoryReportFormatter.h
@@ -20,7 +16,6 @@ add_library(CppUTestExt
     include/CppUTestExt/MockSupport_c.h
     include/CppUTestExt/OrderedTest.h
     src/CodeMemoryReportFormatter.cpp
-    src/GTest.cpp
     src/IEEE754ExceptionsPlugin.cpp
     src/MemoryReportAllocator.cpp
     src/MemoryReportFormatter.cpp
