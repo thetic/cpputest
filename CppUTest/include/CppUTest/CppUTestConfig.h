@@ -36,13 +36,6 @@
  *
  */
 
-#ifdef __clang__
- #pragma clang diagnostic push
- #if (__clang_major__ == 3 && __clang_minor__ >= 6) || __clang_major__ >= 4
-  #pragma clang diagnostic ignored "-Wreserved-id-macro"
- #endif
-#endif
-
 /*
  * Lib C dependencies that are currently still left:
  *
@@ -55,43 +48,16 @@
  *
  */
 
-/* Do we use Standard C or not? When doing Kernel development, standard C usage is out. */
-#ifndef CPPUTEST_USE_STD_C_LIB
- #ifdef CPPUTEST_STD_C_LIB_DISABLED
-  #define CPPUTEST_USE_STD_C_LIB 0
- #else
-  #define CPPUTEST_USE_STD_C_LIB 1
- #endif
-#endif
-
-
-/* Do we use Standard C++ or not? */
-#ifndef CPPUTEST_USE_STD_CPP_LIB
- #ifdef CPPUTEST_STD_CPP_LIB_DISABLED
-  #define CPPUTEST_USE_STD_CPP_LIB 0
- #else
-  #define CPPUTEST_USE_STD_CPP_LIB 1
- #endif
-#endif
-
-#define CPPUTEST_USE_MEM_LEAK_DETECTION 0
 
 /* Should be the only #include here. Standard C library wrappers */
 #include "StandardCLibrary.h"
 
-/* Create a _no_return_ macro, which is used to flag a function as not returning.
- * Used for functions that always throws for instance.
- *
- * This is needed for compiling with clang, without breaking other compilers.
- */
-#ifndef __has_attribute
-  #define __has_attribute(x) 0
-#endif
-
-#if __has_attribute(noreturn)
-  #define _no_return_ __attribute__((noreturn))
+#if defined(__cplusplus) && (__cplusplus >= 201100)
+  #define CPPUTEST_NORETURN [[noreturn]]
+#elif defined(__has_attribute) && __has_attribute(noreturn)
+  #define CPPUTEST_NORETURN __attribute__((noreturn))
 #else
-  #define _no_return_
+  #define CPPUTEST_NORETURN
 #endif
 
 #if defined(__MINGW32__)
@@ -100,7 +66,7 @@
 #define CPPUTEST_CHECK_FORMAT_TYPE printf
 #endif
 
-#if __has_attribute(format)
+#if defined(__has_attribute) && __has_attribute(format)
   #define _check_format_(type, format_parameter, other_parameters) __attribute__ ((format (type, format_parameter, other_parameters)))
 #else
   #define _check_format_(type, format_parameter, other_parameters) /* type, format_parameter, other_parameters */
@@ -185,26 +151,6 @@
 #endif
 
 /*
- * Handling of IEEE754 floating point exceptions via fenv.h
- * Predominantly works on non-Visual C++ compilers and Visual C++ 2008 and newer
- */
-
-#if !defined(CPPUTEST_HAVE_FENV) && CPPUTEST_USE_STD_C_LIB && \
-  (!defined(_MSC_VER) || (_MSC_VER >= 1800)) && \
-  (!defined(__APPLE__)) && \
-  (!defined(__ghs__) || !defined(__ColdFire__)) && (!defined(__BCPLUSPLUS__))
-#define CPPUTEST_HAVE_FENV
-#endif
-
-#ifdef CPPUTEST_HAVE_FENV
-#if defined(__WATCOMC__) || defined(__ARMEL__) || defined(__m68k__)
-#define CPPUTEST_FENV_IS_WORKING_PROPERLY 0
-#else
-#define CPPUTEST_FENV_IS_WORKING_PROPERLY 1
-#endif
-#endif
-
-/*
  * Detection of different 64 bit environments
  */
 
@@ -241,13 +187,7 @@
  *
  */
 
-#if !defined(CPPUTEST_LONG_LONG_DISABLED) && !defined(CPPUTEST_USE_LONG_LONG)
-#if defined(CPPUTEST_HAVE_LONG_LONG_INT) || defined(LLONG_MAX)
-#define CPPUTEST_USE_LONG_LONG 1
-#endif
-#endif
-
-#ifdef CPPUTEST_USE_LONG_LONG
+#if CPPUTEST_USE_LONG_LONG
 typedef long long cpputest_longlong;
 typedef unsigned long long cpputest_ulonglong;
 #else
@@ -289,7 +229,6 @@ typedef struct cpputest_ulonglong cpputest_ulonglong;
 /* Visual C++ 10.0+ (2010+) supports the override keyword, but doesn't define the C++ version as C++11 */
 #if defined(__cplusplus) && ((__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1600)))
 #if !defined(__ghs__)
-#define CPPUTEST_COMPILER_FULLY_SUPPORTS_CXX11
 #define _override override
 #else
 /* GreenHills is not compatible with other compilers with regards to where
@@ -309,10 +248,6 @@ typedef struct cpputest_ulonglong cpputest_ulonglong;
 #define _destructor_override override
 #else
 #define _destructor_override
-#endif
-
-#ifdef __clang__
- #pragma clang diagnostic pop
 #endif
 
 #endif

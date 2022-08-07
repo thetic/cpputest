@@ -1,6 +1,8 @@
 #ifndef ALLOCATIONINCPPFILE_H
 #define ALLOCATIONINCPPFILE_H
 
+#include "CppUTest/CppUTestConfig.h"
+
 char* newAllocation();
 char* newArrayAllocation();
 
@@ -12,7 +14,7 @@ char* newArrayAllocationWithoutMacro();
 class ClassThatThrowsAnExceptionInTheConstructor
 {
 public:
-  ClassThatThrowsAnExceptionInTheConstructor() _no_return_;
+    CPPUTEST_NORETURN ClassThatThrowsAnExceptionInTheConstructor();
 };
 
 #endif
