@@ -40,7 +40,7 @@ cmake_dependent_option(CPPUTEST_STD_CPP
 cmake_dependent_option(CPPUTEST_MEMORY_LEAK_DETECTION
     "Enable memory leak detection"
     # Depends on libc
-    ON "CPPUTEST_STD_C" OFF
+    OFF "CPPUTEST_STD_C" OFF
 )
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
