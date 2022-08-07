@@ -38,7 +38,7 @@
 
 #include "SimpleString.h"
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 #include <stdexcept>
 #endif
 
@@ -186,7 +186,7 @@ public:
     FeatureUnsupportedFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& featureName, const SimpleString& text);
 };
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 class UnexpectedExceptionFailure : public TestFailure
 {
 public:

@@ -31,11 +31,11 @@ cmake_dependent_option(CPPUTEST_BUILD_TESTING
     # Depends on extensions and standard library
     ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING" OFF
 )
-option(CPPUTEST_STD_CPP "Use the standard C++ library" ON)
+option(CPPUTEST_NO_EXCEPTIONS "Disable use of exceptions")
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
     # Depends on extensions and standard lib
-    ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_STD_CPP;CPPUTEST_BUILD_TESTING" OFF
+    ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_EXTENSIONS;CPPUTEST_BUILD_TESTING" OFF
 )
 cmake_dependent_option(CPPUTEST_DISCOVER
     "Dynamically register tests at build-time"

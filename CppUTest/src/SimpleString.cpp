@@ -30,6 +30,8 @@
 #include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestMemoryAllocator.h"
 
+#include <string>
+
 GlobalSimpleStringAllocatorStash::GlobalSimpleStringAllocatorStash()
     : originalAllocator_(NULLPTR)
 {
@@ -773,7 +775,7 @@ SimpleString BracketsFormattedHexString(SimpleString hexString)
  * ARM compiler has only partial support for C++11.
  * Specifically nullptr_t is not officially supported
  */
-#if __cplusplus > 199711L && !defined __arm__ && CPPUTEST_USE_STD_CPP_LIB
+#if __cplusplus > 199711L && !defined __arm__
 SimpleString StringFrom(const std::nullptr_t value)
 {
     (void) value;
@@ -927,16 +929,10 @@ SimpleString StringFrom(unsigned int i)
     return StringFromFormat("%u", i);
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
-
-#include <string>
-
 SimpleString StringFrom(const std::string& value)
 {
     return SimpleString(value.c_str());
 }
-
-#endif
 
 SimpleString StringFrom(unsigned long i)
 {

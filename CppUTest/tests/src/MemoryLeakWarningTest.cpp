@@ -251,7 +251,7 @@ TEST(MemoryLeakWarningGlobalDetectorTest, MemoryWarningPluginCanBeSetToDestroyTh
     CHECK(DummyMemoryLeakDetector::wasDeleted());
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 
 TEST(MemoryLeakWarningGlobalDetectorTest, turnOffNewOverloadsNoThrowCausesNoAdditionalLeaks)
 {

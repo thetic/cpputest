@@ -427,7 +427,7 @@ TEST(TestFailure, FeatureUnsupported)
     FAILURE_EQUAL("The feature \"SOME_FEATURE\" is not supported in this environment or with the feature set selected when building the library.", f);
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 TEST(TestFailure, UnexpectedExceptionFailure_UnknownException)
 {
     UnexpectedExceptionFailure f(test);

@@ -1,8 +1,6 @@
 
 #include "CppUTest/TestHarness.h"
 
-#if CPPUTEST_USE_STD_CPP_LIB
-
 #include <memory>
 
 TEST_GROUP(StandardCppLibrary)
@@ -19,8 +17,6 @@ TEST(StandardCppLibrary, UniquePtrConversationToBool)
     auto const notNull = std::make_unique<int>(1);
     CHECK_TRUE(notNull);
 }
-
-#endif
 
 #endif
 

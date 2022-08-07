@@ -231,14 +231,10 @@ SimpleString PrintableStringFromOrNull(const char * expected);
  * ARM compiler has only partial support for C++11.
  * Specifically nullptr_t is not officially supported
  */
-#if __cplusplus > 199711L && !defined __arm__ && CPPUTEST_USE_STD_CPP_LIB
+#if __cplusplus > 199711L && !defined __arm__
 SimpleString StringFrom(const std::nullptr_t value);
 #endif
 
-#if CPPUTEST_USE_STD_CPP_LIB
-
 SimpleString StringFrom(const std::string& other);
-
-#endif
 
 #endif

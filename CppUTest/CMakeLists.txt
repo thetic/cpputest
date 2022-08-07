@@ -56,7 +56,7 @@ check_cxx_source_compiles(
 
 target_compile_definitions(CppUTest
     PUBLIC
-        "CPPUTEST_USE_STD_CPP_LIB=$<BOOL:${CPPUTEST_STD_CPP}>"
+        "CPPUTEST_NO_EXCEPTIONS=$<BOOL:${CPPUTEST_NO_EXCEPTIONS}>"
         "CPPUTEST_HAVE_FENV=$<BOOL:${HAVE_FENV}>"
         "CPPUTEST_USE_LONG_LONG=$<BOOL:${CPPUTEST_USE_LONG_LONG}>"
 )

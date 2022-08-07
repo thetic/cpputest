@@ -693,7 +693,7 @@ TEST(SimpleString, Sizes)
     STRCMP_EQUAL("10", StringFrom((int) size).asCharString());
 }
 
-#if __cplusplus > 199711L && !defined __arm__ && CPPUTEST_USE_STD_CPP_LIB
+#if __cplusplus > 199711L && !defined __arm__
 
 TEST(SimpleString, nullptr_type)
 {
@@ -908,8 +908,6 @@ TEST(SimpleString, BuildStringFromUnsignedInteger)
     CHECK_EQUAL(expected_string, result);
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
-
 TEST(SimpleString, fromStdString)
 {
     std::string s("hello");
@@ -932,8 +930,6 @@ TEST(SimpleString, unsigned_long)
     const char* expected_string = "4294967295";
     CHECK_EQUAL(expected_string, result);
 }
-
-#endif
 
 TEST(SimpleString, StrCmp)
 {

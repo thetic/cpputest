@@ -77,11 +77,11 @@
       }
     },
     {
-      "name": "no-std-cpp",
+      "name": "no-exceptions",
       "inherits": ["gcc"],
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-nostdinc++ -fno-rtti -fno-exceptions",
-        "CPPUTEST_STD_CPP": false
+        "CMAKE_CXX_FLAGS_INIT": "-fno-rtti -fno-exceptions",
+        "CPPUTEST_NO_EXCEPTIONS": true
       }
     },
     {

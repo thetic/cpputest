@@ -233,7 +233,7 @@ void UtestShell::runOneTestInCurrentProcess(TestPlugin* plugin, TestResult& resu
 
     Utest* testToRun = NULLPTR;
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
     try
     {
 #endif
@@ -247,7 +247,7 @@ void UtestShell::runOneTestInCurrentProcess(TestPlugin* plugin, TestResult& resu
 
         UtestShell::setCurrentTest(savedTest);
         UtestShell::setTestResult(savedResult);
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
     }
     catch(...)
     {
@@ -656,8 +656,15 @@ Utest::~Utest()
 {
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
-
+#if CPPUTEST_NO_EXCEPTIONS
+void Utest::run()
+{
+    if (PlatformSpecificSetJmp(helperDoTestSetup, this)) {
+        PlatformSpecificSetJmp(helperDoTestBody, this);
+    }
+    PlatformSpecificSetJmp(helperDoTestTeardown, this);
+}
+#else
 void Utest::run()
 {
     UtestShell* current = UtestShell::getCurrent();
@@ -724,16 +731,6 @@ void Utest::run()
         }
     }
 }
-#else
-
-void Utest::run()
-{
-    if (PlatformSpecificSetJmp(helperDoTestSetup, this)) {
-        PlatformSpecificSetJmp(helperDoTestBody, this);
-    }
-    PlatformSpecificSetJmp(helperDoTestTeardown, this);
-}
-
 #endif
 
 void Utest::setup()
@@ -757,10 +754,10 @@ TestTerminator::~TestTerminator()
 
 void NormalTestTerminator::exitCurrentTest() const
 {
-    #if CPPUTEST_USE_STD_CPP_LIB
-        throw CppUTestFailedException();
-    #else
+    #if CPPUTEST_NO_EXCEPTIONS
         TestTerminatorWithoutExceptions().exitCurrentTest();
+    #else
+        throw CppUTestFailedException();
     #endif
 }
 

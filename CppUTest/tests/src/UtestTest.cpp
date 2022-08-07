@@ -217,7 +217,7 @@ TEST(UtestShell, TestStopsAfterSetupFailure)
     LONGS_EQUAL(0, stopAfterFailure);
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 static void thrownUnknownExceptionMethod_()
 {
     throw 33;
@@ -369,7 +369,7 @@ TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
 
 #endif
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 
 static bool destructorWasCalledOnFailedTest = false;
 

@@ -31,12 +31,10 @@
 #include "CppUTest/SimpleString.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
 
-#if CPPUTEST_USE_STD_CPP_LIB
 #include <typeinfo>
 #if defined(__GNUC__)
 #include <cxxabi.h>
 #include <memory>
-#endif
 #endif
 
 TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& theMessage) :
@@ -387,7 +385,7 @@ FeatureUnsupportedFailure::FeatureUnsupportedFailure(UtestShell* test, const cha
     message_ += StringFromFormat("The feature \"%s\" is not supported in this environment or with the feature set selected when building the library.", featureName.asCharString());
 }
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if !CPPUTEST_NO_EXCEPTIONS
 UnexpectedExceptionFailure::UnexpectedExceptionFailure(UtestShell* test)
 : TestFailure(test, "Unexpected exception of unknown type was thrown.")
 {

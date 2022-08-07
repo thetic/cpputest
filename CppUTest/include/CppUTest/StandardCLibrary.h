@@ -12,17 +12,13 @@
 
 /* Sometimes the C++ library does an #undef in stdlib of malloc and free. We want to prevent that */
 #ifdef __cplusplus
- #if CPPUTEST_USE_STD_CPP_LIB
   #include <cstdlib>
   #include <string>
- #endif
 #endif
 
 /* Needed for std::nullptr */
 #ifdef __cplusplus
- #if CPPUTEST_USE_STD_CPP_LIB
   #include <cstddef>
- #endif
 #endif
 
 /* Kludge to get a va_copy in VC++ V6 and in GCC 98 */
@@ -35,8 +31,6 @@
 #endif
 
 /* Needed to ensure that string.h is included prior to strdup redefinition */
-#ifdef CPPUTEST_HAVE_STRING_H
 #include <string.h>
-#endif
 
 #endif
