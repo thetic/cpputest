@@ -7,7 +7,7 @@
   "configurePresets": [
     {
       "name": "defaults",
-      "binaryDir": "build/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_C_EXTENSIONS": false,
         "CMAKE_CXX_EXTENSIONS": false,
