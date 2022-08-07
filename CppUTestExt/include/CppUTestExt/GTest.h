@@ -36,14 +36,6 @@
 
 #include "gtest/gtest.h"
 
-#ifdef CPPUTEST_USE_NEW_MACROS
-#include "CppUTest/MemoryLeakDetectorNewMacros.h"
-#endif
-
-#ifdef CPPUTEST_USE_MALLOC_MACROS
-#include "CppUTest/MemoryLeakDetectorMallocMacros.h"
-#endif
-
 #include "CppUTestExt/GTestSupport.h"
 
 #ifndef RUN_ALL_TESTS

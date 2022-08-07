@@ -4,8 +4,6 @@ add_library(CppUTest
     include/CppUTest/CppUTestConfig.h
     include/CppUTest/JUnitTestOutput.h
     include/CppUTest/MemoryLeakDetector.h
-    include/CppUTest/MemoryLeakDetectorMallocMacros.h
-    include/CppUTest/MemoryLeakDetectorNewMacros.h
     include/CppUTest/MemoryLeakWarningPlugin.h
     include/CppUTest/PlatformSpecificFunctions.h
     include/CppUTest/PlatformSpecificFunctions_c.h
@@ -58,7 +56,6 @@ check_cxx_source_compiles(
 
 target_compile_definitions(CppUTest
     PUBLIC
-        $<$<NOT:$<BOOL:${CPPUTEST_MEMORY_LEAK_DETECTION}>>:CPPUTEST_MEM_LEAK_DETECTION_DISABLED>
         $<$<NOT:$<BOOL:${CPPUTEST_STD_C}>>:CPPUTEST_STD_C_LIB_DISABLED>
         $<$<NOT:$<BOOL:${CPPUTEST_STD_CPP}>>:CPPUTEST_STD_CPP_LIB_DISABLED>
         $<$<BOOL:${HAVE_FENV}>:CPPUTEST_HAVE_FENV>

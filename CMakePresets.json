@@ -59,8 +59,7 @@
         "CMAKE_CXX_COMPILER": "wcl",
         "CMAKE_CXX_FLAGS_INIT": "-zm -ml -xds -d0",
         "CPPUTEST_STD_CPP": false,
-        "CPPUTEST_DISCOVER": false,
-        "CPPUTEST_MEMORY_LEAK_DETECTION": false
+        "CPPUTEST_DISCOVER": false
       }
     },
     {
