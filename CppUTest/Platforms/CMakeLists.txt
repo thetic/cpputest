@@ -1,6 +1,4 @@
-if(NOT CPPUTEST_STD_C)
-    add_subdirectory(NoStdC)
-elseif(DOS)
+if(DOS)
     add_subdirectory(DOS)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
     add_subdirectory(IAR) # TODO

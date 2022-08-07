@@ -21,7 +21,6 @@ check_type_size("long long" LONGLONG LANGUAGE CXX)
 include(CMakeDependentOption)
 
 option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
-option(CPPUTEST_STD_C "Use the standard C library" ON)
 cmake_dependent_option(CPPUTEST_USE_LONG_LONG
     "Support long long"
     # Depends on long long support
@@ -30,13 +29,9 @@ cmake_dependent_option(CPPUTEST_USE_LONG_LONG
 cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
     # Depends on extensions and standard library
-    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING;CPPUTEST_STD_C" OFF
+    ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING" OFF
 )
-cmake_dependent_option(CPPUTEST_STD_CPP
-    "Use the standard C++ library"
-    # Depends on libc
-    ON "CPPUTEST_STD_C" OFF
-)
+option(CPPUTEST_STD_CPP "Use the standard C++ library" ON)
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
     # Depends on extensions and standard lib

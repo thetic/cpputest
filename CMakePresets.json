@@ -85,14 +85,6 @@
       }
     },
     {
-      "name": "no-std-c",
-      "inherits": ["no-std-cpp"],
-      "cacheVariables": {
-        "CMAKE_C_FLAGS_INIT": "-nostdinc",
-        "CPPUTEST_STD_C": false
-      }
-    },
-    {
       "name": "mingw",
       "inherits": ["defaults"],
       "cacheVariables": {
