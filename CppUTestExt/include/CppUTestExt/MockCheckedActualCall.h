@@ -44,8 +44,8 @@ public:
     virtual MockActualCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) _override;
     virtual MockActualCall& withLongIntParameter(const SimpleString& name, long int value) _override;
     virtual MockActualCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) _override;
-    virtual MockActualCall& withLongLongIntParameter(const SimpleString& name, cpputest_longlong value) _override;
-    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, cpputest_ulonglong value) _override;
+    virtual MockActualCall& withLongLongIntParameter(const SimpleString& name, long long value) _override;
+    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) _override;
     virtual MockActualCall& withDoubleParameter(const SimpleString& name, double value) _override;
     virtual MockActualCall& withStringParameter(const SimpleString& name, const char* value) _override;
     virtual MockActualCall& withPointerParameter(const SimpleString& name, void* value) _override;
@@ -71,11 +71,11 @@ public:
     virtual long int returnLongIntValue() _override;
     virtual long int returnLongIntValueOrDefault(long int default_value) _override;
 
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValue() _override;
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValueOrDefault(cpputest_ulonglong default_value) _override;
+    virtual unsigned long long returnUnsignedLongLongIntValue() _override;
+    virtual unsigned long long returnUnsignedLongLongIntValueOrDefault(unsigned long long default_value) _override;
 
-    virtual cpputest_longlong returnLongLongIntValue() _override;
-    virtual cpputest_longlong returnLongLongIntValueOrDefault(cpputest_longlong default_value) _override;
+    virtual long long returnLongLongIntValue() _override;
+    virtual long long returnLongLongIntValueOrDefault(long long default_value) _override;
 
     virtual unsigned int returnUnsignedIntValue() _override;
     virtual unsigned int returnUnsignedIntValueOrDefault(unsigned int default_value) _override;
@@ -165,8 +165,8 @@ public:
     virtual MockActualCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) _override;
     virtual MockActualCall& withLongIntParameter(const SimpleString& name, long int value) _override;
     virtual MockActualCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) _override;
-    virtual MockActualCall& withLongLongIntParameter(const SimpleString& name, cpputest_longlong value) _override;
-    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, cpputest_ulonglong value) _override;
+    virtual MockActualCall& withLongLongIntParameter(const SimpleString& name, long long value) _override;
+    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) _override;
     virtual MockActualCall& withDoubleParameter(const SimpleString& name, double value) _override;
     virtual MockActualCall& withStringParameter(const SimpleString& name, const char* value) _override;
     virtual MockActualCall& withPointerParameter(const SimpleString& name, void* value) _override;
@@ -192,11 +192,11 @@ public:
     virtual long int returnLongIntValue() _override;
     virtual long int returnLongIntValueOrDefault(long int default_value) _override;
 
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValue() _override;
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValueOrDefault(cpputest_ulonglong default_value) _override;
+    virtual unsigned long long returnUnsignedLongLongIntValue() _override;
+    virtual unsigned long long returnUnsignedLongLongIntValueOrDefault(unsigned long long default_value) _override;
 
-    virtual cpputest_longlong returnLongLongIntValue() _override;
-    virtual cpputest_longlong returnLongLongIntValueOrDefault(cpputest_longlong default_value) _override;
+    virtual long long returnLongLongIntValue() _override;
+    virtual long long returnLongLongIntValueOrDefault(long long default_value) _override;
 
     virtual unsigned int returnUnsignedIntValue() _override;
     virtual unsigned int returnUnsignedIntValueOrDefault(unsigned int default_value) _override;
@@ -241,8 +241,8 @@ public:
     virtual MockActualCall& withUnsignedIntParameter(const SimpleString&, unsigned int) _override { return *this; }
     virtual MockActualCall& withLongIntParameter(const SimpleString&, long int) _override { return *this; }
     virtual MockActualCall& withUnsignedLongIntParameter(const SimpleString&, unsigned long int) _override { return *this; }
-    virtual MockActualCall& withLongLongIntParameter(const SimpleString&, cpputest_longlong) _override { return *this; }
-    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString&, cpputest_ulonglong) _override { return *this; }
+    virtual MockActualCall& withLongLongIntParameter(const SimpleString&, long long) _override { return *this; }
+    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString&, unsigned long long) _override { return *this; }
     virtual MockActualCall& withDoubleParameter(const SimpleString&, double) _override { return *this; }
     virtual MockActualCall& withStringParameter(const SimpleString&, const char*) _override { return *this; }
     virtual MockActualCall& withPointerParameter(const SimpleString& , void*) _override { return *this; }
@@ -268,11 +268,11 @@ public:
     virtual long int returnLongIntValue() _override { return 0; }
     virtual long int returnLongIntValueOrDefault(long int value) _override { return value; }
 
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValue() _override { return 0; }
-    virtual cpputest_ulonglong returnUnsignedLongLongIntValueOrDefault(cpputest_ulonglong value) _override { return value; }
+    virtual unsigned long long returnUnsignedLongLongIntValue() _override { return 0; }
+    virtual unsigned long long returnUnsignedLongLongIntValueOrDefault(unsigned long long value) _override { return value; }
 
-    virtual cpputest_longlong returnLongLongIntValue() _override { return 0; }
-    virtual cpputest_longlong returnLongLongIntValueOrDefault(cpputest_longlong value) _override { return value; }
+    virtual long long returnLongLongIntValue() _override { return 0; }
+    virtual long long returnLongLongIntValueOrDefault(long long value) _override { return value; }
 
     virtual unsigned int returnUnsignedIntValue() _override { return 0; }
     virtual unsigned int returnUnsignedIntValueOrDefault(unsigned int value) _override { return value; }

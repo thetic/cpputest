@@ -60,16 +60,16 @@
   #define CPPUTEST_NORETURN
 #endif
 
-#if defined(__MINGW32__)
-#define CPPUTEST_CHECK_FORMAT_TYPE __MINGW_PRINTF_FORMAT
-#else
-#define CPPUTEST_CHECK_FORMAT_TYPE printf
-#endif
-
 #if defined(__has_attribute) && __has_attribute(format)
-  #define _check_format_(type, format_parameter, other_parameters) __attribute__ ((format (type, format_parameter, other_parameters)))
+  #if defined(__MINGW32__)
+    #define CPPUTEST_PRINTF_FORMAT(format_parameter, other_parameters) \
+      __attribute__((format(__MINGW_PRINTF_FORMAT, format_parameter, other_parameters)))
+  #else
+    #define CPPUTEST_PRINTF_FORMAT(format_parameter, other_parameters) \
+      __attribute__((format(printf, format_parameter, other_parameters)))
+  #endif
 #else
-  #define _check_format_(type, format_parameter, other_parameters) /* type, format_parameter, other_parameters */
+    #define CPPUTEST_PRINTF_FORMAT(format_parameter, other_parameters)
 #endif
 
 /*
@@ -174,56 +174,6 @@
  */
 #if CPPUTEST_USE_STD_C_LIB && (INT_MAX == 0x7fff)
 #define CPPUTEST_16BIT_INTS
-#endif
-
-/*
- * Support for "long long" type.
- *
- * Not supported when CPPUTEST_LONG_LONG_DISABLED is set.
- * Can be overridden by using CPPUTEST_USE_LONG_LONG
- *
- * CPPUTEST_HAVE_LONG_LONG_INT is set by configure or CMake.
- * LLONG_MAX is set in limits.h. This is a crude attempt to detect long long support when no configure is used
- *
- */
-
-#if CPPUTEST_USE_LONG_LONG
-typedef long long cpputest_longlong;
-typedef unsigned long long cpputest_ulonglong;
-#else
-/* Define some placeholders to disable the overloaded methods.
- * It's not required to have these match the size of the "real" type, but it's occasionally convenient.
- */
-
-#if defined(CPPUTEST_64BIT) && !defined(CPPUTEST_64BIT_32BIT_LONGS)
-#define CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE 16
-#else
-#define CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE 8
-#endif
-
-struct cpputest_longlong
-{
-#if defined(__cplusplus)
-  cpputest_longlong() {}
-  cpputest_longlong(int) {}
-#endif
-  char dummy[CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE];
-};
-
-struct cpputest_ulonglong
-{
-#if defined(__cplusplus)
-  cpputest_ulonglong() {}
-  cpputest_ulonglong(int) {}
-#endif
-  char dummy[CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE];
-};
-
-#if !defined(__cplusplus)
-typedef struct cpputest_longlong cpputest_longlong;
-typedef struct cpputest_ulonglong cpputest_ulonglong;
-#endif
-
 #endif
 
 /* Visual C++ 10.0+ (2010+) supports the override keyword, but doesn't define the C++ version as C++11 */

@@ -46,7 +46,7 @@ TEST_GROUP(FakeLongLongs)
 
 static void actualCallWithFakeLongLongParameter_()
 {
-    cpputest_longlong value = {0};
+    long long value = {0};
 
     mock().expectOneCall("foo").withParameter("bar", 0);
     mock().actualCall("foo").withParameter("bar", value);
@@ -62,7 +62,7 @@ TEST(FakeLongLongs, ActualCallWithFakeLongLongParameterFAILS)
 
 static void actualCallWithFakeUnsignedLongLongParameter_()
 {
-    cpputest_ulonglong value = {0};
+    unsigned long long value = {0};
 
     mock().expectOneCall("foo").withParameter("bar", 0);
     mock().actualCall("foo").withParameter("bar", value);
@@ -106,7 +106,7 @@ TEST(FakeLongLongs, ActualCallWithFakeUnsignedLongLongReturnFAILS)
 
 static void expectOneCallWithFakeLongLongParameter_()
 {
-    cpputest_longlong value = {0};
+    long long value = {0};
 
     mock().expectOneCall("foo").withParameter("bar", value);
     mock().actualCall("foo").withParameter("bar", 0);
@@ -122,7 +122,7 @@ TEST(FakeLongLongs, ExpectedCallWithFakeLongLongParameterFAILS)
 
 static void expectOneCallWithFakeUnsignedLongLongParameter_()
 {
-    cpputest_ulonglong value = {0};
+    unsigned long long value = {0};
 
     mock().expectOneCall("foo").withParameter("bar", value);
     mock().actualCall("foo").withParameter("bar", 0);
@@ -138,7 +138,7 @@ TEST(FakeLongLongs, ExpectedCallWithFakeUnsignedLongLongParameterFAILS)
 
 static void expectOneCallWithFakeLongLongReturn_()
 {
-    cpputest_longlong value = {0};
+    long long value = {0};
 
     mock().expectOneCall("foo").andReturnValue(value);
     mock().actualCall("foo").returnIntValue();
@@ -154,7 +154,7 @@ TEST(FakeLongLongs, ExpectedCallWithFakeLongLongReturnFAILS)
 
 static void expectOneCallWithFakeUnsignedLongLongReturn_()
 {
-    cpputest_ulonglong value = {0};
+    unsigned long long value = {0};
 
     mock().expectOneCall("foo").andReturnValue(value);
     mock().actualCall("foo").returnIntValue();

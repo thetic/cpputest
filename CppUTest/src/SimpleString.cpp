@@ -783,43 +783,43 @@ SimpleString StringFrom(const std::nullptr_t value)
 
 #if CPPUTEST_USE_LONG_LONG
 
-SimpleString StringFrom(cpputest_longlong value)
+SimpleString StringFrom(long long value)
 {
     return StringFromFormat("%lld", value);
 }
 
-SimpleString StringFrom(cpputest_ulonglong value)
+SimpleString StringFrom(unsigned long long value)
 {
     return StringFromFormat("%llu", value);
 }
 
-SimpleString HexStringFrom(cpputest_longlong value)
+SimpleString HexStringFrom(long long value)
 {
     return StringFromFormat("%llx", value);
 }
 
-SimpleString HexStringFrom(cpputest_ulonglong value)
+SimpleString HexStringFrom(unsigned long long value)
 {
     return StringFromFormat("%llx", value);
 }
 
 SimpleString HexStringFrom(const void* value)
 {
-    return HexStringFrom((cpputest_ulonglong) value);
+    return HexStringFrom((unsigned long long) value);
 }
 
 SimpleString HexStringFrom(void (*value)())
 {
-    return HexStringFrom((cpputest_ulonglong) value);
+    return HexStringFrom((unsigned long long) value);
 }
 
-SimpleString BracketsFormattedHexStringFrom(cpputest_longlong value)
+SimpleString BracketsFormattedHexStringFrom(long long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
 
-SimpleString BracketsFormattedHexStringFrom(cpputest_ulonglong value)
+SimpleString BracketsFormattedHexStringFrom(unsigned long long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
@@ -848,22 +848,22 @@ static long convertFunctionPointerToLongValue(void (*value)())
     return *long_value;
 }
 
-SimpleString StringFrom(cpputest_longlong)
+SimpleString StringFrom(long long)
 {
     return "<longlong_unsupported>";
 }
 
-SimpleString StringFrom(cpputest_ulonglong)
+SimpleString StringFrom(unsigned long long)
 {
     return "<ulonglong_unsupported>";
 }
 
-SimpleString HexStringFrom(cpputest_longlong)
+SimpleString HexStringFrom(long long)
 {
     return "<longlong_unsupported>";
 }
 
-SimpleString HexStringFrom(cpputest_ulonglong)
+SimpleString HexStringFrom(unsigned long long)
 {
     return "<ulonglong_unsupported>";
 }
@@ -878,13 +878,13 @@ SimpleString HexStringFrom(void (*value)())
     return StringFromFormat("%lx", convertFunctionPointerToLongValue(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(cpputest_longlong)
+SimpleString BracketsFormattedHexStringFrom(long long)
 {
     return "";
 }
 
 
-SimpleString BracketsFormattedHexStringFrom(cpputest_ulonglong)
+SimpleString BracketsFormattedHexStringFrom(unsigned long long)
 {
     return "";
 }

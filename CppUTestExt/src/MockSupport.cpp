@@ -548,17 +548,17 @@ unsigned long int MockSupport::unsignedLongIntReturnValue()
 
 #if CPPUTEST_USE_LONG_LONG
 
-cpputest_longlong MockSupport::longLongIntReturnValue()
+long long MockSupport::longLongIntReturnValue()
 {
     return returnValue().getLongLongIntValue();
 }
 
-cpputest_ulonglong MockSupport::unsignedLongLongIntReturnValue()
+unsigned long long MockSupport::unsignedLongLongIntReturnValue()
 {
     return returnValue().getUnsignedLongLongIntValue();
 }
 
-cpputest_longlong MockSupport::returnLongLongIntValueOrDefault(cpputest_longlong defaultValue)
+long long MockSupport::returnLongLongIntValueOrDefault(long long defaultValue)
 {
     if (hasReturnValue()) {
         return longLongIntReturnValue();
@@ -566,7 +566,7 @@ cpputest_longlong MockSupport::returnLongLongIntValueOrDefault(cpputest_longlong
     return defaultValue;
 }
 
-cpputest_ulonglong MockSupport::returnUnsignedLongLongIntValueOrDefault(cpputest_ulonglong defaultValue)
+unsigned long long MockSupport::returnUnsignedLongLongIntValueOrDefault(unsigned long long defaultValue)
 {
     if (hasReturnValue()) {
         return unsignedLongLongIntReturnValue();
@@ -576,25 +576,25 @@ cpputest_ulonglong MockSupport::returnUnsignedLongLongIntValueOrDefault(cpputest
 
 #else
 
-cpputest_longlong MockSupport::longLongIntReturnValue()
+long long MockSupport::longLongIntReturnValue()
 {
     FAIL("Long Long type is not supported");
-    return cpputest_longlong(0);
+    return (long long)(0);
 }
 
-cpputest_ulonglong MockSupport::unsignedLongLongIntReturnValue()
+unsigned long long MockSupport::unsignedLongLongIntReturnValue()
 {
     FAIL("Unsigned Long Long type is not supported");
-    return cpputest_ulonglong(0);
+    return unsigned long long(0);
 }
 
-cpputest_longlong MockSupport::returnLongLongIntValueOrDefault(cpputest_longlong defaultValue)
+long long MockSupport::returnLongLongIntValueOrDefault(long long defaultValue)
 {
     FAIL("Long Long type is not supported");
     return defaultValue;
 }
 
-cpputest_ulonglong MockSupport::returnUnsignedLongLongIntValueOrDefault(cpputest_ulonglong defaultValue)
+unsigned long long MockSupport::returnUnsignedLongLongIntValueOrDefault(unsigned long long defaultValue)
 {
     FAIL("Unsigned Long Long type is not supported");
     return defaultValue;

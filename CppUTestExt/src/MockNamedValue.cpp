@@ -84,13 +84,13 @@ void MockNamedValue::setValue(unsigned long int value)
 
 #if CPPUTEST_USE_LONG_LONG
 
-void MockNamedValue::setValue(cpputest_longlong value)
+void MockNamedValue::setValue(long long value)
 {
     type_ = "long long int";
     value_.longLongIntValue_ = value;
 }
 
-void MockNamedValue::setValue(cpputest_ulonglong value)
+void MockNamedValue::setValue(unsigned long long value)
 {
     type_ = "unsigned long long int";
     value_.unsignedLongLongIntValue_ = value;
@@ -98,12 +98,12 @@ void MockNamedValue::setValue(cpputest_ulonglong value)
 
 #else
 
-void MockNamedValue::setValue(cpputest_longlong)
+void MockNamedValue::setValue(long long)
 {
     FAIL("Long Long type is not supported");
 }
 
-void MockNamedValue::setValue(cpputest_ulonglong)
+void MockNamedValue::setValue(unsigned long long)
 {
     FAIL("Unsigned Long Long type is not supported");
 }
@@ -248,7 +248,7 @@ unsigned long int MockNamedValue::getUnsignedLongIntValue() const
 
 #if CPPUTEST_USE_LONG_LONG
 
-cpputest_longlong MockNamedValue::getLongLongIntValue() const
+long long MockNamedValue::getLongLongIntValue() const
 {
     if(type_ == "int")
         return value_.intValue_;
@@ -265,7 +265,7 @@ cpputest_longlong MockNamedValue::getLongLongIntValue() const
     }
 }
 
-cpputest_ulonglong MockNamedValue::getUnsignedLongLongIntValue() const
+unsigned long long MockNamedValue::getUnsignedLongLongIntValue() const
 {
     if(type_ == "unsigned int")
         return value_.unsignedIntValue_;
@@ -286,16 +286,16 @@ cpputest_ulonglong MockNamedValue::getUnsignedLongLongIntValue() const
 
 #else
 
-cpputest_longlong MockNamedValue::getLongLongIntValue() const
+long long MockNamedValue::getLongLongIntValue() const
 {
     FAIL("Long Long type is not supported");
-    return cpputest_longlong(0);
+    return (long long)(0);
 }
 
-cpputest_ulonglong MockNamedValue::getUnsignedLongLongIntValue() const
+unsigned long long MockNamedValue::getUnsignedLongLongIntValue() const
 {
     FAIL("Unsigned Long Long type is not supported");
-    return cpputest_ulonglong(0);
+    return (unsigned long long)(0);
 }
 
 #endif
