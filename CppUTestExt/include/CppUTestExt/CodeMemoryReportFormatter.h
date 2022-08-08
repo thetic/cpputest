@@ -29,6 +29,9 @@
 #define D_CodeMemoryReportFormatter_h
 
 #include "CppUTestExt/MemoryReportFormatter.h"
+#include "CppUTest/CppUTestConfig.hpp"
+
+class SimpleString;
 
 struct CodeReportingAllocationNode;
 class CodeMemoryReportFormatter : public MemoryReportFormatter

@@ -25,11 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestHarness.h"
-#include "CppUTest/MemoryLeakDetector.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestHarness_c.h"
+
+#include "CppUTest/MemoryLeakDetector.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 
 void CHECK_EQUAL_C_BOOL_LOCATION(int expected, int actual, const char* text, const char* fileName, size_t lineNumber)
 {

@@ -25,11 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestTestingFixture.h"
-#include "CppUTest/MemoryLeakDetector.h"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestTestingFixture.hpp"
+#include "CppUTest/MemoryLeakDetector.hpp"
 
 TEST_GROUP(TestMemoryAllocatorTest)
 {

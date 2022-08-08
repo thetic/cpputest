@@ -25,13 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/CommandLineTestRunner.h"
-#include "CppUTest/TestOutput.h"
-#include "CppUTest/JUnitTestOutput.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TeamCityTestOutput.h"
-#include "CppUTest/TestRegistry.h"
+#include "CppUTest/CommandLineTestRunner.hpp"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/JUnitTestOutput.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TeamCityTestOutput.hpp"
+#include "CppUTest/TestRegistry.hpp"
 
 int CommandLineTestRunner::RunAllTests(int ac, char** av)
 {

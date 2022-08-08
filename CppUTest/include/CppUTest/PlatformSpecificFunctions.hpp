@@ -25,39 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TESTFILTER_H_
-#define TESTFILTER_H_
+#ifndef PLATFORMSPECIFICFUNCTIONS_H_
+#define PLATFORMSPECIFICFUNCTIONS_H_
 
-#include "SimpleString.h"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/PlatformSpecificFunctions.h"
 
-class TestFilter
-{
-public:
+TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment();
 
-    TestFilter();
-    TestFilter(const char* filter);
-    TestFilter(const SimpleString& filter);
+class TestPlugin;
+extern void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result);
+extern int (*PlatformSpecificFork)(void);
+extern int (*PlatformSpecificWaitPid)(int pid, int* status, int options);
 
-    TestFilter* add(TestFilter* filter);
-    TestFilter* getNext() const;
-
-    bool match(const SimpleString& name) const;
-
-    void strictMatching();
-    void invertMatching();
-
-    bool operator==(const TestFilter& filter) const;
-    bool operator!=(const TestFilter& filter) const;
-
-    SimpleString asString() const;
-private:
-    SimpleString filter_;
-    bool strictMatching_;
-    bool invertMatching_;
-    TestFilter* next_;
-};
-
-SimpleString StringFrom(const TestFilter& filter);
+/* Platform specific interface we use in order to minimize dependencies with LibC.
+ * This enables porting to different embedded platforms.
+ *
+ */
 
 #endif
-

@@ -25,11 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/JUnitTestOutput.h"
-#include "CppUTest/TestResult.h"
-#include "CppUTest/TestFailure.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/JUnitTestOutput.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 
 struct JUnitTestCaseResultNode
 {

@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/CommandLineArguments.h"
-#include "CppUTest/TestRegistry.h"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/CommandLineArguments.hpp"
+#include "CppUTest/TestRegistry.hpp"
 
 class OptionsPlugin: public TestPlugin
 {

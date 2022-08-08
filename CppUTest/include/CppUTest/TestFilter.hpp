@@ -25,44 +25,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_CommandLineTestRunner_H
-#define D_CommandLineTestRunner_H
+#ifndef TESTFILTER_H_
+#define TESTFILTER_H_
 
-#include "TestHarness.h"
-#include "TestOutput.h"
-#include "CommandLineArguments.h"
-#include "TestFilter.h"
+#include "CppUTest/SimpleString.hpp"
 
-class TestRegistry;
-
-#define DEF_PLUGIN_MEM_LEAK "MemoryLeakPlugin"
-#define DEF_PLUGIN_SET_POINTER "SetPointerPlugin"
-
-class CommandLineTestRunner
+class TestFilter
 {
 public:
-    static int RunAllTests(int ac, const char *const *av);
-    static int RunAllTests(int ac, char** av);
 
-    CommandLineTestRunner(int ac, const char *const *av, TestRegistry* registry);
-    virtual ~CommandLineTestRunner();
+    TestFilter();
+    TestFilter(const char* filter);
+    TestFilter(const SimpleString& filter);
 
-    int runAllTestsMain();
+    TestFilter* add(TestFilter* filter);
+    TestFilter* getNext() const;
 
-protected:
-    virtual TestOutput* createTeamCityOutput();
-    virtual TestOutput* createJUnitOutput(const SimpleString& packageName);
-    virtual TestOutput* createConsoleOutput();
-    virtual TestOutput* createCompositeOutput(TestOutput* outputOne, TestOutput* outputTwo);
+    bool match(const SimpleString& name) const;
 
-    TestOutput* output_;
+    void strictMatching();
+    void invertMatching();
+
+    bool operator==(const TestFilter& filter) const;
+    bool operator!=(const TestFilter& filter) const;
+
+    SimpleString asString() const;
 private:
-    CommandLineArguments* arguments_;
-    TestRegistry* registry_;
-
-    bool parseArguments(TestPlugin*);
-    int runAllTests();
-    void initializeTestRun();
+    SimpleString filter_;
+    bool strictMatching_;
+    bool invertMatching_;
+    TestFilter* next_;
 };
 
+SimpleString StringFrom(const TestFilter& filter);
+
 #endif
+

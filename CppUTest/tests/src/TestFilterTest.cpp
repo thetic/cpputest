@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestFilter.h"
+#include "CppUTest/TestFilter.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 TEST_GROUP(TestFilter)
 {

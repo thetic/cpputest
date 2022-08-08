@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/CppUTestConfig.h"
-#include "CppUTest/TestFilter.h"
+#include "CppUTest/TestFilter.hpp"
+#include "CppUTest/CppUTestConfig.hpp"
 
 TestFilter::TestFilter() : strictMatching_(false), invertMatching_(false), next_(NULLPTR)
 {

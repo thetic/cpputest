@@ -28,7 +28,10 @@
 #ifndef D_SimpleStringInternalCache_h
 #define D_SimpleStringInternalCache_h
 
-#include "CppUTest/TestMemoryAllocator.h"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/CppUTestConfig.hpp"
+
+#include <cstddef>
 
 struct SimpleStringMemoryBlock;
 struct SimpleStringInternalCacheNode;

@@ -28,8 +28,8 @@
 #ifndef D_JUnitTestOutput_h
 #define D_JUnitTestOutput_h
 
-#include "TestOutput.h"
-#include "SimpleString.h"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/SimpleString.hpp"
 
 struct JUnitTestOutputImpl;
 struct JUnitTestCaseResultNode;

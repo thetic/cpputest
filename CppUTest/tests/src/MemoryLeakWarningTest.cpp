@@ -25,16 +25,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestRegistry.h"
-#include "CppUTest/TestOutput.h"
-#include "CppUTest/MemoryLeakWarningPlugin.h"
-#include "CppUTest/MemoryLeakDetector.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/TestTestingFixture.h"
-#include "CppUTest/TestHarness_c.h"
-#include "CppUTest/SimpleMutex.h"
 #include "DummyMemoryLeakDetector.h"
+
+#include "CppUTest/MemoryLeakDetector.hpp"
+#include "CppUTest/MemoryLeakWarningPlugin.hpp"
+#include "CppUTest/SimpleMutex.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestHarness.h"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/TestRegistry.hpp"
+#include "CppUTest/TestTestingFixture.hpp"
 
 TEST_GROUP(MemoryLeakWarningLocalDetectorTest)
 {

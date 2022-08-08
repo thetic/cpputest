@@ -1,6 +1,6 @@
 #include "AllocLetTestFree.h"
 
-#include "CppUTest/TestHarness.h"
+#include "CppUTest/TestHarness.hpp"
 
 /*
  * This test makes sure that memory leak malloc macros are forced into .cpp and .c files

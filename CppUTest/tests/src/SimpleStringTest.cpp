@@ -25,12 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/SimpleString.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/MemoryLeakDetector.h"
-#include "CppUTest/TestTestingFixture.h"
+#include "CppUTest/MemoryLeakDetector.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/TestTestingFixture.hpp"
 
 class JustUseNewStringAllocator : public TestMemoryAllocator
 {

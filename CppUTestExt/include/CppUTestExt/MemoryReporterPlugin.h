@@ -28,8 +28,9 @@
 #ifndef D_MemoryReporterPlugin_h
 #define D_MemoryReporterPlugin_h
 
-#include "CppUTest/TestPlugin.h"
 #include "CppUTestExt/MemoryReportAllocator.h"
+
+#include "CppUTest/TestPlugin.hpp"
 
 class MemoryReportFormatter;
 

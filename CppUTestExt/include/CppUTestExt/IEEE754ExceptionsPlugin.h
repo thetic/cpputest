@@ -28,7 +28,7 @@
 #ifndef D_IEEE754ExceptionsPlugin_h
 #define D_IEEE754ExceptionsPlugin_h
 
-#include "CppUTest/TestPlugin.h"
+#include "CppUTest/TestPlugin.hpp"
 
 class IEEE754ExceptionsPlugin: public TestPlugin
 {

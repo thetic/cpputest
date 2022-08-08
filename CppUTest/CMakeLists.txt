@@ -1,28 +1,28 @@
 add_library(CppUTest
-    include/CppUTest/CommandLineArguments.h
-    include/CppUTest/CommandLineTestRunner.h
-    include/CppUTest/CppUTestConfig.h
-    include/CppUTest/JUnitTestOutput.h
-    include/CppUTest/MemoryLeakDetector.h
-    include/CppUTest/MemoryLeakWarningPlugin.h
+    include/CppUTest/CommandLineArguments.hpp
+    include/CppUTest/CommandLineTestRunner.hpp
+    include/CppUTest/CppUTestConfig.hpp
+    include/CppUTest/JUnitTestOutput.hpp
+    include/CppUTest/MemoryLeakDetector.hpp
+    include/CppUTest/MemoryLeakWarningPlugin.hpp
+    include/CppUTest/PlatformSpecificFunctions.hpp
     include/CppUTest/PlatformSpecificFunctions.h
-    include/CppUTest/PlatformSpecificFunctions_c.h
-    include/CppUTest/SimpleMutex.h
-    include/CppUTest/SimpleString.h
-    include/CppUTest/SimpleStringInternalCache.h
-    include/CppUTest/TeamCityTestOutput.h
-    include/CppUTest/TestFailure.h
-    include/CppUTest/TestFilter.h
+    include/CppUTest/SimpleMutex.hpp
+    include/CppUTest/SimpleString.hpp
+    include/CppUTest/SimpleStringInternalCache.hpp
+    include/CppUTest/TeamCityTestOutput.hpp
+    include/CppUTest/TestFailure.hpp
+    include/CppUTest/TestFilter.hpp
+    include/CppUTest/TestHarness.hpp
     include/CppUTest/TestHarness.h
-    include/CppUTest/TestHarness_c.h
-    include/CppUTest/TestMemoryAllocator.h
-    include/CppUTest/TestOutput.h
-    include/CppUTest/TestPlugin.h
-    include/CppUTest/TestRegistry.h
-    include/CppUTest/TestResult.h
-    include/CppUTest/TestTestingFixture.h
-    include/CppUTest/Utest.h
-    include/CppUTest/UtestMacros.h
+    include/CppUTest/TestMemoryAllocator.hpp
+    include/CppUTest/TestOutput.hpp
+    include/CppUTest/TestPlugin.hpp
+    include/CppUTest/TestRegistry.hpp
+    include/CppUTest/TestResult.hpp
+    include/CppUTest/TestTestingFixture.hpp
+    include/CppUTest/Utest.hpp
+    include/CppUTest/UtestMacros.hpp
     src/CommandLineArguments.cpp
     src/CommandLineTestRunner.cpp
     src/JUnitTestOutput.cpp

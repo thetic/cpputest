@@ -34,6 +34,10 @@
 #ifndef D_TestResult_h
 #define D_TestResult_h
 
+#include "CppUTest/CppUTestConfig.hpp"
+
+#include <cstddef>
+
 class TestFailure;
 class TestOutput;
 class UtestShell;

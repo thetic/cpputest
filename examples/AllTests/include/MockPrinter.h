@@ -36,7 +36,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "Printer.h"
-#include "CppUTest/SimpleString.h"
+
+#include "CppUTest/SimpleString.hpp"
+
 #include <stdlib.h>
 #include <string>
 

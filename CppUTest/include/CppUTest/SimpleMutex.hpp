@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, Michael Feathers, James Grenning and Bas Vodde
+ * Copyright (c) 2014, Michael Feathers, James Grenning, Bas Vodde and Chen YewMing
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,75 +25,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef D_SimpleMutex_h
+#define D_SimpleMutex_h
+
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
 
-extern "C" {
-
-    static long MockGetPlatformSpecificTimeInMillis()
-    {
-        return 10;
-    }
-
-}
-
-TEST_GROUP(TestResult)
+class SimpleMutex
 {
-    TestOutput* printer;
-    StringBufferTestOutput* mock;
-
-    TestResult* res;
-
-    void setup() _override
-    {
-        mock = new StringBufferTestOutput();
-        printer = mock;
-        res = new TestResult(*printer);
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-    }
-    void teardown() _override
-    {
-        delete printer;
-        delete res;
-    }
+public:
+    SimpleMutex(void);
+    ~SimpleMutex(void);
+    void Lock(void);
+    void Unlock(void);
+private:
+    PlatformSpecificMutex psMtx;
 };
 
-TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
-{
-    res->testsEnded();
-    CHECK(mock->getOutput().contains("10 ms"));
-}
 
-TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)
+class ScopedMutexLock
 {
-    res->countTest();
-    res->countRun();
-    CHECK_FALSE(res->isFailure());
-}
+public:
+    ScopedMutexLock(SimpleMutex *);
+    ~ScopedMutexLock(void);
+private:
+    SimpleMutex * mutex;
+};
 
-TEST(TestResult, ResultIsOkIfTestIsIgnored)
-{
-    res->countTest();
-    res->countIgnored();
-    CHECK_FALSE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfFailures)
-{
-    res->countTest();
-    res->countRun();
-    res->addFailure(TestFailure(UtestShell::getCurrent(), StringFrom("dummy message")));
-    CHECK_TRUE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfNoTestsAtAll)
-{
-    CHECK_TRUE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfNoTestsRunOrIgnored)
-{
-    res->countTest();
-    CHECK_TRUE(res->isFailure());
-}
+#endif

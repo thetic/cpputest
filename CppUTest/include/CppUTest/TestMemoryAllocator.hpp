@@ -28,8 +28,13 @@
 #ifndef D_TestMemoryAllocator_h
 #define D_TestMemoryAllocator_h
 
+#include "CppUTest/CppUTestConfig.hpp"
+
+#include <cstddef>
+
 struct MemoryLeakNode;
 class TestMemoryAllocator;
+class SimpleString;
 
 extern void setCurrentNewAllocator(TestMemoryAllocator* allocator);
 extern TestMemoryAllocator* getCurrentNewAllocator();

@@ -25,11 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestResult.h"
-#include "CppUTest/TestFailure.h"
-#include "CppUTest/TestOutput.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestResult.hpp"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 
 TestResult::TestResult(TestOutput& p) :
     output_(p), testCount_(0), runCount_(0), checkCount_(0), failureCount_(0), filteredOutCount_(0), ignoredCount_(0), totalExecutionTime_(0), timeStarted_(0), currentTestTimeStarted_(0),

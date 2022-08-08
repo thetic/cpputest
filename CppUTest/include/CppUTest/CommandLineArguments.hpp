@@ -28,9 +28,9 @@
 #ifndef D_CommandLineArguments_H
 #define D_CommandLineArguments_H
 
-#include "SimpleString.h"
-#include "TestOutput.h"
-#include "TestFilter.h"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/TestFilter.hpp"
 
 class TestPlugin;
 

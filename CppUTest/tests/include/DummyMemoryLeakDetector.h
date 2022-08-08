@@ -25,6 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/MemoryLeakDetector.hpp"
+
 class DummyMemoryLeakDetector : public MemoryLeakDetector
 {
 public:

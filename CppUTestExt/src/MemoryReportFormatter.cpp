@@ -25,9 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MemoryReportAllocator.h"
 #include "CppUTestExt/MemoryReportFormatter.h"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestResult.hpp"
 
 NormalMemoryReportFormatter::NormalMemoryReportFormatter()
 {

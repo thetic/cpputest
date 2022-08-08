@@ -25,75 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
+#ifndef D_TestHarness_h
+#define D_TestHarness_h
 
-extern "C" {
+#include "CppUTest/CppUTestConfig.hpp"
 
-    static long MockGetPlatformSpecificTimeInMillis()
-    {
-        return 10;
-    }
+/* original value was 9973 which works well with large programs. Now set to smaller since it takes
+ * a lot of memory in embedded apps. Change it if you experience the memory leak detector to be slow.
+ */
 
-}
+#define MEMORY_LEAK_HASH_TABLE_SIZE 73
 
-TEST_GROUP(TestResult)
-{
-    TestOutput* printer;
-    StringBufferTestOutput* mock;
-
-    TestResult* res;
-
-    void setup() _override
-    {
-        mock = new StringBufferTestOutput();
-        printer = mock;
-        res = new TestResult(*printer);
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-    }
-    void teardown() _override
-    {
-        delete printer;
-        delete res;
-    }
-};
-
-TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
-{
-    res->testsEnded();
-    CHECK(mock->getOutput().contains("10 ms"));
-}
-
-TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)
-{
-    res->countTest();
-    res->countRun();
-    CHECK_FALSE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsOkIfTestIsIgnored)
-{
-    res->countTest();
-    res->countIgnored();
-    CHECK_FALSE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfFailures)
-{
-    res->countTest();
-    res->countRun();
-    res->addFailure(TestFailure(UtestShell::getCurrent(), StringFrom("dummy message")));
-    CHECK_TRUE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfNoTestsAtAll)
-{
-    CHECK_TRUE(res->isFailure());
-}
-
-TEST(TestResult, ResultIsNotOkIfNoTestsRunOrIgnored)
-{
-    res->countTest();
-    CHECK_TRUE(res->isFailure());
-}
+#include "CppUTest/Utest.hpp"
+#include "CppUTest/UtestMacros.hpp"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestPlugin.hpp"
+#include "CppUTest/MemoryLeakWarningPlugin.hpp"
+#endif

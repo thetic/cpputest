@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestTestingFixture.h"
+#include "CppUTest/TestTestingFixture.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 bool TestTestingFixture::lineOfCodeExecutedAfterCheck = false;
 

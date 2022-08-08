@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Michael Feathers, James Grenning, Bas Vodde and Chen YewMing
+ * Copyright (c) 2007, Michael Feathers, James Grenning and Bas Vodde
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,30 +25,44 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_SimpleMutex_h
-#define D_SimpleMutex_h
+#ifndef D_CommandLineTestRunner_H
+#define D_CommandLineTestRunner_H
 
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/CommandLineArguments.hpp"
+#include "CppUTest/TestFilter.hpp"
 
-class SimpleMutex
+class TestRegistry;
+
+#define DEF_PLUGIN_MEM_LEAK "MemoryLeakPlugin"
+#define DEF_PLUGIN_SET_POINTER "SetPointerPlugin"
+
+class CommandLineTestRunner
 {
 public:
-    SimpleMutex(void);
-    ~SimpleMutex(void);
-    void Lock(void);
-    void Unlock(void);
-private:
-    PlatformSpecificMutex psMtx;
-};
+    static int RunAllTests(int ac, const char *const *av);
+    static int RunAllTests(int ac, char** av);
 
+    CommandLineTestRunner(int ac, const char *const *av, TestRegistry* registry);
+    virtual ~CommandLineTestRunner();
 
-class ScopedMutexLock
-{
-public:
-    ScopedMutexLock(SimpleMutex *);
-    ~ScopedMutexLock(void);
+    int runAllTestsMain();
+
+protected:
+    virtual TestOutput* createTeamCityOutput();
+    virtual TestOutput* createJUnitOutput(const SimpleString& packageName);
+    virtual TestOutput* createConsoleOutput();
+    virtual TestOutput* createCompositeOutput(TestOutput* outputOne, TestOutput* outputTwo);
+
+    TestOutput* output_;
 private:
-    SimpleMutex * mutex;
+    CommandLineArguments* arguments_;
+    TestRegistry* registry_;
+
+    bool parseArguments(TestPlugin*);
+    int runAllTests();
+    void initializeTestRun();
 };
 
 #endif

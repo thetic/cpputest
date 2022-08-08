@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/SimpleStringInternalCache.h"
+#include "CppUTest/SimpleStringInternalCache.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 struct SimpleStringMemoryBlock
 {

@@ -32,7 +32,6 @@
 extern "C" {
 #endif
 
-#include "CppUTest/CppUTestConfig.h"
 #include <stddef.h>
 
 typedef enum {

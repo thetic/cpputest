@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/MemoryLeakDetector.h"
 #include "DummyMemoryLeakDetector.h"
+
+#include "CppUTest/TestHarness.hpp"
 
 DummyMemoryLeakDetector::DummyMemoryLeakDetector(MemoryLeakFailure* reporter) : MemoryLeakDetector(reporter)
 {

@@ -1,6 +1,6 @@
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TeamCityTestOutput.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TeamCityTestOutput.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 class TeamCityOutputToBuffer : public TeamCityTestOutput
 {

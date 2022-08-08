@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/CommandLineTestRunner.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/SimpleStringInternalCache.h"
+#include "CppUTest/CommandLineTestRunner.hpp"
+#include "CppUTest/SimpleStringInternalCache.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
 
 int main(int ac, char **av)
 {

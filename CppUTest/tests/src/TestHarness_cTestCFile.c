@@ -1,6 +1,6 @@
 
-#include "CppUTest/TestHarness_c.h"
-#include "CppUTest/PlatformSpecificFunctions_c.h"
+#include "CppUTest/TestHarness.h"
+#include "CppUTest/PlatformSpecificFunctions.h"
 
 extern void functionWithUnusedParameter(void* PUNUSED(unlessParamater));
 

@@ -28,7 +28,7 @@
 #ifndef D_MemoryLeakWarningPlugin_h
 #define D_MemoryLeakWarningPlugin_h
 
-#include "TestPlugin.h"
+#include "CppUTest/TestPlugin.hpp"
 
 #define IGNORE_ALL_LEAKS_IN_TEST() if (MemoryLeakWarningPlugin::getFirstPlugin()) MemoryLeakWarningPlugin::getFirstPlugin()->ignoreAllLeaksInTest()
 #define EXPECT_N_LEAKS(n)          if (MemoryLeakWarningPlugin::getFirstPlugin()) MemoryLeakWarningPlugin::getFirstPlugin()->expectLeaksInTest(n)

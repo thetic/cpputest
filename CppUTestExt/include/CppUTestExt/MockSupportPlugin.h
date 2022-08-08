@@ -28,8 +28,9 @@
 #ifndef D_MockSupportPlugin_h
 #define D_MockSupportPlugin_h
 
-#include "CppUTest/TestPlugin.h"
 #include "CppUTestExt/MockNamedValue.h"
+
+#include "CppUTest/TestPlugin.hpp"
 
 class MockSupportPlugin : public TestPlugin
 {

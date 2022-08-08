@@ -25,9 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestRegistry.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestRegistry.hpp"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 
 TestRegistry::TestRegistry() :
     tests_(NULLPTR), nameFilters_(NULLPTR), groupFilters_(NULLPTR), firstPlugin_(NullTestPlugin::instance()), runInSeperateProcess_(false), currentRepetition_(0), runIgnored_(false)

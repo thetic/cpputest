@@ -36,7 +36,7 @@
 #ifndef D_TestFailure_H
 #define D_TestFailure_H
 
-#include "SimpleString.h"
+#include "CppUTest/SimpleString.hpp"
 
 #if !CPPUTEST_NO_EXCEPTIONS
 #include <stdexcept>

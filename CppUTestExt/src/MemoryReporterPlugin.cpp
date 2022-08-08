@@ -25,10 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MemoryReporterPlugin.h"
+
 #include "CppUTestExt/MemoryReportFormatter.h"
 #include "CppUTestExt/CodeMemoryReportFormatter.h"
+
+#include "CppUTest/TestHarness.hpp"
 
 MemoryReporterPlugin::MemoryReporterPlugin()
     : TestPlugin("MemoryReporterPlugin"), formatter_(NULLPTR)

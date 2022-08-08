@@ -25,11 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestFailure.h"
-#include "CppUTest/TestOutput.h"
-#include "CppUTest/SimpleString.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 
 #include <typeinfo>
 #if defined(__GNUC__)

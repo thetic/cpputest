@@ -28,9 +28,13 @@
 #ifndef D_MemoryReportAllocator_h
 #define D_MemoryReportAllocator_h
 
-#include "CppUTest/TestMemoryAllocator.h"
+#include "CppUTest/CppUTestConfig.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+
+#include <cstddef>
 
 class MemoryReportFormatter;
+class TestResult;
 
 class MemoryReportAllocator : public TestMemoryAllocator
 {

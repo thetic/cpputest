@@ -25,12 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestOutput.h"
 #include "CppUTestExt/MemoryReporterPlugin.h"
 #include "CppUTestExt/MemoryReportFormatter.h"
 #include "CppUTestExt/MockSupport.h"
 #include "CppUTestExt/MockNamedValue.h"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
 
 static TestMemoryAllocator* previousNewAllocator;
 

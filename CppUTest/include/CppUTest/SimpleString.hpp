@@ -38,6 +38,8 @@
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
+#include "CppUTest/CppUTestConfig.hpp"
+
 #include <cstdarg>
 #include <cstddef>
 #include <string>

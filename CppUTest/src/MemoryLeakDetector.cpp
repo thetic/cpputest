@@ -24,11 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/MemoryLeakDetector.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/SimpleMutex.h"
+#include "CppUTest/MemoryLeakDetector.hpp"
+
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleMutex.hpp"
 
 static const char* UNKNOWN = "<unknown>";
 

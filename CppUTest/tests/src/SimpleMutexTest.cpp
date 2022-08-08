@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/SimpleMutex.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleMutex.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 static int mutexCreateCount = 0;
 static int mutexLockCount = 0;

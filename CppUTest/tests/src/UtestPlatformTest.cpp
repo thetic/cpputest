@@ -25,11 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/CommandLineTestRunner.h"
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestTestingFixture.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestMemoryAllocator.h"
+#include "CppUTest/CommandLineTestRunner.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/TestTestingFixture.hpp"
 
 // This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized
 static const SimpleString str1("abc");

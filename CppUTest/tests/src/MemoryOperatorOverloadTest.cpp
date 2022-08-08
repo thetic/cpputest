@@ -1,14 +1,14 @@
-#include "CppUTest/TestHarness.h"
-#include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/MemoryLeakDetector.h"
-#include "CppUTest/TestOutput.h"
-#include "CppUTest/TestRegistry.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestTestingFixture.h"
+#include "AllocationInCFile.h"
 #include "AllocationInCppFile.h"
 
-#include "CppUTest/TestHarness_c.h"
-#include "AllocationInCFile.h"
+#include "CppUTest/MemoryLeakDetector.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestHarness.h"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
+#include "CppUTest/TestOutput.hpp"
+#include "CppUTest/TestRegistry.hpp"
+#include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(__GNUC__) && __GNUC__ >= 11
 # define NEEDS_DISABLE_FREE_NON_HEEP_WARNING
