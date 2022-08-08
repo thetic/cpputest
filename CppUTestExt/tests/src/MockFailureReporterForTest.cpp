@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "MockFailureReporterForTest.h"
+#include "MockFailureReporterForTest.hpp"
 
 void MockFailureReporterForTest::failTest(const MockFailure& failure)
 {

@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "MockFailureReporterForTest.h"
+#include "MockFailureReporterForTest.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 TEST_GROUP(MockComparatorCopierTest)
 {

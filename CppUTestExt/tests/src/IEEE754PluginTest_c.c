@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "IEEE754PluginTest_c.h"
+#include "IEEE754PluginTest.h"
 
 static volatile float f;
 static volatile float zero_float = 0.0f;

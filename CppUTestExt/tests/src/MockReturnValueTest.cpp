@@ -25,10 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "MockFailureReporterForTest.h"
+#include "MockFailureReporterForTest.hpp"
 
-#include <limits.h>
+#include "CppUTest/TestHarness.hpp"
+
+#include <limits>
 
 TEST_GROUP(MockReturnValueTest)
 {
