@@ -168,12 +168,8 @@ private:
         unsigned int unsignedIntValue_;
         long int longIntValue_;
         unsigned long int unsignedLongIntValue_;
-#if CPPUTEST_USE_LONG_LONG
         long long longLongIntValue_;
         unsigned long long unsignedLongLongIntValue_;
-#else
-        char longLongPlaceholder_[CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE];
-#endif
         struct {
             double value;
             double tolerance;

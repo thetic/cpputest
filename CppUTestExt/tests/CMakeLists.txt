@@ -18,7 +18,6 @@ add_executable(CppUTestExtTests
     src/MockExpectedCallTest.cpp
     src/MockFailureReporterForTest.cpp
     src/MockFailureTest.cpp
-    src/MockFakeLongLong.cpp
     src/MockHierarchyTest.cpp
     src/MockNamedValueTest.cpp
     src/MockParameterTest.cpp

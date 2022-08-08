@@ -126,8 +126,6 @@ MockExpectedCall& MockCheckedExpectedCall::withUnsignedLongIntParameter(const Si
     return *this;
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 MockExpectedCall& MockCheckedExpectedCall::withLongLongIntParameter(const SimpleString& name, long long value)
 {
     MockNamedValue* newParameter = new MockExpectedFunctionParameter(name);
@@ -143,22 +141,6 @@ MockExpectedCall& MockCheckedExpectedCall::withUnsignedLongLongIntParameter(cons
     newParameter->setValue(value);
     return *this;
 }
-
-#else
-
-MockExpectedCall& MockCheckedExpectedCall::withLongLongIntParameter(const SimpleString&, long long)
-{
-    FAIL("Long Long type is not supported");
-    return *this;
-}
-
-MockExpectedCall& MockCheckedExpectedCall::withUnsignedLongLongIntParameter(const SimpleString&, unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return *this;
-}
-
-#endif
 
 MockExpectedCall& MockCheckedExpectedCall::withDoubleParameter(const SimpleString& name, double value)
 {
@@ -515,8 +497,6 @@ MockExpectedCall& MockCheckedExpectedCall::andReturnValue(unsigned long int valu
     return *this;
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 MockExpectedCall& MockCheckedExpectedCall::andReturnValue(long long value)
 {
     returnValue_.setName("returnValue");
@@ -530,22 +510,6 @@ MockExpectedCall& MockCheckedExpectedCall::andReturnValue(unsigned long long val
     returnValue_.setValue(value);
     return *this;
 }
-
-#else
-
-MockExpectedCall& MockCheckedExpectedCall::andReturnValue(long long)
-{
-    FAIL("Long Long type is not supported");
-    return *this;
-}
-
-MockExpectedCall& MockCheckedExpectedCall::andReturnValue(unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return *this;
-}
-
-#endif
 
 MockExpectedCall& MockCheckedExpectedCall::andReturnValue(const char* value)
 {

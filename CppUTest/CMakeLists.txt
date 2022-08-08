@@ -57,7 +57,6 @@ target_compile_definitions(CppUTest
     PUBLIC
         "CPPUTEST_NO_EXCEPTIONS=$<BOOL:${CPPUTEST_NO_EXCEPTIONS}>"
         "CPPUTEST_HAVE_FENV=$<BOOL:${HAVE_FENV}>"
-        "CPPUTEST_USE_LONG_LONG=$<BOOL:${CPPUTEST_USE_LONG_LONG}>"
 )
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)

@@ -488,27 +488,15 @@ void UtestShell::assertUnsignedLongsEqual(unsigned long expected, unsigned long 
 void UtestShell::assertLongLongsEqual(long long expected, long long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
     getTestResult()->countCheck();
-#if CPPUTEST_USE_LONG_LONG
     if (expected != actual)
         failWith(LongLongsEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-#else
-    (void)expected;
-    (void)actual;
-    failWith(FeatureUnsupportedFailure(this, fileName, lineNumber, "CPPUTEST_USE_LONG_LONG", text), testTerminator);
-#endif
 }
 
 void UtestShell::assertUnsignedLongLongsEqual(unsigned long long expected, unsigned long long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
     getTestResult()->countCheck();
-#if CPPUTEST_USE_LONG_LONG
     if (expected != actual)
         failWith(UnsignedLongLongsEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-#else
-    (void)expected;
-    (void)actual;
-    failWith(FeatureUnsupportedFailure(this, fileName, lineNumber, "CPPUTEST_USE_LONG_LONG", text), testTerminator);
-#endif
 }
 
 void UtestShell::assertSignedBytesEqual(signed char expected, signed char actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator)

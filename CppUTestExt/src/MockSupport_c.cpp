@@ -409,8 +409,6 @@ MockExpectedCall_c* withUnsignedLongIntParameters_c(const char* name, unsigned l
     return &gExpectedCall;
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 MockExpectedCall_c* withLongLongIntParameters_c(const char* name, long long value)
 {
     expectedCall = &expectedCall->withParameter(name, value);
@@ -422,22 +420,6 @@ MockExpectedCall_c* withUnsignedLongLongIntParameters_c(const char* name, unsign
     expectedCall = &expectedCall->withParameter(name, value);
     return &gExpectedCall;
 }
-
-#else
-
-MockExpectedCall_c* withLongLongIntParameters_c(const char*, long long)
-{
-    FAIL("Long Long type is not supported");
-    return &gExpectedCall;
-}
-
-MockExpectedCall_c* withUnsignedLongLongIntParameters_c(const char*, unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return &gExpectedCall;
-}
-
-#endif
 
 MockExpectedCall_c* withDoubleParameters_c(const char* name, double value)
 {
@@ -541,8 +523,6 @@ MockExpectedCall_c* andReturnUnsignedLongIntValue_c(unsigned long int value)
     return &gExpectedCall;
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 MockExpectedCall_c* andReturnLongLongIntValue_c(long long value)
 {
     expectedCall = &expectedCall->andReturnValue(value);
@@ -554,22 +534,6 @@ MockExpectedCall_c* andReturnUnsignedLongLongIntValue_c(unsigned long long value
     expectedCall = &expectedCall->andReturnValue(value);
     return &gExpectedCall;
 }
-
-#else
-
-MockExpectedCall_c* andReturnLongLongIntValue_c(long long)
-{
-    FAIL("Long Long type is not supported");
-    return &gExpectedCall;
-}
-
-MockExpectedCall_c* andReturnUnsignedLongLongIntValue_c(unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return &gExpectedCall;
-}
-
-#endif
 
 MockExpectedCall_c* andReturnDoubleValue_c(double value)
 {
@@ -624,7 +588,6 @@ static MockValue_c getMockValueCFromNamedValue(const MockNamedValue& namedValue)
         returnValue.type = MOCKVALUETYPE_UNSIGNED_LONG_INTEGER;
         returnValue.value.unsignedLongIntValue = namedValue.getUnsignedLongIntValue();
     }
-#if CPPUTEST_USE_LONG_LONG
     else if (SimpleString::StrCmp(namedValue.getType().asCharString(), "long long int") == 0) {
         returnValue.type = MOCKVALUETYPE_LONG_LONG_INTEGER;
         returnValue.value.longLongIntValue = namedValue.getLongLongIntValue();
@@ -633,7 +596,6 @@ static MockValue_c getMockValueCFromNamedValue(const MockNamedValue& namedValue)
         returnValue.type = MOCKVALUETYPE_UNSIGNED_LONG_LONG_INTEGER;
         returnValue.value.unsignedLongLongIntValue = namedValue.getUnsignedLongLongIntValue();
     }
-#endif
     else if (SimpleString::StrCmp(namedValue.getType().asCharString(), "double") == 0) {
         returnValue.type = MOCKVALUETYPE_DOUBLE;
         returnValue.value.doubleValue = namedValue.getDoubleValue();
@@ -723,8 +685,6 @@ MockActualCall_c* withActualUnsignedLongIntParameters_c(const char* name, unsign
     return &gActualCall;
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 MockActualCall_c* withActualLongLongIntParameters_c(const char* name, long long value)
 {
     actualCall = &actualCall->withParameter(name, value);
@@ -736,22 +696,6 @@ MockActualCall_c* withActualUnsignedLongLongIntParameters_c(const char* name, un
     actualCall = &actualCall->withParameter(name, value);
     return &gActualCall;
 }
-
-#else
-
-MockActualCall_c* withActualLongLongIntParameters_c(const char*, long long)
-{
-    FAIL("Long Long type is not supported");
-    return &gActualCall;
-}
-
-MockActualCall_c* withActualUnsignedLongLongIntParameters_c(const char*, unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return &gActualCall;
-}
-
-#endif
 
 MockActualCall_c* withActualDoubleParameters_c(const char* name, double value)
 {
@@ -877,8 +821,6 @@ unsigned long int returnUnsignedLongIntValueOrDefault_c(unsigned long int defaul
     return unsignedLongIntReturnValue_c();
 }
 
-#if CPPUTEST_USE_LONG_LONG
-
 long long longLongIntReturnValue_c()
 {
     return actualCall->returnLongLongIntValue();
@@ -904,34 +846,6 @@ unsigned long long returnUnsignedLongLongIntValueOrDefault_c(unsigned long long 
     }
     return unsignedLongLongIntReturnValue_c();
 }
-
-#else
-
-long long longLongIntReturnValue_c()
-{
-    FAIL("Long Long type is not supported");
-    return (long long)(0);
-}
-
-long long returnLongLongIntValueOrDefault_c(long long)
-{
-    FAIL("Long Long type is not supported");
-    return (long long)(0);
-}
-
-unsigned long long unsignedLongLongIntReturnValue_c()
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return (unsigned long long)(0);
-}
-
-unsigned long long returnUnsignedLongLongIntValueOrDefault_c(unsigned long long)
-{
-    FAIL("Unsigned Long Long type is not supported");
-    return (unsigned long long)(0);
-}
-
-#endif
 
 const char* stringReturnValue_c()
 {

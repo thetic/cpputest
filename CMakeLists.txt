@@ -15,17 +15,9 @@ if(${CMAKE_VERSION} VERSION_LESS 3.21)
     endif()
 endif()
 
-include(CheckTypeSize)
-check_type_size("long long" LONGLONG LANGUAGE CXX)
-
 include(CMakeDependentOption)
 
 option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
-cmake_dependent_option(CPPUTEST_USE_LONG_LONG
-    "Support long long"
-    # Depends on long long support
-    ON "HAVE_LONGLONG" OFF
-)
 cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
     # Depends on extensions and standard library
