@@ -156,28 +156,4 @@
 #define CPPUTEST_16BIT_INTS
 #endif
 
-/* Visual C++ 10.0+ (2010+) supports the override keyword, but doesn't define the C++ version as C++11 */
-#if defined(__cplusplus) && ((__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1600)))
-#if !defined(__ghs__)
-#define _override override
-#else
-/* GreenHills is not compatible with other compilers with regards to where
- * it expects the override specifier to be on methods that return function
- * pointers. Given this, it is easiest to not use the override specifier.
- */
-#define _override
-#endif
-#define NULLPTR nullptr
-#else
-#define _override
-#define NULLPTR 0
-#endif
-
-/* Visual C++ 11.0+ (2012+) supports the override keyword on destructors */
-#if defined(__cplusplus) && ((__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1700)))
-#define _destructor_override override
-#else
-#define _destructor_override
-#endif
-
 #endif

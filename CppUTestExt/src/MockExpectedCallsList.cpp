@@ -31,7 +31,7 @@
 
 #include "CppUTest/TestHarness.h"
 
-MockExpectedCallsList::MockExpectedCallsList() : head_(NULLPTR)
+MockExpectedCallsList::MockExpectedCallsList() : head_(nullptr)
 {
 }
 
@@ -62,7 +62,7 @@ unsigned int MockExpectedCallsList::size() const
 
 bool MockExpectedCallsList::isEmpty() const
 {
-    return head_ == NULLPTR;
+    return head_ == nullptr;
 }
 
 unsigned int MockExpectedCallsList::amountOfActualCallsFulfilledFor(const SimpleString& name) const
@@ -116,7 +116,7 @@ void MockExpectedCallsList::addExpectedCall(MockCheckedExpectedCall* call)
 {
     MockExpectedCallsListNode* newCall = new MockExpectedCallsListNode(call);
 
-    if (head_ == NULLPTR)
+    if (head_ == nullptr)
         head_ = newCall;
     else {
         MockExpectedCallsListNode* lastCall = head_;
@@ -149,7 +149,7 @@ void MockExpectedCallsList::onlyKeepExpectationsRelatedTo(const SimpleString& na
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->relatesTo(name))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
 
     pruneEmptyNodeFromList();
 }
@@ -158,7 +158,7 @@ void MockExpectedCallsList::onlyKeepOutOfOrderExpectations()
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (!p->expectedCall_->isOutOfOrder())
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -168,7 +168,7 @@ void MockExpectedCallsList::onlyKeepUnmatchingExpectations()
         if (p->expectedCall_->isMatchingActualCallAndFinalized())
         {
             p->expectedCall_->resetActualCallMatchingState();
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
         }
 
     pruneEmptyNodeFromList();
@@ -178,7 +178,7 @@ void MockExpectedCallsList::onlyKeepExpectationsWithInputParameterName(const Sim
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->hasInputParameterWithName(name))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -186,7 +186,7 @@ void MockExpectedCallsList::onlyKeepExpectationsWithOutputParameterName(const Si
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->hasOutputParameterWithName(name))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -194,7 +194,7 @@ void MockExpectedCallsList::onlyKeepExpectationsWithInputParameter(const MockNam
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->hasInputParameter(parameter))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -202,7 +202,7 @@ void MockExpectedCallsList::onlyKeepExpectationsWithOutputParameter(const MockNa
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->hasOutputParameter(parameter))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -210,7 +210,7 @@ void MockExpectedCallsList::onlyKeepExpectationsOnObject(const void* objectPtr)
 {
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_)
         if (! p->expectedCall_->relatesToObject(objectPtr))
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
     pruneEmptyNodeFromList();
 }
 
@@ -219,12 +219,12 @@ MockCheckedExpectedCall* MockExpectedCallsList::removeFirstFinalizedMatchingExpe
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_) {
         if (p->expectedCall_->isMatchingActualCallAndFinalized()) {
             MockCheckedExpectedCall* matchingCall = p->expectedCall_;
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
             pruneEmptyNodeFromList();
             return matchingCall;
         }
     }
-    return NULLPTR;
+    return nullptr;
 }
 
 MockCheckedExpectedCall* MockExpectedCallsList::getFirstMatchingExpectation()
@@ -234,7 +234,7 @@ MockCheckedExpectedCall* MockExpectedCallsList::getFirstMatchingExpectation()
             return p->expectedCall_;
         }
     }
-    return NULLPTR;
+    return nullptr;
 }
 
 MockCheckedExpectedCall* MockExpectedCallsList::removeFirstMatchingExpectation()
@@ -242,24 +242,24 @@ MockCheckedExpectedCall* MockExpectedCallsList::removeFirstMatchingExpectation()
     for (MockExpectedCallsListNode* p = head_; p; p = p->next_) {
         if (p->expectedCall_->isMatchingActualCall()) {
             MockCheckedExpectedCall* matchingCall = p->expectedCall_;
-            p->expectedCall_ = NULLPTR;
+            p->expectedCall_ = nullptr;
             pruneEmptyNodeFromList();
             return matchingCall;
         }
     }
-    return NULLPTR;
+    return nullptr;
 }
 
 void MockExpectedCallsList::pruneEmptyNodeFromList()
 {
     MockExpectedCallsListNode* current = head_;
-    MockExpectedCallsListNode* previous = NULLPTR;
-    MockExpectedCallsListNode* toBeDeleted = NULLPTR;
+    MockExpectedCallsListNode* previous = nullptr;
+    MockExpectedCallsListNode* toBeDeleted = nullptr;
 
     while (current) {
-        if (current->expectedCall_ == NULLPTR) {
+        if (current->expectedCall_ == nullptr) {
             toBeDeleted = current;
-            if (previous == NULLPTR)
+            if (previous == nullptr)
                 head_ = current = current->next_;
             else
                 current = previous->next_ = current->next_;

@@ -102,11 +102,6 @@ TEST(UtestShell, PassedCheckEqualWillIncreaseTheAmountOfChecks)
     LONGS_EQUAL(1, fixture.getCheckCount());
 }
 
-IGNORE_TEST(UtestShell, IgnoreTestAccessingFixture)
-{
-    CHECK(&fixture != NULLPTR);
-}
-
 TEST(UtestShell, MacrosUsedInSetup)
 {
     IGNORE_ALL_LEAKS_IN_TEST();
@@ -395,7 +390,7 @@ TEST_GROUP(IgnoredUtestShell)
     IgnoredUtestShell ignoredTest;
     ExecFunctionTestShell normalUtestShell;
 
-    void setup() _override
+    void setup() override
     {
         fixture.addTest(&ignoredTest);
         fixture.addTest(&normalUtestShell);
@@ -474,12 +469,12 @@ TEST_BASE(MyOwnTest)
     }
     bool inTest;
 
-    void setup() _override
+    void setup() override
     {
         CHECK(!inTest);
         inTest = true;
     }
-    void teardown() _override
+    void teardown() override
     {
         CHECK(inTest);
         inTest = false;
@@ -514,7 +509,7 @@ public:
     AllocateAndDeallocateInConstructorAndDestructor()
     {
         memory_ = new char[100];
-        morememory_ = NULLPTR;
+        morememory_ = nullptr;
     }
     void allocateMoreMemory()
     {
@@ -554,7 +549,7 @@ TEST_GROUP(UtestShellPointerArrayTest)
     UtestShell* test1;
     UtestShell* test2;
 
-    void setup() _override
+    void setup() override
     {
         test0 = new IgnoredUtestShell();
         test1 = new IgnoredUtestShell();
@@ -564,7 +559,7 @@ TEST_GROUP(UtestShellPointerArrayTest)
         test1->addTest(test2);
     }
 
-    void teardown() _override
+    void teardown() override
     {
         delete test0;
         delete test1;
@@ -575,9 +570,9 @@ TEST_GROUP(UtestShellPointerArrayTest)
 
 TEST(UtestShellPointerArrayTest, empty)
 {
-    UtestShellPointerArray tests(NULLPTR);
+    UtestShellPointerArray tests(nullptr);
     tests.shuffle(0);
-    CHECK(NULLPTR == tests.getFirstTest());
+    CHECK(nullptr == tests.getFirstTest());
 }
 
 TEST(UtestShellPointerArrayTest, testsAreInOrder)

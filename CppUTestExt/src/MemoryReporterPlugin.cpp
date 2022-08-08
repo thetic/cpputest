@@ -33,7 +33,7 @@
 #include "CppUTest/TestHarness.hpp"
 
 MemoryReporterPlugin::MemoryReporterPlugin()
-    : TestPlugin("MemoryReporterPlugin"), formatter_(NULLPTR)
+    : TestPlugin("MemoryReporterPlugin"), formatter_(nullptr)
 {
 }
 
@@ -64,7 +64,7 @@ MemoryReportFormatter* MemoryReporterPlugin::createMemoryFormatter(const SimpleS
     else if (type == "code") {
         return new CodeMemoryReportFormatter(defaultMallocAllocator());
     }
-    return NULLPTR;
+    return nullptr;
 }
 
 void MemoryReporterPlugin::destroyMemoryFormatter(MemoryReportFormatter* formatter)
@@ -120,7 +120,7 @@ void MemoryReporterPlugin::initializeAllocator(MemoryReportAllocator* allocator,
 
 void MemoryReporterPlugin::preTestAction(UtestShell& test, TestResult& result)
 {
-    if (formatter_ == NULLPTR) return;
+    if (formatter_ == nullptr) return;
 
     initializeAllocator(&mallocAllocator, result);
     initializeAllocator(&newAllocator, result);
@@ -138,11 +138,11 @@ void MemoryReporterPlugin::preTestAction(UtestShell& test, TestResult& result)
 
 void MemoryReporterPlugin::postTestAction(UtestShell& test, TestResult& result)
 {
-    if (formatter_ == NULLPTR) return;
+    if (formatter_ == nullptr) return;
 
     removeGlobalMemoryReportAllocators();
     formatter_->report_test_end(&result, test);
 
-    if (test.getNext() == NULLPTR || test.getNext()->getGroup() != currentTestGroup_)
+    if (test.getNext() == nullptr || test.getNext()->getGroup() != currentTestGroup_)
         formatter_->report_testgroup_end(&result, test);
 }

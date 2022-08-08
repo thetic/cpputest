@@ -33,7 +33,7 @@
 
 TEST_GROUP(MockReturnValueTest)
 {
-  void teardown() _override
+  void teardown() override
   {
       mock().checkExpectations();
       mock().clear();

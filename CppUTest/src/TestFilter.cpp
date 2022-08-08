@@ -28,16 +28,16 @@
 #include "CppUTest/TestFilter.hpp"
 #include "CppUTest/CppUTestConfig.hpp"
 
-TestFilter::TestFilter() : strictMatching_(false), invertMatching_(false), next_(NULLPTR)
+TestFilter::TestFilter() : strictMatching_(false), invertMatching_(false), next_(nullptr)
 {
 }
 
-TestFilter::TestFilter(const SimpleString& filter) : strictMatching_(false), invertMatching_(false), next_(NULLPTR)
+TestFilter::TestFilter(const SimpleString& filter) : strictMatching_(false), invertMatching_(false), next_(nullptr)
 {
     filter_ = filter;
 }
 
-TestFilter::TestFilter(const char* filter) : strictMatching_(false), invertMatching_(false), next_(NULLPTR)
+TestFilter::TestFilter(const char* filter) : strictMatching_(false), invertMatching_(false), next_(nullptr)
 {
     filter_ = filter;
 }

@@ -82,16 +82,16 @@ class SimpleStringCacheAllocator : public TestMemoryAllocator
 {
 public:
     SimpleStringCacheAllocator(SimpleStringInternalCache& cache, TestMemoryAllocator* previousAllocator);
-    virtual ~SimpleStringCacheAllocator() _destructor_override;
+    ~SimpleStringCacheAllocator() override;
 
-    virtual char* alloc_memory(size_t size, const char* file, size_t line) _override;
-    virtual void free_memory(char* memory, size_t size, const char* file, size_t line) _override;
+    char* alloc_memory(size_t size, const char* file, size_t line) override;
+    void free_memory(char* memory, size_t size, const char* file, size_t line) override;
 
-    virtual const char* name() const _override;
-    virtual const char* alloc_name() const _override;
-    virtual const char* free_name() const _override;
+    const char* name() const override;
+    const char* alloc_name() const override;
+    const char* free_name() const override;
 
-    virtual TestMemoryAllocator* actualAllocator() _override;
+    TestMemoryAllocator* actualAllocator() override;
     TestMemoryAllocator* originalAllocator();
 private:
     SimpleStringInternalCache& cache_;

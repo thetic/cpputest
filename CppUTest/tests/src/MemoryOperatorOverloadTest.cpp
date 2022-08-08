@@ -21,14 +21,14 @@ TEST_GROUP(BasicBehavior)
 
 TEST(BasicBehavior, CanDeleteNullPointers)
 {
-    delete (char*) NULLPTR;
-    delete [] (char*) NULLPTR;
+    delete (char*) nullptr;
+    delete [] (char*) nullptr;
 }
 
 TEST_GROUP(MemoryLeakOverridesToBeUsedInProductionCode)
 {
     MemoryLeakDetector* memLeakDetector;
-    void setup() _override
+    void setup() override
     {
         memLeakDetector = MemoryLeakWarningPlugin::getGlobalDetector();
     }
@@ -95,7 +95,7 @@ TEST_GROUP(OutOfMemoryTestsForOperatorNew)
 {
     TestMemoryAllocator* no_memory_allocator;
     GlobalMemoryAllocatorStash memoryAllocatorStash;
-    void setup() _override
+    void setup() override
     {
         memoryAllocatorStash.save();
         no_memory_allocator = new NullUnknownAllocator;
@@ -103,7 +103,7 @@ TEST_GROUP(OutOfMemoryTestsForOperatorNew)
         setCurrentNewArrayAllocator(no_memory_allocator);
     }
 
-    void teardown() _override
+    void teardown() override
     {
         memoryAllocatorStash.restore();
         delete no_memory_allocator;

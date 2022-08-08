@@ -36,13 +36,13 @@ TEST_GROUP(TestMemoryAllocatorTest)
     TestMemoryAllocator* allocator;
     GlobalMemoryAllocatorStash memoryAllocatorStash;
 
-    void setup() _override
+    void setup() override
     {
-        allocator = NULLPTR;
+        allocator = nullptr;
         memoryAllocatorStash.save();
     }
 
-    void teardown() _override
+    void teardown() override
     {
         memoryAllocatorStash.restore();
         delete allocator;
@@ -149,12 +149,12 @@ TEST_GROUP(MemoryLeakAllocator)
 {
     MemoryLeakAllocator* allocator;
 
-    void setup() _override
+    void setup() override
     {
         allocator = new MemoryLeakAllocator(defaultMallocAllocator());
     }
 
-    void teardown() _override
+    void teardown() override
     {
         delete allocator;
     }
@@ -193,14 +193,14 @@ class MemoryAccountantExecFunction
     : public ExecFunction
 {
 public:
-    virtual ~MemoryAccountantExecFunction() _destructor_override
+    ~MemoryAccountantExecFunction() override
     {
     }
 
     void (*testFunction_)(MemoryAccountant*);
     MemoryAccountant* parameter_;
 
-    virtual void exec() _override
+    void exec() override
     {
         testFunction_(parameter_);
     }
@@ -212,13 +212,13 @@ TEST_GROUP(TestMemoryAccountant)
     TestTestingFixture fixture;
     MemoryAccountantExecFunction testFunction;
 
-    void setup() _override
+    void setup() override
     {
         testFunction.parameter_ = &accountant;
         fixture.setTestFunction(&testFunction);
     }
 
-    void teardown() _override
+    void teardown() override
     {
         accountant.clear();
     }
@@ -406,12 +406,12 @@ TEST_GROUP(AccountingTestMemoryAllocator)
     MemoryAccountant accountant;
     AccountingTestMemoryAllocator *allocator;
 
-    void setup() _override
+    void setup() override
     {
         allocator = new AccountingTestMemoryAllocator(accountant, getCurrentMallocAllocator());
     }
 
-    void teardown() _override
+    void teardown() override
     {
         accountant.clear();
         delete allocator;
@@ -476,7 +476,7 @@ public:
     void (*testFunction_)(GlobalMemoryAccountant*);
     GlobalMemoryAccountant* parameter_;
 
-    virtual void exec() _override
+    void exec() override
     {
         testFunction_(parameter_);
     }
@@ -489,14 +489,14 @@ TEST_GROUP(GlobalMemoryAccountant)
     GlobalMemoryAccountantExecFunction testFunction;
     GlobalMemoryAllocatorStash stash;
 
-    void setup() _override
+    void setup() override
     {
         testFunction.parameter_ = &accountant;
         fixture.setTestFunction(&testFunction);
         stash.save();
     }
 
-    void teardown() _override
+    void teardown() override
     {
         stash.restore();
     }

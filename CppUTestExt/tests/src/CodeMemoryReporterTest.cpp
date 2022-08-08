@@ -47,7 +47,7 @@ TEST_GROUP(CodeMemoryReportFormatter)
     TestResult* testResult;
     CodeMemoryReportFormatter* formatter;
 
-    void setup() _override
+    void setup() override
     {
         cAllocator = defaultMallocAllocator();
         newAllocator = defaultNewAllocator();
@@ -59,7 +59,7 @@ TEST_GROUP(CodeMemoryReportFormatter)
         testResult = new TestResult(testOutput);
     }
 
-    void teardown() _override
+    void teardown() override
     {
         delete testResult;
         delete formatter;
@@ -126,7 +126,7 @@ TEST(CodeMemoryReportFormatter, NewAllocatorGeneratesDeleteCode)
 
 TEST(CodeMemoryReportFormatter, DeleteNullWorksFine)
 {
-    formatter->report_free_memory(testResult, newAllocator, NULLPTR, "boo", 4);
+    formatter->report_free_memory(testResult, newAllocator, nullptr, "boo", 4);
     TESTOUTPUT_CONTAINS("delete [] NULL; /* using delete at boo:4 */");
 }
 

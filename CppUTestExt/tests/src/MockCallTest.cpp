@@ -32,7 +32,7 @@
 
 TEST_GROUP(MockCallTest)
 {
-    void teardown() _override
+    void teardown() override
     {
         mock().checkExpectations();
         mock().clear();

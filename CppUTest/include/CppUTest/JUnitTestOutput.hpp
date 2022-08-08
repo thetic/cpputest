@@ -38,22 +38,22 @@ class JUnitTestOutput: public TestOutput
 {
 public:
     JUnitTestOutput();
-    virtual ~JUnitTestOutput() _destructor_override;
+    ~JUnitTestOutput() override;
 
-    virtual void printTestsStarted() _override;
-    virtual void printTestsEnded(const TestResult& result) _override;
-    virtual void printCurrentTestStarted(const UtestShell& test) _override;
-    virtual void printCurrentTestEnded(const TestResult& res) _override;
-    virtual void printCurrentGroupStarted(const UtestShell& test) _override;
-    virtual void printCurrentGroupEnded(const TestResult& res) _override;
+    void printTestsStarted() override;
+    void printTestsEnded(const TestResult& result) override;
+    void printCurrentTestStarted(const UtestShell& test) override;
+    void printCurrentTestEnded(const TestResult& res) override;
+    void printCurrentGroupStarted(const UtestShell& test) override;
+    void printCurrentGroupEnded(const TestResult& res) override;
 
-    virtual void printBuffer(const char*) _override;
-    virtual void print(const char*) _override;
-    virtual void print(long) _override;
-    virtual void print(size_t) _override;
-    virtual void printFailure(const TestFailure& failure) _override;
+    void printBuffer(const char*) override;
+    void print(const char*) override;
+    void print(long) override;
+    void print(size_t) override;
+    void printFailure(const TestFailure& failure) override;
 
-    virtual void flush() _override;
+    void flush() override;
 
     virtual SimpleString createFileName(const SimpleString& group);
     void setPackageName(const SimpleString &package);

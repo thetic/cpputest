@@ -51,7 +51,7 @@ TEST_GROUP(TestFailureNanAndInf)
 {
     UtestShell*  test;
 
-    void setup() _override
+    void setup() override
     {
         test = new UtestShell("groupname", "testname", failFileName, failLineNumber-1);
         if(PlatformSpecificIsNan(not_a_number) == false)
@@ -65,7 +65,7 @@ TEST_GROUP(TestFailureNanAndInf)
             UT_PTR_SET(PlatformSpecificIsInf, IsInfForSystemsWithoutInf);
         }
     }
-    void teardown() _override
+    void teardown() override
     {
         delete test;
     }

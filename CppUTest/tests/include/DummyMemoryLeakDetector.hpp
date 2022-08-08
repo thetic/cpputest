@@ -31,7 +31,7 @@ class DummyMemoryLeakDetector : public MemoryLeakDetector
 {
 public:
     DummyMemoryLeakDetector(MemoryLeakFailure* reporter);
-    virtual ~DummyMemoryLeakDetector() _destructor_override;
+    ~DummyMemoryLeakDetector() override;
     static bool wasDeleted();
 
 private:
@@ -43,9 +43,9 @@ class DummyMemoryLeakFailure : public MemoryLeakFailure
 public:
     DummyMemoryLeakFailure();
 
-    virtual ~DummyMemoryLeakFailure() _destructor_override;
+    ~DummyMemoryLeakFailure() override;
     static bool wasDeleted();
-    virtual void fail(char*) _override;
+    virtual void fail(char*) override;
 
 private:
     static bool memoryLeakFailureWasDelete;

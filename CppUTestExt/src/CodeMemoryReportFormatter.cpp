@@ -47,7 +47,7 @@ struct CodeReportingAllocationNode
 };
 
 CodeMemoryReportFormatter::CodeMemoryReportFormatter(TestMemoryAllocator* internalAllocator)
-    : codeReportingList_(NULLPTR), internalAllocator_(internalAllocator)
+    : codeReportingList_(nullptr), internalAllocator_(internalAllocator)
 {
 }
 
@@ -168,7 +168,7 @@ void CodeMemoryReportFormatter::report_free_memory(TestResult* result, TestMemor
     SimpleString variableName;
     CodeReportingAllocationNode* node = findNode(memory);
 
-    if (memory == NULLPTR) variableName = "NULL";
+    if (memory == nullptr) variableName = "NULL";
     else variableName = node->variableName_;
 
     result->print(StringFromFormat("\t%s\n", getDeallocationString(allocator, variableName, file, line).asCharString()).asCharString());

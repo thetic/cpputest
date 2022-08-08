@@ -41,7 +41,7 @@ TEST_GROUP(FE_with_Plugin)
 {
     TestTestingFixture fixture;
     IEEE754ExceptionsPlugin ieee754Plugin;
-    void setup(void) _override
+    void setup(void) override
     {
         fixture.installPlugin(&ieee754Plugin);
     }
@@ -130,7 +130,7 @@ static IEEE754ExceptionsPlugin ip;
 
 TEST_GROUP(IEEE754ExceptionsPlugin2)
 {
-    void setup(void) _override
+    void setup(void) override
     {
         TestRegistry::getCurrentRegistry()->installPlugin(&ip);
     }

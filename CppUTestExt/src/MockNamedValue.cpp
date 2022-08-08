@@ -31,7 +31,7 @@
 #include "CppUTest/TestHarness.hpp"
 
 
-MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = NULLPTR;
+MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = nullptr;
 const double MockNamedValue::defaultDoubleTolerance = 0.005;
 
 void MockNamedValue::setDefaultComparatorsAndCopiersRepository(MockNamedValueComparatorsAndCopiersRepository* repository)
@@ -44,7 +44,7 @@ MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::getDefaultCompara
     return defaultRepository_;
 }
 
-MockNamedValue::MockNamedValue(const SimpleString& name) : name_(name), type_("int"), size_(0), comparator_(NULLPTR), copier_(NULLPTR)
+MockNamedValue::MockNamedValue(const SimpleString& name) : name_(name), type_("int"), size_(0), comparator_(nullptr), copier_(nullptr)
 {
     value_.intValue_ = 0;
 }
@@ -504,7 +504,7 @@ void MockNamedValueListNode::destroy()
 }
 
 MockNamedValueListNode::MockNamedValueListNode(MockNamedValue* newValue)
-    : data_(newValue), next_(NULLPTR)
+    : data_(newValue), next_(nullptr)
 {
 }
 
@@ -518,7 +518,7 @@ SimpleString MockNamedValueListNode::getType() const
     return data_->getType();
 }
 
-MockNamedValueList::MockNamedValueList() : head_(NULLPTR)
+MockNamedValueList::MockNamedValueList() : head_(nullptr)
 {
 }
 
@@ -535,7 +535,7 @@ void MockNamedValueList::clear()
 void MockNamedValueList::add(MockNamedValue* newValue)
 {
     MockNamedValueListNode* newNode = new MockNamedValueListNode(newValue);
-    if (head_ == NULLPTR)
+    if (head_ == nullptr)
         head_ = newNode;
     else {
         MockNamedValueListNode* lastNode = head_;
@@ -549,7 +549,7 @@ MockNamedValue* MockNamedValueList::getValueByName(const SimpleString& name)
     for (MockNamedValueListNode * p = head_; p; p = p->next())
         if (p->getName() == name)
             return p->item();
-    return NULLPTR;
+    return nullptr;
 }
 
 MockNamedValueListNode* MockNamedValueList::begin()
@@ -560,9 +560,9 @@ MockNamedValueListNode* MockNamedValueList::begin()
 struct MockNamedValueComparatorsAndCopiersRepositoryNode
 {
     MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueComparator* comparator, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
-        : name_(name), comparator_(comparator), copier_(NULLPTR), next_(next) {}
+        : name_(name), comparator_(comparator), copier_(nullptr), next_(next) {}
     MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
-        : name_(name), comparator_(NULLPTR), copier_(copier), next_(next) {}
+        : name_(name), comparator_(nullptr), copier_(copier), next_(next) {}
     MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueComparator* comparator, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
         : name_(name), comparator_(comparator), copier_(copier), next_(next) {}
     SimpleString name_;
@@ -571,7 +571,7 @@ struct MockNamedValueComparatorsAndCopiersRepositoryNode
     MockNamedValueComparatorsAndCopiersRepositoryNode* next_;
 };
 
-MockNamedValueComparatorsAndCopiersRepository::MockNamedValueComparatorsAndCopiersRepository() : head_(NULLPTR)
+MockNamedValueComparatorsAndCopiersRepository::MockNamedValueComparatorsAndCopiersRepository() : head_(nullptr)
 {
 
 }
@@ -604,14 +604,14 @@ MockNamedValueComparator* MockNamedValueComparatorsAndCopiersRepository::getComp
 {
     for (MockNamedValueComparatorsAndCopiersRepositoryNode* p = head_; p; p = p->next_)
             if (p->name_ == name && p->comparator_) return p->comparator_;
-    return NULLPTR;
+    return nullptr;
 }
 
 MockNamedValueCopier* MockNamedValueComparatorsAndCopiersRepository::getCopierForType(const SimpleString& name)
 {
     for (MockNamedValueComparatorsAndCopiersRepositoryNode* p = head_; p; p = p->next_)
             if (p->name_ == name && p->copier_) return p->copier_;
-    return NULLPTR;
+    return nullptr;
 }
 
 void MockNamedValueComparatorsAndCopiersRepository::installComparatorsAndCopiers(const MockNamedValueComparatorsAndCopiersRepository& repository)

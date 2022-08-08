@@ -38,10 +38,10 @@ class MyComparator : public MockNamedValueComparator
   public:
 
     MyComparator() {}
-    virtual ~MyComparator() _destructor_override {}
+    ~MyComparator() override {}
 
-    virtual bool isEqual(const void*, const void*) _override { return false; }
-    virtual SimpleString valueToString(const void*) _override { return ""; }
+    bool isEqual(const void*, const void*) override { return false; }
+    SimpleString valueToString(const void*) override { return ""; }
 };
 
 class MyCopier : public MockNamedValueCopier
@@ -49,9 +49,9 @@ class MyCopier : public MockNamedValueCopier
   public:
 
     MyCopier() {}
-    virtual ~MyCopier() _destructor_override {}
+    ~MyCopier() override {}
 
-    virtual void copy(void*, const void*) _override {}
+    void copy(void*, const void*) override {}
 };
 
 TEST(ComparatorsAndCopiersRepository, InstallCopierAndRetrieveIt)
@@ -97,12 +97,12 @@ TEST(ComparatorsAndCopiersRepository, InstallComparatorsAndCopiersFromRepository
 TEST_GROUP(MockNamedValue)
 {
   MockNamedValue * value;
-  void setup() _override
+  void setup() override
   {
     value = new MockNamedValue("param");
   }
 
-  void teardown() _override
+  void teardown() override
   {
     delete value;
   }
