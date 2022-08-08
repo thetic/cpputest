@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "ApplicationLib/hello.h"
+
 #include <stdio.h>
-#include "hello.h"
 
 void printHelloWorld()
 {

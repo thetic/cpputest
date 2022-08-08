@@ -25,24 +25,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Printer.hpp"
 #include "MockPrinter.hpp"
+
+#include "ApplicationLib/Printer.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 
 TEST_GROUP(Printer)
-{ Printer* printer;
-MockPrinter* mockPrinter;
+{
+    Printer* printer;
+    MockPrinter* mockPrinter;
 
-void setup()
-{
-    mockPrinter = new MockPrinter();
-    printer = mockPrinter;
-}
-void teardown()
-{
-    delete printer;
-}
+    void setup()
+    {
+        mockPrinter = new MockPrinter();
+        printer = mockPrinter;
+    }
+    void teardown()
+    {
+        delete printer;
+    }
 };
 
 TEST(Printer, PrintConstCharStar)

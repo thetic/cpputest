@@ -1,9 +1,8 @@
 add_library(ApplicationLib
-    include/CircularBuffer.h
-    include/EventDispatcher.h
-    include/ExamplesNewOverrides.h
-    include/Printer.h
-    include/hello.h
+    include/ApplicationLib/CircularBuffer.hpp
+    include/ApplicationLib/EventDispatcher.hpp
+    include/ApplicationLib/Printer.hpp
+    include/ApplicationLib/hello.h
     src/CircularBuffer.cpp
     src/EventDispatcher.cpp
     src/Printer.cpp

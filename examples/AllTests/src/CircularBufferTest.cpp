@@ -27,7 +27,7 @@
 
 #include "MockPrinter.hpp"
 
-#include "CircularBuffer.hpp"
+#include "ApplicationLib/CircularBuffer.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 

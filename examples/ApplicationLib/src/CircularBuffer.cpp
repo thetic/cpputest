@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CircularBuffer.hpp"
-#include "Printer.hpp"
+#include "ApplicationLib/CircularBuffer.hpp"
+#include "ApplicationLib/Printer.hpp"
 
 #include <cstddef>
 

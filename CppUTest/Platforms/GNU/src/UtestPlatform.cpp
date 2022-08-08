@@ -25,24 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+
 #include <stdlib.h>
-#include "CppUTest/TestHarness.h"
-#undef malloc
-#undef free
-#undef calloc
-#undef realloc
-#undef strdup
-#undef strndup
-
-#ifdef CPPUTEST_HAVE_GETTIMEOFDAY
-#include <sys/time.h>
-#endif
-#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
-#include <unistd.h>
-#include <sys/wait.h>
-#include <errno.h>
-#endif
-
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -52,11 +38,19 @@
 #include <ctype.h>
 #include <signal.h>
 
+#ifdef CPPUTEST_HAVE_GETTIMEOFDAY
+#include <sys/time.h>
+#endif
+
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+#include <unistd.h>
+#include <sys/wait.h>
+#include <errno.h>
+#endif
+
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
 #include <pthread.h>
 #endif
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

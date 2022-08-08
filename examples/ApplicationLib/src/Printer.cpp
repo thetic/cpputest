@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Printer.hpp"
+#include "ApplicationLib/Printer.hpp"
 #include <cstdio>
 
 Printer::Printer()

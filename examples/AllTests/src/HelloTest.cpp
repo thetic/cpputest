@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "hello.h"
+#include "ApplicationLib/hello.h"
 
 #include "CppUTest/TestHarness.hpp"
 

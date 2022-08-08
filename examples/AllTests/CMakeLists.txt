@@ -1,6 +1,5 @@
 add_executable(AllTests
-    include/AllTests.h
-    include/MockPrinter.h
+    include/MockPrinter.hpp
     src/AllTests.cpp
     src/CircularBufferTest.cpp
     src/EventDispatcherTest.cpp

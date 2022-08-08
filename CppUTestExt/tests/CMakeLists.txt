@@ -1,6 +1,6 @@
 add_executable(CppUTestExtTests
-    include/IEEE754PluginTest_c.h
-    include/MockFailureReporterForTest.h
+    include/IEEE754PluginTest.h
+    include/MockFailureReporterForTest.hpp
     include/MockSupport_cTestCFile.h
     include/OrderedTestTest.h
     src/AllTests.cpp
