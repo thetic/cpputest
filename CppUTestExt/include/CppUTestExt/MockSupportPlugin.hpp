@@ -25,45 +25,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MemoryReporterPlugin_h
-#define D_MemoryReporterPlugin_h
+#ifndef D_MockSupportPlugin_h
+#define D_MockSupportPlugin_h
 
-#include "CppUTestExt/MemoryReportAllocator.h"
+#include "CppUTestExt/MockNamedValue.hpp"
 
 #include "CppUTest/TestPlugin.hpp"
 
-class MemoryReportFormatter;
-
-class MemoryReporterPlugin : public TestPlugin
+class MockSupportPlugin : public TestPlugin
 {
-    MemoryReportFormatter* formatter_;
-
-    MemoryReportAllocator mallocAllocator;
-    MemoryReportAllocator newAllocator;
-    MemoryReportAllocator newArrayAllocator;
-
-    SimpleString currentTestGroup_;
 public:
-    MemoryReporterPlugin();
-    virtual ~MemoryReporterPlugin() _destructor_override;
+    MockSupportPlugin(const SimpleString& name = "MockSupportPLugin");
+    virtual ~MockSupportPlugin() _destructor_override;
 
-    virtual void preTestAction(UtestShell & test, TestResult & result) _override;
-    virtual void postTestAction(UtestShell & test, TestResult & result) _override;
-    virtual bool parseArguments(int, const char *const *, int) _override;
+    virtual void preTestAction(UtestShell&, TestResult&) _override;
+    virtual void postTestAction(UtestShell&, TestResult&) _override;
 
-    MemoryReportAllocator* getMallocAllocator();
-    MemoryReportAllocator* getNewAllocator();
-    MemoryReportAllocator* getNewArrayAllocator();
-protected:
-    virtual MemoryReportFormatter* createMemoryFormatter(const SimpleString& type);
+    virtual void installComparator(const SimpleString& name, MockNamedValueComparator& comparator);
+    virtual void installCopier(const SimpleString& name, MockNamedValueCopier& copier);
 
+    void clear();
 private:
-    void destroyMemoryFormatter(MemoryReportFormatter* formatter);
-
-    void setGlobalMemoryReportAllocators();
-    void removeGlobalMemoryReportAllocators();
-
-    void initializeAllocator(MemoryReportAllocator* allocator, TestResult & result);
+    MockNamedValueComparatorsAndCopiersRepository repository_;
 };
 
 #endif

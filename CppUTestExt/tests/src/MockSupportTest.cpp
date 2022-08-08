@@ -26,9 +26,10 @@
  */
 #include "MockFailureReporterForTest.h"
 
-#include "CppUTestExt/MockSupport.h"
-#include "CppUTestExt/MockExpectedCall.h"
-#include "CppUTestExt/MockFailure.h"
+#include "CppUTestExt/MockSupport.hpp"
+#include "CppUTestExt/MockExpectedCall.hpp"
+#include "CppUTestExt/MockFailure.hpp"
+#include "CppUTestExt/OrderedTest.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
@@ -228,7 +229,6 @@ static void unexpectedCallTestFunction_(void)
     mock().actualCall("unexpected");
 } // LCOV_EXCL_LINE
 
-#include "CppUTestExt/OrderedTest.h"
 
 TEST(MockSupportTestWithFixture, shouldCrashOnFailure)
 {

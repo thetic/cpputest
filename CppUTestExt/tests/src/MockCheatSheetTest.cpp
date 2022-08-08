@@ -1,7 +1,6 @@
+#include "CppUTestExt/MockSupport.hpp"
 
-/* Additional include from CppUTestExt */
-#include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MockSupport.h"
+#include "CppUTest/TestHarness.hpp"
 
 /* Stubbed out product code using linker, function pointer, or overriding */
 static int foo(const char* param_string, int param_int)

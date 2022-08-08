@@ -25,9 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTestExt/MockExpectedCallsList.hpp"
+
+#include "CppUTestExt/MockCheckedExpectedCall.hpp"
+
 #include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MockExpectedCallsList.h"
-#include "CppUTestExt/MockCheckedExpectedCall.h"
 
 MockExpectedCallsList::MockExpectedCallsList() : head_(NULLPTR)
 {

@@ -26,8 +26,8 @@
  */
 #include "MockSupport_cTestCFile.h"
 
-#include "CppUTestExt/MockSupport_c.h"
-#include "CppUTestExt/OrderedTest.h"
+#include "CppUTestExt/MockSupport.h"
+#include "CppUTestExt/OrderedTest.hpp"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestHarness.hpp"

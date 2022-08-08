@@ -27,7 +27,7 @@
 
 #include "OrderedTestTest.h"
 
-#include "CppUTestExt/OrderedTest.h"
+#include "CppUTestExt/OrderedTest.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"

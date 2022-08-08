@@ -24,13 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/IEEE754ExceptionsPlugin.hpp"
+#include "CppUTestExt/MockSupportPlugin.hpp"
 
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
-
-#include "CppUTestExt/IEEE754ExceptionsPlugin.h"
-#include "CppUTestExt/MockSupportPlugin.h"
 
 class MyDummyComparator : public MockNamedValueComparator
 {

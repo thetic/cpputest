@@ -24,8 +24,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "CppUTestExt/MemoryReportAllocator.h"
-#include "CppUTestExt/MemoryReportFormatter.h"
+#include "CppUTestExt/MemoryReportAllocator.hpp"
+#include "CppUTestExt/MemoryReportFormatter.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"

@@ -25,28 +25,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MockSupportPlugin_h
-#define D_MockSupportPlugin_h
+#ifndef D_MemoryReporterPlugin_h
+#define D_MemoryReporterPlugin_h
 
-#include "CppUTestExt/MockNamedValue.h"
+#include "CppUTestExt/MemoryReportAllocator.hpp"
 
 #include "CppUTest/TestPlugin.hpp"
 
-class MockSupportPlugin : public TestPlugin
+class MemoryReportFormatter;
+
+class MemoryReporterPlugin : public TestPlugin
 {
+    MemoryReportFormatter* formatter_;
+
+    MemoryReportAllocator mallocAllocator;
+    MemoryReportAllocator newAllocator;
+    MemoryReportAllocator newArrayAllocator;
+
+    SimpleString currentTestGroup_;
 public:
-    MockSupportPlugin(const SimpleString& name = "MockSupportPLugin");
-    virtual ~MockSupportPlugin() _destructor_override;
+    MemoryReporterPlugin();
+    virtual ~MemoryReporterPlugin() _destructor_override;
 
-    virtual void preTestAction(UtestShell&, TestResult&) _override;
-    virtual void postTestAction(UtestShell&, TestResult&) _override;
+    virtual void preTestAction(UtestShell & test, TestResult & result) _override;
+    virtual void postTestAction(UtestShell & test, TestResult & result) _override;
+    virtual bool parseArguments(int, const char *const *, int) _override;
 
-    virtual void installComparator(const SimpleString& name, MockNamedValueComparator& comparator);
-    virtual void installCopier(const SimpleString& name, MockNamedValueCopier& copier);
+    MemoryReportAllocator* getMallocAllocator();
+    MemoryReportAllocator* getNewAllocator();
+    MemoryReportAllocator* getNewArrayAllocator();
+protected:
+    virtual MemoryReportFormatter* createMemoryFormatter(const SimpleString& type);
 
-    void clear();
 private:
-    MockNamedValueComparatorsAndCopiersRepository repository_;
+    void destroyMemoryFormatter(MemoryReportFormatter* formatter);
+
+    void setGlobalMemoryReportAllocators();
+    void removeGlobalMemoryReportAllocators();
+
+    void initializeAllocator(MemoryReportAllocator* allocator, TestResult & result);
 };
 
 #endif

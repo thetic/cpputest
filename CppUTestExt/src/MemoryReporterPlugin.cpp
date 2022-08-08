@@ -25,10 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTestExt/MemoryReporterPlugin.h"
+#include "CppUTestExt/MemoryReporterPlugin.hpp"
 
-#include "CppUTestExt/MemoryReportFormatter.h"
-#include "CppUTestExt/CodeMemoryReportFormatter.h"
+#include "CppUTestExt/MemoryReportFormatter.hpp"
+#include "CppUTestExt/CodeMemoryReportFormatter.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 

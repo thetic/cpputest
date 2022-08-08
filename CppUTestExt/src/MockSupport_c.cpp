@@ -26,7 +26,7 @@
  */
 
 #include "CppUTestExt/MockSupport.h"
-#include "CppUTestExt/MockSupport_c.h"
+#include "CppUTestExt/MockSupport.hpp"
 
 #include "CppUTest/CppUTestConfig.hpp"
 #include "CppUTest/PlatformSpecificFunctions.h"

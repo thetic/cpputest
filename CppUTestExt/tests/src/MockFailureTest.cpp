@@ -24,12 +24,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-#include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MockFailure.h"
-#include "CppUTestExt/MockCheckedExpectedCall.h"
-#include "CppUTestExt/MockExpectedCallsList.h"
 #include "MockFailureReporterForTest.h"
+
+#include "CppUTestExt/MockFailure.hpp"
+#include "CppUTestExt/MockCheckedExpectedCall.hpp"
+#include "CppUTestExt/MockExpectedCallsList.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 TEST_GROUP(MockFailureTest)
 {

@@ -25,9 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MockSupport.h"
 #include "EventDispatcher.h"
+
+#include "CppUTestExt/MockSupport.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 class ObserverMock : public EventObserver
 {

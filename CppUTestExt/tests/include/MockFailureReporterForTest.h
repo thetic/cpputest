@@ -28,7 +28,7 @@
 #ifndef D_MockFailureReporterForTest_h
 #define D_MockFailureReporterForTest_h
 
-#include "CppUTestExt/MockSupport.h"
+#include "CppUTestExt/MockSupport.hpp"
 
 #define CHECK_EXPECTED_MOCK_FAILURE(expectedFailure) CHECK_EXPECTED_MOCK_FAILURE_LOCATION(expectedFailure, __FILE__, __LINE__)
 #define CHECK_NO_MOCK_FAILURE() CHECK_NO_MOCK_FAILURE_LOCATION(__FILE__, __LINE__)

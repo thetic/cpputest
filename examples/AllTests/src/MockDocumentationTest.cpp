@@ -26,9 +26,10 @@
  */
 
 
-#include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "CppUTestExt/MockSupport_c.h"
+#include "CppUTestExt/MockSupport.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 TEST_GROUP(FirstTestGroup)
 {

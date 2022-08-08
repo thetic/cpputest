@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTestExt/CodeMemoryReportFormatter.h"
+#include "CppUTestExt/CodeMemoryReportFormatter.hpp"
 
-#include "CppUTestExt/MemoryReportAllocator.h"
+#include "CppUTestExt/MemoryReportAllocator.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"

@@ -24,14 +24,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#if CPPUTEST_HAVE_FENV
+#include "CppUTestExt/IEEE754ExceptionsPlugin.hpp"
+#endif
 
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-#if CPPUTEST_HAVE_FENV
-#include "CppUTestExt/IEEE754ExceptionsPlugin.h"
+#include <limits>
 
+#if CPPUTEST_HAVE_FENV
 /*
  * To see a demonstration of tests failing as a result of IEEE754ExceptionsPlugin
  * picking up floating point errors, run the test executable with the -ri option.
@@ -41,8 +44,6 @@
 extern "C" {
     #include <fenv.h>
 }
-
-#include <limits>
 
 static volatile float f;
 

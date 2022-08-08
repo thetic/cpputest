@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTestExt/MemoryReporterPlugin.h"
-#include "CppUTestExt/MockSupportPlugin.h"
+#include "CppUTestExt/MemoryReporterPlugin.hpp"
+#include "CppUTestExt/MockSupportPlugin.hpp"
 
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/SimpleStringInternalCache.hpp"

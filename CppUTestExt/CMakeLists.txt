@@ -1,20 +1,20 @@
 add_library(CppUTestExt
-    include/CppUTestExt/CodeMemoryReportFormatter.h
-    include/CppUTestExt/IEEE754ExceptionsPlugin.h
-    include/CppUTestExt/MemoryReportAllocator.h
-    include/CppUTestExt/MemoryReportFormatter.h
-    include/CppUTestExt/MemoryReporterPlugin.h
-    include/CppUTestExt/MockActualCall.h
-    include/CppUTestExt/MockCheckedActualCall.h
-    include/CppUTestExt/MockCheckedExpectedCall.h
-    include/CppUTestExt/MockExpectedCall.h
-    include/CppUTestExt/MockExpectedCallsList.h
-    include/CppUTestExt/MockFailure.h
-    include/CppUTestExt/MockNamedValue.h
+    include/CppUTestExt/CodeMemoryReportFormatter.hpp
+    include/CppUTestExt/IEEE754ExceptionsPlugin.hpp
+    include/CppUTestExt/MemoryReportAllocator.hpp
+    include/CppUTestExt/MemoryReportFormatter.hpp
+    include/CppUTestExt/MemoryReporterPlugin.hpp
+    include/CppUTestExt/MockActualCall.hpp
+    include/CppUTestExt/MockCheckedActualCall.hpp
+    include/CppUTestExt/MockCheckedExpectedCall.hpp
+    include/CppUTestExt/MockExpectedCall.hpp
+    include/CppUTestExt/MockExpectedCallsList.hpp
+    include/CppUTestExt/MockFailure.hpp
+    include/CppUTestExt/MockNamedValue.hpp
+    include/CppUTestExt/MockSupport.hpp
+    include/CppUTestExt/MockSupportPlugin.hpp
     include/CppUTestExt/MockSupport.h
-    include/CppUTestExt/MockSupportPlugin.h
-    include/CppUTestExt/MockSupport_c.h
-    include/CppUTestExt/OrderedTest.h
+    include/CppUTestExt/OrderedTest.hpp
     src/CodeMemoryReportFormatter.cpp
     src/IEEE754ExceptionsPlugin.cpp
     src/MemoryReportAllocator.cpp

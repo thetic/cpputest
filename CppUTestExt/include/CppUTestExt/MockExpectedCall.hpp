@@ -30,6 +30,8 @@
 
 #include "CppUTest/CppUTestConfig.hpp"
 
+#include <cstddef>
+
 class MockNamedValue;
 class SimpleString;
 

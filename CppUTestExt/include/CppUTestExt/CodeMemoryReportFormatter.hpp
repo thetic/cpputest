@@ -28,7 +28,7 @@
 #ifndef D_CodeMemoryReportFormatter_h
 #define D_CodeMemoryReportFormatter_h
 
-#include "CppUTestExt/MemoryReportFormatter.h"
+#include "CppUTestExt/MemoryReportFormatter.hpp"
 #include "CppUTest/CppUTestConfig.hpp"
 
 class SimpleString;
