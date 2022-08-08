@@ -10,7 +10,6 @@ add_library(CppUTest
     include/CppUTest/SimpleMutex.h
     include/CppUTest/SimpleString.h
     include/CppUTest/SimpleStringInternalCache.h
-    include/CppUTest/StandardCLibrary.h
     include/CppUTest/TeamCityTestOutput.h
     include/CppUTest/TestFailure.h
     include/CppUTest/TestFilter.h

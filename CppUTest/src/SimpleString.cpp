@@ -30,6 +30,7 @@
 #include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestMemoryAllocator.h"
 
+#include <climits>
 #include <string>
 
 GlobalSimpleStringAllocatorStash::GlobalSimpleStringAllocatorStash()

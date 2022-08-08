@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 #include "CppUTest/CppUTestConfig.h"
-#include "CppUTest/StandardCLibrary.h"
+#include <stddef.h>
 
 typedef enum {
     MOCKVALUETYPE_BOOL,

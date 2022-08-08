@@ -29,7 +29,6 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestTestingFixture.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/StandardCLibrary.h"
 #include "CppUTest/TestMemoryAllocator.h"
 
 // This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized

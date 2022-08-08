@@ -1,5 +1,6 @@
 #include "AllocationInCFile.h"
-#include "CppUTest/StandardCLibrary.h"
+
+#include <stdlib.h>
 
 /* This file is for simulating overloads of malloc */
 

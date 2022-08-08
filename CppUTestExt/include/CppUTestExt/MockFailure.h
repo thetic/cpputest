@@ -29,6 +29,7 @@
 #ifndef D_MockFailure_h
 #define D_MockFailure_h
 
+#include "CppUTest/CppUTestConfig.h"
 #include "CppUTest/TestFailure.h"
 
 class MockExpectedCallsList;

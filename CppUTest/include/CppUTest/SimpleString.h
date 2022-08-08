@@ -38,7 +38,9 @@
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
-#include "StandardCLibrary.h"
+#include <cstdarg>
+#include <cstddef>
+#include <string>
 
 class SimpleStringCollection;
 class TestMemoryAllocator;

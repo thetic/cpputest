@@ -28,8 +28,8 @@
 #ifndef D_TestTestingFixture_H
 #define D_TestTestingFixture_H
 
-#include "TestRegistry.h"
-#include "TestOutput.h"
+#include "CppUTest/TestRegistry.h"
+#include "CppUTest/TestOutput.h"
 
 class TestTestingFixture
 {

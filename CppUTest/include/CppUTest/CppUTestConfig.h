@@ -49,9 +49,6 @@
  */
 
 
-/* Should be the only #include here. Standard C library wrappers */
-#include "StandardCLibrary.h"
-
 #if defined(__cplusplus) && (__cplusplus >= 201100)
   #define CPPUTEST_NORETURN [[noreturn]]
 #elif defined(__has_attribute) && __has_attribute(noreturn)
@@ -76,20 +73,20 @@
  * When we don't link Standard C++, then we won't throw exceptions as we assume the compiler might not support that!
  */
 
-#if CPPUTEST_USE_STD_CPP_LIB
+#if CPPUTEST_NO_EXCEPTIONS
+  #define UT_THROW(exception)
+  #ifdef __clang__
+    #define UT_NOTHROW throw()
+  #else
+    #define UT_NOTHROW
+  #endif
+#else
   #if defined(__cplusplus) && __cplusplus >= 201103L
     #define UT_THROW(exception)
     #define UT_NOTHROW noexcept
   #else
     #define UT_THROW(exception) throw (exception)
     #define UT_NOTHROW throw()
-  #endif
-#else
-  #define UT_THROW(exception)
-  #ifdef __clang__
-    #define UT_NOTHROW throw()
-  #else
-    #define UT_NOTHROW
   #endif
 #endif
 
@@ -181,7 +178,7 @@
 #define NULLPTR nullptr
 #else
 #define _override
-#define NULLPTR NULL
+#define NULLPTR 0
 #endif
 
 /* Visual C++ 11.0+ (2012+) supports the override keyword on destructors */
