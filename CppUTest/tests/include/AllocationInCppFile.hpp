@@ -14,7 +14,7 @@ char* newArrayAllocationWithoutMacro();
 class ClassThatThrowsAnExceptionInTheConstructor
 {
 public:
-    CPPUTEST_NORETURN ClassThatThrowsAnExceptionInTheConstructor();
+    [[noreturn]] ClassThatThrowsAnExceptionInTheConstructor();
 };
 
 #endif

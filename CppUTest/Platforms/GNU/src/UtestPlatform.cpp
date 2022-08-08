@@ -166,7 +166,7 @@ static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), v
     return 0;
 }
 
- CPPUTEST_NORETURN static void PlatformSpecificLongJmpImplementation()
+ [[noreturn]] static void PlatformSpecificLongJmpImplementation()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);

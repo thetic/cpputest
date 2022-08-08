@@ -49,14 +49,6 @@
  */
 
 
-#if defined(__cplusplus) && (__cplusplus >= 201100)
-  #define CPPUTEST_NORETURN [[noreturn]]
-#elif defined(__has_attribute) && __has_attribute(noreturn)
-  #define CPPUTEST_NORETURN __attribute__((noreturn))
-#else
-  #define CPPUTEST_NORETURN
-#endif
-
 #if defined(__has_attribute) && __has_attribute(format)
   #if defined(__MINGW32__)
     #define CPPUTEST_PRINTF_FORMAT(format_parameter, other_parameters) \
