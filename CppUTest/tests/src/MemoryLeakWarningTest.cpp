@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "DummyMemoryLeakDetector.h"
+#include "DummyMemoryLeakDetector.hpp"
 
 #include "CppUTest/MemoryLeakDetector.hpp"
 #include "CppUTest/MemoryLeakWarningPlugin.hpp"

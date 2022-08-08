@@ -1,5 +1,5 @@
 #include "AllocationInCFile.h"
-#include "AllocationInCppFile.h"
+#include "AllocationInCppFile.hpp"
 
 #include "CppUTest/MemoryLeakDetector.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"

@@ -35,9 +35,9 @@ add_executable(CppUTestTests
     src/UtestPlatformTest.cpp
     src/UtestTest.cpp
     include/AllocationInCFile.h
-    include/AllocationInCppFile.h
+    include/AllocationInCppFile.hpp
     include/AllocLetTestFree.h
-    include/DummyMemoryLeakDetector.h
+    include/DummyMemoryLeakDetector.hpp
 )
 
 target_include_directories(CppUTestTests PUBLIC include)

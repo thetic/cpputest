@@ -2,7 +2,7 @@
  * It is used simulating the use of the memory leak detector on production code in C++
  */
 #undef new
-#include "AllocationInCppFile.h"
+#include "AllocationInCppFile.hpp"
 
 char* newAllocation()
 {
