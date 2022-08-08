@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "EventDispatcher.h"
+#include "EventDispatcher.hpp"
 using namespace std;
 
 EventDispatcher::EventDispatcher()

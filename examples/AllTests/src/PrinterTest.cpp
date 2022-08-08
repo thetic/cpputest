@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Printer.h"
-#include "MockPrinter.h"
+#include "Printer.hpp"
+#include "MockPrinter.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 

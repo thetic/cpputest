@@ -56,5 +56,3 @@ int main(int ac, char** av)
     TestRegistry::getCurrentRegistry()->installPlugin(&ieee754Plugin);
     return CommandLineTestRunner::RunAllTests(ac, av);
 }
-
-#include "AllTests.h"

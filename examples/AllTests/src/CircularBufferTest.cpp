@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "MockPrinter.h"
-#include "CircularBuffer.h"
+#include "MockPrinter.hpp"
+
+#include "CircularBuffer.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 
