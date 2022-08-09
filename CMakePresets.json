@@ -35,6 +35,22 @@
       }
     },
     {
+      "name": "ubsan",
+      "inherits": ["clang"],
+      "environment": {
+        "CFLAGS": "-fsanitize=undefined",
+        "CXXFLAGS": "-fsanitize=undefined"
+      }
+    },
+    {
+      "name": "asan",
+      "inherits": ["clang"],
+      "environment": {
+        "CFLAGS": "-fsanitize=address -fno-omit-frame-pointer",
+        "CXXFLAGS": "-fsanitize=address -fno-omit-frame-pointer"
+      }
+    },
+    {
       "name": "gnu-arm-embedded",
       "inherits": ["defaults"],
       "cacheVariables": {

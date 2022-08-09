@@ -153,8 +153,6 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin*
 int (*PlatformSpecificFork)(void) = PlatformSpecificForkImplementation;
 int (*PlatformSpecificWaitPid)(int, int*, int) = PlatformSpecificWaitPidImplementation;
 
-extern "C" {
-
 static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
@@ -166,7 +164,7 @@ static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), v
     return 0;
 }
 
- [[noreturn]] static void PlatformSpecificLongJmpImplementation()
+[[noreturn]] static void PlatformSpecificLongJmpImplementation()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
@@ -226,27 +224,27 @@ int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
 {
 #if defined(_WIN32) && defined(MINGW_HAS_SECURE_API)
-  FILE* file;
-   fopen_s(&file, filename, flag);
-   return file;
+    FILE* file;
+    fopen_s(&file, filename, flag);
+    return file;
 #else
-   return fopen(filename, flag);
+    return fopen(filename, flag);
 #endif
 }
 
 static void PlatformSpecificFPutsImplementation(const char* str, PlatformSpecificFile file)
 {
-   fputs(str, (FILE*)file);
+    fputs(str, (FILE*)file);
 }
 
 static void PlatformSpecificFCloseImplementation(PlatformSpecificFile file)
 {
-   fclose((FILE*)file);
+    fclose((FILE*)file);
 }
 
 static void PlatformSpecificFlushImplementation()
 {
-  fflush(stdout);
+    fflush(stdout);
 }
 
 PlatformSpecificFile (*PlatformSpecificFOpen)(const char*, const char*) = PlatformSpecificFOpenImplementation;
@@ -339,4 +337,4 @@ void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = PThreadMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = PThreadMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = PThreadMutexDestroy;
 
-}
+

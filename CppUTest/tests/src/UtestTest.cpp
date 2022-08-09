@@ -347,7 +347,13 @@ IGNORE_TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest) {}
 
 #else
 
-#if !CPPUTEST_SANITIZE_ADDRESS
+#if defined(__has_feature)
+#if __has_feature(address_sanitizer) || __has_feature(undefined_behavior_sanitizer)
+#define SANITIZING
+#endif
+#endif
+
+#ifndef SANITIZING
 
 TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
 {

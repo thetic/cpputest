@@ -31,6 +31,8 @@
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
+#include <csignal>
+
 #if defined(__GNUC__) && __GNUC__ >= 11
 # define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
@@ -172,8 +174,7 @@ UtestShell::~UtestShell()
 
 static void defaultCrashMethod()
 {
-    UtestShell* ptr = (UtestShell*) nullptr;
-    ptr->countTests();
+    std::raise(SIGSEGV);
 }
 
 #ifdef NEEDS_DISABLE_NULL_WARNING
