@@ -58,6 +58,8 @@ target_compile_definitions(CppUTest
         "CPPUTEST_HAVE_FENV=$<BOOL:${HAVE_FENV}>"
 )
 
+target_compile_features(CppUTest PUBLIC cxx_std_11)
+
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 
 add_subdirectory(Platforms)
