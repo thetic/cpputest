@@ -1,25 +1,17 @@
-#include <stdlib.h>
-#include "CppUTest/TestHarness.h"
-#undef malloc
-#undef free
-#undef calloc
-#undef realloc
-#undef strdup
-#undef strndup
-
-#include <stdio.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <string.h>
-#include <math.h>
-#include <float.h>
-#include <time.h>
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 #include <windows.h>
 #include <mmsystem.h>
 
-#include <setjmp.h>
+#include <cfloat>
+#include <cmath>
+#include <csetjmp>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 
 #ifdef STDC_WANT_SECURE_LIB
     #define FOPEN(fp, filename, flag) fopen_s((fp), (filename), (flag))
