@@ -31,17 +31,8 @@
 
 #define CHECK_TEST_FAILS_PROPER_WITH_TEXT(text) fixture.checkTestFailsWithProperTestLocation(text, __FILE__, __LINE__)
 
-// Mainly this is for Visual C++, but we'll define it for any system that has the same behavior
-// of a 32-bit long on a 64-bit system
-#if defined(CPPUTEST_64BIT) && defined(CPPUTEST_64BIT_32BIT_LONGS)
-// Forcing the value to be unsigned long long means that there's no sign-extension to perform
-#define to_void_pointer(x) ((void *)x##ULL)
-#define to_func_pointer(x) ((void (*)())x##ULL)
-#else
-// Probably not needed, but let's guarantee that the value is an unsigned long
-#define to_void_pointer(x) ((void *)x##UL)
-#define to_func_pointer(x) ((void (*)())x##UL)
-#endif
+#define to_void_pointer(x) ((void *)UINTMAX_C(x))
+#define to_func_pointer(x) ((void (*)())UINTMAX_C(x))
 
 TEST_GROUP(UnitTestMacros)
 {

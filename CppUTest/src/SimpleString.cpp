@@ -773,17 +773,11 @@ SimpleString BracketsFormattedHexString(SimpleString hexString)
     return SimpleString("(0x") + hexString + ")" ;
 }
 
-/*
- * ARM compiler has only partial support for C++11.
- * Specifically nullptr_t is not officially supported
- */
-#if __cplusplus > 199711L && !defined __arm__
 SimpleString StringFrom(const std::nullptr_t value)
 {
     (void) value;
     return "(null)";
 }
-#endif
 
 SimpleString StringFrom(long long value)
 {

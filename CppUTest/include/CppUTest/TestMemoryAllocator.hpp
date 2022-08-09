@@ -28,8 +28,6 @@
 #ifndef D_TestMemoryAllocator_h
 #define D_TestMemoryAllocator_h
 
-#include "CppUTest/CppUTestConfig.hpp"
-
 #include <cstddef>
 
 struct MemoryLeakNode;

@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/TestFilter.hpp"
-#include "CppUTest/CppUTestConfig.hpp"
 
 TestFilter::TestFilter() : strictMatching_(false), invertMatching_(false), next_(nullptr)
 {

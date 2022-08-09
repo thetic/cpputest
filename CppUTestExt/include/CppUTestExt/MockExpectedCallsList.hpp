@@ -28,7 +28,6 @@
 #ifndef D_MockExpectedCallsList_h
 #define D_MockExpectedCallsList_h
 
-#include "CppUTest/CppUTestConfig.hpp"
 #include "CppUTest/SimpleString.hpp"
 
 class MockCheckedExpectedCall;

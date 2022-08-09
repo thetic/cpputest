@@ -38,8 +38,6 @@
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
-#include "CppUTest/CppUTestConfig.hpp"
-
 #include <cstdarg>
 #include <cstddef>
 #include <string>
@@ -213,7 +211,20 @@ SimpleString HexStringFrom(const void* value);
 SimpleString HexStringFrom(void (*value)());
 SimpleString StringFrom(double value, int precision = 6);
 SimpleString StringFrom(const SimpleString& other);
-CPPUTEST_PRINTF_FORMAT(1, 2) SimpleString StringFromFormat(const char* format, ...);
+SimpleString StringFrom(const std::nullptr_t value);
+SimpleString StringFrom(const std::string& other);
+
+#ifdef __has_attribute
+#if __has_attribute(format)
+#ifdef __MINGW_PRINTF_FORMAT
+__attribute__((format(__MINGW_PRINTF_FORMAT, 1, 2)))
+#else
+__attribute__((format(printf, 1, 2)))
+#endif
+#endif
+#endif
+SimpleString StringFromFormat(const char* format, ...);
+
 SimpleString VStringFromFormat(const char* format, va_list args);
 SimpleString StringFromBinary(const unsigned char* value, size_t size);
 SimpleString StringFromBinaryOrNull(const unsigned char* value, size_t size);
@@ -230,15 +241,5 @@ SimpleString BracketsFormattedHexStringFrom(unsigned long long value);
 SimpleString BracketsFormattedHexStringFrom(signed char value);
 SimpleString BracketsFormattedHexString(SimpleString hexString);
 SimpleString PrintableStringFromOrNull(const char * expected);
-
-/*
- * ARM compiler has only partial support for C++11.
- * Specifically nullptr_t is not officially supported
- */
-#if __cplusplus > 199711L && !defined __arm__
-SimpleString StringFrom(const std::nullptr_t value);
-#endif
-
-SimpleString StringFrom(const std::string& other);
 
 #endif

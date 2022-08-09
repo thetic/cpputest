@@ -34,7 +34,6 @@ jobs:
           - windows-latest
           - macos-latest
         cxx_standard:
-          - 98
           - 11
           - 14
           - 17

@@ -32,6 +32,13 @@
 #include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
+#if defined(__LP64__) || defined(_LP64) || (defined(__WORDSIZE) && (__WORDSIZE == 64 )) || defined(__x86_64) || defined(_WIN64)
+#define CPPUTEST_64BIT
+#if defined(_WIN64)
+#define CPPUTEST_64BIT_32BIT_LONGS
+#endif
+#endif
+
 class JustUseNewStringAllocator : public TestMemoryAllocator
 {
 public:
@@ -689,15 +696,11 @@ TEST(SimpleString, Sizes)
     STRCMP_EQUAL("10", StringFrom((int) size).asCharString());
 }
 
-#if __cplusplus > 199711L && !defined __arm__
-
 TEST(SimpleString, nullptr_type)
 {
     SimpleString s(StringFrom(nullptr));
     STRCMP_EQUAL("(null)", s.asCharString());
 }
-
-#endif
 
 TEST(SimpleString, HexStrings)
 {
@@ -1215,20 +1218,17 @@ TEST(SimpleString, BracketsFormattedHexStringFromForUnsignedLong)
 	STRCMP_EQUAL("(0x1)", BracketsFormattedHexStringFrom(value).asCharString());
 }
 
-#ifdef CPPUTEST_16BIT_INTS
+/* Handling of systems with a 16-bit int-width. */
 TEST(SimpleString, BracketsFormattedHexStringFromForInt)
 {
 	int value = -1;
 
+#if (INT_MAX == INT16_MAX)
 	STRCMP_EQUAL("(0xffff)", BracketsFormattedHexStringFrom(value).asCharString());
-}
 #else
-TEST(SimpleString, BracketsFormattedHexStringFromForInt)
-{
-	int value = -1;
 	STRCMP_EQUAL("(0xffffffff)", BracketsFormattedHexStringFrom(value).asCharString());
-}
 #endif
+}
 
 TEST(SimpleString, BracketsFormattedHexStringFromForLong)
 {

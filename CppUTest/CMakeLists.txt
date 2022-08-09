@@ -1,7 +1,6 @@
 add_library(CppUTest
     include/CppUTest/CommandLineArguments.hpp
     include/CppUTest/CommandLineTestRunner.hpp
-    include/CppUTest/CppUTestConfig.hpp
     include/CppUTest/JUnitTestOutput.hpp
     include/CppUTest/MemoryLeakDetector.hpp
     include/CppUTest/MemoryLeakWarningPlugin.hpp

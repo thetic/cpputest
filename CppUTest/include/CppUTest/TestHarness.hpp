@@ -28,8 +28,6 @@
 #ifndef D_TestHarness_h
 #define D_TestHarness_h
 
-#include "CppUTest/CppUTestConfig.hpp"
-
 /* original value was 9973 which works well with large programs. Now set to smaller since it takes
  * a lot of memory in embedded apps. Change it if you experience the memory leak detector to be slow.
  */

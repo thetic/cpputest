@@ -29,7 +29,6 @@
 #define D_SimpleStringInternalCache_h
 
 #include "CppUTest/TestMemoryAllocator.hpp"
-#include "CppUTest/CppUTestConfig.hpp"
 
 #include <cstddef>
 

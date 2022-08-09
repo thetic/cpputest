@@ -28,7 +28,6 @@
 #ifndef D_MemoryLeakDetector_h
 #define D_MemoryLeakDetector_h
 
-#include "CppUTest/CppUTestConfig.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 #include <cstddef>
@@ -63,7 +62,18 @@ struct SimpleStringBuffer
 
     SimpleStringBuffer();
     void clear();
-    CPPUTEST_PRINTF_FORMAT(2, 3) void add(const char* format, ...);
+
+    #ifdef __has_attribute
+    #if __has_attribute(format)
+    #ifdef __MINGW_PRINTF_FORMAT
+    __attribute__((format(__MINGW_PRINTF_FORMAT, 2, 3)))
+    #else
+    __attribute__((format(printf, 2, 3)))
+    #endif
+    #endif
+    #endif
+     void add(const char* format, ...);
+
     void addMemoryDump(const void* memory, size_t memorySize);
 
     char* toString();

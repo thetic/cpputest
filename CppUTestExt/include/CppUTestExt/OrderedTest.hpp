@@ -28,7 +28,6 @@
 #ifndef D_OrderedTest_h
 #define D_OrderedTest_h
 
-#include "CppUTest/CppUTestConfig.hpp"
 #include "CppUTest/Utest.hpp"
 
 class OrderedTestShell : public UtestShell

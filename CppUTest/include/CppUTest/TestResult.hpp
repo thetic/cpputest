@@ -34,8 +34,6 @@
 #ifndef D_TestResult_h
 #define D_TestResult_h
 
-#include "CppUTest/CppUTestConfig.hpp"
-
 #include <cstddef>
 
 class TestFailure;
@@ -46,7 +44,7 @@ class TestResult
 {
 public:
     TestResult(TestOutput&);
-    DEFAULT_COPY_CONSTRUCTOR(TestResult)
+    TestResult(TestResult const &) = default;
     virtual ~TestResult();
 
     virtual void testsStarted();

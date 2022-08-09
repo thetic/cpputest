@@ -28,7 +28,6 @@
 #ifndef D_MockNamedValue_h
 #define D_MockNamedValue_h
 
-#include "CppUTest/CppUTestConfig.hpp"
 #include "CppUTest/SimpleString.hpp"
 
 /*
@@ -102,7 +101,7 @@ class MockNamedValue
 {
 public:
     MockNamedValue(const SimpleString& name);
-    DEFAULT_COPY_CONSTRUCTOR(MockNamedValue)
+    MockNamedValue(MockNamedValue const &) = default;
     virtual ~MockNamedValue();
 
     virtual void setValue(bool value);
