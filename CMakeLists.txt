@@ -21,7 +21,6 @@ cmake_dependent_option(CPPUTEST_BUILD_TESTING
     "Build CppUTest tests"
     ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING" OFF
 )
-option(CPPUTEST_NO_EXCEPTIONS "Disable use of exceptions")
 cmake_dependent_option(CPPUTEST_EXAMPLES
     "Build examples"
     ${PROJECT_IS_TOP_LEVEL} "CPPUTEST_BUILD_TESTING" OFF

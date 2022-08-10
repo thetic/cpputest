@@ -47,18 +47,26 @@ target_include_directories(CppUTest PUBLIC include)
 
 include(CheckCXXSourceCompiles)
 check_cxx_source_compiles(
-    [[#include "fenv.h"
-    int main() {feclearexcept(FE_ALL_EXCEPT);}]]
-    HAVE_FENV
+    [[#include <cfenv>
+    int main() { feclearexcept(FE_ALL_EXCEPT); }]]
+    CPPUTEST_HAVE_FENV
+)
+check_cxx_source_compiles(
+    "int main() { throw 42; }"
+    CPPUTEST_HAVE_EXCEPTIONS
 )
 
 target_compile_definitions(CppUTest
     PUBLIC
-        "CPPUTEST_NO_EXCEPTIONS=$<BOOL:${CPPUTEST_NO_EXCEPTIONS}>"
-        "CPPUTEST_HAVE_FENV=$<BOOL:${HAVE_FENV}>"
+        "CPPUTEST_NO_EXCEPTIONS=$<NOT:$<BOOL:${CPPUTEST_HAVE_EXCEPTIONS}>>"
+        "CPPUTEST_HAVE_FENV=$<BOOL:${CPPUTEST_HAVE_FENV}>"
 )
 
-target_compile_features(CppUTest PUBLIC cxx_std_11)
+target_compile_features(CppUTest
+    PUBLIC
+        cxx_std_11
+        c_std_99
+)
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 

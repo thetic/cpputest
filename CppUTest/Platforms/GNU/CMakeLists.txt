@@ -12,7 +12,7 @@ check_cxx_symbol_exists(waitpid "sys/wait.h" HAVE_WAITPID)
 check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
 check_cxx_symbol_exists(localtime_s "time.h" HAVE_LOCALTIME_S)
 include(CheckStructHasMember)
-check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC)
+check_struct_has_member("struct timespec" tv_sec time.h CPPUTEST_HAVE_STRUCT_TIMESPEC)
 
 # The tests need to know these too:
 set(CPPUTEST_HAVE_FORK ${HAVE_FORK} CACHE INTERNAL "")
@@ -29,6 +29,6 @@ target_compile_definitions(CppUTest
         $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
         $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
         $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
-        $<$<AND:$<BOOL:${MINGW}>,$<BOOL:${HAVE_STRUCT_TIMESPEC}>>:_TIMESPEC_DEFINED>
+        $<$<AND:$<BOOL:${MINGW}>,$<BOOL:${CPPUTEST_HAVE_STRUCT_TIMESPEC}>>:_TIMESPEC_DEFINED>
         $<$<AND:$<BOOL:${WIN32}>,$<BOOL:${HAVE_LOCALTIME_S}>>:MINGW_HAS_SECURE_API>
 )

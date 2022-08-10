@@ -83,8 +83,7 @@
       "name": "no-exceptions",
       "inherits": ["gcc"],
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS_INIT": "-fno-rtti -fno-exceptions",
-        "CPPUTEST_NO_EXCEPTIONS": true
+        "CMAKE_CXX_FLAGS_INIT": "-fno-rtti -fno-exceptions"
       }
     },
     {
