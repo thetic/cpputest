@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTestExt/MockSupport.hpp"
 #include "CppUTestExt/MockSupportPlugin.hpp"
 
+#include "CppUTestExt/MockSupport.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 class MockSupportPluginReporter : public MockFailureReporter

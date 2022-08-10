@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 
 #include <stdlib.h>
 #include <time.h>
@@ -260,13 +261,6 @@ void (*PlatformSpecificFree)(void* memory) = free;
 void* (*PlatformSpecificMemCpy)(void*, const void*, size_t) = memcpy;
 void* (*PlatformSpecificMemset)(void*, int, size_t) = memset;
 
-/* GCC 4.9.x introduces -Wfloat-conversion, which causes a warning / error
- * in GCC's own (macro) implementation of isnan() and isinf().
- */
-#if defined(__GNUC__) && (__GNUC__ >= 5 || (__GNUC__ == 4 && __GNUC_MINOR__ > 8))
-#pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif
-
 static int IsNanImplementation(double d)
 {
     return isnan(d);
@@ -297,44 +291,36 @@ static PlatformSpecificMutex PThreadMutexCreate(void)
 
 }
 
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
 static void PThreadMutexLock(PlatformSpecificMutex mtx)
 {
-    pthread_mutex_lock((pthread_mutex_t *)mtx);
-}
-#else
-static void PThreadMutexLock(PlatformSpecificMutex)
-{
-}
-#endif
-
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
+    pthread_mutex_lock((pthread_mutex_t *)mtx);
+#else
+    (void)mtx;
+#endif
+}
+
 static void PThreadMutexUnlock(PlatformSpecificMutex mtx)
 {
-    pthread_mutex_unlock((pthread_mutex_t *)mtx);
-}
-#else
-static void PThreadMutexUnlock(PlatformSpecificMutex)
-{
-}
-#endif
-
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
+    pthread_mutex_unlock((pthread_mutex_t *)mtx);
+#else
+    (void)mtx;
+#endif
+}
+
 static void PThreadMutexDestroy(PlatformSpecificMutex mtx)
 {
+#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
     pthread_mutex_t *mutex = (pthread_mutex_t *)mtx;
     pthread_mutex_destroy(mutex);
     delete mutex;
-}
 #else
-static void PThreadMutexDestroy(PlatformSpecificMutex)
-{
-}
+    (void)mtx;
 #endif
+}
 
 PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = PThreadMutexCreate;
 void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = PThreadMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = PThreadMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = PThreadMutexDestroy;
-
-

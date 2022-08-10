@@ -134,20 +134,20 @@ public:
     }
 };
 
-extern "C" {
-    static long millisTime = 0;
-    static const char* theTime = "";
 
-    static long MockGetPlatformSpecificTimeInMillis()
-    {
-        return millisTime;
-    }
+static long millisTime = 0;
+static const char* theTime = "";
 
-    static const char* MockGetPlatformSpecificTimeString()
-    {
-        return theTime;
-    }
+static long MockGetPlatformSpecificTimeInMillis()
+{
+    return millisTime;
 }
+
+static const char* MockGetPlatformSpecificTimeString()
+{
+    return theTime;
+}
+
 
 class JUnitTestOutputTestRunner
 {
@@ -310,24 +310,23 @@ public:
     }
 };
 
-extern "C" {
-    static FileSystemForJUnitTestOutputTests fileSystem;
+static FileSystemForJUnitTestOutputTests fileSystem;
 
-    static PlatformSpecificFile mockFOpen(const char* filename, const char*)
-    {
-        return fileSystem.openFile(filename);
-    }
-
-    static void mockFPuts(const char* str, PlatformSpecificFile file)
-    {
-        ((FileForJUnitOutputTests*)file)->write(str);
-    }
-
-    static void mockFClose(PlatformSpecificFile file)
-    {
-        ((FileForJUnitOutputTests*)file)->close();
-    }
+static PlatformSpecificFile mockFOpen(const char* filename, const char*)
+{
+    return fileSystem.openFile(filename);
 }
+
+static void mockFPuts(const char* str, PlatformSpecificFile file)
+{
+    ((FileForJUnitOutputTests*)file)->write(str);
+}
+
+static void mockFClose(PlatformSpecificFile file)
+{
+    ((FileForJUnitOutputTests*)file)->close();
+}
+
 
 TEST_GROUP(JUnitOutputTest)
 {

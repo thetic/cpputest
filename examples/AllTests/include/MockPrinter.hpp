@@ -48,16 +48,17 @@ public:
     explicit MockPrinter()
     {
     }
-    virtual ~MockPrinter()
+
+    virtual ~MockPrinter() override
     {
     }
 
-    virtual void Print(const char* s)
+    virtual void Print(const char* s) override
     {
         savedOutput.append(s);
     }
 
-    virtual void Print(long int value)
+    void Print(long int value) override
     {
         SimpleString buffer;
         buffer = StringFromFormat("%ld", value);

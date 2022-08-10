@@ -37,7 +37,7 @@
 #undef strdup
 #undef strndup
 #define  far  // eliminate "meaningless type qualifier" warning
-extern "C" {
+
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -45,7 +45,7 @@ extern "C" {
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
-}
+
 #undef far
 #include "CppUTest/PlatformSpecificFunctions.h"
 
@@ -71,8 +71,6 @@ static void C2000RunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, TestResult*) =
     C2000RunTestInASeperateProcess;
-
-extern "C" {
 
 static int C2000SetJmp(void (*function) (void* data), void* data)
 {
@@ -126,9 +124,9 @@ static const char* TimeStringImplementation()
 long (*GetPlatformSpecificTimeInMillis)() = C2000TimeInMillis;
 const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
-extern int vsnprintf(char*, size_t, const char*, va_list); // not std::vsnprintf()
+int vsnprintf(char*, size_t, const char*, va_list); // not std::vsnprintf()
 
-extern int (*PlatformSpecificVSNprintf)(char *, size_t, const char*, va_list) = vsnprintf;
+int (*PlatformSpecificVSNprintf)(char *, size_t, const char*, va_list) = vsnprintf;
 
 PlatformSpecificFile C2000FOpen(const char* filename, const char* flag)
 {
@@ -137,12 +135,12 @@ PlatformSpecificFile C2000FOpen(const char* filename, const char* flag)
 
 static void C2000FPuts(const char* str, PlatformSpecificFile file)
 {
-   fputs(str, (FILE*)file);
+    fputs(str, (FILE*)file);
 }
 
 static void C2000FClose(PlatformSpecificFile file)
 {
-   fclose((FILE*)file);
+    fclose((FILE*)file);
 }
 
 PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = C2000FOpen;
@@ -156,9 +154,9 @@ static int CL2000Putchar(int c)
         buffer[idx] = (char) c;
         idx++;
         /* "buffer[idx]" instead of "c" eliminates "never used" warning */
- 		return (buffer[idx]);
+        return (buffer[idx]);
     }
-    else {
+else {
         return EOF;
     }
 #else
@@ -168,15 +166,15 @@ static int CL2000Putchar(int c)
 
 static void CL2000Flush()
 {
-  fflush(stdout);
+    fflush(stdout);
 }
 
-extern int (*PlatformSpecificPutchar)(int c) = CL2000Putchar;
-extern void (*PlatformSpecificFlush)(void) = CL2000Flush;
+int (*PlatformSpecificPutchar)(int c) = CL2000Putchar;
+void (*PlatformSpecificFlush)(void) = CL2000Flush;
 
 static void* C2000Malloc(size_t size)
 {
-   return (void*)malloc((unsigned long)size);
+    return (void*)malloc((unsigned long)size);
 }
 
 static void* C2000Realloc (void* memory, size_t size)
@@ -253,4 +251,4 @@ void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
 
-}
+

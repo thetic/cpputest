@@ -71,8 +71,6 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin*
 int (*PlatformSpecificFork)(void) = DummyPlatformSpecificFork;
 int (*PlatformSpecificWaitPid)(int, int*, int) = DummyPlatformSpecificWaitPid;
 
-extern "C" {
-
 static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
@@ -202,4 +200,3 @@ void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
 void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
-}

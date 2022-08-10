@@ -31,9 +31,7 @@
 
 #if CPPUTEST_HAVE_FENV
 
-extern "C" {
-    #include <fenv.h>
-}
+#include <cfenv>
 
 #define IEEE754_CHECK_CLEAR(test, result, flag) ieee754Check(test, result, flag, #flag)
 

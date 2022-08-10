@@ -666,9 +666,7 @@ TEST(SimpleString, Doubles)
     STRCMP_EQUAL("1.2", s.asCharString());
 }
 
-extern "C" {
-    static int alwaysTrue(double) { return true; }
-}
+static int alwaysTrue(double) { return true; }
 
 TEST(SimpleString, NaN)
 {

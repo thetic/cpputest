@@ -74,8 +74,6 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin*
 int (*PlatformSpecificFork)(void) = DummyPlatformSpecificFork;
 int (*PlatformSpecificWaitPid)(int, int*, int) = DummyPlatformSpecificWaitPid;
 
-extern "C" {
-
 static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
@@ -128,7 +126,7 @@ int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_
 
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
 {
-   return fopen(filename, flag);
+    return fopen(filename, flag);
 }
 
 static void PlatformSpecificFPutsImplementation(const char* str, PlatformSpecificFile file)
@@ -203,5 +201,3 @@ PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = DummyMutexCreate;
 void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
-
-}

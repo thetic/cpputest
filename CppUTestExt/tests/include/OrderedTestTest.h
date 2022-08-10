@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-extern int orderedTestFixtureCWrapper(void);
+int orderedTestFixtureCWrapper(void);
 
 #ifdef __cplusplus
 }

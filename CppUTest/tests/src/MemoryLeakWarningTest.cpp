@@ -256,7 +256,6 @@ TEST(MemoryLeakWarningGlobalDetectorTest, MemoryWarningPluginCanBeSetToDestroyTh
 
 TEST(MemoryLeakWarningGlobalDetectorTest, turnOffNewOverloadsNoThrowCausesNoAdditionalLeaks)
 {
-#undef new
     size_t storedAmountOfLeaks = detector->totalMemoryLeaks(mem_leak_period_all);
 
     char* nonMemoryNoThrow = new (std::nothrow) char;

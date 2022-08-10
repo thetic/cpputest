@@ -31,6 +31,12 @@
 #include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+#include <unistd.h>
+#include <cerrno>
+#include <csignal>
+#endif
+
 // This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized
 static const SimpleString str1("abc");
 static const SimpleString str2("def");
@@ -66,37 +72,29 @@ static void exitNonZeroFunction_()
     exit(1);
 }
 
-#include <errno.h>
-
 static int waitpid_while_debugging_stub_number_called = 0;
 static int waitpid_while_debugging_stub_forced_failures = 0;
 
-extern "C" {
+static int (*original_waitpid)(int, int*, int) = nullptr;
 
-    static int (*original_waitpid)(int, int*, int) = nullptr;
+static int fork_failed_stub(void) { return -1; }
 
-    static int fork_failed_stub(void) { return -1; }
+static int waitpid_while_debugging_stub(int pid, int* status, int options)
+{
+    static int saved_status;
 
-    static int waitpid_while_debugging_stub(int pid, int* status, int options)
-    {
-        static int saved_status;
-
-        if (waitpid_while_debugging_stub_number_called++ < waitpid_while_debugging_stub_forced_failures) {
-            saved_status = *status;
-            errno=EINTR;
-            return -1;
-        }
-        else {
-            *status = saved_status;
-            return original_waitpid(pid, status, options);
-        }
+    if (waitpid_while_debugging_stub_number_called++ < waitpid_while_debugging_stub_forced_failures) {
+        saved_status = *status;
+        errno=EINTR;
+        return -1;
     }
-
-    static int waitpid_failed_stub(int, int*, int) { return -1; }
+else {
+        *status = saved_status;
+        return original_waitpid(pid, status, options);
+    }
 }
 
-#include <unistd.h>
-#include <signal.h>
+static int waitpid_failed_stub(int, int*, int) { return -1; }
 
 static void stoppedTestFunction_()
 {

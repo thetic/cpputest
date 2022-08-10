@@ -33,8 +33,6 @@ void freeAllocation(void* memory)
     free(memory);
 }
 
-#undef free
-
 void freeAllocationWithoutMacro(void* memory)
 {
     free(memory);

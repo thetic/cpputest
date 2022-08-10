@@ -76,8 +76,6 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, Test
 int (*PlatformSpecificFork)() = DummyPlatformSpecificFork;
 int (*PlatformSpecificWaitPid)(int, int*, int) = DummyPlatformSpecificWaitPid;
 
-extern "C" {
-
 static int DosSetJmp(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
@@ -130,12 +128,12 @@ PlatformSpecificFile DosFOpen(const char* filename, const char* flag)
 
 static void DosFPuts(const char* str, PlatformSpecificFile file)
 {
-   fputs(str, (FILE*)file);
+    fputs(str, (FILE*)file);
 }
 
 static void DosFClose(PlatformSpecificFile file)
 {
-   fclose((FILE*)file);
+    fclose((FILE*)file);
 }
 
 PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = DosFOpen;
@@ -149,15 +147,15 @@ static int DosPutchar(int c)
 
 static void DosFlush()
 {
-  fflush(stdout);
+    fflush(stdout);
 }
 
-extern int (*PlatformSpecificPutchar)(int c) = DosPutchar;
-extern void (*PlatformSpecificFlush)(void) = DosFlush;
+int (*PlatformSpecificPutchar)(int c) = DosPutchar;
+void (*PlatformSpecificFlush)(void) = DosFlush;
 
 static void* DosMalloc(size_t size)
 {
-   return malloc(size);
+    return malloc(size);
 }
 
 static void* DosRealloc (void* memory, size_t size)
@@ -239,4 +237,4 @@ void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
 
-}
+

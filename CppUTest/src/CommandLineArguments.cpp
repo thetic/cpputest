@@ -25,8 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/CommandLineArguments.hpp"
+
+#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
 CommandLineArguments::CommandLineArguments(int ac, const char *const *av) :

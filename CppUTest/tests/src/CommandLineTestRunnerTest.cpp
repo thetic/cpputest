@@ -298,12 +298,10 @@ TEST(CommandLineTestRunner, specificShuffleSeedIsPrintedVerbose)
     STRCMP_CONTAINS("shuffling enabled with seed: 2", text.asCharString());
 }
 
-extern "C" {
-    typedef PlatformSpecificFile (*FOpenFunc)(const char*, const char*);
-    typedef void (*FPutsFunc)(const char*, PlatformSpecificFile);
-    typedef void (*FCloseFunc)(PlatformSpecificFile);
-    typedef int (*PutcharFunc)(int);
-}
+typedef PlatformSpecificFile (*FOpenFunc)(const char*, const char*);
+typedef void (*FPutsFunc)(const char*, PlatformSpecificFile);
+typedef void (*FCloseFunc)(PlatformSpecificFile);
+typedef int (*PutcharFunc)(int);
 
 struct FakeOutput
 {
