@@ -61,12 +61,12 @@ TEST_GROUP(TestOrderedTest)
         OrderedTestShell::setOrderedTestHead(orderedTestCache);
     }
 
-    void InstallOrderedTest(OrderedTestShell& test, int level)
+    void InstallOrderedTest(OrderedTestShell & test, int level)
     {
         OrderedTestInstaller(test, "testgroup", "testname", __FILE__, __LINE__, level);
     }
 
-    void InstallNormalTest(UtestShell& test)
+    void InstallNormalTest(UtestShell & test)
     {
         TestInstaller(test, "testgroup", "testname", __FILE__, __LINE__);
     }
@@ -131,7 +131,7 @@ TEST(TestOrderedTest, MultipleOrderedTests)
     InstallNormalTest(normalTest3);
     InstallOrderedTest(orderedTest3, 7);
 
-    UtestShell * firstOrderedTest = firstTest()->getNext()->getNext()->getNext();
+    UtestShell* firstOrderedTest = firstTest()->getNext()->getNext()->getNext();
     CHECK(firstOrderedTest == &orderedTest2);
     CHECK(firstOrderedTest->getNext() == &orderedTest);
     CHECK(firstOrderedTest->getNext()->getNext() == &orderedTest3);
@@ -146,21 +146,22 @@ TEST(TestOrderedTest, MultipleOrderedTests2)
     CHECK(firstTest() == &orderedTest2);
     CHECK(secondTest() == &orderedTest3);
     CHECK(secondTest()->getNext() == &orderedTest);
-
 }
 
-class OrderedTestTestingFixture
-{
+class OrderedTestTestingFixture {
 public:
-    static void checkRun(int run) {
-        if(run != run_) {
+    static void checkRun(int run)
+    {
+        if (run != run_) {
             run_ = run;
             count_ = 0;
         }
     }
-    static int count(void) {
+    static int count(void)
+    {
         return count_++;
     }
+
 private:
     static int run_;
     static int count_;
@@ -169,13 +170,12 @@ private:
 int OrderedTestTestingFixture::run_ = 0;
 int OrderedTestTestingFixture::count_ = 0;
 
-TEST_GROUP(TestOrderedTestMacros)
-{
-    void setup() override
-    {
+TEST_GROUP(TestOrderedTestMacros) {
+    void setup() override {
         OrderedTestTestingFixture::checkRun(TestRegistry::getCurrentRegistry()->getCurrentRepetition());
-    }
-};
+}
+}
+;
 
 TEST(TestOrderedTestMacros, NormalTest)
 {
@@ -234,10 +234,10 @@ TEST_ORDERED(TestOrderedTestMacros, Test8, 8)
     CHECK(OrderedTestTestingFixture::count() == 10);
 }
 
-int orderedTestFixtureCWrapper(void) {
+int orderedTestFixtureCWrapper(void)
+{
     return OrderedTestTestingFixture::count();
 }
-
 
 TEST_ORDERED_C_WRAPPER(TestOrderedTestMacros, Test11, 11)
 

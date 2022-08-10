@@ -32,8 +32,7 @@
 
 #include <cstddef>
 
-enum MemLeakPeriod
-{
+enum MemLeakPeriod {
     mem_leak_period_all,
     mem_leak_period_disabled,
     mem_leak_period_enabled,
@@ -43,36 +42,34 @@ enum MemLeakPeriod
 class TestMemoryAllocator;
 class SimpleMutex;
 
-class MemoryLeakFailure
-{
+class MemoryLeakFailure {
 public:
     virtual ~MemoryLeakFailure()
     {
     }
 
-    virtual void fail(char* fail_string)=0;
+    virtual void fail(char* fail_string) = 0;
 };
 
-struct SimpleStringBuffer
-{
-    enum
-    {
+struct SimpleStringBuffer {
+    enum {
         SIMPLE_STRING_BUFFER_LEN = 4096
     };
 
     SimpleStringBuffer();
     void clear();
 
-    #ifdef __has_attribute
-    #if __has_attribute(format)
-    #ifdef __MINGW_PRINTF_FORMAT
+#ifdef __has_attribute
+#if __has_attribute(format)
+#ifdef __MINGW_PRINTF_FORMAT
     __attribute__((format(__MINGW_PRINTF_FORMAT, 2, 3)))
-    #else
+#else
     __attribute__((format(printf, 2, 3)))
-    #endif
-    #endif
-    #endif
-     void add(const char* format, ...);
+#endif
+#endif
+#endif
+    void
+    add(const char* format, ...);
 
     void addMemoryDump(const void* memory, size_t memorySize);
 
@@ -81,6 +78,7 @@ struct SimpleStringBuffer
     void setWriteLimit(size_t write_limit);
     void resetWriteLimit();
     bool reachedItsCapacity();
+
 private:
     char buffer_[SIMPLE_STRING_BUFFER_LEN];
     size_t positions_filled_;
@@ -89,8 +87,7 @@ private:
 
 struct MemoryLeakDetectorNode;
 
-class MemoryLeakOutputStringBuffer
-{
+class MemoryLeakOutputStringBuffer {
 public:
     MemoryLeakOutputStringBuffer();
 
@@ -117,22 +114,28 @@ private:
     void addErrorMessageForTooMuchLeaks();
 
 private:
-
     size_t total_leaks_;
     bool giveWarningOnUsingMalloc_;
 
     void reportFailure(const char* message, const char* allocFile,
-            size_t allocLine, size_t allocSize,
-            TestMemoryAllocator* allocAllocator, const char* freeFile,
-            size_t freeLine, TestMemoryAllocator* freeAllocator, MemoryLeakFailure* reporter);
+        size_t allocLine, size_t allocSize,
+        TestMemoryAllocator* allocAllocator, const char* freeFile,
+        size_t freeLine, TestMemoryAllocator* freeAllocator, MemoryLeakFailure* reporter);
 
     SimpleStringBuffer outputBuffer_;
 };
 
-struct MemoryLeakDetectorNode
-{
-    MemoryLeakDetectorNode() :
-        size_(0), number_(0), memory_(nullptr), file_(nullptr), line_(0), allocator_(nullptr), period_(mem_leak_period_enabled), allocation_stage_(0), next_(nullptr)
+struct MemoryLeakDetectorNode {
+    MemoryLeakDetectorNode()
+        : size_(0)
+        , number_(0)
+        , memory_(nullptr)
+        , file_(nullptr)
+        , line_(0)
+        , allocator_(nullptr)
+        , period_(mem_leak_period_enabled)
+        , allocation_stage_(0)
+        , next_(nullptr)
     {
     }
 
@@ -152,11 +155,11 @@ private:
     MemoryLeakDetectorNode* next_;
 };
 
-struct MemoryLeakDetectorList
-{
-    MemoryLeakDetectorList() :
-        head_(nullptr)
-    {}
+struct MemoryLeakDetectorList {
+    MemoryLeakDetectorList()
+        : head_(nullptr)
+    {
+    }
 
     void addNewNode(MemoryLeakDetectorNode* node);
     MemoryLeakDetectorNode* retrieveNode(char* memory);
@@ -181,8 +184,7 @@ private:
     MemoryLeakDetectorNode* head_;
 };
 
-struct MemoryLeakDetectorTable
-{
+struct MemoryLeakDetectorTable {
     void clearAllAccounting(MemLeakPeriod period);
 
     void addNewNode(MemoryLeakDetectorNode* node);
@@ -199,15 +201,13 @@ struct MemoryLeakDetectorTable
 private:
     unsigned long hash(char* memory);
 
-    enum
-    {
+    enum {
         hash_prime = MEMORY_LEAK_HASH_TABLE_SIZE
     };
     MemoryLeakDetectorList table_[hash_prime];
 };
 
-class MemoryLeakDetector
-{
+class MemoryLeakDetector {
 public:
     MemoryLeakDetector(MemoryLeakFailure* reporter);
     virtual ~MemoryLeakDetector();
@@ -232,7 +232,7 @@ public:
 
     char* allocMemory(TestMemoryAllocator* allocator, size_t size, bool allocatNodesSeperately = false);
     char* allocMemory(TestMemoryAllocator* allocator, size_t size,
-            const char* file, size_t line, bool allocatNodesSeperately = false);
+        const char* file, size_t line, bool allocatNodesSeperately = false);
     void deallocMemory(TestMemoryAllocator* allocator, void* memory, bool allocatNodesSeperately = false);
     void deallocMemory(TestMemoryAllocator* allocator, void* memory, const char* file, size_t line, bool allocatNodesSeperately = false);
     void deallocAllMemoryInCurrentAllocationStage();
@@ -240,8 +240,7 @@ public:
 
     void invalidateMemory(char* memory);
     void removeMemoryLeakInformationWithoutCheckingOrDeallocatingTheMemoryButDeallocatingTheAccountInformation(TestMemoryAllocator* allocator, void* memory, bool allocatNodesSeperately);
-    enum
-    {
+    enum {
 #ifdef CPPUTEST_DISABLE_MEM_CORRUPTION_CHECK
         memory_corruption_buffer_size = 0
 #else
@@ -252,6 +251,7 @@ public:
     unsigned getCurrentAllocationNumber();
 
     SimpleMutex* getMutex(void);
+
 private:
     MemoryLeakFailure* reporter_;
     MemLeakPeriod current_period_;
@@ -266,11 +266,10 @@ private:
     char* reallocateMemoryWithAccountingInformation(TestMemoryAllocator* allocator, char* memory, size_t size, const char* file, size_t line, bool allocatNodesSeperately);
     MemoryLeakDetectorNode* createMemoryLeakAccountingInformation(TestMemoryAllocator* allocator, size_t size, char* memory, bool allocatNodesSeperately);
 
-
     bool validMemoryCorruptionInformation(char* memory);
-    bool matchingAllocation(TestMemoryAllocator *alloc_allocator, TestMemoryAllocator *free_allocator);
+    bool matchingAllocation(TestMemoryAllocator* alloc_allocator, TestMemoryAllocator* free_allocator);
 
-    void storeLeakInformation(MemoryLeakDetectorNode * node, char *new_memory, size_t size, TestMemoryAllocator *allocator, const char *file, size_t line);
+    void storeLeakInformation(MemoryLeakDetectorNode* node, char* new_memory, size_t size, TestMemoryAllocator* allocator, const char* file, size_t line);
     void ConstructMemoryLeakReport(MemLeakPeriod period);
 
     size_t sizeOfMemoryWithCorruptionInfo(size_t size);

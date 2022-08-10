@@ -27,8 +27,7 @@
 
 #include "CppUTest/MemoryLeakDetector.hpp"
 
-class DummyMemoryLeakDetector : public MemoryLeakDetector
-{
+class DummyMemoryLeakDetector : public MemoryLeakDetector {
 public:
     DummyMemoryLeakDetector(MemoryLeakFailure* reporter);
     ~DummyMemoryLeakDetector() override;
@@ -38,8 +37,7 @@ private:
     static bool memoryLeakDetectorWasDeleted;
 };
 
-class DummyMemoryLeakFailure : public MemoryLeakFailure
-{
+class DummyMemoryLeakFailure : public MemoryLeakFailure {
 public:
     DummyMemoryLeakFailure();
 
@@ -50,4 +48,3 @@ public:
 private:
     static bool memoryLeakFailureWasDelete;
 };
-

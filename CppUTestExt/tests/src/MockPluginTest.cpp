@@ -37,8 +37,8 @@ TEST_GROUP(MockPlugin)
 {
     StringBufferTestOutput output;
 
-    UtestShell *test;
-    TestResult *result;
+    UtestShell* test;
+    TestResult* result;
 
     MockSupportPlugin plugin;
 
@@ -79,10 +79,10 @@ TEST(MockPlugin, checkExpectationsWorksAlsoWithHierachicalObjects)
     MockFailureReporterInstaller failureReporterInstaller;
 
     MockExpectedCallsListForTest expectations;
-    expectations.addFunction("differentScope::foobar")->onObject((void*) 1);
+    expectations.addFunction("differentScope::foobar")->onObject((void*)1);
     MockExpectedObjectDidntHappenFailure expectedFailure(test, "differentScope::foobar", expectations);
 
-    mock("differentScope").expectOneCall("foobar").onObject((void*) 1);
+    mock("differentScope").expectOneCall("foobar").onObject((void*)1);
     mock("differentScope").actualCall("foobar");
 
     plugin.postTestAction(*test, *result);
@@ -91,8 +91,7 @@ TEST(MockPlugin, checkExpectationsWorksAlsoWithHierachicalObjects)
     CHECK_NO_MOCK_FAILURE();
 }
 
-class DummyComparator : public MockNamedValueComparator
-{
+class DummyComparator : public MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -119,8 +118,7 @@ TEST(MockPlugin, installComparatorRecordsTheComparatorButNotInstallsItYet)
     plugin.clear();
 }
 
-class DummyCopier : public MockNamedValueCopier
-{
+class DummyCopier : public MockNamedValueCopier {
 public:
     void copy(void* dst, const void* src) override
     {

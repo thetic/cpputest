@@ -33,8 +33,7 @@
 class MockCheckedExpectedCall;
 class MockNamedValue;
 
-class MockExpectedCallsList
-{
+class MockExpectedCallsList {
 
 public:
     MockExpectedCallsList();
@@ -78,19 +77,21 @@ public:
     virtual SimpleString unfulfilledCallsToString(const SimpleString& linePrefix = "") const;
     virtual SimpleString fulfilledCallsToString(const SimpleString& linePrefix = "") const;
     virtual SimpleString callsWithMissingParametersToString(const SimpleString& linePrefix,
-                                                            const SimpleString& missingParametersPrefix) const;
+        const SimpleString& missingParametersPrefix) const;
 
 protected:
     virtual void pruneEmptyNodeFromList();
 
-    class MockExpectedCallsListNode
-    {
+    class MockExpectedCallsListNode {
     public:
         MockCheckedExpectedCall* expectedCall_;
 
         MockExpectedCallsListNode* next_;
         MockExpectedCallsListNode(MockCheckedExpectedCall* expectedCall)
-            : expectedCall_(expectedCall), next_(nullptr) {}
+            : expectedCall_(expectedCall)
+            , next_(nullptr)
+        {
+        }
     };
 
 private:

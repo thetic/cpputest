@@ -41,13 +41,12 @@ static void dummy_function_for_mock_c_test_two()
 {
 }
 
-TEST_GROUP(MockSupport_c)
-{
-    void teardown() override
-    {
+TEST_GROUP(MockSupport_c) {
+    void teardown() override {
         mock_c()->clear();
-    }
-};
+}
+}
+;
 
 TEST(MockSupport_c, OrderObserved)
 {
@@ -98,12 +97,8 @@ TEST(MockSupport_c, expectNoCall)
 
 TEST(MockSupport_c, expectAndActualParameters)
 {
-    mock_c()->expectOneCall("boo")->withIntParameters("integer", 1)->withDoubleParameters("double", 1.0)->
-            withStringParameters("string", "string")->withPointerParameters("pointer", (void*) 1)->
-            withFunctionPointerParameters("functionPointer", dummy_function_for_mock_c_test);
-    mock_c()->actualCall("boo")->withIntParameters("integer", 1)->withDoubleParameters("double", 1.0)->
-            withStringParameters("string", "string")->withPointerParameters("pointer", (void*) 1)->
-            withFunctionPointerParameters("functionPointer", dummy_function_for_mock_c_test);
+    mock_c()->expectOneCall("boo")->withIntParameters("integer", 1)->withDoubleParameters("double", 1.0)->withStringParameters("string", "string")->withPointerParameters("pointer", (void*)1)->withFunctionPointerParameters("functionPointer", dummy_function_for_mock_c_test);
+    mock_c()->actualCall("boo")->withIntParameters("integer", 1)->withDoubleParameters("double", 1.0)->withStringParameters("string", "string")->withPointerParameters("pointer", (void*)1)->withFunctionPointerParameters("functionPointer", dummy_function_for_mock_c_test);
 }
 
 static int typeNameIsEqual(const void* object1, const void* object2)
@@ -118,14 +113,14 @@ static const char* typeNameValueToString(const void* PUNUSED(object))
 
 static void typeCopy(void* dst, const void* src)
 {
-    *(int*) dst = *(const int*) src;
+    *(int*)dst = *(const int*)src;
 }
 
 TEST(MockSupport_c, expectAndActualParametersOnObject)
 {
     mock_c()->installComparator("typeName", typeNameIsEqual, typeNameValueToString);
-    mock_c()->expectOneCall("boo")->withParameterOfType("typeName", "name", (const void*) 1);
-    mock_c()->actualCall("boo")->withParameterOfType("typeName", "name", (const void*) 1);
+    mock_c()->expectOneCall("boo")->withParameterOfType("typeName", "name", (const void*)1);
+    mock_c()->actualCall("boo")->withParameterOfType("typeName", "name", (const void*)1);
     mock_c()->checkExpectations();
     mock_c()->removeAllComparatorsAndCopiers();
 }
@@ -156,8 +151,8 @@ TEST(MockSupport_c, unsignedLongIntParameter)
 
 TEST(MockSupport_c, doubleParameterWithTolerance)
 {
-    mock_c( )->expectOneCall("foo")->withDoubleParametersAndTolerance("p", 2.0, 0.2);
-    mock_c( )->actualCall("foo")->withDoubleParameters("p", 1.9);
+    mock_c()->expectOneCall("foo")->withDoubleParametersAndTolerance("p", 2.0, 0.2);
+    mock_c()->actualCall("foo")->withDoubleParameters("p", 1.9);
 }
 
 TEST(MockSupport_c, longLongIntParameter)
@@ -174,7 +169,7 @@ TEST(MockSupport_c, unsignedLongLongIntParameter)
 
 TEST(MockSupport_c, memoryBufferParameter)
 {
-    const unsigned char mem_buffer[] = { 1, 2, 3};
+    const unsigned char mem_buffer[] = { 1, 2, 3 };
     mock_c()->expectOneCall("foo")->withMemoryBufferParameter("out", mem_buffer, sizeof(mem_buffer));
     mock_c()->actualCall("foo")->withMemoryBufferParameter("out", mem_buffer, sizeof(mem_buffer));
     mock_c()->checkExpectations();
@@ -465,16 +460,16 @@ TEST(MockSupport_c, whenNoReturnValueIsGivenReturnDoubleValueOrDefaultShouldlUse
 
 TEST(MockSupport_c, returnPointerValue)
 {
-    mock_c()->expectOneCall("boo")->andReturnPointerValue((void*) 10);
-    POINTERS_EQUAL((void*) 10, mock_c()->actualCall("boo")->pointerReturnValue());
-    POINTERS_EQUAL((void*) 10, mock_c()->pointerReturnValue());
+    mock_c()->expectOneCall("boo")->andReturnPointerValue((void*)10);
+    POINTERS_EQUAL((void*)10, mock_c()->actualCall("boo")->pointerReturnValue());
+    POINTERS_EQUAL((void*)10, mock_c()->pointerReturnValue());
     LONGS_EQUAL(MOCKVALUETYPE_POINTER, mock_c()->returnValue().type);
 }
 
 TEST(MockSupport_c, whenReturnValueIsGivenReturnPointerValueOrDefaultShouldIgnoreTheDefault)
 {
-    void* defaultValue = (void*) 10;
-    void* expectedValue = (void*) 27;
+    void* defaultValue = (void*)10;
+    void* expectedValue = (void*)27;
     mock_c()->expectOneCall("foo")->andReturnPointerValue(expectedValue);
     POINTERS_EQUAL(expectedValue, mock_c()->actualCall("foo")->returnPointerValueOrDefault(defaultValue));
     POINTERS_EQUAL(expectedValue, mock_c()->returnPointerValueOrDefault(defaultValue));
@@ -482,7 +477,7 @@ TEST(MockSupport_c, whenReturnValueIsGivenReturnPointerValueOrDefaultShouldIgnor
 
 TEST(MockSupport_c, whenNoReturnValueIsGivenReturnPointerValueOrDefaultShouldlUseTheDefaultValue)
 {
-    void* defaultValue = (void*) 10;
+    void* defaultValue = (void*)10;
     mock_c()->expectOneCall("foo");
     POINTERS_EQUAL(defaultValue, mock_c()->actualCall("foo")->returnPointerValueOrDefault(defaultValue));
     POINTERS_EQUAL(defaultValue, mock_c()->returnPointerValueOrDefault(defaultValue));
@@ -490,16 +485,16 @@ TEST(MockSupport_c, whenNoReturnValueIsGivenReturnPointerValueOrDefaultShouldlUs
 
 TEST(MockSupport_c, returnConstPointerValue)
 {
-    mock_c()->expectOneCall("boo")->andReturnConstPointerValue((const void*) 10);
-    POINTERS_EQUAL((const void*) 10, mock_c()->actualCall("boo")->constPointerReturnValue());
-    POINTERS_EQUAL((const void*) 10, mock_c()->constPointerReturnValue());
+    mock_c()->expectOneCall("boo")->andReturnConstPointerValue((const void*)10);
+    POINTERS_EQUAL((const void*)10, mock_c()->actualCall("boo")->constPointerReturnValue());
+    POINTERS_EQUAL((const void*)10, mock_c()->constPointerReturnValue());
     LONGS_EQUAL(MOCKVALUETYPE_CONST_POINTER, mock_c()->returnValue().type);
 }
 
 TEST(MockSupport_c, whenReturnValueIsGivenReturnConstPointerValueOrDefaultShouldIgnoreTheDefault)
 {
-    const void* defaultValue = (void*) 10;
-    const void* expectedValue = (void*) 27;
+    const void* defaultValue = (void*)10;
+    const void* expectedValue = (void*)27;
     mock_c()->expectOneCall("foo")->andReturnConstPointerValue(expectedValue);
     POINTERS_EQUAL(expectedValue, mock_c()->actualCall("foo")->returnConstPointerValueOrDefault(defaultValue));
     POINTERS_EQUAL(expectedValue, mock_c()->returnConstPointerValueOrDefault(defaultValue));
@@ -507,7 +502,7 @@ TEST(MockSupport_c, whenReturnValueIsGivenReturnConstPointerValueOrDefaultShould
 
 TEST(MockSupport_c, whenNoReturnValueIsGivenReturnConstPointerValueOrDefaultShouldlUseTheDefaultValue)
 {
-    const void* defaultValue = (void*) 10;
+    const void* defaultValue = (void*)10;
     mock_c()->expectOneCall("foo");
     POINTERS_EQUAL(defaultValue, mock_c()->actualCall("foo")->returnConstPointerValueOrDefault(defaultValue));
     POINTERS_EQUAL(defaultValue, mock_c()->returnConstPointerValueOrDefault(defaultValue));
@@ -524,7 +519,7 @@ TEST(MockSupport_c, returnFunctionPointerValue)
 TEST(MockSupport_c, whenReturnValueIsGivenReturnFunctionPointerValueOrDefaultShouldIgnoreTheDefault)
 {
     mock_c()->expectOneCall("foo")->andReturnFunctionPointerValue(dummy_function_for_mock_c_test);
-    FUNCTIONPOINTERS_EQUAL(dummy_function_for_mock_c_test,  mock_c()->actualCall("foo")->returnFunctionPointerValueOrDefault(dummy_function_for_mock_c_test_two));
+    FUNCTIONPOINTERS_EQUAL(dummy_function_for_mock_c_test, mock_c()->actualCall("foo")->returnFunctionPointerValueOrDefault(dummy_function_for_mock_c_test_two));
     FUNCTIONPOINTERS_EQUAL(dummy_function_for_mock_c_test, mock_c()->returnFunctionPointerValueOrDefault(dummy_function_for_mock_c_test_two));
 }
 
@@ -569,19 +564,19 @@ TEST(MockSupport_c, MockSupportSetStringData)
 
 TEST(MockSupport_c, MockSupportSetPointerData)
 {
-    mock_c()->setPointerData("pointer", (void*) 1);
-    POINTERS_EQUAL((void*) 1, mock_c()->getData("pointer").value.pointerValue);
+    mock_c()->setPointerData("pointer", (void*)1);
+    POINTERS_EQUAL((void*)1, mock_c()->getData("pointer").value.pointerValue);
 }
 
 TEST(MockSupport_c, MockSupportSetConstPointerData)
 {
-    mock_c()->setConstPointerData("constPointer", (const void*) 1);
-    POINTERS_EQUAL((const void*) 1, mock_c()->getData("constPointer").value.constPointerValue);
+    mock_c()->setConstPointerData("constPointer", (const void*)1);
+    POINTERS_EQUAL((const void*)1, mock_c()->getData("constPointer").value.constPointerValue);
 }
 
 TEST(MockSupport_c, MockSupportMemoryBufferData)
 {
-    mock_c()->setDataObject("name", "const unsigned char*", (void *) 0xDEAD);
+    mock_c()->setDataObject("name", "const unsigned char*", (void*)0xDEAD);
     POINTERS_EQUAL(0xDEAD, mock_c()->getData("name").value.memoryBufferValue);
     LONGS_EQUAL(MOCKVALUETYPE_MEMORYBUFFER, mock_c()->getData("name").type);
 }
@@ -594,14 +589,14 @@ TEST(MockSupport_c, MockSupportSetFunctionPointerData)
 
 TEST(MockSupport_c, MockSupportSetDataObject)
 {
-    mock_c()->setDataObject("name", "type", (void*) 1);
-    POINTERS_EQUAL((void*) 1, mock_c()->getData("name").value.objectValue);
+    mock_c()->setDataObject("name", "type", (void*)1);
+    POINTERS_EQUAL((void*)1, mock_c()->getData("name").value.objectValue);
 }
 
 TEST(MockSupport_c, MockSupportSetDataConstObject)
 {
-    mock_c()->setDataConstObject("name", "type", (const void*) 5);
-    POINTERS_EQUAL((void*) 5, mock_c()->getData("name").value.constObjectValue);
+    mock_c()->setDataConstObject("name", "type", (const void*)5);
+    POINTERS_EQUAL((void*)5, mock_c()->getData("name").value.constObjectValue);
 }
 
 TEST(MockSupport_c, WorksInCFile)
@@ -676,8 +671,8 @@ TEST_ORDERED(MockSupport_c, nextTestShouldNotCrashOnFailure, 22)
 
 static void failingCallToMockCWithParameterOfType_()
 {
-    mock_c()->expectOneCall("bar")->withParameterOfType("typeName", "name", (const void*) 1);
-    mock_c()->actualCall("bar")->withParameterOfType("typeName", "name", (const void*) 2);
+    mock_c()->expectOneCall("bar")->withParameterOfType("typeName", "name", (const void*)1);
+    mock_c()->actualCall("bar")->withParameterOfType("typeName", "name", (const void*)2);
 } // LCOV_EXCL_LINE
 
 TEST(MockSupport_c, failureWithParameterOfTypeCoversValueToString)

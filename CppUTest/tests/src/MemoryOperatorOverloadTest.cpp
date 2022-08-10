@@ -11,18 +11,15 @@
 #include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(__GNUC__) && __GNUC__ >= 11
-# define NEEDS_DISABLE_FREE_NON_HEEP_WARNING
+#define NEEDS_DISABLE_FREE_NON_HEEP_WARNING
 #endif /* GCC >= 11 */
 
-
-TEST_GROUP(BasicBehavior)
-{
-};
+TEST_GROUP(BasicBehavior) {};
 
 TEST(BasicBehavior, CanDeleteNullPointers)
 {
-    delete (char*) nullptr;
-    delete [] (char*) nullptr;
+    delete (char*)nullptr;
+    delete[](char*) nullptr;
 }
 
 TEST_GROUP(MemoryLeakOverridesToBeUsedInProductionCode)
@@ -32,7 +29,6 @@ TEST_GROUP(MemoryLeakOverridesToBeUsedInProductionCode)
     {
         memLeakDetector = MemoryLeakWarningPlugin::getGlobalDetector();
     }
-
 };
 
 TEST(MemoryLeakOverridesToBeUsedInProductionCode, UseNativeMallocByTemporarlySwitchingOffMalloc)
@@ -40,16 +36,15 @@ TEST(MemoryLeakOverridesToBeUsedInProductionCode, UseNativeMallocByTemporarlySwi
     size_t memLeaks = memLeakDetector->totalMemoryLeaks(mem_leak_period_checking);
     void* memory = malloc(10);
     LONGS_EQUAL(memLeaks, memLeakDetector->totalMemoryLeaks(mem_leak_period_checking));
-    free (memory);
+    free(memory);
 }
 
 /* TEST... allowing for a new overload in a class */
-class NewDummyClass
-{
+class NewDummyClass {
 public:
     static bool overloaded_new_called;
 
-    void* operator new (size_t size)
+    void* operator new(size_t size)
     {
         overloaded_new_called = true;
         return malloc(size);
@@ -80,9 +75,8 @@ TEST(MemoryLeakOverridesToBeUsedInProductionCode, NoSideEffectsFromTurningOffNew
 TEST(MemoryLeakOverridesToBeUsedInProductionCode, UseNativeNewByTemporarlySwitchingOffNew)
 {
     char* memory = new char[10];
-    delete [] memory;
+    delete[] memory;
 }
-
 
 TEST(MemoryLeakOverridesToBeUsedInProductionCode, MemoryOverridesAreDisabled)
 {

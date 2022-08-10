@@ -27,19 +27,19 @@
 
 #include "CppUTest/CommandLineTestRunner.hpp"
 
-#include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TeamCityTestOutput.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
 int CommandLineTestRunner::RunAllTests(int ac, char** av)
 {
-    return RunAllTests(ac, (const char *const *) av);
+    return RunAllTests(ac, (const char* const*)av);
 }
 
-int CommandLineTestRunner::RunAllTests(int ac, const char *const *av)
+int CommandLineTestRunner::RunAllTests(int ac, const char* const* av)
 {
     int result = 0;
     ConsoleTestOutput backupOutput;
@@ -60,8 +60,10 @@ int CommandLineTestRunner::RunAllTests(int ac, const char *const *av)
     return result;
 }
 
-CommandLineTestRunner::CommandLineTestRunner(int ac, const char *const *av, TestRegistry* registry) :
-    output_(nullptr), arguments_(nullptr), registry_(registry)
+CommandLineTestRunner::CommandLineTestRunner(int ac, const char* const* av, TestRegistry* registry)
+    : output_(nullptr)
+    , arguments_(nullptr)
+    , registry_(registry)
 {
     arguments_ = new CommandLineArguments(ac, av);
 }
@@ -91,14 +93,20 @@ void CommandLineTestRunner::initializeTestRun()
     registry_->setGroupFilters(arguments_->getGroupFilters());
     registry_->setNameFilters(arguments_->getNameFilters());
 
-    if (arguments_->isVerbose()) output_->verbose(TestOutput::level_verbose);
-    if (arguments_->isVeryVerbose()) output_->verbose(TestOutput::level_veryVerbose);
-    if (arguments_->isColor()) output_->color();
-    if (arguments_->runTestsInSeperateProcess()) registry_->setRunTestsInSeperateProcess();
-    if (arguments_->isRunIgnored()) registry_->setRunIgnored();
-    if (arguments_->isCrashingOnFail()) UtestShell::setCrashOnFail();
+    if (arguments_->isVerbose())
+        output_->verbose(TestOutput::level_verbose);
+    if (arguments_->isVeryVerbose())
+        output_->verbose(TestOutput::level_veryVerbose);
+    if (arguments_->isColor())
+        output_->color();
+    if (arguments_->runTestsInSeperateProcess())
+        registry_->setRunTestsInSeperateProcess();
+    if (arguments_->isRunIgnored())
+        registry_->setRunIgnored();
+    if (arguments_->isCrashingOnFail())
+        UtestShell::setCrashOnFail();
 
-    UtestShell::setRethrowExceptions( arguments_->isRethrowingExceptions() );
+    UtestShell::setRethrowExceptions(arguments_->isRethrowingExceptions());
 }
 
 int CommandLineTestRunner::runAllTests()
@@ -109,22 +117,19 @@ int CommandLineTestRunner::runAllTests()
     size_t failedExecutionCount = 0;
     size_t repeatCount = arguments_->getRepeatCount();
 
-    if (arguments_->isListingTestGroupNames())
-    {
+    if (arguments_->isListingTestGroupNames()) {
         TestResult tr(*output_);
         registry_->listTestGroupNames(tr);
         return 0;
     }
 
-    if (arguments_->isListingTestGroupAndCaseNames())
-    {
+    if (arguments_->isListingTestGroupAndCaseNames()) {
         TestResult tr(*output_);
         registry_->listTestGroupAndCaseNames(tr);
         return 0;
     }
 
-    if (arguments_->isListingTestLocations())
-    {
+    if (arguments_->isListingTestLocations()) {
         TestResult tr(*output_);
         registry_->listTestLocations(tr);
         return 0;
@@ -133,8 +138,7 @@ int CommandLineTestRunner::runAllTests()
     if (arguments_->isReversing())
         registry_->reverseTests();
 
-    if (arguments_->isShuffling())
-    {
+    if (arguments_->isShuffling()) {
         output_->print("Test order shuffling enabled with seed: ");
         output_->print(arguments_->getShuffleSeed());
         output_->print("\n");
@@ -152,7 +156,7 @@ int CommandLineTestRunner::runAllTests()
             failedExecutionCount++;
         }
     }
-    return (int) (failedTestCount != 0 ? failedTestCount : failedExecutionCount);
+    return (int)(failedTestCount != 0 ? failedTestCount : failedExecutionCount);
 }
 
 TestOutput* CommandLineTestRunner::createTeamCityOutput()
@@ -164,7 +168,7 @@ TestOutput* CommandLineTestRunner::createJUnitOutput(const SimpleString& package
 {
     JUnitTestOutput* junitOutput = new JUnitTestOutput;
     if (junitOutput != nullptr) {
-      junitOutput->setPackageName(packageName);
+        junitOutput->setPackageName(packageName);
     }
     return junitOutput;
 }
@@ -176,28 +180,27 @@ TestOutput* CommandLineTestRunner::createConsoleOutput()
 
 TestOutput* CommandLineTestRunner::createCompositeOutput(TestOutput* outputOne, TestOutput* outputTwo)
 {
-  CompositeTestOutput* composite = new CompositeTestOutput;
-  composite->setOutputOne(outputOne);
-  composite->setOutputTwo(outputTwo);
-  return composite;
+    CompositeTestOutput* composite = new CompositeTestOutput;
+    composite->setOutputOne(outputOne);
+    composite->setOutputTwo(outputTwo);
+    return composite;
 }
 
 bool CommandLineTestRunner::parseArguments(TestPlugin* plugin)
 {
-  if (!arguments_->parse(plugin)) {
-    output_ = createConsoleOutput();
-    output_->print((arguments_->needHelp()) ? arguments_->help() : arguments_->usage());
-    return false;
-  }
+    if (!arguments_->parse(plugin)) {
+        output_ = createConsoleOutput();
+        output_->print((arguments_->needHelp()) ? arguments_->help() : arguments_->usage());
+        return false;
+    }
 
-  if (arguments_->isJUnitOutput()) {
-    output_= createJUnitOutput(arguments_->getPackageName());
-    if (arguments_->isVerbose())
-      output_ = createCompositeOutput(output_, createConsoleOutput());
-  } else if (arguments_->isTeamCityOutput()) {
-    output_ = createTeamCityOutput();
-  } else
-    output_ = createConsoleOutput();
-  return true;
+    if (arguments_->isJUnitOutput()) {
+        output_ = createJUnitOutput(arguments_->getPackageName());
+        if (arguments_->isVerbose())
+            output_ = createCompositeOutput(output_, createConsoleOutput());
+    } else if (arguments_->isTeamCityOutput()) {
+        output_ = createTeamCityOutput();
+    } else
+        output_ = createConsoleOutput();
+    return true;
 }
-

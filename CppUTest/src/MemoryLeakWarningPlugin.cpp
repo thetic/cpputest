@@ -26,11 +26,11 @@
  */
 #include "CppUTest/MemoryLeakWarningPlugin.hpp"
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/MemoryLeakDetector.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleMutex.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
 
 /********** Enabling and disabling for C also *********/
 
@@ -49,9 +49,9 @@ static void normal_free(void* buffer, const char*, size_t)
     PlatformSpecificFree(buffer);
 }
 
-static void *(*malloc_fptr)(size_t size, const char* file, size_t line) = normal_malloc;
+static void* (*malloc_fptr)(size_t size, const char* file, size_t line) = normal_malloc;
 static void (*free_fptr)(void* mem, const char* file, size_t line) = normal_free;
-static void*(*realloc_fptr)(void* memory, size_t size, const char* file, size_t line) = normal_realloc;
+static void* (*realloc_fptr)(void* memory, size_t size, const char* file, size_t line) = normal_realloc;
 
 void* cpputest_malloc_location_with_leak_detection(size_t size, const char* file, size_t line)
 {
@@ -104,8 +104,7 @@ void crash_on_allocation_number(unsigned alloc_number)
     setCurrentNewArrayAllocator(&crashAllocator);
 }
 
-class MemoryLeakWarningReporter: public MemoryLeakFailure
-{
+class MemoryLeakWarningReporter : public MemoryLeakFailure {
 public:
     ~MemoryLeakWarningReporter() override
     {
@@ -158,7 +157,6 @@ void MemoryLeakWarningPlugin::destroyGlobalDetector()
     globalDetector = nullptr;
 }
 
-
 MemoryLeakWarningPlugin* MemoryLeakWarningPlugin::firstPlugin_ = nullptr;
 
 MemoryLeakWarningPlugin* MemoryLeakWarningPlugin::getFirstPlugin()
@@ -181,13 +179,19 @@ void MemoryLeakWarningPlugin::expectLeaksInTest(size_t n)
     expectedLeaks_ = n;
 }
 
-MemoryLeakWarningPlugin::MemoryLeakWarningPlugin(const SimpleString& name, MemoryLeakDetector* localDetector) :
-    TestPlugin(name), ignoreAllWarnings_(false), destroyGlobalDetectorAndTurnOfMemoryLeakDetectionInDestructor_(false), expectedLeaks_(0)
+MemoryLeakWarningPlugin::MemoryLeakWarningPlugin(const SimpleString& name, MemoryLeakDetector* localDetector)
+    : TestPlugin(name)
+    , ignoreAllWarnings_(false)
+    , destroyGlobalDetectorAndTurnOfMemoryLeakDetectionInDestructor_(false)
+    , expectedLeaks_(0)
 {
-    if (firstPlugin_ == nullptr) firstPlugin_ = this;
+    if (firstPlugin_ == nullptr)
+        firstPlugin_ = this;
 
-    if (localDetector) memLeakDetector_ = localDetector;
-    else memLeakDetector_ = getGlobalDetector();
+    if (localDetector)
+        memLeakDetector_ = localDetector;
+    else
+        memLeakDetector_ = getGlobalDetector();
 
     memLeakDetector_->enable();
 }
@@ -212,11 +216,11 @@ void MemoryLeakWarningPlugin::postTestAction(UtestShell& test, TestResult& resul
     size_t leaks = memLeakDetector_->totalMemoryLeaks(mem_leak_period_checking);
 
     if (!ignoreAllWarnings_ && expectedLeaks_ != leaks && failureCount_ == result.getFailureCount()) {
-        if(MemoryLeakWarningPlugin::areNewDeleteOverloaded()) {
+        if (MemoryLeakWarningPlugin::areNewDeleteOverloaded()) {
             TestFailure f(&test, memLeakDetector_->report(mem_leak_period_checking));
             result.addFailure(f);
-        } else if(expectedLeaks_ > 0) {
-            result.print(StringFromFormat("Warning: Expected %d leak(s), but leak detection was disabled", (int) expectedLeaks_).asCharString());
+        } else if (expectedLeaks_ > 0) {
+            result.print(StringFromFormat("Warning: Expected %d leak(s), but leak detection was disabled", (int)expectedLeaks_).asCharString());
         }
     }
     memLeakDetector_->markCheckingPeriodLeaksAsNonCheckingPeriod();
@@ -227,8 +231,7 @@ void MemoryLeakWarningPlugin::postTestAction(UtestShell& test, TestResult& resul
 const char* MemoryLeakWarningPlugin::FinalReport(size_t toBeDeletedLeaks)
 {
     size_t leaks = memLeakDetector_->totalMemoryLeaks(mem_leak_period_enabled);
-    if (leaks != toBeDeletedLeaks) return memLeakDetector_->report(mem_leak_period_enabled);
+    if (leaks != toBeDeletedLeaks)
+        return memLeakDetector_->report(mem_leak_period_enabled);
     return "";
 }
-
-

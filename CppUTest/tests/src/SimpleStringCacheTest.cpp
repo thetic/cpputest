@@ -29,8 +29,7 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
-class TestFunctionWithCache : public ExecFunction
-{
+class TestFunctionWithCache : public ExecFunction {
 public:
     void (*testFunction)(SimpleStringInternalCache*, size_t);
     SimpleStringInternalCache* parameter;
@@ -129,7 +128,6 @@ TEST(SimpleStringInternalCache, allocatingMoreThanCacheAvailable)
     cache.setAllocator(allocator);
 }
 
-
 TEST(SimpleStringInternalCache, allocationWillReuseTheAllocatedBlocks)
 {
     cache.setAllocator(allocator);
@@ -141,7 +139,6 @@ TEST(SimpleStringInternalCache, allocationWillReuseTheAllocatedBlocks)
 
     LONGS_EQUAL(1, accountant.totalAllocationsOfSize(32));
 }
-
 
 TEST(SimpleStringInternalCache, multipleDifferentSizeAllocationsAndDeallocations)
 {
@@ -207,8 +204,6 @@ TEST(SimpleStringInternalCache, clearAllIncludingCurrentlyUsedMemory)
     LONGS_EQUAL(1, accountant.totalDeallocationsOfSize(64));
 }
 
-
-
 TEST(SimpleStringInternalCache, allocatingLargerStringThanCached)
 {
     cache.setAllocator(allocator);
@@ -235,7 +230,6 @@ TEST(SimpleStringInternalCache, allocatingMultipleLargerStringThanCached)
     LONGS_EQUAL(3, accountant.totalAllocationsOfSize(1234));
     LONGS_EQUAL(3, accountant.totalDeallocationsOfSize(1234));
 }
-
 
 TEST(SimpleStringInternalCache, clearAllIncludingCurrentlyUsedMemoryAlsoReleasesLargeNonCachesMemory)
 {
@@ -274,7 +268,6 @@ TEST(SimpleStringInternalCache, deallocatingMemoryThatWasntAllocatedWhileCacheWa
                                 "This is likely due statics and will cause problems.\n"
                                 "Only warning once to avoid recursive warnings.\n"
                                 "String we are deallocating: \"Bas\"\n");
-
 }
 
 static void deallocatingStringMemoryTwiceThatWasntAllocatedWithCache_(SimpleStringInternalCache* cache, size_t allocationSize)
@@ -309,7 +302,6 @@ TEST(SimpleStringInternalCache, deallocatingLargeMemoryThatWasntAllocatedWhileCa
                                 "This is likely due statics and will cause problems.\n"
                                 "Only warning once to avoid recursive warnings.\n"
                                 "String we are deallocating: \"Bas\"\n");
-
 }
 
 TEST(SimpleStringInternalCache, deallocatingLargeMemoryThatWasntAllocatedWhileCacheWasInPlaceProducesWarningButOnlyOnce)
@@ -347,13 +339,13 @@ TEST_GROUP(SimpleStringCacheAllocator)
 TEST(SimpleStringCacheAllocator, allocationIsCached)
 {
     char* mem = allocator->alloc_memory(10, __FILE__, __LINE__);
-    allocator->free_memory(mem, 10,  __FILE__, __LINE__);
+    allocator->free_memory(mem, 10, __FILE__, __LINE__);
 
     size_t totalAllocations = accountant.totalAllocations();
     size_t totalDeallocations = accountant.totalDeallocations();
 
     mem = allocator->alloc_memory(10, __FILE__, __LINE__);
-    allocator->free_memory(mem, 10,  __FILE__, __LINE__);
+    allocator->free_memory(mem, 10, __FILE__, __LINE__);
 
     LONGS_EQUAL(totalAllocations, accountant.totalAllocations());
     LONGS_EQUAL(totalDeallocations, accountant.totalDeallocations());
@@ -371,11 +363,7 @@ TEST(SimpleStringCacheAllocator, name)
     STRCMP_EQUAL("SimpleStringCacheAllocator", allocator->name());
 }
 
-
-
-TEST_GROUP(GlobalSimpleStringCache)
-{
-};
+TEST_GROUP(GlobalSimpleStringCache) {};
 
 TEST(GlobalSimpleStringCache, installsAndRemovedCache)
 {

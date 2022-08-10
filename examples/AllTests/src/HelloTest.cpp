@@ -29,33 +29,32 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 
 static SimpleString* buffer;
 
-TEST_GROUP(HelloWorld)
-{
-    static int output_method(const char* output, ...)
-    {
+TEST_GROUP(HelloWorld) {
+    static int output_method(const char* output, ...) {
         va_list arguments;
-        va_start(arguments, output);
-        *buffer = VStringFromFormat(output, arguments);
-        va_end(arguments);
-        return 1;
-    }
+va_start(arguments, output);
+*buffer = VStringFromFormat(output, arguments);
+va_end(arguments);
+return 1;
+}
 
-    void setup() override
-    {
-        buffer = new SimpleString();
-        UT_PTR_SET(PrintFormated, &output_method);
-    }
+void setup() override
+{
+    buffer = new SimpleString();
+    UT_PTR_SET(PrintFormated, &output_method);
+}
 
-    void teardown() override
-    {
-        delete buffer;
-    }
-};
+void teardown() override
+{
+    delete buffer;
+}
+}
+;
 
 TEST(HelloWorld, PrintOk)
 {

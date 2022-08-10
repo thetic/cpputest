@@ -33,21 +33,20 @@
 #define CHECK_EXPECTED_MOCK_FAILURE(expectedFailure) CHECK_EXPECTED_MOCK_FAILURE_LOCATION(expectedFailure, __FILE__, __LINE__)
 #define CHECK_NO_MOCK_FAILURE() CHECK_NO_MOCK_FAILURE_LOCATION(__FILE__, __LINE__)
 
-class MockFailureReporterForTest : public MockFailureReporter
-{
+class MockFailureReporterForTest : public MockFailureReporter {
 public:
     SimpleString mockFailureString;
 
     void failTest(const MockFailure& failure) override;
     static MockFailureReporterForTest* getReporter();
     static void clearReporter();
+
 private:
     static MockFailureReporterForTest* instance_;
 };
 
-class MockFailureReporterInstaller
-{
-  public:
+class MockFailureReporterInstaller {
+public:
     MockFailureReporterInstaller();
     ~MockFailureReporterInstaller();
 };
@@ -58,9 +57,8 @@ void CLEAR_MOCK_FAILURE();
 void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const MockFailure& expectedFailure, const char* file, size_t line);
 void CHECK_NO_MOCK_FAILURE_LOCATION(const char* file, size_t line);
 
-class MockExpectedCallsListForTest : public MockExpectedCallsList
-{
-  public:
+class MockExpectedCallsListForTest : public MockExpectedCallsList {
+public:
     ~MockExpectedCallsListForTest() override;
     MockCheckedExpectedCall* addFunction(const SimpleString& name);
     MockCheckedExpectedCall* addFunction(unsigned int numCalls, const SimpleString& name);

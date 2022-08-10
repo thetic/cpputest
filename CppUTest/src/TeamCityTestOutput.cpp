@@ -2,7 +2,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TeamCityTestOutput::TeamCityTestOutput() : currtest_(nullptr), currGroup_()
+TeamCityTestOutput::TeamCityTestOutput()
+    : currtest_(nullptr)
+    , currGroup_()
 {
 }
 

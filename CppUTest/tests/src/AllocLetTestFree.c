@@ -2,8 +2,7 @@
 
 #include <stdlib.h>
 
-typedef struct AllocLetTestFreeStruct
-{
+typedef struct AllocLetTestFreeStruct {
     int placeHolderForHiddenStructElements;
 } AllocLetTestFreeStruct;
 
@@ -20,5 +19,4 @@ void AllocLetTestFree_Destroy(AllocLetTestFree self)
     self = NULL;
     self = no_use;
     (void)self;
-
 }

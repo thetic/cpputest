@@ -32,8 +32,7 @@
 
 #include "CppUTest/TestPlugin.hpp"
 
-class MockSupportPlugin : public TestPlugin
-{
+class MockSupportPlugin : public TestPlugin {
 public:
     MockSupportPlugin(const SimpleString& name = "MockSupportPLugin");
     ~MockSupportPlugin() override;
@@ -45,6 +44,7 @@ public:
     virtual void installCopier(const SimpleString& name, MockNamedValueCopier& copier);
 
     void clear();
+
 private:
     MockNamedValueComparatorsAndCopiersRepository repository_;
 };

@@ -27,16 +27,17 @@
 
 #include "CppUTestExt/MockSupportPlugin.hpp"
 
-#include "CppUTestExt/MockSupport.hpp"
 #include "CppUTest/TestHarness.hpp"
+#include "CppUTestExt/MockSupport.hpp"
 
-class MockSupportPluginReporter : public MockFailureReporter
-{
+class MockSupportPluginReporter : public MockFailureReporter {
     UtestShell& test_;
     TestResult& result_;
+
 public:
     MockSupportPluginReporter(UtestShell& test, TestResult& result)
-        : test_(test), result_(result)
+        : test_(test)
+        , result_(result)
     {
     }
 

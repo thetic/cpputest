@@ -25,10 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
-#include "CppUTest/TestResult.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestResult.hpp"
 
 static long millisTime;
 
@@ -42,9 +42,9 @@ TEST_GROUP(TestOutput)
     TestOutput* printer;
     StringBufferTestOutput* mock;
     UtestShell* tst;
-    TestFailure *f;
-    TestFailure *f2;
-    TestFailure *f3;
+    TestFailure* f;
+    TestFailure* f2;
+    TestFailure* f3;
     TestResult* result;
 
     void setup() override
@@ -60,7 +60,6 @@ TEST_GROUP(TestOutput)
         millisTime = 0;
         UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
         TestOutput::setWorkingEnvironment(TestOutput::eclipse);
-
     }
     void teardown() override
     {
@@ -101,7 +100,6 @@ TEST(TestOutput, PrintSize)
     STRCMP_EQUAL("10", mock->getOutput().asCharString());
 }
 
-
 TEST(TestOutput, PrintDouble)
 {
     printer->printDouble(12.34);
@@ -141,9 +139,10 @@ TEST(TestOutput, PrintTestALotAndSimulateRepeatRun)
         runOneTest();
         printer->printCurrentTestEnded(*result);
     }
-    STRCMP_EQUAL("..................................................\n.........." \
-        "\nOK (60 tests, 60 ran, 0 checks, 0 ignored, 0 filtered out, 10 ms)\n\n" \
-        "..................................................\n..........", mock->getOutput().asCharString());
+    STRCMP_EQUAL("..................................................\n.........."
+                 "\nOK (60 tests, 60 ran, 0 checks, 0 ignored, 0 filtered out, 10 ms)\n\n"
+                 "..................................................\n..........",
+        mock->getOutput().asCharString());
 }
 
 TEST(TestOutput, SetProgressIndicator)
@@ -191,7 +190,8 @@ TEST(TestOutput, printColorWithFailures)
     printer->flush();
     printer->printTestsEnded(*result);
     STRCMP_EQUAL("\n\033[31;1mErrors (1 failures, 1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out, 10 ms)"
-                 "\033[m\n\n", mock->getOutput().asCharString());
+                 "\033[m\n\n",
+        mock->getOutput().asCharString());
 }
 
 TEST(TestOutput, PrintTestRun)
@@ -215,18 +215,16 @@ TEST(TestOutput, PrintWithFailureInSameFile)
 TEST(TestOutput, PrintFailureWithFailInDifferentFile)
 {
     printer->printFailure(*f);
-    const char* expected =
-            "\nfile:10: error: Failure in TEST(group, test)"
-            "\nfailfile:20: error:\n\tmessage\n\n";
+    const char* expected = "\nfile:10: error: Failure in TEST(group, test)"
+                           "\nfailfile:20: error:\n\tmessage\n\n";
     STRCMP_EQUAL(expected, mock->getOutput().asCharString());
 }
 
 TEST(TestOutput, PrintFailureWithFailInHelper)
 {
     printer->printFailure(*f3);
-    const char* expected =
-            "\nfile:10: error: Failure in TEST(group, test)"
-            "\nfile:2: error:\n\tmessage\n\n";
+    const char* expected = "\nfile:10: error: Failure in TEST(group, test)"
+                           "\nfile:2: error:\n\tmessage\n\n";
     STRCMP_EQUAL(expected, mock->getOutput().asCharString());
 }
 
@@ -234,9 +232,8 @@ TEST(TestOutput, PrintInVisualStudioFormat)
 {
     TestOutput::setWorkingEnvironment(TestOutput::visualStudio);
     printer->printFailure(*f3);
-    const char* expected =
-            "\nfile(10): error: Failure in TEST(group, test)"
-            "\nfile(2): error:\n\tmessage\n\n";
+    const char* expected = "\nfile(10): error: Failure in TEST(group, test)"
+                           "\nfile(2): error:\n\tmessage\n\n";
     STRCMP_EQUAL(expected, mock->getOutput().asCharString());
 }
 
@@ -278,124 +275,123 @@ TEST(TestOutput, printTestsEndedWithNoTestsRunOrIgnored)
         mock->getOutput().asCharString());
 }
 
-class CompositeTestOutputTestStringBufferTestOutput : public StringBufferTestOutput
-{
-  public:
+class CompositeTestOutputTestStringBufferTestOutput : public StringBufferTestOutput {
+public:
     void printTestsStarted() override
     {
-      output += "Test Start\n";
+        output += "Test Start\n";
     }
 
     void printTestsEnded(const TestResult& result) override
     {
-      output += StringFromFormat("Test End %d\n", (int) result.getTestCount());
+        output += StringFromFormat("Test End %d\n", (int)result.getTestCount());
     }
 
     void printCurrentGroupStarted(const UtestShell& test) override
     {
-      output += StringFromFormat("Group %s Start\n", test.getGroup().asCharString());
+        output += StringFromFormat("Group %s Start\n", test.getGroup().asCharString());
     }
 
     void printCurrentGroupEnded(const TestResult& res) override
     {
-      output += StringFromFormat("Group End %d\n", (int) res.getTestCount());
+        output += StringFromFormat("Group End %d\n", (int)res.getTestCount());
     }
 
     void printCurrentTestStarted(const UtestShell&) override
     {
-      output += "s";
+        output += "s";
     }
 
     void flush() override
     {
-      output += "flush";
+        output += "flush";
     }
 
     virtual bool isVerbose()
     {
-      return verbose_ == level_verbose || verbose_ == level_veryVerbose;
+        return verbose_ == level_verbose || verbose_ == level_veryVerbose;
     }
 
     virtual bool isColor()
     {
-      return color_;
+        return color_;
     }
 
     virtual const char* getProgressIndicator()
     {
-      return progressIndication_;
+        return progressIndication_;
     }
 };
 
 TEST_GROUP(CompositeTestOutput)
 {
-  CompositeTestOutputTestStringBufferTestOutput* output1;
-  CompositeTestOutputTestStringBufferTestOutput* output2;
-  CompositeTestOutput compositeOutput;
-  TestResult* result;
-  UtestShell* test;
+    CompositeTestOutputTestStringBufferTestOutput* output1;
+    CompositeTestOutputTestStringBufferTestOutput* output2;
+    CompositeTestOutput compositeOutput;
+    TestResult* result;
+    UtestShell* test;
 
-  void setup() override
-  {
-    output1 = new CompositeTestOutputTestStringBufferTestOutput;
-    output2 = new CompositeTestOutputTestStringBufferTestOutput;
-    compositeOutput.setOutputOne(output1);
-    compositeOutput.setOutputTwo(output2);
-    result = new TestResult(compositeOutput);
-    test = new UtestShell("Group", "Name", "file", 10);
-  }
+    void setup() override
+    {
+        output1 = new CompositeTestOutputTestStringBufferTestOutput;
+        output2 = new CompositeTestOutputTestStringBufferTestOutput;
+        compositeOutput.setOutputOne(output1);
+        compositeOutput.setOutputTwo(output2);
+        result = new TestResult(compositeOutput);
+        test = new UtestShell("Group", "Name", "file", 10);
+    }
 
-  void teardown() override
-  {
-    delete test;
-    delete result;
-  }
+    void teardown() override
+    {
+        delete test;
+        delete result;
+    }
 };
 
 TEST(CompositeTestOutput, TestStartedAndEnded)
 {
-  compositeOutput.printTestsStarted();
-  compositeOutput.printTestsEnded(*result);
-  STRCMP_EQUAL("Test Start\nTest End 0\n", output1->getOutput().asCharString());
-  STRCMP_EQUAL("Test Start\nTest End 0\n", output2->getOutput().asCharString());
+    compositeOutput.printTestsStarted();
+    compositeOutput.printTestsEnded(*result);
+    STRCMP_EQUAL("Test Start\nTest End 0\n", output1->getOutput().asCharString());
+    STRCMP_EQUAL("Test Start\nTest End 0\n", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, CurrentTestStartedAndEnded)
 {
-  compositeOutput.printCurrentTestStarted(*test);
-  compositeOutput.printCurrentTestEnded(*result);
-  STRCMP_EQUAL("s.", output1->getOutput().asCharString());
-  STRCMP_EQUAL("s.", output2->getOutput().asCharString());
+    compositeOutput.printCurrentTestStarted(*test);
+    compositeOutput.printCurrentTestEnded(*result);
+    STRCMP_EQUAL("s.", output1->getOutput().asCharString());
+    STRCMP_EQUAL("s.", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, CurrentGroupStartedAndEnded)
 {
-  compositeOutput.printCurrentGroupStarted(*test);
-  compositeOutput.printCurrentGroupEnded(*result);
-  STRCMP_EQUAL("Group Group Start\nGroup End 0\n", output1->getOutput().asCharString());
-  STRCMP_EQUAL("Group Group Start\nGroup End 0\n", output2->getOutput().asCharString());
+    compositeOutput.printCurrentGroupStarted(*test);
+    compositeOutput.printCurrentGroupEnded(*result);
+    STRCMP_EQUAL("Group Group Start\nGroup End 0\n", output1->getOutput().asCharString());
+    STRCMP_EQUAL("Group Group Start\nGroup End 0\n", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, PrintBuffer)
 {
-  compositeOutput.printBuffer("Boo");
-  STRCMP_EQUAL("Boo", output1->getOutput().asCharString());
-  STRCMP_EQUAL("Boo", output2->getOutput().asCharString());
+    compositeOutput.printBuffer("Boo");
+    STRCMP_EQUAL("Boo", output1->getOutput().asCharString());
+    STRCMP_EQUAL("Boo", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, printChar)
 {
-  compositeOutput.print("Boo");
-  STRCMP_EQUAL("Boo", output1->getOutput().asCharString());
-  STRCMP_EQUAL("Boo", output2->getOutput().asCharString());
+    compositeOutput.print("Boo");
+    STRCMP_EQUAL("Boo", output1->getOutput().asCharString());
+    STRCMP_EQUAL("Boo", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, printLong)
 {
-  long ten = 10;
-  compositeOutput.print(ten);
-  STRCMP_EQUAL("10", output1->getOutput().asCharString());
-  STRCMP_EQUAL("10", output2->getOutput().asCharString());
+    long ten = 10;
+    compositeOutput.print(ten);
+    STRCMP_EQUAL("10", output1->getOutput().asCharString());
+    STRCMP_EQUAL("10", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, PrintSize)
@@ -408,61 +404,61 @@ TEST(CompositeTestOutput, PrintSize)
 
 TEST(CompositeTestOutput, printDouble)
 {
-  compositeOutput.printDouble(1.01);
-  STRCMP_EQUAL("1.01", output1->getOutput().asCharString());
-  STRCMP_EQUAL("1.01", output2->getOutput().asCharString());
+    compositeOutput.printDouble(1.01);
+    STRCMP_EQUAL("1.01", output1->getOutput().asCharString());
+    STRCMP_EQUAL("1.01", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, verbose)
 {
-  compositeOutput.verbose(TestOutput::level_verbose);
-  CHECK(output1->isVerbose());
-  CHECK(output2->isVerbose());
+    compositeOutput.verbose(TestOutput::level_verbose);
+    CHECK(output1->isVerbose());
+    CHECK(output2->isVerbose());
 }
 
 TEST(CompositeTestOutput, color)
 {
-  compositeOutput.color();
-  CHECK(output1->isColor());
-  CHECK(output2->isColor());
+    compositeOutput.color();
+    CHECK(output1->isColor());
+    CHECK(output2->isColor());
 }
 
 TEST(CompositeTestOutput, PrintTestFailure)
 {
-  TestOutput::WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
-  TestOutput::setWorkingEnvironment(TestOutput::eclipse);
-  TestFailure failure(test, "file", 10, "failed");
-  compositeOutput.printFailure(failure);
-  STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output1->getOutput().asCharString());
-  STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output2->getOutput().asCharString());
-  TestOutput::setWorkingEnvironment(previousEnvironment);
+    TestOutput::WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
+    TestOutput::setWorkingEnvironment(TestOutput::eclipse);
+    TestFailure failure(test, "file", 10, "failed");
+    compositeOutput.printFailure(failure);
+    STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output1->getOutput().asCharString());
+    STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output2->getOutput().asCharString());
+    TestOutput::setWorkingEnvironment(previousEnvironment);
 }
 
 TEST(CompositeTestOutput, PrintTestRun)
 {
-  compositeOutput.printTestRun(1, 2);
-  STRCMP_EQUAL("Test run 1 of 2\n", output1->getOutput().asCharString());
-  STRCMP_EQUAL("Test run 1 of 2\n", output2->getOutput().asCharString());
+    compositeOutput.printTestRun(1, 2);
+    STRCMP_EQUAL("Test run 1 of 2\n", output1->getOutput().asCharString());
+    STRCMP_EQUAL("Test run 1 of 2\n", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, setProgressIndicator)
 {
-  compositeOutput.setProgressIndicator("?");
-  STRCMP_EQUAL("?", output1->getProgressIndicator());
-  STRCMP_EQUAL("?", output2->getProgressIndicator());
+    compositeOutput.setProgressIndicator("?");
+    STRCMP_EQUAL("?", output1->getProgressIndicator());
+    STRCMP_EQUAL("?", output2->getProgressIndicator());
 }
 
 TEST(CompositeTestOutput, flush)
 {
-  compositeOutput.flush();
-  STRCMP_EQUAL("flush", output1->getOutput().asCharString());
-  STRCMP_EQUAL("flush", output2->getOutput().asCharString());
+    compositeOutput.flush();
+    STRCMP_EQUAL("flush", output1->getOutput().asCharString());
+    STRCMP_EQUAL("flush", output2->getOutput().asCharString());
 }
 
 TEST(CompositeTestOutput, deletePreviousInstanceWhenSettingNew)
 {
-  compositeOutput.setOutputOne(new CompositeTestOutput);
-  compositeOutput.setOutputTwo(new CompositeTestOutput);
+    compositeOutput.setOutputOne(new CompositeTestOutput);
+    compositeOutput.setOutputTwo(new CompositeTestOutput);
 
-  // CHECK NO MEMORY LEAKS
+    // CHECK NO MEMORY LEAKS
 }

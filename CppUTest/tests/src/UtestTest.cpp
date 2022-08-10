@@ -163,8 +163,6 @@ TEST(UtestShell, FailWillCrashIfEnabled)
     UtestShell::resetCrashMethod();
 }
 
-
-
 static int teardownCalled = 0;
 
 static void teardownMethod_()
@@ -224,8 +222,7 @@ TEST(UtestShell, veryVebose)
     STRCMP_CONTAINS("\n------ before runTest", normalOutput.getOutput().asCharString());
 }
 
-class defaultUtestShell: public UtestShell
-{
+class defaultUtestShell : public UtestShell {
 };
 
 TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_methods)
@@ -235,7 +232,6 @@ TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_m
     fixture.runAllTests();
     LONGS_EQUAL(2, fixture.getTestCount());
 }
-
 
 static void StubPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, TestPlugin*, TestResult* result)
 {
@@ -253,7 +249,9 @@ TEST(UtestShell, RunInSeparateProcessTest)
 // There is a possibility that a compiler provides fork but not waitpid.
 #if !defined(CPPUTEST_HAVE_FORK) || !defined(CPPUTEST_HAVE_WAITPID)
 
-IGNORE_TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest) {}
+IGNORE_TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
+{
+}
 
 #else
 
@@ -379,8 +377,8 @@ TEST(IgnoredUtestShell, runIgnoredOptionSpecifiedThenWillRunReturnTrue)
 
 TEST_BASE(MyOwnTest)
 {
-    MyOwnTest() :
-        inTest(false)
+    MyOwnTest()
+        : inTest(false)
     {
     }
     bool inTest;
@@ -397,17 +395,14 @@ TEST_BASE(MyOwnTest)
     }
 };
 
-TEST_GROUP_BASE(UtestMyOwn, MyOwnTest)
-{
-};
+TEST_GROUP_BASE(UtestMyOwn, MyOwnTest) {};
 
 TEST(UtestMyOwn, test)
 {
     CHECK(inTest);
 }
 
-class NullParameterTest: public UtestShell
-{
+class NullParameterTest : public UtestShell {
 };
 
 TEST(UtestMyOwn, NullParameters)
@@ -417,10 +412,10 @@ TEST(UtestMyOwn, NullParameters)
     CHECK(nullTest.shouldRun(&emptyFilter, &emptyFilter));
 }
 
-class AllocateAndDeallocateInConstructorAndDestructor
-{
+class AllocateAndDeallocateInConstructorAndDestructor {
     char* memory_;
     char* morememory_;
+
 public:
     AllocateAndDeallocateInConstructorAndDestructor()
     {
@@ -434,8 +429,8 @@ public:
 
     ~AllocateAndDeallocateInConstructorAndDestructor()
     {
-        delete [] memory_;
-        delete [] morememory_;
+        delete[] memory_;
+        delete[] morememory_;
     }
 };
 
@@ -483,7 +478,6 @@ TEST_GROUP(UtestShellPointerArrayTest)
     }
 };
 
-
 TEST(UtestShellPointerArrayTest, empty)
 {
     UtestShellPointerArray tests(nullptr);
@@ -507,7 +501,6 @@ TEST(UtestShellPointerArrayTest, relinkingTestsWillKeepThemTheSameWhenNothingWas
     CHECK(tests.get(1) == test1);
     CHECK(tests.get(2) == test2);
 }
-
 
 TEST(UtestShellPointerArrayTest, firstTestisNotTheFirstTestWithSeed1234)
 {

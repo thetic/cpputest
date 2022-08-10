@@ -25,16 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#include <time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <setjmp.h>
-#include <string.h>
+#include "CppUTest/TestHarness.h"
 #include <ctype.h>
 #include <math.h>
-#include "CppUTest/TestHarness.h"
+#include <setjmp.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #undef malloc
 #undef calloc
 #undef realloc
@@ -66,12 +65,11 @@ static int DummyPlatformSpecificWaitPid(int, int*, int)
     return 0;
 }
 
-void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) =
-        DummyPlatformSpecificRunTestInASeperateProcess;
+void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = DummyPlatformSpecificRunTestInASeperateProcess;
 int (*PlatformSpecificFork)(void) = DummyPlatformSpecificFork;
 int (*PlatformSpecificWaitPid)(int, int*, int) = DummyPlatformSpecificWaitPid;
 
-static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
+static int PlatformSpecificSetJmpImplementation(void (*function)(void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -114,15 +112,16 @@ static const char* TimeStringImplementation()
 {
     time_t tm = time(NULL);
     char* pTimeStr = ctime(&tm);
-    char* newlineChar = strchr(pTimeStr, '\n');   // Find the terminating newline character.
-    if(newlineChar != NULL) *newlineChar = '\0';   //If newline is found replace it with the string terminator.
+    char* newlineChar = strchr(pTimeStr, '\n'); // Find the terminating newline character.
+    if (newlineChar != NULL)
+        *newlineChar = '\0'; // If newline is found replace it with the string terminator.
     return (pTimeStr);
 }
 
 long (*GetPlatformSpecificTimeInMillis)() = TimeInMillisImplementation;
 const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
-int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_list args) = vsnprintf;
+int (*PlatformSpecificVSNprintf)(char* str, size_t size, const char* format, va_list args) = vsnprintf;
 
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
 {
@@ -137,7 +136,7 @@ static void PlatformSpecificFPutsImplementation(const char* str, PlatformSpecifi
 {
     (void)str;
     (void)file;
-    printf("FILE%d:%s",(int)file, str);
+    printf("FILE%d:%s", (int)file, str);
 }
 
 static void PlatformSpecificFCloseImplementation(PlatformSpecificFile file)
@@ -175,7 +174,7 @@ static int IsInfImplementation(double d)
 double (*PlatformSpecificFabs)(double) = fabs;
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
 int (*PlatformSpecificIsInf)(double) = IsInfImplementation;
-int (*PlatformSpecificAtExit)(void(*func)(void)) = atexit;  /// this was undefined before
+int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit; /// this was undefined before
 
 static PlatformSpecificMutex DummyMutexCreate(void)
 {

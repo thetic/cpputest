@@ -25,21 +25,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/CommandLineArguments.hpp"
+#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-class OptionsPlugin: public TestPlugin
-{
+class OptionsPlugin : public TestPlugin {
 public:
-    OptionsPlugin(const SimpleString& name) :
-        TestPlugin(name)
+    OptionsPlugin(const SimpleString& name)
+        : TestPlugin(name)
     {
     }
     ~OptionsPlugin() override
     {
     }
-    bool parseArguments(int /*ac*/, const char *const * /*av*/, int /*index*/) override
+    bool parseArguments(int /*ac*/, const char* const* /*av*/, int /*index*/) override
     {
         return true;
     }
@@ -61,7 +60,7 @@ TEST_GROUP(CommandLineArguments)
         delete plugin;
     }
 
-    bool newArgumentParser(int argc, const char *const *argv)
+    bool newArgumentParser(int argc, const char* const* argv)
     {
         args = new CommandLineArguments(argc, argv);
         return args->parse(plugin);
@@ -152,7 +151,7 @@ TEST(CommandLineArguments, shuffleWithSeedZeroIsOk)
 TEST(CommandLineArguments, shuffleEnabledSpecificSeedCase1)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-s999"};
+    const char* argv[] = { "tests.exe", "-s999" };
     CHECK(newArgumentParser(argc, argv));
     CHECK_EQUAL(999, args->getShuffleSeed());
 }
@@ -160,7 +159,7 @@ TEST(CommandLineArguments, shuffleEnabledSpecificSeedCase1)
 TEST(CommandLineArguments, shuffleEnabledSpecificSeedCase2)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-s 888"};
+    const char* argv[] = { "tests.exe", "-s 888" };
     CHECK(newArgumentParser(argc, argv));
     CHECK_EQUAL(888, args->getShuffleSeed());
 }
@@ -168,7 +167,7 @@ TEST(CommandLineArguments, shuffleEnabledSpecificSeedCase2)
 TEST(CommandLineArguments, shuffleEnabledSpecificSeedCase3)
 {
     int argc = 3;
-    const char* argv[] = { "tests.exe", "-s", "777"};
+    const char* argv[] = { "tests.exe", "-s", "777" };
     CHECK(newArgumentParser(argc, argv));
     CHECK_EQUAL(777, args->getShuffleSeed());
 }
@@ -527,12 +526,12 @@ TEST(CommandLineArguments, weirdParamatersReturnsFalse)
 TEST(CommandLineArguments, printUsage)
 {
     STRCMP_EQUAL(
-            "use -h for more extensive help\n"
-            "usage [-h] [-v] [-vv] [-c] [-p] [-lg] [-ln] [-ll] [-ri] [-r[<#>]] [-f] [-e] [-ci]\n"
-            "      [-g|sg|xg|xsg <groupName>]... [-n|sn|xn|xsn <testName>]... [-t|st|xt|xst <groupName>.<testName>]...\n"
-            "      [-b] [-s [<seed>]] [\"[IGNORE_]TEST(<groupName>, <testName>)\"]...\n"
-            "      [-o{normal|eclipse|junit|teamcity}] [-k <packageName>]\n",
-            args->usage());
+        "use -h for more extensive help\n"
+        "usage [-h] [-v] [-vv] [-c] [-p] [-lg] [-ln] [-ll] [-ri] [-r[<#>]] [-f] [-e] [-ci]\n"
+        "      [-g|sg|xg|xsg <groupName>]... [-n|sn|xn|xsn <testName>]... [-t|st|xt|xst <groupName>.<testName>]...\n"
+        "      [-b] [-s [<seed>]] [\"[IGNORE_]TEST(<groupName>, <testName>)\"]...\n"
+        "      [-o{normal|eclipse|junit|teamcity}] [-k <packageName>]\n",
+        args->usage());
 }
 
 TEST(CommandLineArguments, helpPrintsTheHelp)
@@ -543,7 +542,6 @@ TEST(CommandLineArguments, helpPrintsTheHelp)
     CHECK(args->needHelp());
 }
 
-
 TEST(CommandLineArguments, pluginKnowsOption)
 {
     int argc = 2;
@@ -552,7 +550,6 @@ TEST(CommandLineArguments, pluginKnowsOption)
     CHECK(newArgumentParser(argc, argv));
     TestRegistry::getCurrentRegistry()->removePluginByName("options");
 }
-
 
 TEST(CommandLineArguments, checkDefaultArguments)
 {
@@ -608,7 +605,7 @@ TEST(CommandLineArguments, lotsOfGroupsAndTests)
 TEST(CommandLineArguments, lastParameterFieldMissing)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-k"};
+    const char* argv[] = { "tests.exe", "-k" };
     CHECK(newArgumentParser(argc, argv));
     CHECK_EQUAL(SimpleString(""), args->getPackageName());
 }
@@ -616,7 +613,7 @@ TEST(CommandLineArguments, lastParameterFieldMissing)
 TEST(CommandLineArguments, setOptRun)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-ri"};
+    const char* argv[] = { "tests.exe", "-ri" };
     CHECK(newArgumentParser(argc, argv));
     CHECK(args->isRunIgnored());
 }
@@ -624,7 +621,7 @@ TEST(CommandLineArguments, setOptRun)
 TEST(CommandLineArguments, setOptCrashOnFail)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-f"};
+    const char* argv[] = { "tests.exe", "-f" };
     CHECK(newArgumentParser(argc, argv));
     CHECK(args->isCrashingOnFail());
 }
@@ -632,7 +629,7 @@ TEST(CommandLineArguments, setOptCrashOnFail)
 TEST(CommandLineArguments, setOptRethrowExceptions)
 {
     int argc = 2;
-    const char* argv[] = { "tests.exe", "-e"};
+    const char* argv[] = { "tests.exe", "-e" };
     CHECK(newArgumentParser(argc, argv));
     CHECK_FALSE(args->isRethrowingExceptions());
 }

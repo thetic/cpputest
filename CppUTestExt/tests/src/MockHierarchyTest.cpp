@@ -29,13 +29,12 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(MockHierarchyTest)
-{
-    void teardown() override
-    {
+TEST_GROUP(MockHierarchyTest) {
+    void teardown() override {
         mock().clear();
-    }
-};
+}
+}
+;
 
 TEST(MockHierarchyTest, getMockSupportScope)
 {

@@ -30,29 +30,26 @@
 
 #include <list>
 
-enum EventType
-{
+enum EventType {
     IMPORTANT_EVENT,
     LESS_IMPORTANT_EVENT
 };
 
-class Event
-{
+class Event {
 public:
     EventType type;
 };
 
-class EventObserver
-{
+class EventObserver {
 public:
-    virtual void notify(const Event& event, int timeOutInSeconds)=0;
-    virtual void notifyRegistration(EventObserver* newObserver)=0;
-    virtual ~EventObserver() {}
+    virtual void notify(const Event& event, int timeOutInSeconds) = 0;
+    virtual void notifyRegistration(EventObserver* newObserver) = 0;
+    virtual ~EventObserver() { }
 };
 
-class EventDispatcher
-{
-    std::list<std::pair<EventType, EventObserver*> > observerList_;
+class EventDispatcher {
+    std::list<std::pair<EventType, EventObserver*>> observerList_;
+
 public:
     EventDispatcher();
 

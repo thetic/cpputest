@@ -29,7 +29,7 @@
 #include "CppUTest/SimpleStringInternalCache.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
 
-int main(int ac, char **av)
+int main(int ac, char** av)
 {
     GlobalSimpleStringCache stringCache;
 
@@ -39,4 +39,3 @@ int main(int ac, char **av)
 
     return CommandLineTestRunner::RunAllTests(ac, av); /* cover alternate method */
 }
-

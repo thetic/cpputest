@@ -31,12 +31,11 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-class ObserverMock : public EventObserver
-{
+class ObserverMock : public EventObserver {
 public:
     void notify(const Event& event, int timeOutInSeconds) override
     {
-        mock().actualCall("notify").onObject(this).withParameterOfType("Event", "event", (void*) &event).withParameter("timeOutInSeconds", timeOutInSeconds);
+        mock().actualCall("notify").onObject(this).withParameterOfType("Event", "event", (void*)&event).withParameter("timeOutInSeconds", timeOutInSeconds);
     }
     void notifyRegistration(EventObserver* newObserver) override
     {
@@ -44,8 +43,7 @@ public:
     }
 };
 
-class EventComparator : public MockNamedValueComparator
-{
+class EventComparator : public MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -56,7 +54,6 @@ public:
         return StringFrom(((const Event*)object)->type);
     }
 };
-
 
 TEST_GROUP(EventDispatcher)
 {
@@ -77,7 +74,6 @@ TEST_GROUP(EventDispatcher)
         mock().removeAllComparatorsAndCopiers();
     }
 };
-
 
 TEST(EventDispatcher, EventWithoutRegistrationsResultsIntoNoCalls)
 {

@@ -25,30 +25,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include "CppUTestExt/MockSupport.h"
 #include "CppUTestExt/MockSupport.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(FirstTestGroup)
-{
-};
+TEST_GROUP(FirstTestGroup) {};
 
 TEST(FirstTestGroup, FirsTest)
 {
-//	FAIL("Fail me!");
+    //	FAIL("Fail me!");
 }
 
 TEST(FirstTestGroup, SecondTest)
 {
-//	STRCMP_EQUAL("hello", "world");
+    //	STRCMP_EQUAL("hello", "world");
 }
 
-
-TEST_GROUP(MockDocumentation)
-{
-};
+TEST_GROUP(MockDocumentation) {};
 
 static void productionCode()
 {
@@ -62,15 +56,13 @@ TEST(MockDocumentation, SimpleScenario)
     mock().checkExpectations();
 }
 
-class ClassFromProductionCode
-{
+class ClassFromProductionCode {
 public:
-    virtual void importantFunction(){}
-    virtual ~ClassFromProductionCode() {}
+    virtual void importantFunction() { }
+    virtual ~ClassFromProductionCode() { }
 };
 
-class ClassFromProductionCodeMock : public ClassFromProductionCode
-{
+class ClassFromProductionCodeMock : public ClassFromProductionCode {
 public:
     void importantFunction() override
     {
@@ -91,19 +83,18 @@ TEST(MockDocumentation, SimpleScenarioObject)
 
 static void parameters_function(int p1, const char* p2)
 {
-    void* object = (void*) 1;
+    void* object = (void*)1;
     mock().actualCall("function").onObject(object).withParameter("p1", p1).withParameter("p2", p2);
 }
 
 TEST(MockDocumentation, parameters)
 {
-    void* object = (void*) 1;
+    void* object = (void*)1;
     mock().expectOneCall("function").onObject(object).withParameter("p1", 2).withParameter("p2", "hah");
     parameters_function(2, "hah");
 }
 
-class MyTypeComparator : public MockNamedValueComparator
-{
+class MyTypeComparator : public MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -117,7 +108,7 @@ public:
 
 TEST(MockDocumentation, ObjectParameters)
 {
-    void* object = (void*) 1;
+    void* object = (void*)1;
     MyTypeComparator comparator;
     mock().installComparator("myType", comparator);
     mock().expectOneCall("function").withParameterOfType("myType", "parameterName", object);
@@ -139,9 +130,9 @@ TEST(MockDocumentation, setData)
     mock().setData("importantValue", 10);
     mock().setDataObject("importantObject", "ClassFromProductionCode", &object);
 
-    ClassFromProductionCode * pobject;
+    ClassFromProductionCode* pobject;
     int value = mock().getData("importantValue").getIntValue();
-    pobject = (ClassFromProductionCode*) mock().getData("importantObject").getObjectPointer();
+    pobject = (ClassFromProductionCode*)mock().getData("importantObject").getObjectPointer();
 
     LONGS_EQUAL(10, value);
     POINTERS_EQUAL(pobject, &object);
@@ -154,7 +145,7 @@ static void doSomethingThatWouldOtherwiseBlowUpTheMockingFramework()
 TEST(MockDocumentation, otherMockSupport)
 {
     mock().crashOnFailure();
-//	mock().actualCall("unex");
+    //	mock().actualCall("unex");
 
     mock().expectOneCall("foo");
     mock().ignoreOtherCalls();
@@ -164,7 +155,6 @@ TEST(MockDocumentation, otherMockSupport)
     mock().enable();
 
     mock().clear();
-
 }
 
 TEST(MockDocumentation, scope)
@@ -175,7 +165,7 @@ TEST(MockDocumentation, scope)
     mock("xmlparser").actualCall("open");
 }
 
-static  int equalMethod(const void* object1, const void* object2)
+static int equalMethod(const void* object1, const void* object2)
 {
     return object1 == object2;
 }
@@ -187,12 +177,11 @@ static const char* toStringMethod(const void*)
 
 TEST(MockDocumentation, CInterface)
 {
-    void* object = (void*) 0x1;
+    void* object = (void*)0x1;
 
     mock_c()->expectOneCall("foo")->withIntParameters("integer", 10)->andReturnDoubleValue(1.11);
     double d = mock_c()->actualCall("foo")->withIntParameters("integer", 10)->returnValue().value.doubleValue;
     DOUBLES_EQUAL(1.11, d, 0.00001);
-
 
     mock_c()->installComparator("type", equalMethod, toStringMethod);
     mock_scope_c("scope")->expectOneCall("bar")->withParameterOfType("type", "name", object);
@@ -204,15 +193,12 @@ TEST(MockDocumentation, CInterface)
     mock_c()->clear();
 }
 
-TEST_GROUP(FooTestGroup)
-{
-    void setup() override
-    {
+TEST_GROUP(FooTestGroup) {
+    void setup() override {
         // Init stuff
     }
 
-    void teardown() override
-    {
+    void teardown() override {
         // Uninit stuff
     }
 };
@@ -227,10 +213,8 @@ TEST(FooTestGroup, MoreFoo)
     // Test more FOO
 }
 
-TEST_GROUP(BarTestGroup)
-{
-    void setup() override
-    {
+TEST_GROUP(BarTestGroup) {
+    void setup() override {
         // Init Bar
     }
 };

@@ -31,8 +31,7 @@
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-class MyDummyComparator : public MockNamedValueComparator
-{
+class MyDummyComparator : public MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {

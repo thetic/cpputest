@@ -32,11 +32,9 @@
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
-
-TEST_GROUP_C_WRAPPER(TestGroupInC)
-{
+TEST_GROUP_C_WRAPPER(TestGroupInC) {
     TEST_GROUP_C_SETUP_WRAPPER(TestGroupInC)
-    TEST_GROUP_C_TEARDOWN_WRAPPER(TestGroupInC)
+        TEST_GROUP_C_TEARDOWN_WRAPPER(TestGroupInC)
 };
 
 TEST_C_WRAPPER(TestGroupInC, checkThatTheTestHasRun)
@@ -57,10 +55,9 @@ TEST(TestGroupInC, setupHasBeenCalled)
 
 static bool hasDestructorOfTheDestructorCheckedBeenCalled;
 
-class HasTheDestructorBeenCalledChecker
-{
+class HasTheDestructorBeenCalledChecker {
 public:
-    HasTheDestructorBeenCalledChecker(){}
+    HasTheDestructorBeenCalledChecker() { }
     ~HasTheDestructorBeenCalledChecker() { hasDestructorOfTheDestructorCheckedBeenCalled = true; }
 };
 
@@ -483,7 +480,7 @@ TEST(TestHarness_c, checkStringText)
 static void failPointerMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
-    CHECK_EQUAL_C_POINTER(nullptr, (void *)0x1);
+    CHECK_EQUAL_C_POINTER(nullptr, (void*)0x1);
 }
 
 TEST(TestHarness_c, checkPointer)
@@ -499,7 +496,7 @@ TEST(TestHarness_c, checkPointer)
 static void failPointerTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
-    CHECK_EQUAL_C_POINTER_TEXT(nullptr, (void *)0x1, "PointerTestText");
+    CHECK_EQUAL_C_POINTER_TEXT(nullptr, (void*)0x1, "PointerTestText");
 }
 
 TEST(TestHarness_c, checkPointerText)

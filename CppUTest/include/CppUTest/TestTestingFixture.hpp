@@ -28,30 +28,28 @@
 #ifndef D_TestTestingFixture_H
 #define D_TestTestingFixture_H
 
-#include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestOutput.hpp"
+#include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/Utest.hpp"
 
-class TestTestingFixture
-{
+class TestTestingFixture {
 public:
-
     TestTestingFixture();
     virtual ~TestTestingFixture();
     void flushOutputAndResetResult();
 
-    void addTest(UtestShell * test);
+    void addTest(UtestShell* test);
     void installPlugin(TestPlugin* plugin);
 
-    void setTestFunction(void(*testFunction)());
+    void setTestFunction(void (*testFunction)());
     void setTestFunction(ExecFunction* testFunction);
-    void setSetup(void(*setupFunction)());
-    void setTeardown(void(*teardownFunction)());
+    void setSetup(void (*setupFunction)());
+    void setTeardown(void (*teardownFunction)());
 
     void setOutputVerbose();
     void setRunTestsInSeperateProcess();
 
-    void runTestWithMethod(void(*method)());
+    void runTestWithMethod(void (*method)());
     void runAllTests();
 
     size_t getFailureCount();
@@ -78,14 +76,15 @@ private:
     ExecFunctionTestShell* genTest_;
     bool ownsExecFunction_;
     StringBufferTestOutput* output_;
-    TestResult * result_;
+    TestResult* result_;
 };
 
-class SetBooleanOnDestructorCall
-{
+class SetBooleanOnDestructorCall {
     bool& booleanToSet_;
+
 public:
-    SetBooleanOnDestructorCall(bool& booleanToSet) : booleanToSet_(booleanToSet)
+    SetBooleanOnDestructorCall(bool& booleanToSet)
+        : booleanToSet_(booleanToSet)
     {
     }
 

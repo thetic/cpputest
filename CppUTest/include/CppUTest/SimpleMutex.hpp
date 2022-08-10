@@ -30,25 +30,24 @@
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
-class SimpleMutex
-{
+class SimpleMutex {
 public:
     SimpleMutex(void);
     ~SimpleMutex(void);
     void Lock(void);
     void Unlock(void);
+
 private:
     PlatformSpecificMutex psMtx;
 };
 
-
-class ScopedMutexLock
-{
+class ScopedMutexLock {
 public:
-    ScopedMutexLock(SimpleMutex *);
+    ScopedMutexLock(SimpleMutex*);
     ~ScopedMutexLock(void);
+
 private:
-    SimpleMutex * mutex;
+    SimpleMutex* mutex;
 };
 
 #endif

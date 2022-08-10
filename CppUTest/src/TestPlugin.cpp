@@ -29,13 +29,17 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TestPlugin::TestPlugin(const SimpleString& name) :
-    next_(NullTestPlugin::instance()), name_(name), enabled_(true)
+TestPlugin::TestPlugin(const SimpleString& name)
+    : next_(NullTestPlugin::instance())
+    , name_(name)
+    , enabled_(true)
 {
 }
 
-TestPlugin::TestPlugin(TestPlugin* next) :
-    next_(next), name_("null"), enabled_(true)
+TestPlugin::TestPlugin(TestPlugin* next)
+    : next_(next)
+    , name_("null")
+    , enabled_(true)
 {
 }
 
@@ -51,25 +55,29 @@ TestPlugin* TestPlugin::addPlugin(TestPlugin* plugin)
 
 void TestPlugin::runAllPreTestAction(UtestShell& test, TestResult& result)
 {
-    if (enabled_) preTestAction(test, result);
+    if (enabled_)
+        preTestAction(test, result);
     next_->runAllPreTestAction(test, result);
 }
 
 void TestPlugin::runAllPostTestAction(UtestShell& test, TestResult& result)
 {
-    next_ ->runAllPostTestAction(test, result);
-    if (enabled_) postTestAction(test, result);
+    next_->runAllPostTestAction(test, result);
+    if (enabled_)
+        postTestAction(test, result);
 }
 
 bool TestPlugin::parseAllArguments(int ac, char** av, int index)
 {
-    return parseAllArguments(ac, const_cast<const char *const *> (av), index);
+    return parseAllArguments(ac, const_cast<const char* const*>(av), index);
 }
 
-bool TestPlugin::parseAllArguments(int ac, const char *const *av, int index)
+bool TestPlugin::parseAllArguments(int ac, const char* const* av, int index)
 {
-    if (parseArguments(ac, av, index)) return true;
-    if (next_) return next_->parseAllArguments(ac, av, index);
+    if (parseArguments(ac, av, index))
+        return true;
+    if (next_)
+        return next_->parseAllArguments(ac, av, index);
     return false;
 }
 
@@ -80,8 +88,10 @@ const SimpleString& TestPlugin::getName()
 
 TestPlugin* TestPlugin::getPluginByName(const SimpleString& name)
 {
-    if (name == name_) return this;
-    if (next_) return next_->getPluginByName(name);
+    if (name == name_)
+        return this;
+    if (next_)
+        return next_->getPluginByName(name);
     return (next_);
 }
 
@@ -114,10 +124,9 @@ bool TestPlugin::isEnabled()
     return enabled_;
 }
 
-struct cpputest_pair
-{
-    void **orig;
-    void *orig_value;
+struct cpputest_pair {
+    void** orig;
+    void* orig_value;
 };
 
 //////// SetPlugin
@@ -125,13 +134,13 @@ struct cpputest_pair
 static int pointerTableIndex;
 static cpputest_pair setlist[SetPointerPlugin::MAX_SET];
 
-SetPointerPlugin::SetPointerPlugin(const SimpleString& name) :
-    TestPlugin(name)
+SetPointerPlugin::SetPointerPlugin(const SimpleString& name)
+    : TestPlugin(name)
 {
     pointerTableIndex = 0;
 }
 
-void CppUTestStore(void**function)
+void CppUTestStore(void** function)
 {
     if (pointerTableIndex >= SetPointerPlugin::MAX_SET) {
         FAIL("Maximum number of function pointers installed!");
@@ -144,14 +153,14 @@ void CppUTestStore(void**function)
 void SetPointerPlugin::postTestAction(UtestShell& /*test*/, TestResult& /*result*/)
 {
     for (int i = pointerTableIndex - 1; i >= 0; i--)
-        *((void**) setlist[i].orig) = setlist[i].orig_value;
+        *((void**)setlist[i].orig) = setlist[i].orig_value;
     pointerTableIndex = 0;
 }
 
 //////// NullPlugin
 
-NullTestPlugin::NullTestPlugin() :
-    TestPlugin(nullptr)
+NullTestPlugin::NullTestPlugin()
+    : TestPlugin(nullptr)
 {
 }
 

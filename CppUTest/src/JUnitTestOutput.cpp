@@ -26,15 +26,19 @@
  */
 
 #include "CppUTest/JUnitTestOutput.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
-#include "CppUTest/TestFailure.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 
-struct JUnitTestCaseResultNode
-{
-    JUnitTestCaseResultNode() :
-        execTime_(0), failure_(nullptr), ignored_(false), lineNumber_ (0), checkCount_ (0), next_(nullptr)
+struct JUnitTestCaseResultNode {
+    JUnitTestCaseResultNode()
+        : execTime_(0)
+        , failure_(nullptr)
+        , ignored_(false)
+        , lineNumber_(0)
+        , checkCount_(0)
+        , next_(nullptr)
     {
     }
 
@@ -48,10 +52,15 @@ struct JUnitTestCaseResultNode
     JUnitTestCaseResultNode* next_;
 };
 
-struct JUnitTestGroupResult
-{
-    JUnitTestGroupResult() :
-        testCount_(0), failureCount_(0), totalCheckCount_(0), startTime_(0), groupExecTime_(0), head_(nullptr), tail_(nullptr)
+struct JUnitTestGroupResult {
+    JUnitTestGroupResult()
+        : testCount_(0)
+        , failureCount_(0)
+        , totalCheckCount_(0)
+        , startTime_(0)
+        , groupExecTime_(0)
+        , head_(nullptr)
+        , tail_(nullptr)
     {
     }
 
@@ -65,16 +74,15 @@ struct JUnitTestGroupResult
     JUnitTestCaseResultNode* tail_;
 };
 
-struct JUnitTestOutputImpl
-{
+struct JUnitTestOutputImpl {
     JUnitTestGroupResult results_;
     PlatformSpecificFile file_;
     SimpleString package_;
     SimpleString stdOutput_;
 };
 
-JUnitTestOutput::JUnitTestOutput() :
-    impl_(new JUnitTestOutputImpl)
+JUnitTestOutput::JUnitTestOutput()
+    : impl_(new JUnitTestOutputImpl)
 {
 }
 
@@ -129,13 +137,12 @@ void JUnitTestOutput::printCurrentTestStarted(const UtestShell& test)
 {
     impl_->results_.testCount_++;
     impl_->results_.group_ = test.getGroup();
-    impl_->results_.startTime_ = (size_t) GetPlatformSpecificTimeInMillis();
+    impl_->results_.startTime_ = (size_t)GetPlatformSpecificTimeInMillis();
 
     if (impl_->results_.tail_ == nullptr) {
         impl_->results_.head_ = impl_->results_.tail_
-                = new JUnitTestCaseResultNode;
-    }
-    else {
+            = new JUnitTestCaseResultNode;
+    } else {
         impl_->results_.tail_->next_ = new JUnitTestCaseResultNode;
         impl_->results_.tail_ = impl_->results_.tail_->next_;
     }
@@ -185,14 +192,14 @@ void JUnitTestOutput::writeXmlHeader()
 void JUnitTestOutput::writeTestSuiteSummary()
 {
     SimpleString
-            buf =
-                    StringFromFormat(
-                            "<testsuite errors=\"0\" failures=\"%d\" hostname=\"localhost\" name=\"%s\" tests=\"%d\" time=\"%d.%03d\" timestamp=\"%s\">\n",
-                            (int)impl_->results_.failureCount_,
-                            impl_->results_.group_.asCharString(),
-                            (int) impl_->results_.testCount_,
-                            (int) (impl_->results_.groupExecTime_ / 1000), (int) (impl_->results_.groupExecTime_ % 1000),
-                            GetPlatformSpecificTimeString());
+        buf
+        = StringFromFormat(
+            "<testsuite errors=\"0\" failures=\"%d\" hostname=\"localhost\" name=\"%s\" tests=\"%d\" time=\"%d.%03d\" timestamp=\"%s\">\n",
+            (int)impl_->results_.failureCount_,
+            impl_->results_.group_.asCharString(),
+            (int)impl_->results_.testCount_,
+            (int)(impl_->results_.groupExecTime_ / 1000), (int)(impl_->results_.groupExecTime_ % 1000),
+            GetPlatformSpecificTimeString());
     writeToFile(buf.asCharString());
 }
 
@@ -219,23 +226,22 @@ void JUnitTestOutput::writeTestCases()
 
     while (cur) {
         SimpleString buf = StringFromFormat(
-                "<testcase classname=\"%s%s%s\" name=\"%s\" assertions=\"%d\" time=\"%d.%03d\" file=\"%s\" line=\"%d\">\n",
-                impl_->package_.asCharString(),
-                impl_->package_.isEmpty() ? "" : ".",
-                impl_->results_.group_.asCharString(),
-                cur->name_.asCharString(),
-                (int) (cur->checkCount_ - impl_->results_.totalCheckCount_),
-                (int) (cur->execTime_ / 1000), (int)(cur->execTime_ % 1000),
-                cur->file_.asCharString(),
-                (int) cur->lineNumber_);
+            "<testcase classname=\"%s%s%s\" name=\"%s\" assertions=\"%d\" time=\"%d.%03d\" file=\"%s\" line=\"%d\">\n",
+            impl_->package_.asCharString(),
+            impl_->package_.isEmpty() ? "" : ".",
+            impl_->results_.group_.asCharString(),
+            cur->name_.asCharString(),
+            (int)(cur->checkCount_ - impl_->results_.totalCheckCount_),
+            (int)(cur->execTime_ / 1000), (int)(cur->execTime_ % 1000),
+            cur->file_.asCharString(),
+            (int)cur->lineNumber_);
         writeToFile(buf.asCharString());
 
         impl_->results_.totalCheckCount_ = cur->checkCount_;
 
         if (cur->failure_) {
             writeFailure(cur);
-        }
-        else if (cur->ignored_) {
+        } else if (cur->ignored_) {
             writeToFile("<skipped />\n");
         }
         writeToFile("</testcase>\n");
@@ -246,14 +252,13 @@ void JUnitTestOutput::writeTestCases()
 void JUnitTestOutput::writeFailure(JUnitTestCaseResultNode* node)
 {
     SimpleString buf = StringFromFormat(
-            "<failure message=\"%s:%d: %s\" type=\"AssertionFailedError\">\n",
-            node->failure_->getFileName().asCharString(),
-            (int) node->failure_->getFailureLineNumber(),
-            encodeXmlText(node->failure_->getMessage()).asCharString());
+        "<failure message=\"%s:%d: %s\" type=\"AssertionFailedError\">\n",
+        node->failure_->getFileName().asCharString(),
+        (int)node->failure_->getFailureLineNumber(),
+        encodeXmlText(node->failure_->getMessage()).asCharString());
     writeToFile(buf.asCharString());
     writeToFile("</failure>\n");
 }
-
 
 void JUnitTestOutput::writeFileEnding()
 {
@@ -281,7 +286,7 @@ void JUnitTestOutput::printBuffer(const char*)
 {
 }
 
-void JUnitTestOutput::print(const char *output)
+void JUnitTestOutput::print(const char* output)
 {
     impl_->stdOutput_ += output;
 }

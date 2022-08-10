@@ -29,24 +29,24 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <string.h>
-#include <math.h>
 #include <ctype.h>
+#include <math.h>
+#include <setjmp.h>
 #include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #ifdef CPPUTEST_HAVE_GETTIMEOFDAY
 #include <sys/time.h>
 #endif
 
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
-#include <unistd.h>
-#include <sys/wait.h>
 #include <errno.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #endif
 
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
@@ -103,30 +103,30 @@ static void GccPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, Test
         return;
     }
 
-    if (cpid == 0) {            /* Code executed by child */
+    if (cpid == 0) { /* Code executed by child */
         const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
-        shell->runOneTestInCurrentProcess(plugin, *result);        // LCOV_EXCL_LINE
-        _exit(initialFailureCount < result->getFailureCount());    // LCOV_EXCL_LINE
-    } else {                    /* Code executed by parent */
+        shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
+        _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+    } else { /* Code executed by parent */
         size_t amountOfRetries = 0;
         do {
             w = PlatformSpecificWaitPid(cpid, &status, WUNTRACED);
             if (w == syscallError) {
                 // OS X debugger causes EINTR
                 if (EINTR == errno) {
-                  if (amountOfRetries > 30) {
-                    result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
-                    return;
-                  }
-                  amountOfRetries++;
-                }
-                else {
+                    if (amountOfRetries > 30) {
+                        result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
+                        return;
+                    }
+                    amountOfRetries++;
+                } else {
                     result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
                     return;
                 }
             } else {
                 SetTestFailureByStatusCode(shell, result, status);
-                if (WIFSTOPPED(status)) kill(w, SIGCONT);
+                if (WIFSTOPPED(status))
+                    kill(w, SIGCONT);
             }
         } while ((w == syscallError) || (!WIFEXITED(status) && !WIFSIGNALED(status)));
     }
@@ -149,12 +149,11 @@ TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
     return TestOutput::eclipse;
 }
 
-void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) =
-        GccPlatformSpecificRunTestInASeperateProcess;
+void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = GccPlatformSpecificRunTestInASeperateProcess;
 int (*PlatformSpecificFork)(void) = PlatformSpecificForkImplementation;
 int (*PlatformSpecificWaitPid)(int, int*, int) = PlatformSpecificWaitPidImplementation;
 
-static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
+static int PlatformSpecificSetJmpImplementation(void (*function)(void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -201,9 +200,9 @@ static const char* TimeStringImplementation()
 #if defined(_WIN32) && defined(MINGW_HAS_SECURE_API)
     static struct tm lastlocaltime;
     localtime_s(&lastlocaltime, &theTime);
-    struct tm *tmp = &lastlocaltime;
+    struct tm* tmp = &lastlocaltime;
 #else
-    struct tm *tmp = localtime(&theTime);
+    struct tm* tmp = localtime(&theTime);
 #endif
     strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
     return dateTime;
@@ -220,7 +219,7 @@ const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wused-but-marked-unused"
 #endif
-int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_list va_args_list) = vsnprintf;
+int (*PlatformSpecificVSNprintf)(char* str, size_t size, const char* format, va_list va_args_list) = vsnprintf;
 
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
 {
@@ -276,25 +275,24 @@ void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
 int (*PlatformSpecificIsInf)(double) = IsInfImplementation;
-int (*PlatformSpecificAtExit)(void(*func)(void)) = atexit;  /// this was undefined before
+int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit; /// this was undefined before
 
 static PlatformSpecificMutex PThreadMutexCreate(void)
 {
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_t *mutex = new pthread_mutex_t;
+    pthread_mutex_t* mutex = new pthread_mutex_t;
 
     pthread_mutex_init(mutex, nullptr);
     return (PlatformSpecificMutex)mutex;
 #else
     return nullptr;
 #endif
-
 }
 
 static void PThreadMutexLock(PlatformSpecificMutex mtx)
 {
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_lock((pthread_mutex_t *)mtx);
+    pthread_mutex_lock((pthread_mutex_t*)mtx);
 #else
     (void)mtx;
 #endif
@@ -303,7 +301,7 @@ static void PThreadMutexLock(PlatformSpecificMutex mtx)
 static void PThreadMutexUnlock(PlatformSpecificMutex mtx)
 {
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_unlock((pthread_mutex_t *)mtx);
+    pthread_mutex_unlock((pthread_mutex_t*)mtx);
 #else
     (void)mtx;
 #endif
@@ -312,7 +310,7 @@ static void PThreadMutexUnlock(PlatformSpecificMutex mtx)
 static void PThreadMutexDestroy(PlatformSpecificMutex mtx)
 {
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_t *mutex = (pthread_mutex_t *)mtx;
+    pthread_mutex_t* mutex = (pthread_mutex_t*)mtx;
     pthread_mutex_destroy(mutex);
     delete mutex;
 #else

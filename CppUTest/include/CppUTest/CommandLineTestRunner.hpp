@@ -28,23 +28,22 @@
 #ifndef D_CommandLineTestRunner_H
 #define D_CommandLineTestRunner_H
 
-#include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/CommandLineArguments.hpp"
 #include "CppUTest/TestFilter.hpp"
+#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestOutput.hpp"
 
 class TestRegistry;
 
 #define DEF_PLUGIN_MEM_LEAK "MemoryLeakPlugin"
 #define DEF_PLUGIN_SET_POINTER "SetPointerPlugin"
 
-class CommandLineTestRunner
-{
+class CommandLineTestRunner {
 public:
-    static int RunAllTests(int ac, const char *const *av);
+    static int RunAllTests(int ac, const char* const* av);
     static int RunAllTests(int ac, char** av);
 
-    CommandLineTestRunner(int ac, const char *const *av, TestRegistry* registry);
+    CommandLineTestRunner(int ac, const char* const* av, TestRegistry* registry);
     virtual ~CommandLineTestRunner();
 
     int runAllTestsMain();
@@ -56,6 +55,7 @@ protected:
     virtual TestOutput* createCompositeOutput(TestOutput* outputOne, TestOutput* outputTwo);
 
     TestOutput* output_;
+
 private:
     CommandLineArguments* arguments_;
     TestRegistry* registry_;

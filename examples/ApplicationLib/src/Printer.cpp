@@ -44,7 +44,7 @@ void Printer::Print(const char* s)
 
 void Printer::Print(long int n)
 {
-	printf("%ld", n);
+    printf("%ld", n);
 }
 
 Printer& operator<<(Printer& p, const char* s)

@@ -28,13 +28,12 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(MockStrictOrderTest)
-{
-  void teardown() override
-  {
-    mock().clear();
-  }
-};
+TEST_GROUP(MockStrictOrderTest) {
+    void teardown() override {
+        mock().clear();
+}
+}
+;
 
 TEST(MockStrictOrderTest, OrderObserved)
 {
@@ -110,7 +109,7 @@ TEST(MockStrictOrderTest, orderViolatedWorksWithExtraUnexpectedCall)
     MockFailureReporterInstaller failureReporterInstaller;
     mock().strictOrder();
     mock("bla").strictOrder();
-	mock().ignoreOtherCalls();
+    mock().ignoreOtherCalls();
 
     MockExpectedCallsListForTest expectations;
     expectations.addFunctionOrdered("foo::foo1", 1)->callWasMade(2);
@@ -123,9 +122,9 @@ TEST(MockStrictOrderTest, orderViolatedWorksWithExtraUnexpectedCall)
 
     mock("bla").actualCall("foo1");
     mock("foo").actualCall("foo2");
-	mock("foo").actualCall("unexpected1");
+    mock("foo").actualCall("unexpected1");
     mock("foo").actualCall("foo1");
-	mock("foo").actualCall("unexpected2");
+    mock("foo").actualCall("unexpected2");
 
     mock().checkExpectations();
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);

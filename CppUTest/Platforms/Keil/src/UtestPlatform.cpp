@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
 #include "CppUTest/TestHarness.h"
+#include <stdlib.h>
 #undef malloc
 #undef free
 #undef calloc
@@ -34,14 +34,14 @@
 #undef strdup
 #undef strndup
 
-#define  far  // eliminate "meaningless type qualifier" warning
-#include <time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <string.h>
-#include <math.h>
+#define far // eliminate "meaningless type qualifier" warning
 #include <ctype.h>
+#include <math.h>
+#include <setjmp.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 #include "CppUTest/PlatformSpecificFunctions.h"
 
@@ -72,7 +72,7 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, Test
 int (*PlatformSpecificFork)() = DummyPlatformSpecificFork;
 int (*PlatformSpecificWaitPid)(int, int*, int) = DummyPlatformSpecificWaitPid;
 
-static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), void* data)
+static int PlatformSpecificSetJmpImplementation(void (*function)(void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -98,13 +98,11 @@ void (*PlatformSpecificLongJmp)() = PlatformSpecificLongJmpImplementation;
 int (*PlatformSpecificSetJmp)(void (*function)(void*), void*) = PlatformSpecificSetJmpImplementation;
 void (*PlatformSpecificRestoreJumpBuffer)() = PlatformSpecificRestoreJumpBufferImplementation;
 
-
-
 ///////////// Time in millis
 /*
-    *  In Keil MDK-ARM, clock() default implementation used semihosting.
-    *  Resolutions is user adjustable (1 ms for now)
-    */
+ *  In Keil MDK-ARM, clock() default implementation used semihosting.
+ *  Resolutions is user adjustable (1 ms for now)
+ */
 static long TimeInMillisImplementation()
 {
     clock_t t = clock();
@@ -118,7 +116,7 @@ long (*GetPlatformSpecificTimeInMillis)() = TimeInMillisImplementation;
 
 static const char* TimeStringImplementation()
 {
-    time_t tm = 0;//time(NULL); // todo
+    time_t tm = 0; // time(NULL); // todo
     return ctime(&tm);
 }
 
@@ -130,9 +128,9 @@ int PlatformSpecificAtoI(const char* str)
 }
 
 /* The ARMCC compiler will compile this function with C++ linkage, unless
-     * we specifically tell it to use C linkage again, in the function definiton.
-     */
-int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_list args) = vsnprintf;
+ * we specifically tell it to use C linkage again, in the function definiton.
+ */
+int (*PlatformSpecificVSNprintf)(char* str, size_t size, const char* format, va_list args) = vsnprintf;
 
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
 {
@@ -159,30 +157,30 @@ void (*PlatformSpecificFClose)(PlatformSpecificFile) = PlatformSpecificFCloseImp
 int (*PlatformSpecificPutchar)(int) = putchar;
 void (*PlatformSpecificFlush)() = PlatformSpecificFlushImplementation;
 void* (*PlatformSpecificMalloc)(size_t) = malloc;
-void* (*PlatformSpecificRealloc) (void*, size_t) = realloc;
+void* (*PlatformSpecificRealloc)(void*, size_t) = realloc;
 void (*PlatformSpecificFree)(void*) = free;
 void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = memcpy;
 void* (*PlatformSpecificMemset)(void*, int, size_t) = memset;
 
 static int IsNanImplementation(double d)
 {
-#       ifdef __MICROLIB
+#ifdef __MICROLIB
     return 0;
-#       else
+#else
     return isnan(d);
-#       endif
+#endif
 }
 
 static int IsInfImplementation(double d)
 {
-#       ifdef __MICROLIB
+#ifdef __MICROLIB
     return 0;
-#       else
+#else
     return isinf(d);
-#       endif
+#endif
 }
 
-int DummyAtExit(void(*)(void))
+int DummyAtExit(void (*)(void))
 {
     return 0;
 }
@@ -190,7 +188,7 @@ int DummyAtExit(void(*)(void))
 double (*PlatformSpecificFabs)(double) = abs;
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
 int (*PlatformSpecificIsInf)(double) = IsInfImplementation;
-int (*PlatformSpecificAtExit)(void(*func)(void)) = DummyAtExit;
+int (*PlatformSpecificAtExit)(void (*func)(void)) = DummyAtExit;
 
 static PlatformSpecificMutex DummyMutexCreate(void)
 {
@@ -213,5 +211,3 @@ PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = DummyMutexCreate;
 void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
-
-

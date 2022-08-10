@@ -25,21 +25,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
-#include "CppUTest/TestRegistry.hpp"
 
-namespace
-{
+namespace {
 const int testLineNumber = 1;
 }
 
-class MockTest: public UtestShell
-{
+class MockTest : public UtestShell {
 public:
-    MockTest(const char* group = "Group") :
-        UtestShell(group, "Name", "File", testLineNumber), hasRun_(false)
+    MockTest(const char* group = "Group")
+        : UtestShell(group, "Name", "File", testLineNumber)
+        , hasRun_(false)
     {
     }
     void runOneTest(TestPlugin*, TestResult&) override
@@ -50,10 +49,8 @@ public:
     bool hasRun_;
 };
 
-class MockTestResult: public TestResult
-{
+class MockTestResult : public TestResult {
 public:
-
     int countTestsStarted;
     int countTestsEnded;
     int countCurrentTestStarted;
@@ -61,8 +58,8 @@ public:
     int countCurrentGroupStarted;
     int countCurrentGroupEnded;
 
-    MockTestResult(TestOutput& p) :
-        TestResult(p)
+    MockTestResult(TestOutput& p)
+        : TestResult(p)
     {
         resetCount();
     }
@@ -105,7 +102,6 @@ public:
     {
         countCurrentGroupEnded++;
     }
-
 };
 
 TEST_GROUP(TestRegistry)
@@ -116,8 +112,8 @@ TEST_GROUP(TestRegistry)
     MockTest* test2;
     MockTest* test3;
     MockTest* test4;
-    TestResult *result;
-    MockTestResult *mockResult;
+    TestResult* result;
+    MockTestResult* mockResult;
     void setup() override
     {
         output = new StringBufferTestOutput();
@@ -308,13 +304,15 @@ TEST(TestRegistry, CurrentRepetitionIsCorrectTwo)
     LONGS_EQUAL(2, myRegistry->getCurrentRepetition());
 }
 
-class MyTestPluginDummy: public TestPlugin
-{
+class MyTestPluginDummy : public TestPlugin {
 public:
-    MyTestPluginDummy(const SimpleString& name) : TestPlugin(name) {}
-    ~MyTestPluginDummy() override {}
-    void runAllPreTestAction(UtestShell&, TestResult&) override {}
-    void runAllPostTestAction(UtestShell&, TestResult&) override {}
+    MyTestPluginDummy(const SimpleString& name)
+        : TestPlugin(name)
+    {
+    }
+    ~MyTestPluginDummy() override { }
+    void runAllPreTestAction(UtestShell&, TestResult&) override { }
+    void runAllPostTestAction(UtestShell&, TestResult&) override { }
 };
 
 TEST(TestRegistry, ResetPluginsWorks)
@@ -410,25 +408,25 @@ IGNORE_TEST(TestRegistry, shuffleTestList)
     myRegistry->addTest(test2);
     myRegistry->addTest(test1);
 
-    UtestShell* first_before  = myRegistry->getFirstTest();
+    UtestShell* first_before = myRegistry->getFirstTest();
     UtestShell* second_before = first_before->getNext();
-    UtestShell* third_before  = second_before->getNext();
+    UtestShell* third_before = second_before->getNext();
 
-    CHECK_TRUE(first_before  == test1);
+    CHECK_TRUE(first_before == test1);
     CHECK_TRUE(second_before == test2);
-    CHECK_TRUE(third_before  == test3);
-    CHECK_TRUE(third_before->getNext()  == nullptr);
+    CHECK_TRUE(third_before == test3);
+    CHECK_TRUE(third_before->getNext() == nullptr);
 
     // shuffle always with element at index 0: [1] 2 [3] --> [3] [2] 1 --> 2 3 1
     myRegistry->shuffleTests(0);
 
-    UtestShell* first_after  = myRegistry->getFirstTest();
+    UtestShell* first_after = myRegistry->getFirstTest();
     UtestShell* second_after = first_after->getNext();
-    UtestShell* third_after  = second_after->getNext();
+    UtestShell* third_after = second_after->getNext();
 
-    CHECK_TRUE(first_after  == test2);
+    CHECK_TRUE(first_after == test2);
     CHECK_TRUE(second_after == test3);
-    CHECK_TRUE(third_after  == test1);
+    CHECK_TRUE(third_after == test1);
     CHECK_TRUE(third_after->getNext() == nullptr);
 }
 

@@ -45,14 +45,13 @@
 class SimpleStringCollection;
 class TestMemoryAllocator;
 
-class SimpleString
-{
+class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
     friend bool operator!=(const SimpleString& left, const SimpleString& right);
 
 public:
-    SimpleString(const char *value = "");
-    SimpleString(const char *value, size_t repeatCount);
+    SimpleString(const char* value = "");
+    SimpleString(const char* value, size_t repeatCount);
     SimpleString(const SimpleString& other);
     ~SimpleString();
 
@@ -61,7 +60,7 @@ public:
     SimpleString& operator+=(const SimpleString&);
     SimpleString& operator+=(const char*);
 
-    static const size_t npos = (size_t) -1;
+    static const size_t npos = (size_t)-1;
 
     char at(size_t pos) const;
     size_t find(char ch) const;
@@ -71,7 +70,7 @@ public:
     bool startsWith(const SimpleString& other) const;
     bool endsWith(const SimpleString& other) const;
     void split(const SimpleString& split,
-                    SimpleStringCollection& outCollection) const;
+        SimpleStringCollection& outCollection) const;
     bool equalsNoCase(const SimpleString& str) const;
 
     size_t count(const SimpleString& str) const;
@@ -87,7 +86,7 @@ public:
 
     SimpleString printable() const;
 
-    const char *asCharString() const;
+    const char* asCharString() const;
     size_t size() const;
     bool isEmpty() const;
 
@@ -96,19 +95,19 @@ public:
     static TestMemoryAllocator* getStringAllocator();
     static void setStringAllocator(TestMemoryAllocator* allocator);
 
-    static int AtoI(const char*str);
-    static unsigned AtoU(const char*str);
+    static int AtoI(const char* str);
+    static unsigned AtoU(const char* str);
     static int StrCmp(const char* s1, const char* s2);
     static size_t StrLen(const char*);
     static int StrNCmp(const char* s1, const char* s2, size_t n);
     static char* StrNCpy(char* s1, const char* s2, size_t n);
     static const char* StrStr(const char* s1, const char* s2);
     static char ToLower(char ch);
-    static int MemCmp(const void* s1, const void *s2, size_t n);
+    static int MemCmp(const void* s1, const void* s2, size_t n);
     static char* allocStringBuffer(size_t size, const char* file, size_t line);
     static void deallocStringBuffer(char* str, size_t size, const char* file, size_t line);
-private:
 
+private:
     const char* getBuffer() const;
 
     void deallocateInternalBuffer();
@@ -119,7 +118,7 @@ private:
     void copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize);
     void copyBufferToNewInternalBuffer(const SimpleString& otherBuffer);
 
-    char *buffer_;
+    char* buffer_;
     size_t bufferSize_;
 
     static TestMemoryAllocator* stringAllocator_;
@@ -131,12 +130,11 @@ private:
     static bool isUpper(char ch);
     static bool isControl(char ch);
     static bool isControlWithShortEscapeSequence(char ch);
-    
+
     size_t getPrintableSize() const;
 };
 
-class SimpleStringCollection
-{
+class SimpleStringCollection {
 public:
     SimpleStringCollection();
     ~SimpleStringCollection();
@@ -151,16 +149,16 @@ private:
     SimpleString empty_;
     size_t size_;
 
-    void operator =(SimpleStringCollection&);
+    void operator=(SimpleStringCollection&);
     SimpleStringCollection(SimpleStringCollection&);
 };
 
-class GlobalSimpleStringAllocatorStash
-{
+class GlobalSimpleStringAllocatorStash {
 public:
     GlobalSimpleStringAllocatorStash();
     void save();
     void restore();
+
 private:
     TestMemoryAllocator* originalAllocator_;
 };
@@ -168,8 +166,7 @@ private:
 class MemoryAccountant;
 class AccountingTestMemoryAllocator;
 
-class GlobalSimpleStringMemoryAccountant
-{
+class GlobalSimpleStringMemoryAccountant {
 public:
     GlobalSimpleStringMemoryAccountant();
     ~GlobalSimpleStringMemoryAccountant();
@@ -181,6 +178,7 @@ public:
     SimpleString report();
 
     AccountingTestMemoryAllocator* getAllocator();
+
 private:
     void restoreAllocator();
 
@@ -192,8 +190,8 @@ SimpleString StringFrom(bool value);
 SimpleString StringFrom(const void* value);
 SimpleString StringFrom(void (*value)());
 SimpleString StringFrom(char value);
-SimpleString StringFrom(const char *value);
-SimpleString StringFromOrNull(const char * value);
+SimpleString StringFrom(const char* value);
+SimpleString StringFromOrNull(const char* value);
 SimpleString StringFrom(int value);
 SimpleString StringFrom(unsigned int value);
 SimpleString StringFrom(long value);
@@ -223,7 +221,8 @@ __attribute__((format(printf, 1, 2)))
 #endif
 #endif
 #endif
-SimpleString StringFromFormat(const char* format, ...);
+SimpleString
+StringFromFormat(const char* format, ...);
 
 SimpleString VStringFromFormat(const char* format, va_list args);
 SimpleString StringFromBinary(const unsigned char* value, size_t size);
@@ -240,6 +239,6 @@ SimpleString BracketsFormattedHexStringFrom(long long value);
 SimpleString BracketsFormattedHexStringFrom(unsigned long long value);
 SimpleString BracketsFormattedHexStringFrom(signed char value);
 SimpleString BracketsFormattedHexString(SimpleString hexString);
-SimpleString PrintableStringFromOrNull(const char * expected);
+SimpleString PrintableStringFromOrNull(const char* expected);
 
 #endif

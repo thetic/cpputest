@@ -28,10 +28,8 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-class TestInstallerTestUtestShell : public UtestShell
-{
+class TestInstallerTestUtestShell : public UtestShell {
 };
-
 
 // this is file scope because the test is installed
 // with all other tests, which also happen to be

@@ -45,8 +45,7 @@ extern bool doubles_equal(double d1, double d2, double threshold);
 
 class UtestShell;
 
-class Utest
-{
+class Utest {
 public:
     Utest();
     virtual ~Utest();
@@ -59,29 +58,25 @@ public:
 
 //////////////////// TestTerminator
 
-class TestTerminator
-{
+class TestTerminator {
 public:
-    virtual void exitCurrentTest() const=0;
+    virtual void exitCurrentTest() const = 0;
     virtual ~TestTerminator();
 };
 
-class NormalTestTerminator : public TestTerminator
-{
+class NormalTestTerminator : public TestTerminator {
 public:
     virtual void exitCurrentTest() const override;
     ~NormalTestTerminator() override;
 };
 
-class TestTerminatorWithoutExceptions  : public TestTerminator
-{
+class TestTerminatorWithoutExceptions : public TestTerminator {
 public:
     virtual void exitCurrentTest() const override;
     ~TestTerminatorWithoutExceptions() override;
 };
 
-class CrashingTestTerminator : public NormalTestTerminator
-{
+class CrashingTestTerminator : public NormalTestTerminator {
 public:
     virtual void exitCurrentTest() const override;
     ~CrashingTestTerminator() override;
@@ -89,12 +84,11 @@ public:
 
 //////////////////// UtestShell
 
-class UtestShell
-{
+class UtestShell {
 public:
-    static UtestShell *getCurrent();
+    static UtestShell* getCurrent();
 
-    static const TestTerminator &getCurrentTestTerminator();
+    static const TestTerminator& getCurrentTestTerminator();
 
     static void setCrashOnFail();
     static void restoreDefaultTestTerminator();
@@ -107,7 +101,7 @@ public:
     virtual ~UtestShell();
 
     virtual UtestShell* addTest(UtestShell* test);
-    virtual UtestShell *getNext() const;
+    virtual UtestShell* getNext() const;
     virtual size_t countTests();
 
     bool shouldRun(const TestFilter* groupFilters, const TestFilter* nameFilters) const;
@@ -120,35 +114,35 @@ public:
     virtual bool hasFailed() const;
     void countCheck();
 
-    virtual void assertTrue(bool condition, const char *checkString, const char *conditionString, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertCstrEqual(const char *expected, const char *actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertCstrNEqual(const char *expected, const char *actual, size_t length, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertCstrNoCaseEqual(const char *expected, const char *actual, const char* text, const char *fileName, size_t lineNumber);
-    virtual void assertCstrContains(const char *expected, const char *actual, const char* text, const char *fileName, size_t lineNumber);
-    virtual void assertCstrNoCaseContains(const char *expected, const char *actual, const char* text, const char *fileName, size_t lineNumber);
-    virtual void assertLongsEqual(long expected, long actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertUnsignedLongsEqual(unsigned long expected, unsigned long actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertLongLongsEqual(long long expected, long long actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertUnsignedLongLongsEqual(unsigned long long expected, unsigned long long actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertSignedBytesEqual(signed char expected, signed char actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertPointersEqual(const void *expected, const void *actual, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertTrue(bool condition, const char* checkString, const char* conditionString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertCstrEqual(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertCstrNEqual(const char* expected, const char* actual, size_t length, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertCstrNoCaseEqual(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber);
+    virtual void assertCstrContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber);
+    virtual void assertCstrNoCaseContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber);
+    virtual void assertLongsEqual(long expected, long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertUnsignedLongsEqual(unsigned long expected, unsigned long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertLongLongsEqual(long long expected, long long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertUnsignedLongLongsEqual(unsigned long long expected, unsigned long long actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertSignedBytesEqual(signed char expected, signed char actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertPointersEqual(const void* expected, const void* actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertFunctionPointersEqual(void (*expected)(), void (*actual)(), const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertDoublesEqual(double expected, double actual, double threshold, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertDoublesEqual(double expected, double actual, double threshold, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertEquals(bool failed, const char* expected, const char* actual, const char* text, const char* file, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertBinaryEqual(const void *expected, const void *actual, size_t length, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertBitsEqual(unsigned long expected, unsigned long actual, unsigned long mask, size_t byteCount, const char* text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void assertCompare(bool comparison, const char *checkString, const char *comparisonString, const char *text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void fail(const char *text, const char *fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertBinaryEqual(const void* expected, const void* actual, size_t length, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertBitsEqual(unsigned long expected, unsigned long actual, unsigned long mask, size_t byteCount, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void assertCompare(bool comparison, const char* checkString, const char* comparisonString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    virtual void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
 
-    virtual void print(const char *text, const char *fileName, size_t lineNumber);
-    virtual void print(const SimpleString & text, const char *fileName, size_t lineNumber);
+    virtual void print(const char* text, const char* fileName, size_t lineNumber);
+    virtual void print(const SimpleString& text, const char* fileName, size_t lineNumber);
     virtual void printVeryVerbose(const char* text);
 
-    void setFileName(const char *fileName);
+    void setFileName(const char* fileName);
     void setLineNumber(size_t lineNumber);
-    void setGroupName(const char *groupName);
-    void setTestName(const char *testName);
+    void setGroupName(const char* groupName);
+    void setTestName(const char* testName);
 
     static void crash();
     static void setCrashMethod(void (*crashme)());
@@ -163,7 +157,7 @@ public:
     virtual void destroyTest(Utest* test);
 
     virtual void runOneTest(TestPlugin* plugin, TestResult& result);
-    virtual void runOneTestInCurrentProcess(TestPlugin *plugin, TestResult & result);
+    virtual void runOneTestInCurrentProcess(TestPlugin* plugin, TestResult& result);
 
     virtual void failWith(const TestFailure& failure);
     virtual void failWith(const TestFailure& failure, const TestTerminator& terminator);
@@ -172,16 +166,17 @@ public:
 
 protected:
     UtestShell();
-    UtestShell(const char *groupName, const char *testName, const char *fileName, size_t lineNumber, UtestShell *nextTest);
+    UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber, UtestShell* nextTest);
 
     virtual SimpleString getMacroName() const;
-    TestResult *getTestResult();
+    TestResult* getTestResult();
+
 private:
-    const char *group_;
-    const char *name_;
-    const char *file_;
+    const char* group_;
+    const char* name_;
+    const char* file_;
     size_t lineNumber_;
-    UtestShell *next_;
+    UtestShell* next_;
     bool isRunAsSeperateProcess_;
     bool hasFailed_;
 
@@ -192,45 +187,41 @@ private:
     static UtestShell* currentTest_;
     static TestResult* testResult_;
 
-    static const TestTerminator *currentTestTerminator_;
-    
+    static const TestTerminator* currentTestTerminator_;
+
     static bool rethrowExceptions_;
 };
-
-
 
 //////////////////// ExecFunctionTest
 
 class ExecFunctionTestShell;
 
-class ExecFunctionTest : public Utest
-{
+class ExecFunctionTest : public Utest {
 public:
     ExecFunctionTest(ExecFunctionTestShell* shell);
     void testBody() override;
     virtual void setup() override;
     virtual void teardown() override;
+
 private:
     ExecFunctionTestShell* shell_;
 };
 
 //////////////////// ExecFunction
 
-class ExecFunction
-{
+class ExecFunction {
 public:
     ExecFunction();
     virtual ~ExecFunction();
 
-    virtual void exec()=0;
+    virtual void exec() = 0;
 };
 
-class ExecFunctionWithoutParameters : public ExecFunction
-{
+class ExecFunctionWithoutParameters : public ExecFunction {
 public:
     void (*testFunction_)();
 
-    ExecFunctionWithoutParameters(void(*testFunction)());
+    ExecFunctionWithoutParameters(void (*testFunction)());
     ~ExecFunctionWithoutParameters() override;
 
     virtual void exec() override;
@@ -238,15 +229,17 @@ public:
 
 //////////////////// ExecFunctionTestShell
 
-class ExecFunctionTestShell : public UtestShell
-{
+class ExecFunctionTestShell : public UtestShell {
 public:
     void (*setup_)();
     void (*teardown_)();
     ExecFunction* testFunction_;
 
-    ExecFunctionTestShell(void(*set)() = nullptr, void(*tear)() = nullptr) :
-        UtestShell("ExecFunction", "ExecFunction", "ExecFunction", 1), setup_(set), teardown_(tear), testFunction_(nullptr)
+    ExecFunctionTestShell(void (*set)() = nullptr, void (*tear)() = nullptr)
+        : UtestShell("ExecFunction", "ExecFunction", "ExecFunction", 1)
+        , setup_(set)
+        , teardown_(tear)
+        , testFunction_(nullptr)
     {
     }
 
@@ -256,39 +249,36 @@ public:
 
 //////////////////// CppUTestFailedException
 
-class CppUTestFailedException
-{
+class CppUTestFailedException {
 public:
     int dummy_;
 };
 
 //////////////////// IgnoredTest
 
-class IgnoredUtestShell : public UtestShell
-{
+class IgnoredUtestShell : public UtestShell {
 public:
     IgnoredUtestShell();
     ~IgnoredUtestShell() override;
     explicit IgnoredUtestShell(const char* groupName, const char* testName,
-            const char* fileName, size_t lineNumber);
+        const char* fileName, size_t lineNumber);
     virtual bool willRun() const override;
     virtual void setRunIgnored() override;
+
 protected:
     virtual SimpleString getMacroName() const override;
     virtual void runOneTest(TestPlugin* plugin, TestResult& result) override;
-private:
 
+private:
     IgnoredUtestShell(const IgnoredUtestShell&);
     IgnoredUtestShell& operator=(const IgnoredUtestShell&);
 
     bool runIgnored_;
-
 };
 
 //////////////////// UtestShellPointerArray
 
-class UtestShellPointerArray
-{
+class UtestShellPointerArray {
 public:
     UtestShellPointerArray(UtestShell* firstTest);
     ~UtestShellPointerArray();
@@ -300,30 +290,25 @@ public:
     UtestShell* get(size_t index) const;
 
 private:
-
     void swap(size_t index1, size_t index2);
 
     UtestShell** arrayOfTests_;
     size_t count_;
 };
 
-
 //////////////////// TestInstaller
 
-class TestInstaller
-{
+class TestInstaller {
 public:
     explicit TestInstaller(UtestShell& shell, const char* groupName, const char* testName,
-            const char* fileName, size_t lineNumber);
+        const char* fileName, size_t lineNumber);
     virtual ~TestInstaller();
 
     void unDo();
 
 private:
-
     TestInstaller(const TestInstaller&);
     TestInstaller& operator=(const TestInstaller&);
-
 };
 
 #endif

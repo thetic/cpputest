@@ -30,10 +30,8 @@
 
 #include "CppUTest/SimpleString.hpp"
 
-class TestFilter
-{
+class TestFilter {
 public:
-
     TestFilter();
     TestFilter(const char* filter);
     TestFilter(const SimpleString& filter);
@@ -50,6 +48,7 @@ public:
     bool operator!=(const TestFilter& filter) const;
 
     SimpleString asString() const;
+
 private:
     SimpleString filter_;
     bool strictMatching_;
@@ -60,4 +59,3 @@ private:
 SimpleString StringFrom(const TestFilter& filter);
 
 #endif
-

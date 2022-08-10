@@ -30,17 +30,20 @@
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
-#define GENERIC_PLUGIN  "GenericPlugin"
+#define GENERIC_PLUGIN "GenericPlugin"
 #define GENERIC_PLUGIN2 "GenericPlugin2"
 #define GENERIC_PLUGIN3 "GenericPlugin3"
 
 static int sequenceNumber;
 
-class DummyPlugin: public TestPlugin
-{
+class DummyPlugin : public TestPlugin {
 public:
-    DummyPlugin(const SimpleString& name) :
-        TestPlugin(name), preAction(0), preActionSequence(0), postAction(0), postActionSequence(0)
+    DummyPlugin(const SimpleString& name)
+        : TestPlugin(name)
+        , preAction(0)
+        , preActionSequence(0)
+        , postAction(0)
+        , postActionSequence(0)
     {
     }
 
@@ -62,22 +65,20 @@ public:
     int postActionSequence;
 };
 
-class DummyPluginWhichAcceptsParameters: public DummyPlugin
-{
+class DummyPluginWhichAcceptsParameters : public DummyPlugin {
 public:
-    DummyPluginWhichAcceptsParameters(const SimpleString& name) :
-        DummyPlugin(name)
+    DummyPluginWhichAcceptsParameters(const SimpleString& name)
+        : DummyPlugin(name)
     {
     }
 
-    bool parseArguments(int ac, const char *const *av, int index) override
+    bool parseArguments(int ac, const char* const* av, int index) override
     {
-        SimpleString argument (av[index]);
+        SimpleString argument(av[index]);
         if (argument == "-paccept")
             return true;
         return TestPlugin::parseArguments(ac, av, index);
     }
-
 };
 
 TEST_GROUP(PluginTest)
@@ -85,7 +86,7 @@ TEST_GROUP(PluginTest)
     DummyPlugin* firstPlugin;
     DummyPluginWhichAcceptsParameters* secondPlugin;
     DummyPlugin* thirdPlugin;
-    TestTestingFixture *genFixture;
+    TestTestingFixture* genFixture;
     TestRegistry* registry;
 
     void setup() override
@@ -108,7 +109,7 @@ TEST_GROUP(PluginTest)
     }
 };
 
-#define GENERIC_PLUGIN  "GenericPlugin"
+#define GENERIC_PLUGIN "GenericPlugin"
 
 TEST(PluginTest, PluginHasName)
 {
@@ -158,9 +159,11 @@ TEST(PluginTest, RemovePluginByName)
     LONGS_EQUAL(2, registry->countPlugins());
 }
 
-struct DefaultPlugin : public TestPlugin
-{
-    DefaultPlugin() : TestPlugin("default") {}
+struct DefaultPlugin : public TestPlugin {
+    DefaultPlugin()
+        : TestPlugin("default")
+    {
+    }
 };
 
 TEST(PluginTest, DefaultPostTestActionDoesntDoAnything)
@@ -186,13 +189,13 @@ TEST(PluginTest, DisablesPluginsDontRun)
 TEST(PluginTest, ParseArgumentsForUnknownArgumentsFails)
 {
     registry->installPlugin(secondPlugin);
-    const char *cmd_line[] = {"nonsense", "andmorenonsense"};
+    const char* cmd_line[] = { "nonsense", "andmorenonsense" };
     CHECK(registry->getFirstPlugin()->parseAllArguments(2, const_cast<char**>(cmd_line), 0) == false); /* cover non-const wrapper, too */
 }
 
 TEST(PluginTest, ParseArgumentsContinuesAndSucceedsWhenAPluginCanParse)
 {
     registry->installPlugin(secondPlugin);
-    const char *cmd_line[] = {"-paccept", "andmorenonsense"};
+    const char* cmd_line[] = { "-paccept", "andmorenonsense" };
     CHECK(registry->getFirstPlugin()->parseAllArguments(2, const_cast<char**>(cmd_line), 0)); /* cover non-const wrapper, too */
 }

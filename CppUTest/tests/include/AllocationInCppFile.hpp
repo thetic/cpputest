@@ -9,8 +9,7 @@ char* newArrayAllocationWithoutMacro();
 
 #if !CPPUTEST_NO_EXCEPTIONS
 
-class ClassThatThrowsAnExceptionInTheConstructor
-{
+class ClassThatThrowsAnExceptionInTheConstructor {
 public:
     [[noreturn]] ClassThatThrowsAnExceptionInTheConstructor();
 };

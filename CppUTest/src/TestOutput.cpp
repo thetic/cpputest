@@ -26,8 +26,8 @@
  */
 #include "CppUTest/TestOutput.hpp"
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestHarness.hpp"
 
 TestOutput::WorkingEnvironment TestOutput::workingEnvironment_ = TestOutput::detectEnvironment;
 
@@ -43,9 +43,11 @@ TestOutput::WorkingEnvironment TestOutput::getWorkingEnvironment()
     return workingEnvironment_;
 }
 
-
-TestOutput::TestOutput() :
-    dotCount_(0), verbose_(level_quiet), color_(false), progressIndication_(".")
+TestOutput::TestOutput()
+    : dotCount_(0)
+    , verbose_(level_quiet)
+    , color_(false)
+    , progressIndication_(".")
 {
 }
 
@@ -97,13 +99,13 @@ TestOutput& operator<<(TestOutput& p, long int i)
 
 void TestOutput::printCurrentTestStarted(const UtestShell& test)
 {
-    if (verbose_ > level_quiet) print(test.getFormattedName().asCharString());
+    if (verbose_ > level_quiet)
+        print(test.getFormattedName().asCharString());
 
     if (test.willRun()) {
-       setProgressIndicator(".");
-    }
-    else {
-       setProgressIndicator("!");
+        setProgressIndicator(".");
+    } else {
+        setProgressIndicator("!");
     }
 }
 
@@ -113,8 +115,7 @@ void TestOutput::printCurrentTestEnded(const TestResult& res)
         print(" - ");
         print(res.getCurrentTestTotalExecutionTime());
         print(" ms\n");
-    }
-    else {
+    } else {
         printProgressIndicator();
     }
 }
@@ -122,7 +123,8 @@ void TestOutput::printCurrentTestEnded(const TestResult& res)
 void TestOutput::printProgressIndicator()
 {
     print(progressIndication_);
-    if (++dotCount_ % 50 == 0) print("\n");
+    if (++dotCount_ % 50 == 0)
+        print("\n");
 }
 
 void TestOutput::setProgressIndicator(const char* indicator)
@@ -155,12 +157,10 @@ void TestOutput::printTestsEnded(const TestResult& result)
         if (failureCount > 0) {
             print(failureCount);
             print(" failures, ");
-        }
-        else {
+        } else {
             print("ran nothing, ");
         }
-    }
-    else {
+    } else {
         if (color_) {
             print("\033[32;1m");
         }
@@ -268,10 +268,9 @@ void TestOutput::printVisualStudioErrorInFileOnLine(SimpleString file, size_t li
 
 void TestOutput::printVeryVerbose(const char* str)
 {
-    if(verbose_ == level_veryVerbose)
+    if (verbose_ == level_veryVerbose)
         printBuffer(str);
 }
-
 
 void ConsoleTestOutput::printBuffer(const char* s)
 {
@@ -292,121 +291,153 @@ StringBufferTestOutput::~StringBufferTestOutput()
 }
 
 CompositeTestOutput::CompositeTestOutput()
-  : outputOne_(nullptr), outputTwo_(nullptr)
+    : outputOne_(nullptr)
+    , outputTwo_(nullptr)
 {
 }
 
 CompositeTestOutput::~CompositeTestOutput()
 {
-  delete outputOne_;
-  delete outputTwo_;
+    delete outputOne_;
+    delete outputTwo_;
 }
 
 void CompositeTestOutput::setOutputOne(TestOutput* output)
 {
-  delete outputOne_;
-  outputOne_ = output;
+    delete outputOne_;
+    outputOne_ = output;
 }
 
 void CompositeTestOutput::setOutputTwo(TestOutput* output)
 {
-  delete outputTwo_;
-  outputTwo_ = output;
+    delete outputTwo_;
+    outputTwo_ = output;
 }
 
 void CompositeTestOutput::printTestsStarted()
 {
-  if (outputOne_) outputOne_->printTestsStarted();
-  if (outputTwo_) outputTwo_->printTestsStarted();
+    if (outputOne_)
+        outputOne_->printTestsStarted();
+    if (outputTwo_)
+        outputTwo_->printTestsStarted();
 }
 
 void CompositeTestOutput::printTestsEnded(const TestResult& result)
 {
-  if (outputOne_) outputOne_->printTestsEnded(result);
-  if (outputTwo_) outputTwo_->printTestsEnded(result);
+    if (outputOne_)
+        outputOne_->printTestsEnded(result);
+    if (outputTwo_)
+        outputTwo_->printTestsEnded(result);
 }
 
 void CompositeTestOutput::printCurrentTestStarted(const UtestShell& test)
 {
-  if (outputOne_) outputOne_->printCurrentTestStarted(test);
-  if (outputTwo_) outputTwo_->printCurrentTestStarted(test);
+    if (outputOne_)
+        outputOne_->printCurrentTestStarted(test);
+    if (outputTwo_)
+        outputTwo_->printCurrentTestStarted(test);
 }
 
 void CompositeTestOutput::printCurrentTestEnded(const TestResult& res)
 {
-  if (outputOne_) outputOne_->printCurrentTestEnded(res);
-  if (outputTwo_) outputTwo_->printCurrentTestEnded(res);
+    if (outputOne_)
+        outputOne_->printCurrentTestEnded(res);
+    if (outputTwo_)
+        outputTwo_->printCurrentTestEnded(res);
 }
 
 void CompositeTestOutput::printCurrentGroupStarted(const UtestShell& test)
 {
-  if (outputOne_) outputOne_->printCurrentGroupStarted(test);
-  if (outputTwo_) outputTwo_->printCurrentGroupStarted(test);
+    if (outputOne_)
+        outputOne_->printCurrentGroupStarted(test);
+    if (outputTwo_)
+        outputTwo_->printCurrentGroupStarted(test);
 }
 
 void CompositeTestOutput::printCurrentGroupEnded(const TestResult& res)
 {
-  if (outputOne_) outputOne_->printCurrentGroupEnded(res);
-  if (outputTwo_) outputTwo_->printCurrentGroupEnded(res);
+    if (outputOne_)
+        outputOne_->printCurrentGroupEnded(res);
+    if (outputTwo_)
+        outputTwo_->printCurrentGroupEnded(res);
 }
 
 void CompositeTestOutput::verbose(VerbosityLevel level)
 {
-  if (outputOne_) outputOne_->verbose(level);
-  if (outputTwo_) outputTwo_->verbose(level);
+    if (outputOne_)
+        outputOne_->verbose(level);
+    if (outputTwo_)
+        outputTwo_->verbose(level);
 }
 
 void CompositeTestOutput::color()
 {
-  if (outputOne_) outputOne_->color();
-  if (outputTwo_) outputTwo_->color();
+    if (outputOne_)
+        outputOne_->color();
+    if (outputTwo_)
+        outputTwo_->color();
 }
 
 void CompositeTestOutput::printBuffer(const char* buffer)
 {
-  if (outputOne_) outputOne_->printBuffer(buffer);
-  if (outputTwo_) outputTwo_->printBuffer(buffer);
+    if (outputOne_)
+        outputOne_->printBuffer(buffer);
+    if (outputTwo_)
+        outputTwo_->printBuffer(buffer);
 }
 
 void CompositeTestOutput::print(const char* buffer)
 {
-  if (outputOne_) outputOne_->print(buffer);
-  if (outputTwo_) outputTwo_->print(buffer);
+    if (outputOne_)
+        outputOne_->print(buffer);
+    if (outputTwo_)
+        outputTwo_->print(buffer);
 }
 
 void CompositeTestOutput::print(long number)
 {
-  if (outputOne_) outputOne_->print(number);
-  if (outputTwo_) outputTwo_->print(number);
+    if (outputOne_)
+        outputOne_->print(number);
+    if (outputTwo_)
+        outputTwo_->print(number);
 }
 
 void CompositeTestOutput::print(size_t number)
 {
-  if (outputOne_) outputOne_->print(number);
-  if (outputTwo_) outputTwo_->print(number);
+    if (outputOne_)
+        outputOne_->print(number);
+    if (outputTwo_)
+        outputTwo_->print(number);
 }
 
 void CompositeTestOutput::printDouble(double number)
 {
-  if (outputOne_) outputOne_->printDouble(number);
-  if (outputTwo_) outputTwo_->printDouble(number);
+    if (outputOne_)
+        outputOne_->printDouble(number);
+    if (outputTwo_)
+        outputTwo_->printDouble(number);
 }
 
 void CompositeTestOutput::printFailure(const TestFailure& failure)
 {
-  if (outputOne_) outputOne_->printFailure(failure);
-  if (outputTwo_) outputTwo_->printFailure(failure);
+    if (outputOne_)
+        outputOne_->printFailure(failure);
+    if (outputTwo_)
+        outputTwo_->printFailure(failure);
 }
 
 void CompositeTestOutput::setProgressIndicator(const char* indicator)
 {
-  if (outputOne_) outputOne_->setProgressIndicator(indicator);
-  if (outputTwo_) outputTwo_->setProgressIndicator(indicator);
+    if (outputOne_)
+        outputOne_->setProgressIndicator(indicator);
+    if (outputTwo_)
+        outputTwo_->setProgressIndicator(indicator);
 }
 
 void CompositeTestOutput::flush()
 {
-  if (outputOne_) outputOne_->flush();
-  if (outputTwo_) outputTwo_->flush();
+    if (outputOne_)
+        outputOne_->flush();
+    if (outputTwo_)
+        outputTwo_->flush();
 }
-

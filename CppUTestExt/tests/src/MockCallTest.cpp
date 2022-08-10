@@ -30,20 +30,19 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
-TEST_GROUP(MockCallTest)
-{
-    void teardown() override
-    {
+TEST_GROUP(MockCallTest) {
+    void teardown() override {
         mock().checkExpectations();
-        mock().clear();
-    }
-};
+mock().clear();
+}
+}
+;
 
 TEST(MockCallTest, clear)
 {
     mock().expectOneCall("func");
     mock().clear();
-    CHECK(! mock().expectedCallsLeft());
+    CHECK(!mock().expectedCallsLeft());
 }
 
 TEST(MockCallTest, checkExpectationsDoesntFail)
@@ -54,9 +53,9 @@ TEST(MockCallTest, checkExpectationsDoesntFail)
 TEST(MockCallTest, expectASingleCallThatHappens)
 {
     mock().expectOneCall("func");
-    MockCheckedActualCall& actualCall = (MockCheckedActualCall&) mock().actualCall("func");
+    MockCheckedActualCall& actualCall = (MockCheckedActualCall&)mock().actualCall("func");
     actualCall.checkExpectations();
-    CHECK(! mock().expectedCallsLeft());
+    CHECK(!mock().expectedCallsLeft());
 }
 
 TEST(MockCallTest, expectASingleCallThatDoesntHappen)
@@ -70,15 +69,15 @@ TEST(MockCallTest, expectAMultiCallThatHappensTheExpectedTimes)
 {
     mock().expectNCalls(2, "func");
     mock().actualCall("func");
-    MockCheckedActualCall& actualCall = (MockCheckedActualCall&) mock().actualCall("func");
+    MockCheckedActualCall& actualCall = (MockCheckedActualCall&)mock().actualCall("func");
     actualCall.checkExpectations();
-    CHECK(! mock().expectedCallsLeft());
+    CHECK(!mock().expectedCallsLeft());
 }
 
 TEST(MockCallTest, expectAMultiCallThatDoesntHappenTheExpectedTimes)
 {
     mock().expectNCalls(2, "func");
-    MockCheckedActualCall& actualCall = (MockCheckedActualCall&) mock().actualCall("func");
+    MockCheckedActualCall& actualCall = (MockCheckedActualCall&)mock().actualCall("func");
     actualCall.checkExpectations();
     CHECK(mock().expectedCallsLeft());
     mock().clear();
@@ -95,7 +94,7 @@ TEST(MockCallTest, checkExpectationsClearsTheExpectations)
     mock().expectOneCall("foobar");
     mock().checkExpectations();
 
-    CHECK(! mock().expectedCallsLeft());
+    CHECK(!mock().expectedCallsLeft());
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
 
@@ -112,7 +111,6 @@ TEST(MockCallTest, expectOneCallInScopeButNotHappen)
     mock().checkExpectations();
 
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
-
 }
 
 TEST(MockCallTest, unexpectedCallHappened)
@@ -166,7 +164,6 @@ TEST(MockCallTest, expectOneCallInScopeButActualCallInGlobal)
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
     mock().clear();
 }
-
 
 TEST(MockCallTest, expectMultipleSingleCallsThatHappen)
 {
@@ -257,7 +254,6 @@ TEST(MockCallTest, ignoreOtherCallsExceptForTheUnExpectedOne)
 
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
-
 
 TEST(MockCallTest, expectNoCallInScopeThatHappened)
 {
@@ -357,7 +353,7 @@ TEST(MockCallTest, disableEnable)
     mock().disable();
     mock().expectOneCall("function");
     mock().actualCall("differenFunction");
-    CHECK(! mock().expectedCallsLeft());
+    CHECK(!mock().expectedCallsLeft());
     mock().enable();
     mock().expectOneCall("function");
     CHECK(mock().expectedCallsLeft());
@@ -368,29 +364,29 @@ TEST(MockCallTest, disableEnable)
 
 TEST(MockCallTest, OnObject)
 {
-    void* objectPtr = (void*) 0x001;
+    void* objectPtr = (void*)0x001;
     mock().expectOneCall("boo").onObject(objectPtr);
     mock().actualCall("boo").onObject(objectPtr);
 }
 
 TEST(MockCallTest, OnObjectIgnored_MatchingAlreadyWhenObjectPassed)
 {
-    void* objectPtr = (void*) 0x001;
+    void* objectPtr = (void*)0x001;
     mock().expectOneCall("boo");
     mock().actualCall("boo").onObject(objectPtr);
 }
 
 TEST(MockCallTest, OnObjectIgnored_NotMatchingYetWhenObjectPassed)
 {
-    void* objectPtr = (void*) 0x001;
+    void* objectPtr = (void*)0x001;
     mock().expectOneCall("boo").withBoolParameter("p", true);
     mock().actualCall("boo").onObject(objectPtr).withBoolParameter("p", true);
 }
 
 TEST(MockCallTest, OnObjectIgnored_InitialMatchDiscarded)
 {
-    void* objectPtr1 = (void*) 0x001;
-    void* objectPtr2 = (void*) 0x002;
+    void* objectPtr1 = (void*)0x001;
+    void* objectPtr2 = (void*)0x002;
 
     mock().expectOneCall("boo");
     mock().expectOneCall("boo").withBoolParameter("p", true);
@@ -402,8 +398,8 @@ TEST(MockCallTest, OnObjectFails)
 {
     MockFailureReporterInstaller failureReporterInstaller;
 
-    void* objectPtr = (void*) 0x001;
-    void* objectPtr2 = (void*) 0x002;
+    void* objectPtr = (void*)0x001;
+    void* objectPtr2 = (void*)0x002;
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("boo")->onObject(objectPtr);
 
@@ -418,7 +414,7 @@ TEST(MockCallTest, OnObjectExpectedButNotCalled)
 {
     MockFailureReporterInstaller failureReporterInstaller;
 
-    void* objectPtr = (void*) 0x001;
+    void* objectPtr = (void*)0x001;
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("boo")->onObject(objectPtr);
     expectations.addFunction("boo")->onObject(objectPtr);
@@ -459,17 +455,17 @@ TEST(MockCallTest, expectNCalls_NotFulfilled)
 
 TEST(MockCallTest, shouldntFailTwice)
 {
-  MockFailureReporterInstaller failureReporterInstaller;
+    MockFailureReporterInstaller failureReporterInstaller;
 
-  mock().strictOrder();
-  mock().expectOneCall("foo");
-  mock().expectOneCall("boo");
-  mock().actualCall("boo");
-  mock().actualCall("bar");
-  mock().checkExpectations();
+    mock().strictOrder();
+    mock().expectOneCall("foo");
+    mock().expectOneCall("boo");
+    mock().actualCall("boo");
+    mock().actualCall("bar");
+    mock().checkExpectations();
 
-  CHECK(!MockFailureReporterForTest::getReporter()->mockFailureString.contains("bar"));
-  CHECK(MockFailureReporterForTest::getReporter()->mockFailureString.contains("boo"));
+    CHECK(!MockFailureReporterForTest::getReporter()->mockFailureString.contains("bar"));
+    CHECK(MockFailureReporterForTest::getReporter()->mockFailureString.contains("boo"));
 }
 
 TEST(MockCallTest, shouldReturnDefaultWhenThereIsntAnythingToReturn)

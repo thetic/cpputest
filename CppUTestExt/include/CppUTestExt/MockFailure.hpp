@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #ifndef D_MockFailure_h
 #define D_MockFailure_h
 
@@ -36,13 +35,16 @@ class MockCheckedActualCall;
 class MockNamedValue;
 class MockFailure;
 
-class MockFailureReporter
-{
+class MockFailureReporter {
 protected:
     bool crashOnFailure_;
+
 public:
-    MockFailureReporter() : crashOnFailure_(false){}
-    virtual ~MockFailureReporter() {}
+    MockFailureReporter()
+        : crashOnFailure_(false)
+    {
+    }
+    virtual ~MockFailureReporter() { }
 
     virtual void failTest(const MockFailure& failure);
     virtual UtestShell* getTestToFail();
@@ -50,73 +52,63 @@ public:
     virtual void crashOnFailure(bool shouldCrash) { crashOnFailure_ = shouldCrash; }
 };
 
-class MockFailure : public TestFailure
-{
+class MockFailure : public TestFailure {
 public:
     MockFailure(UtestShell* test);
-    ~MockFailure() override {}
+    ~MockFailure() override { }
+
 protected:
     void addExpectationsAndCallHistory(const MockExpectedCallsList& expectations);
     void addExpectationsAndCallHistoryRelatedTo(const SimpleString& function, const MockExpectedCallsList& expectations);
 };
 
-class MockExpectedCallsDidntHappenFailure : public MockFailure
-{
+class MockExpectedCallsDidntHappenFailure : public MockFailure {
 public:
     MockExpectedCallsDidntHappenFailure(UtestShell* test, const MockExpectedCallsList& expectations);
 };
 
-class MockUnexpectedCallHappenedFailure : public MockFailure
-{
+class MockUnexpectedCallHappenedFailure : public MockFailure {
 public:
     MockUnexpectedCallHappenedFailure(UtestShell* test, const SimpleString& name, const MockExpectedCallsList& expectations);
 };
 
-class MockCallOrderFailure : public MockFailure
-{
+class MockCallOrderFailure : public MockFailure {
 public:
     MockCallOrderFailure(UtestShell* test, const MockExpectedCallsList& expectations);
 };
 
-class MockUnexpectedInputParameterFailure : public MockFailure
-{
+class MockUnexpectedInputParameterFailure : public MockFailure {
 public:
     MockUnexpectedInputParameterFailure(UtestShell* test, const SimpleString& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
 };
 
-class MockUnexpectedOutputParameterFailure : public MockFailure
-{
+class MockUnexpectedOutputParameterFailure : public MockFailure {
 public:
     MockUnexpectedOutputParameterFailure(UtestShell* test, const SimpleString& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
 };
 
-class MockExpectedParameterDidntHappenFailure : public MockFailure
-{
+class MockExpectedParameterDidntHappenFailure : public MockFailure {
 public:
-    MockExpectedParameterDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& allExpectations, 
-                                            const MockExpectedCallsList& matchingExpectations);
+    MockExpectedParameterDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& allExpectations,
+        const MockExpectedCallsList& matchingExpectations);
 };
 
-class MockNoWayToCompareCustomTypeFailure : public MockFailure
-{
+class MockNoWayToCompareCustomTypeFailure : public MockFailure {
 public:
     MockNoWayToCompareCustomTypeFailure(UtestShell* test, const SimpleString& typeName);
 };
 
-class MockNoWayToCopyCustomTypeFailure : public MockFailure
-{
+class MockNoWayToCopyCustomTypeFailure : public MockFailure {
 public:
     MockNoWayToCopyCustomTypeFailure(UtestShell* test, const SimpleString& typeName);
 };
 
-class MockUnexpectedObjectFailure : public MockFailure
-{
+class MockUnexpectedObjectFailure : public MockFailure {
 public:
     MockUnexpectedObjectFailure(UtestShell* test, const SimpleString& functionName, const void* expected, const MockExpectedCallsList& expectations);
 };
 
-class MockExpectedObjectDidntHappenFailure : public MockFailure
-{
+class MockExpectedObjectDidntHappenFailure : public MockFailure {
 public:
     MockExpectedObjectDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& expectations);
 };

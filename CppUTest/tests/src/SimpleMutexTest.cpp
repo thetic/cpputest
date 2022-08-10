@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleMutex.hpp"
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 static int mutexCreateCount = 0;
@@ -55,27 +55,24 @@ static void StubMutexDestroy(PlatformSpecificMutex)
     mutexDestroyCount++;
 }
 
-
-
-TEST_GROUP(SimpleMutexTest)
-{
-    void setup() override
-    {
+TEST_GROUP(SimpleMutexTest) {
+    void setup() override {
         UT_PTR_SET(PlatformSpecificMutexCreate, StubMutexCreate);
-        UT_PTR_SET(PlatformSpecificMutexLock, StubMutexLock);
-        UT_PTR_SET(PlatformSpecificMutexUnlock, StubMutexUnlock);
-        UT_PTR_SET(PlatformSpecificMutexDestroy, StubMutexDestroy);
+UT_PTR_SET(PlatformSpecificMutexLock, StubMutexLock);
+UT_PTR_SET(PlatformSpecificMutexUnlock, StubMutexUnlock);
+UT_PTR_SET(PlatformSpecificMutexDestroy, StubMutexDestroy);
 
-        mutexCreateCount = 0;
-        mutexDestroyCount = 0;
-        mutexLockCount = 0;
-        mutexUnlockCount = 0;
-    }
+mutexCreateCount = 0;
+mutexDestroyCount = 0;
+mutexLockCount = 0;
+mutexUnlockCount = 0;
+}
 
-    void teardown() override
-    {
-    }
-};
+void teardown() override
+{
+}
+}
+;
 
 TEST(SimpleMutexTest, CreateAndDestroy)
 {

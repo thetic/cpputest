@@ -27,7 +27,4 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(PreprocessorTest)
-{
-};
-
+TEST_GROUP(PreprocessorTest) {};

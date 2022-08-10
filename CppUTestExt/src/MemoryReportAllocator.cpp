@@ -25,14 +25,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include "CppUTestExt/MemoryReportAllocator.hpp"
 
 #include "CppUTestExt/MemoryReportFormatter.hpp"
 
 #include "CppUTest/TestHarness.hpp"
 
-MemoryReportAllocator::MemoryReportAllocator() : result_(nullptr), realAllocator_(nullptr), formatter_(nullptr)
+MemoryReportAllocator::MemoryReportAllocator()
+    : result_(nullptr)
+    , realAllocator_(nullptr)
+    , formatter_(nullptr)
 {
 }
 

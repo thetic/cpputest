@@ -32,7 +32,7 @@
 #include "CppUTest/SimpleStringInternalCache.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-int main(int ac, const char *const *av)
+int main(int ac, const char* const* av)
 {
     int result = 0;
     GlobalSimpleStringCache simpleStringCache;
@@ -52,4 +52,3 @@ int main(int ac, const char *const *av)
 
     return result;
 }
-

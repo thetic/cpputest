@@ -32,9 +32,9 @@
 #include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
-#include <unistd.h>
 #include <cerrno>
 #include <csignal>
+#include <unistd.h>
 #endif
 
 // This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized
@@ -85,10 +85,9 @@ static int waitpid_while_debugging_stub(int pid, int* status, int options)
 
     if (waitpid_while_debugging_stub_number_called++ < waitpid_while_debugging_stub_forced_failures) {
         saved_status = *status;
-        errno=EINTR;
+        errno = EINTR;
         return -1;
-    }
-else {
+    } else {
         *status = saved_status;
         return original_waitpid(pid, status, options);
     }
@@ -160,7 +159,6 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPid
     // extra check to confirm that waitpid() was polled until it passed (and passed call adds one)
     CHECK(waitpid_while_debugging_stub_number_called > 30);
 }
-
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPidFailedInSeparateProcessWorks)
 {

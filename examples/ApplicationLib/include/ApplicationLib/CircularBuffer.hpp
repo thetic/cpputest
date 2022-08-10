@@ -37,8 +37,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 class Printer;
 
-class CircularBuffer
-{
+class CircularBuffer {
 public:
     explicit CircularBuffer(int capacity = CAPACITY);
     virtual ~CircularBuffer();
@@ -52,13 +51,11 @@ public:
     void Print(Printer*);
 
 private:
-
     int index;
     int outdex;
     int* buffer;
     int capacity;
-    enum
-    {
+    enum {
         CAPACITY = 5
     };
     bool empty;
@@ -66,7 +63,6 @@ private:
 
     CircularBuffer(const CircularBuffer&);
     CircularBuffer& operator=(const CircularBuffer&);
-
 };
 
-#endif  // D_CircularBuffer_H
+#endif // D_CircularBuffer_H

@@ -35,12 +35,12 @@
 class MemoryReportFormatter;
 class TestResult;
 
-class MemoryReportAllocator : public TestMemoryAllocator
-{
+class MemoryReportAllocator : public TestMemoryAllocator {
 protected:
     TestResult* result_;
     TestMemoryAllocator* realAllocator_;
     MemoryReportFormatter* formatter_;
+
 public:
     MemoryReportAllocator();
     ~MemoryReportAllocator() override;

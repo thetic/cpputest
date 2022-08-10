@@ -29,14 +29,13 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(MockParameterTest)
-{
-  void teardown() override
-  {
-      mock().checkExpectations();
-      mock().clear();
-  }
-};
+TEST_GROUP(MockParameterTest) {
+    void teardown() override {
+        mock().checkExpectations();
+mock().clear();
+}
+}
+;
 
 TEST(MockParameterTest, expectOneBooleanParameterAndValue)
 {
@@ -289,10 +288,10 @@ TEST(MockParameterTest, expectOneDoubleParameterAndValue)
 
 TEST(MockParameterTest, expectOneDoubleParameterAndValueAndTolerance)
 {
-    mock( ).expectOneCall("foo").withParameter("parameter", 100.0, 5.0);
-    mock( ).actualCall("foo").withParameter("parameter", 96.0);
+    mock().expectOneCall("foo").withParameter("parameter", 100.0, 5.0);
+    mock().actualCall("foo").withParameter("parameter", 96.0);
 
-    mock( ).checkExpectations();
+    mock().checkExpectations();
 }
 
 TEST(MockParameterTest, doubleParameterNotEqualIfOutsideTolerance)
@@ -305,12 +304,11 @@ TEST(MockParameterTest, doubleParameterNotEqualIfOutsideTolerance)
     parameter.setValue(106.0);
     MockUnexpectedInputParameterFailure expectedFailure(mockFailureTest(), "foo", parameter, expectations);
 
-    mock( ).expectOneCall("foo").withParameter("parameter", 100.0, 5.0);
-    mock( ).actualCall("foo").withParameter("parameter", 106.0);
+    mock().expectOneCall("foo").withParameter("parameter", 100.0, 5.0);
+    mock().actualCall("foo").withParameter("parameter", 106.0);
 
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
-
 
 TEST(MockParameterTest, expectOneStringParameterAndValue)
 {
@@ -322,24 +320,24 @@ TEST(MockParameterTest, expectOneStringParameterAndValue)
 
 TEST(MockParameterTest, expectOnePointerParameterAndValue)
 {
-    mock().expectOneCall("foo").withParameter("parameter", (void*) 0x01);
-    mock().actualCall("foo").withParameter("parameter", (void*) 0x01);
+    mock().expectOneCall("foo").withParameter("parameter", (void*)0x01);
+    mock().actualCall("foo").withParameter("parameter", (void*)0x01);
 
     mock().checkExpectations();
 }
 
 TEST(MockParameterTest, expectOneConstPointerParameterAndValue)
 {
-    mock().expectOneCall("foo").withParameter("parameter", (const void*) 0x01);
-    mock().actualCall("foo").withParameter("parameter", (const void*) 0x01);
+    mock().expectOneCall("foo").withParameter("parameter", (const void*)0x01);
+    mock().actualCall("foo").withParameter("parameter", (const void*)0x01);
 
     mock().checkExpectations();
 }
 
 TEST(MockParameterTest, expectOneFunctionPointerParameterAndValue)
 {
-    mock().expectOneCall("foo").withParameter("parameter", (void(*)()) 0x01);
-    mock().actualCall("foo").withParameter("parameter", (void(*)()) 0x01);
+    mock().expectOneCall("foo").withParameter("parameter", (void (*)())0x01);
+    mock().actualCall("foo").withParameter("parameter", (void (*)())0x01);
 
     mock().checkExpectations();
 }
@@ -363,7 +361,7 @@ TEST(MockParameterTest, expectOneMemBufferParameterAndValueFailsDueToContents)
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("foo")->withParameter("parameter", memBuffer1, sizeof(memBuffer1));
     MockNamedValue parameter("parameter");
-    parameter.setMemoryBuffer( memBuffer2, sizeof(memBuffer2) );
+    parameter.setMemoryBuffer(memBuffer2, sizeof(memBuffer2));
     MockUnexpectedInputParameterFailure expectedFailure(mockFailureTest(), "foo", parameter, expectations);
 
     mock().expectOneCall("foo").withParameter("parameter", memBuffer1, sizeof(memBuffer1));
@@ -382,7 +380,7 @@ TEST(MockParameterTest, expectOneMemBufferParameterAndValueFailsDueToSize)
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("foo")->withParameter("parameter", memBuffer1, sizeof(memBuffer1));
     MockNamedValue parameter("parameter");
-    parameter.setMemoryBuffer( memBuffer2, sizeof(memBuffer2) );
+    parameter.setMemoryBuffer(memBuffer2, sizeof(memBuffer2));
     MockUnexpectedInputParameterFailure expectedFailure(mockFailureTest(), "foo", parameter, expectations);
 
     mock().expectOneCall("foo").withParameter("parameter", memBuffer1, sizeof(memBuffer1));
@@ -742,12 +740,8 @@ TEST(MockParameterTest, twoDifferentOutputParametersInSameFunctionCallSucceeds)
     int retval1 = 2;
     int retval2 = 3;
 
-    mock().expectOneCall("foo")
-        .withOutputParameterReturning("bar", &retval1, sizeof(retval1))
-        .withOutputParameterReturning("foobar", &retval2, sizeof(retval2));
-    mock().actualCall("foo")
-        .withOutputParameter("bar", &param1)
-        .withOutputParameter("foobar", &param2);
+    mock().expectOneCall("foo").withOutputParameterReturning("bar", &retval1, sizeof(retval1)).withOutputParameterReturning("foobar", &retval2, sizeof(retval2));
+    mock().actualCall("foo").withOutputParameter("bar", &param1).withOutputParameter("foobar", &param2);
 
     CHECK_EQUAL(2, retval1);
     CHECK_EQUAL(2, param1);
@@ -875,21 +869,8 @@ TEST(MockParameterTest, properOutputParametersAreCopied)
 
 TEST(MockParameterTest, ignoreOtherCallsIgnoresWithAllKindsOfParameters)
 {
-     mock().ignoreOtherCalls();
-     mock().actualCall("boo")
-           .withParameter("umm", true)
-           .withParameter("bar", 1u)
-           .withParameter("foo", 1l)
-           .withParameter("hey", 1ul)
-           .withParameter("ick", 1ll)
-           .withParameter("grr", 1ull)
-           .withParameter("duh", 1.0)
-           .withParameter("yoo", (const void*) nullptr)
-           .withParameter("func", (void(*)()) nullptr)
-           .withParameter("mem", (const unsigned char*) nullptr, 0)
-           .withParameterOfType("hoo", "int", (const void*) nullptr)
-           .withOutputParameter("gah", (void*) nullptr)
-           .withOutputParameterOfType("goo", "int", (void*) nullptr);
+    mock().ignoreOtherCalls();
+    mock().actualCall("boo").withParameter("umm", true).withParameter("bar", 1u).withParameter("foo", 1l).withParameter("hey", 1ul).withParameter("ick", 1ll).withParameter("grr", 1ull).withParameter("duh", 1.0).withParameter("yoo", (const void*)nullptr).withParameter("func", (void (*)()) nullptr).withParameter("mem", (const unsigned char*)nullptr, 0).withParameterOfType("hoo", "int", (const void*)nullptr).withOutputParameter("gah", (void*)nullptr).withOutputParameterOfType("goo", "int", (void*)nullptr);
 
     mock().checkExpectations();
 }
@@ -899,12 +880,9 @@ TEST(MockParameterTest, expectMultipleCallsWithParameters)
     int expected_int = -7;
     unsigned int expected_uint = 7;
 
-    mock().expectNCalls(2, "boo").withParameter("double", 1.0).withParameter("int", expected_int).
-        withParameter("string", "string").withParameter("uint", expected_uint);
-    mock().actualCall("boo").withParameter("double", 1.0).withParameter("int", expected_int).withParameter("string", "string").
-        withParameter("uint", expected_uint);
-    mock().actualCall("boo").withParameter("double", 1.0).withParameter("int", expected_int).withParameter("string", "string").
-        withParameter("uint", expected_uint);
+    mock().expectNCalls(2, "boo").withParameter("double", 1.0).withParameter("int", expected_int).withParameter("string", "string").withParameter("uint", expected_uint);
+    mock().actualCall("boo").withParameter("double", 1.0).withParameter("int", expected_int).withParameter("string", "string").withParameter("uint", expected_uint);
+    mock().actualCall("boo").withParameter("double", 1.0).withParameter("int", expected_int).withParameter("string", "string").withParameter("uint", expected_uint);
 
     mock().checkExpectations();
 }

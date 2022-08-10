@@ -68,4 +68,3 @@ TEST(Printer, StreamOperators)
     const char* expected = "n=1234";
     CHECK_EQUAL(expected, mockPrinter->getOutput());
 }
-

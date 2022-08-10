@@ -34,11 +34,11 @@
 
 #define MEMORY_LEAK_HASH_TABLE_SIZE 73
 
-#include "CppUTest/Utest.hpp"
-#include "CppUTest/UtestMacros.hpp"
+#include "CppUTest/MemoryLeakWarningPlugin.hpp"
 #include "CppUTest/SimpleString.hpp"
-#include "CppUTest/TestResult.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestPlugin.hpp"
-#include "CppUTest/MemoryLeakWarningPlugin.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/Utest.hpp"
+#include "CppUTest/UtestMacros.hpp"
 #endif

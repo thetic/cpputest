@@ -26,20 +26,20 @@
  */
 #include "CppUTest/TestHarness.h"
 
+#include "CppUTest/PlatformSpecificFunctions.h"
 #include <e32def.h>
 #include <e32std.h>
-#include <sys/time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
 #include <math.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include "CppUTest/PlatformSpecificFunctions.h"
+#include <string.h>
+#include <sys/time.h>
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;
 
-int PlatformSpecificSetJmp(void (*function) (void* data), void* data)
+int PlatformSpecificSetJmp(void (*function)(void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -63,11 +63,12 @@ void PlatformSpecificRestoreJumpBuffer()
 
 void PlatformSpecificRunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
 {
-   printf("-p doesn't work on this platform as it is not implemented. Running inside the process\b");
-   shell->runOneTest(plugin, *result);
+    printf("-p doesn't work on this platform as it is not implemented. Running inside the process\b");
+    shell->runOneTest(plugin, *result);
 }
 
-static long TimeInMillisImplementation() {
+static long TimeInMillisImplementation()
+{
     struct timeval tv;
     struct timezone tz;
     ::gettimeofday(&tv, &tz);
@@ -81,42 +82,51 @@ TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
     return TestOutput::eclipse;
 }
 
-static SimpleString TimeStringImplementation() {
+static SimpleString TimeStringImplementation()
+{
     time_t tm = time(NULL);
     return ctime(&tm);
 }
 
 SimpleString GetPlatformSpecificTimeString() = TimeStringImplementation;
 
-int PlatformSpecificVSNprintf(char* str, size_t size, const char* format, va_list args) {
+int PlatformSpecificVSNprintf(char* str, size_t size, const char* format, va_list args)
+{
     return vsnprintf(str, size, format, args);
 }
 
-void PlatformSpecificFlush() {
+void PlatformSpecificFlush()
+{
     fflush(stdout);
 }
 
-int PlatformSpecificPutchar(int c) {
+int PlatformSpecificPutchar(int c)
+{
     return putchar(c);
 }
 
-double PlatformSpecificFabs(double d) {
+double PlatformSpecificFabs(double d)
+{
     return fabs(d);
 }
 
-void* PlatformSpecificMalloc(size_t size) {
+void* PlatformSpecificMalloc(size_t size)
+{
     return malloc(size);
 }
 
-void* PlatformSpecificRealloc (void* memory, size_t size) {
+void* PlatformSpecificRealloc(void* memory, size_t size)
+{
     return realloc(memory, size);
 }
 
-void PlatformSpecificFree(void* memory) {
+void PlatformSpecificFree(void* memory)
+{
     free(memory);
 }
 
-void* PlatformSpecificMemCpy(void* s1, const void* s2, size_t size) {
+void* PlatformSpecificMemCpy(void* s1, const void* s2, size_t size)
+{
     return memcpy(s1, s2, size);
 }
 
@@ -125,15 +135,18 @@ void* PlatformSpecificMemset(void* mem, int c, size_t size)
     return memset(mem, c, size);
 }
 
-PlatformSpecificFile PlatformSpecificFOpen(const char* filename, const char* flag) {
+PlatformSpecificFile PlatformSpecificFOpen(const char* filename, const char* flag)
+{
     return fopen(filename, flag);
 }
 
-void PlatformSpecificFPuts(const char* str, PlatformSpecificFile file) {
+void PlatformSpecificFPuts(const char* str, PlatformSpecificFile file)
+{
     fputs(str, (FILE*)file);
 }
 
-void PlatformSpecificFClose(PlatformSpecificFile file) {
+void PlatformSpecificFClose(PlatformSpecificFile file)
+{
     fclose((FILE*)file);
 }
 
@@ -151,7 +164,6 @@ static int IsInfImplementation(double d)
 
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
 int (*PlatformSpecificIsInf)(double) = IsInfImplementation;
-
 }
 
 static PlatformSpecificMutex DummyMutexCreate(void)
@@ -179,4 +191,3 @@ PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = DummyMutexCreate;
 void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
-

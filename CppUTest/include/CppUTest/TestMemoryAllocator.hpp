@@ -49,8 +49,7 @@ extern TestMemoryAllocator* getCurrentMallocAllocator();
 extern void setCurrentMallocAllocatorToDefault();
 extern TestMemoryAllocator* defaultMallocAllocator();
 
-class GlobalMemoryAllocatorStash
-{
+class GlobalMemoryAllocatorStash {
 public:
     GlobalMemoryAllocatorStash();
     void save();
@@ -62,8 +61,7 @@ private:
     TestMemoryAllocator* originalNewArrayAllocator;
 };
 
-class TestMemoryAllocator
-{
+class TestMemoryAllocator {
 public:
     TestMemoryAllocator(const char* name_str = "generic", const char* alloc_name_str = "alloc", const char* free_name_str = "free");
     virtual ~TestMemoryAllocator();
@@ -84,7 +82,6 @@ public:
     virtual TestMemoryAllocator* actualAllocator();
 
 protected:
-
     const char* name_;
     const char* alloc_name_;
     const char* free_name_;
@@ -92,8 +89,7 @@ protected:
     bool hasBeenDestroyed_;
 };
 
-class MemoryLeakAllocator : public TestMemoryAllocator
-{
+class MemoryLeakAllocator : public TestMemoryAllocator {
 public:
     MemoryLeakAllocator(TestMemoryAllocator* originalAllocator);
     ~MemoryLeakAllocator() override;
@@ -106,13 +102,14 @@ public:
     const char* free_name() const override;
 
     TestMemoryAllocator* actualAllocator() override;
+
 private:
     TestMemoryAllocator* originalAllocator_;
 };
 
-class CrashOnAllocationAllocator : public TestMemoryAllocator
-{
+class CrashOnAllocationAllocator : public TestMemoryAllocator {
     unsigned allocationToCrashOn_;
+
 public:
     CrashOnAllocationAllocator();
     ~CrashOnAllocationAllocator() override;
@@ -122,9 +119,7 @@ public:
     char* alloc_memory(size_t size, const char* file, size_t line) override;
 };
 
-
-class NullUnknownAllocator: public TestMemoryAllocator
-{
+class NullUnknownAllocator : public TestMemoryAllocator {
 public:
     NullUnknownAllocator();
     ~NullUnknownAllocator() override;
@@ -137,8 +132,7 @@ public:
 
 class LocationToFailAllocNode;
 
-class FailableMemoryAllocator: public TestMemoryAllocator
-{
+class FailableMemoryAllocator : public TestMemoryAllocator {
 public:
     FailableMemoryAllocator(const char* name_str = "failable alloc", const char* alloc_name_str = "alloc", const char* free_name_str = "free");
     ~FailableMemoryAllocator() override;
@@ -153,15 +147,13 @@ public:
     virtual void clearFailedAllocs();
 
 protected:
-
     LocationToFailAllocNode* head_;
     int currentAllocNumber_;
 };
 
 struct MemoryAccountantAllocationNode;
 
-class MemoryAccountant
-{
+class MemoryAccountant {
 public:
     MemoryAccountant();
     ~MemoryAccountant();
@@ -183,6 +175,7 @@ public:
     SimpleString report() const;
 
     void setAllocator(TestMemoryAllocator* allocator);
+
 private:
     MemoryAccountantAllocationNode* findOrCreateNodeOfSize(size_t size);
     MemoryAccountantAllocationNode* findNodeOfSize(size_t size) const;
@@ -201,13 +194,11 @@ private:
     SimpleString reportHeader() const;
     SimpleString reportFooter() const;
     SimpleString stringSize(size_t size) const;
-
 };
 
 struct AccountingTestMemoryAllocatorMemoryNode;
 
-class AccountingTestMemoryAllocator : public TestMemoryAllocator
-{
+class AccountingTestMemoryAllocator : public TestMemoryAllocator {
 public:
     AccountingTestMemoryAllocator(MemoryAccountant& accountant, TestMemoryAllocator* originalAllocator);
     ~AccountingTestMemoryAllocator() override;
@@ -220,8 +211,8 @@ public:
 
     const char* alloc_name() const override;
     const char* free_name() const override;
-private:
 
+private:
     void addMemoryToMemoryTrackingToKeepTrackOfSize(char* memory, size_t size);
     size_t removeMemoryFromTrackingAndReturnAllocatedSize(char* memory);
 
@@ -233,8 +224,7 @@ private:
     AccountingTestMemoryAllocatorMemoryNode* head_;
 };
 
-class GlobalMemoryAccountant
-{
+class GlobalMemoryAccountant {
 public:
     GlobalMemoryAccountant();
     ~GlobalMemoryAccountant();
@@ -251,7 +241,6 @@ public:
     TestMemoryAllocator* getNewArrayAllocator();
 
 private:
-
     void restoreMemoryAllocators();
 
     MemoryAccountant accountant_;
@@ -261,4 +250,3 @@ private:
 };
 
 #endif
-

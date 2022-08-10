@@ -35,8 +35,7 @@
 struct SimpleStringMemoryBlock;
 struct SimpleStringInternalCacheNode;
 
-class SimpleStringInternalCache
-{
+class SimpleStringInternalCache {
 public:
     SimpleStringInternalCache();
     ~SimpleStringInternalCache();
@@ -50,19 +49,20 @@ public:
 
     void clearCache();
     void clearAllIncludingCurrentlyUsedMemory();
+
 private:
     void printDeallocatingUnknownMemory(char* memory);
 
-    enum { amountOfInternalCacheNodes = 5};
+    enum { amountOfInternalCacheNodes = 5 };
     bool isCached(size_t size);
     size_t getIndexForCache(size_t size);
     SimpleStringInternalCacheNode* getCacheNodeFromSize(size_t size);
 
     SimpleStringInternalCacheNode* createInternalCacheNodes();
-    void destroyInternalCacheNode(SimpleStringInternalCacheNode * node);
+    void destroyInternalCacheNode(SimpleStringInternalCacheNode* node);
     SimpleStringMemoryBlock* createSimpleStringMemoryBlock(size_t sizeOfString, SimpleStringMemoryBlock* next);
-    void destroySimpleStringMemoryBlock(SimpleStringMemoryBlock * block, size_t size);
-    void destroySimpleStringMemoryBlockList(SimpleStringMemoryBlock * block, size_t size);
+    void destroySimpleStringMemoryBlock(SimpleStringMemoryBlock* block, size_t size);
+    void destroySimpleStringMemoryBlockList(SimpleStringMemoryBlock* block, size_t size);
 
     SimpleStringMemoryBlock* reserveCachedBlockFrom(SimpleStringInternalCacheNode* node);
     void releaseCachedBlockFrom(char* memory, SimpleStringInternalCacheNode* node);
@@ -77,8 +77,7 @@ private:
     bool hasWarnedAboutDeallocations;
 };
 
-class SimpleStringCacheAllocator : public TestMemoryAllocator
-{
+class SimpleStringCacheAllocator : public TestMemoryAllocator {
 public:
     SimpleStringCacheAllocator(SimpleStringInternalCache& cache, TestMemoryAllocator* previousAllocator);
     ~SimpleStringCacheAllocator() override;
@@ -92,13 +91,13 @@ public:
 
     TestMemoryAllocator* actualAllocator() override;
     TestMemoryAllocator* originalAllocator();
+
 private:
     SimpleStringInternalCache& cache_;
     TestMemoryAllocator* originalAllocator_;
 };
 
-class GlobalSimpleStringCache
-{
+class GlobalSimpleStringCache {
     SimpleStringCacheAllocator* allocator_;
     SimpleStringInternalCache cache_;
 

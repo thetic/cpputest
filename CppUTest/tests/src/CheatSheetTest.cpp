@@ -1,25 +1,24 @@
 
-static void (*real_one) ();
-static void stub(){}
+static void (*real_one)();
+static void stub() { }
 
 /* in CheatSheetTest.cpp */
 #include "CppUTest/TestHarness.hpp"
 
 /* Declare TestGroup with name CheatSheet */
-TEST_GROUP(CheatSheet)
-{
-/* declare a setup method for the test group. Optional. */
-    void setup() override
-    {
-/* Set method real_one to stub. Automatically restore in teardown */
+TEST_GROUP(CheatSheet) {
+    /* declare a setup method for the test group. Optional. */
+    void setup() override {
+        /* Set method real_one to stub. Automatically restore in teardown */
         UT_PTR_SET(real_one, stub);
-    }
+}
 
 /* Declare a teardown method for the test group. Optional */
-    void teardown() override
-    {
-    }
-}; /* Do not forget semicolumn */
+void teardown() override
+{
+}
+}
+; /* Do not forget semicolumn */
 
 /* Declare one test within the test group */
 TEST(CheatSheet, TestName)

@@ -1,12 +1,11 @@
 
-#include "CppUTest/TestHarness.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestHarness.h"
 
 void functionWithUnusedParameter(void* PUNUSED(unlessParamater));
 
 void functionWithUnusedParameter(void* PUNUSED(unlessParamater))
 {
-
 }
 
 int setup_teardown_was_called_in_test_group_in_C;

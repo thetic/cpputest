@@ -31,8 +31,7 @@
 #include "CppUTestExt/MockExpectedCall.hpp"
 #include "CppUTestExt/MockNamedValue.hpp"
 
-class MockCheckedExpectedCall : public MockExpectedCall
-{
+class MockCheckedExpectedCall : public MockExpectedCall {
 
 public:
     MockCheckedExpectedCall();
@@ -119,8 +118,7 @@ protected:
 private:
     SimpleString functionName_;
 
-    class MockExpectedFunctionParameter : public MockNamedValue
-    {
+    class MockExpectedFunctionParameter : public MockNamedValue {
     public:
         MockExpectedFunctionParameter(const SimpleString& name);
         void setMatchesActualCall(bool b);
@@ -147,16 +145,14 @@ private:
     unsigned int expectedCalls_;
 };
 
-class MockIgnoredExpectedCall: public MockExpectedCall
-{
+class MockIgnoredExpectedCall : public MockExpectedCall {
 public:
-
-    MockExpectedCall& withName(const SimpleString&) override { return *this;}
+    MockExpectedCall& withName(const SimpleString&) override { return *this; }
     MockExpectedCall& withCallOrder(unsigned int) override { return *this; }
     MockExpectedCall& withCallOrder(unsigned int, unsigned int) override { return *this; }
     MockExpectedCall& withBoolParameter(const SimpleString&, bool) override { return *this; }
     MockExpectedCall& withIntParameter(const SimpleString&, int) override { return *this; }
-    MockExpectedCall& withUnsignedIntParameter(const SimpleString&, unsigned int) override{ return *this; }
+    MockExpectedCall& withUnsignedIntParameter(const SimpleString&, unsigned int) override { return *this; }
     MockExpectedCall& withLongIntParameter(const SimpleString&, long int) override { return *this; }
     MockExpectedCall& withUnsignedLongIntParameter(const SimpleString&, unsigned long int) override { return *this; }
     MockExpectedCall& withLongLongIntParameter(const SimpleString&, long long) override { return *this; }
@@ -164,15 +160,15 @@ public:
     MockExpectedCall& withDoubleParameter(const SimpleString&, double) override { return *this; }
     MockExpectedCall& withDoubleParameter(const SimpleString&, double, double) override { return *this; }
     MockExpectedCall& withStringParameter(const SimpleString&, const char*) override { return *this; }
-    MockExpectedCall& withPointerParameter(const SimpleString& , void*) override { return *this; }
-    MockExpectedCall& withConstPointerParameter(const SimpleString& , const void*) override { return *this; }
-    MockExpectedCall& withFunctionPointerParameter(const SimpleString& , void(*)()) override { return *this; }
+    MockExpectedCall& withPointerParameter(const SimpleString&, void*) override { return *this; }
+    MockExpectedCall& withConstPointerParameter(const SimpleString&, const void*) override { return *this; }
+    MockExpectedCall& withFunctionPointerParameter(const SimpleString&, void (*)()) override { return *this; }
     MockExpectedCall& withMemoryBufferParameter(const SimpleString&, const unsigned char*, size_t) override { return *this; }
     MockExpectedCall& withParameterOfType(const SimpleString&, const SimpleString&, const void*) override { return *this; }
     MockExpectedCall& withOutputParameterReturning(const SimpleString&, const void*, size_t) override { return *this; }
     MockExpectedCall& withOutputParameterOfTypeReturning(const SimpleString&, const SimpleString&, const void*) override { return *this; }
     MockExpectedCall& withUnmodifiedOutputParameter(const SimpleString&) override { return *this; }
-    MockExpectedCall& ignoreOtherParameters() override { return *this;}
+    MockExpectedCall& ignoreOtherParameters() override { return *this; }
 
     MockExpectedCall& andReturnValue(bool) override { return *this; }
     MockExpectedCall& andReturnValue(int) override { return *this; }
@@ -181,7 +177,7 @@ public:
     MockExpectedCall& andReturnValue(unsigned long int) override { return *this; }
     MockExpectedCall& andReturnValue(long long) override { return *this; }
     MockExpectedCall& andReturnValue(unsigned long long) override { return *this; }
-    MockExpectedCall& andReturnValue(double) override { return *this;}
+    MockExpectedCall& andReturnValue(double) override { return *this; }
     MockExpectedCall& andReturnValue(const char*) override { return *this; }
     MockExpectedCall& andReturnValue(void*) override { return *this; }
     MockExpectedCall& andReturnValue(const void*) override { return *this; }

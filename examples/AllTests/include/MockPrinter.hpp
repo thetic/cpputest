@@ -42,8 +42,7 @@
 #include <cstdlib>
 #include <string>
 
-class MockPrinter: public Printer
-{
+class MockPrinter : public Printer {
 public:
     explicit MockPrinter()
     {
@@ -71,12 +70,10 @@ public:
     }
 
 private:
-
     std::string savedOutput;
 
     MockPrinter(const MockPrinter&);
     MockPrinter& operator=(const MockPrinter&);
-
 };
 
-#endif  // D_MockPrinter_H
+#endif // D_MockPrinter_H

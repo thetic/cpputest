@@ -28,14 +28,13 @@
 #ifndef D_JUnitTestOutput_h
 #define D_JUnitTestOutput_h
 
-#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestOutput.hpp"
 
 struct JUnitTestOutputImpl;
 struct JUnitTestCaseResultNode;
 
-class JUnitTestOutput: public TestOutput
-{
+class JUnitTestOutput : public TestOutput {
 public:
     JUnitTestOutput();
     ~JUnitTestOutput() override;
@@ -56,10 +55,9 @@ public:
     void flush() override;
 
     virtual SimpleString createFileName(const SimpleString& group);
-    void setPackageName(const SimpleString &package);
+    void setPackageName(const SimpleString& package);
 
 protected:
-
     JUnitTestOutputImpl* impl_;
     void resetTestGroupResult();
 

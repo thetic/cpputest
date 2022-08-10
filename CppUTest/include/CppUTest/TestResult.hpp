@@ -40,11 +40,10 @@ class TestFailure;
 class TestOutput;
 class UtestShell;
 
-class TestResult
-{
+class TestResult {
 public:
     TestResult(TestOutput&);
-    TestResult(TestResult const &) = default;
+    TestResult(TestResult const&) = default;
     virtual ~TestResult();
 
     virtual void testsStarted();
@@ -98,8 +97,8 @@ public:
 
     size_t getCurrentTestTotalExecutionTime() const;
     size_t getCurrentGroupTotalExecutionTime() const;
-private:
 
+private:
     TestOutput& output_;
     size_t testCount_;
     size_t runCount_;

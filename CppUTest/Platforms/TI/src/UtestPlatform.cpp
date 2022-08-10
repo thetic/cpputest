@@ -36,15 +36,15 @@
 #undef realloc
 #undef strdup
 #undef strndup
-#define  far  // eliminate "meaningless type qualifier" warning
+#define far // eliminate "meaningless type qualifier" warning
 
-#include <time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <string.h>
-#include <math.h>
 #include <ctype.h>
+#include <math.h>
+#include <setjmp.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 #undef far
 #include "CppUTest/PlatformSpecificFunctions.h"
@@ -53,10 +53,10 @@ static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;
 
 #if USE_BUFFER_OUTPUT
-    // Buffer for crude output routine
-    #define BUFFER_SIZE 4096
-    static char buffer [BUFFER_SIZE]; /* "never used" warning is OK */
-    static int idx = 0;
+// Buffer for crude output routine
+#define BUFFER_SIZE 4096
+static char buffer[BUFFER_SIZE]; /* "never used" warning is OK */
+static int idx = 0;
 #endif
 
 TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
@@ -69,10 +69,9 @@ static void C2000RunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin
     result->addFailure(TestFailure(shell, "-p doesn't work on this platform, as it is lacking fork.\b"));
 }
 
-void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, TestResult*) =
-    C2000RunTestInASeperateProcess;
+void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, TestResult*) = C2000RunTestInASeperateProcess;
 
-static int C2000SetJmp(void (*function) (void* data), void* data)
+static int C2000SetJmp(void (*function)(void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -83,18 +82,18 @@ static int C2000SetJmp(void (*function) (void* data), void* data)
     return 0;
 }
 
-static void  C2000LongJmp()
+static void C2000LongJmp()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
 }
 
-static void  C2000RestoreJumpBuffer()
+static void C2000RestoreJumpBuffer()
 {
     jmp_buf_index--;
 }
 
-int (*PlatformSpecificSetJmp)(void (*function) (void*), void*) = C2000SetJmp;
+int (*PlatformSpecificSetJmp)(void (*function)(void*), void*) = C2000SetJmp;
 void (*PlatformSpecificLongJmp)(void) = C2000LongJmp;
 void (*PlatformSpecificRestoreJumpBuffer)(void) = C2000RestoreJumpBuffer;
 
@@ -108,10 +107,9 @@ static long C2000TimeInMillis()
      *   (2) There is a possibility of overflow, since we stop at the hour
      *   (3) Resolution is 1 s, even though we return ms.
      */
-    time_t t        = time((time_t*)0);
-    struct tm * ptm = gmtime(&t);
-    long result = (long)
-        ((ptm->tm_sec + ptm->tm_min * (time_t)60 + ptm->tm_hour * (time_t)3600) * (time_t)1000);
+    time_t t = time((time_t*)0);
+    struct tm* ptm = gmtime(&t);
+    long result = (long)((ptm->tm_sec + ptm->tm_min * (time_t)60 + ptm->tm_hour * (time_t)3600) * (time_t)1000);
     return result;
 }
 
@@ -126,7 +124,7 @@ const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
 int vsnprintf(char*, size_t, const char*, va_list); // not std::vsnprintf()
 
-int (*PlatformSpecificVSNprintf)(char *, size_t, const char*, va_list) = vsnprintf;
+int (*PlatformSpecificVSNprintf)(char*, size_t, const char*, va_list) = vsnprintf;
 
 PlatformSpecificFile C2000FOpen(const char* filename, const char* flag)
 {
@@ -150,13 +148,12 @@ void (*PlatformSpecificFClose)(PlatformSpecificFile file) = C2000FClose;
 static int CL2000Putchar(int c)
 {
 #if USE_BUFFER_OUTPUT
-    if(idx < BUFFER_SIZE) {
-        buffer[idx] = (char) c;
+    if (idx < BUFFER_SIZE) {
+        buffer[idx] = (char)c;
         idx++;
         /* "buffer[idx]" instead of "c" eliminates "never used" warning */
         return (buffer[idx]);
-    }
-else {
+    } else {
         return EOF;
     }
 #else
@@ -177,7 +174,7 @@ static void* C2000Malloc(size_t size)
     return (void*)malloc((unsigned long)size);
 }
 
-static void* C2000Realloc (void* memory, size_t size)
+static void* C2000Realloc(void* memory, size_t size)
 {
     return (void*)realloc(memory, (unsigned long)size);
 }
@@ -195,8 +192,9 @@ static void* C2000MemCpy(void* s1, const void* s2, size_t size)
 static void* C2000Memset(void* mem, int c, size_t size)
 {
     register unsigned long i = size;
-    register long p = (long) mem;
-    while (i--) *__farptr_to_word(p++) = c;
+    register long p = (long)mem;
+    while (i--)
+        *__farptr_to_word(p++) = c;
     return mem;
 }
 
@@ -250,5 +248,3 @@ int (*PlatformSpecificRand)(void) = rand;
 void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
 void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
 void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
-
-

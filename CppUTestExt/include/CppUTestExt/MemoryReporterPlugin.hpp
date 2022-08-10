@@ -34,8 +34,7 @@
 
 class MemoryReportFormatter;
 
-class MemoryReporterPlugin : public TestPlugin
-{
+class MemoryReporterPlugin : public TestPlugin {
     MemoryReportFormatter* formatter_;
 
     MemoryReportAllocator mallocAllocator;
@@ -43,17 +42,19 @@ class MemoryReporterPlugin : public TestPlugin
     MemoryReportAllocator newArrayAllocator;
 
     SimpleString currentTestGroup_;
+
 public:
     MemoryReporterPlugin();
     ~MemoryReporterPlugin() override;
 
-    virtual void preTestAction(UtestShell & test, TestResult & result) override;
-    virtual void postTestAction(UtestShell & test, TestResult & result) override;
-    virtual bool parseArguments(int, const char *const *, int) override;
+    virtual void preTestAction(UtestShell& test, TestResult& result) override;
+    virtual void postTestAction(UtestShell& test, TestResult& result) override;
+    virtual bool parseArguments(int, const char* const*, int) override;
 
     MemoryReportAllocator* getMallocAllocator();
     MemoryReportAllocator* getNewAllocator();
     MemoryReportAllocator* getNewArrayAllocator();
+
 protected:
     virtual MemoryReportFormatter* createMemoryFormatter(const SimpleString& type);
 
@@ -63,7 +64,7 @@ private:
     void setGlobalMemoryReportAllocators();
     void removeGlobalMemoryReportAllocators();
 
-    void initializeAllocator(MemoryReportAllocator* allocator, TestResult & result);
+    void initializeAllocator(MemoryReportAllocator* allocator, TestResult& result);
 };
 
 #endif

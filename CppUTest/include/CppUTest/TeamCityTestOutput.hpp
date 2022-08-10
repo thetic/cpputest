@@ -1,11 +1,10 @@
 #ifndef D_TeamCityTestOutput_h
 #define D_TeamCityTestOutput_h
 
-#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestOutput.hpp"
 
-class TeamCityTestOutput: public ConsoleTestOutput
-{
+class TeamCityTestOutput : public ConsoleTestOutput {
 public:
     TeamCityTestOutput(void);
     ~TeamCityTestOutput(void) override;
@@ -18,10 +17,9 @@ public:
     void printFailure(const TestFailure& failure) override;
 
 protected:
-
 private:
     void printEscaped(const char* s);
-    const UtestShell *currtest_;
+    const UtestShell* currtest_;
     SimpleString currGroup_;
 };
 

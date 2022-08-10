@@ -25,12 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestHarness.h"
+#include "CppUTest/TestHarness.hpp"
 
 #include "CppUTest/MemoryLeakDetector.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestMemoryAllocator.hpp"
 
 void CHECK_EQUAL_C_BOOL_LOCATION(int expected, int actual, const char* text, const char* fileName, size_t lineNumber)
 {
@@ -77,14 +77,14 @@ void CHECK_EQUAL_C_CHAR_LOCATION(char expected, char actual, const char* text, c
     UtestShell::getCurrent()->assertEquals(((expected) != (actual)), StringFrom(expected).asCharString(), StringFrom(actual).asCharString(), text, fileName, lineNumber, TestTerminatorWithoutExceptions());
 }
 
-void CHECK_EQUAL_C_UBYTE_LOCATION(unsigned char expected, unsigned char actual, const char* text, const char* fileName, size_t lineNumber)\
+void CHECK_EQUAL_C_UBYTE_LOCATION(unsigned char expected, unsigned char actual, const char* text, const char* fileName, size_t lineNumber)
 {
-    UtestShell::getCurrent()->assertEquals(((expected) != (actual)),StringFrom((int)expected).asCharString(), StringFrom((int) actual).asCharString(), text, fileName, lineNumber, TestTerminatorWithoutExceptions());
+    UtestShell::getCurrent()->assertEquals(((expected) != (actual)), StringFrom((int)expected).asCharString(), StringFrom((int)actual).asCharString(), text, fileName, lineNumber, TestTerminatorWithoutExceptions());
 }
 
 void CHECK_EQUAL_C_SBYTE_LOCATION(char signed expected, signed char actual, const char* text, const char* fileName, size_t lineNumber)
 {
-    UtestShell::getCurrent()->assertEquals(((expected) != (actual)),StringFrom((int)expected).asCharString(), StringFrom((int) actual).asCharString(), text, fileName, lineNumber, TestTerminatorWithoutExceptions());
+    UtestShell::getCurrent()->assertEquals(((expected) != (actual)), StringFrom((int)expected).asCharString(), StringFrom((int)actual).asCharString(), text, fileName, lineNumber, TestTerminatorWithoutExceptions());
 }
 
 void CHECK_EQUAL_C_STRING_LOCATION(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber)
@@ -104,12 +104,12 @@ void CHECK_EQUAL_C_BITS_LOCATION(unsigned int expected, unsigned int actual, uns
 
 void FAIL_TEXT_C_LOCATION(const char* text, const char* fileName, size_t lineNumber)
 {
-    UtestShell::getCurrent()->fail(text,  fileName, lineNumber, TestTerminatorWithoutExceptions());
+    UtestShell::getCurrent()->fail(text, fileName, lineNumber, TestTerminatorWithoutExceptions());
 } // LCOV_EXCL_LINE
 
 void FAIL_C_LOCATION(const char* fileName, size_t lineNumber)
 {
-    UtestShell::getCurrent()->fail("",  fileName, lineNumber, TestTerminatorWithoutExceptions());
+    UtestShell::getCurrent()->fail("", fileName, lineNumber, TestTerminatorWithoutExceptions());
 } // LCOV_EXCL_LINE
 
 void CHECK_C_LOCATION(int condition, const char* conditionString, const char* text, const char* fileName, size_t lineNumber)

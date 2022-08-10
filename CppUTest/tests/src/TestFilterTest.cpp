@@ -28,9 +28,7 @@
 #include "CppUTest/TestFilter.hpp"
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(TestFilter)
-{
-};
+TEST_GROUP(TestFilter) {};
 
 TEST(TestFilter, emptyFilterMatchesEverything)
 {
@@ -83,7 +81,7 @@ TEST(TestFilter, equality)
     TestFilter filter2("filter");
     TestFilter filter3("filter3");
     CHECK(filter1 == filter2);
-    CHECK(! (filter1 == filter3));
+    CHECK(!(filter1 == filter3));
 }
 
 TEST(TestFilter, equalityWithStrictness)
@@ -91,7 +89,7 @@ TEST(TestFilter, equalityWithStrictness)
     TestFilter filter1("filter");
     TestFilter filter2("filter");
     filter2.strictMatching();
-    CHECK(! (filter1 == filter2));
+    CHECK(!(filter1 == filter2));
 }
 
 TEST(TestFilter, equalityWithInvertion)
@@ -99,7 +97,7 @@ TEST(TestFilter, equalityWithInvertion)
     TestFilter filter1("filter");
     TestFilter filter2("filter");
     filter2.invertMatching();
-    CHECK(! (filter1 == filter2));
+    CHECK(!(filter1 == filter2));
 }
 
 TEST(TestFilter, notEqual)
@@ -108,7 +106,7 @@ TEST(TestFilter, notEqual)
     TestFilter filter2("filter");
     TestFilter filter3("filter3");
     CHECK(filter1 != filter3);
-    CHECK(! (filter1 != filter2));
+    CHECK(!(filter1 != filter2));
 }
 
 TEST(TestFilter, stringFrom)
@@ -141,12 +139,12 @@ TEST(TestFilter, stringFromWithStrictInvertMatching)
 
 TEST(TestFilter, listOfFilters)
 {
-    TestFilter *listOfFilters = nullptr;
+    TestFilter* listOfFilters = nullptr;
     TestFilter first("foo");
     TestFilter secnd("bar");
     listOfFilters = first.add(listOfFilters);
     listOfFilters = secnd.add(listOfFilters);
-    TestFilter *current = listOfFilters;
+    TestFilter* current = listOfFilters;
     STRCMP_EQUAL("TestFilter: \"bar\"", StringFrom(*current).asCharString());
     current = current->getNext();
     STRCMP_EQUAL("TestFilter: \"foo\"", StringFrom(*current).asCharString());

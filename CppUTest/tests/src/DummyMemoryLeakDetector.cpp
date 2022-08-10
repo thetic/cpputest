@@ -29,7 +29,8 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-DummyMemoryLeakDetector::DummyMemoryLeakDetector(MemoryLeakFailure* reporter) : MemoryLeakDetector(reporter)
+DummyMemoryLeakDetector::DummyMemoryLeakDetector(MemoryLeakFailure* reporter)
+    : MemoryLeakDetector(reporter)
 {
     memoryLeakDetectorWasDeleted = false;
 }
@@ -67,6 +68,3 @@ void DummyMemoryLeakFailure::fail(char*)
 }
 
 bool DummyMemoryLeakFailure::memoryLeakFailureWasDelete = false;
-
-
-

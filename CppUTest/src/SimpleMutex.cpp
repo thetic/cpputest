@@ -28,7 +28,6 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-
 SimpleMutex::SimpleMutex(void)
 {
     psMtx = PlatformSpecificMutexCreate();
@@ -49,9 +48,8 @@ void SimpleMutex::Unlock(void)
     PlatformSpecificMutexUnlock(psMtx);
 }
 
-
-ScopedMutexLock::ScopedMutexLock(SimpleMutex *mtx) :
-    mutex(mtx)
+ScopedMutexLock::ScopedMutexLock(SimpleMutex* mtx)
+    : mutex(mtx)
 {
     mutex->Lock();
 }
@@ -60,5 +58,3 @@ ScopedMutexLock::~ScopedMutexLock()
 {
     mutex->Unlock();
 }
-
-
