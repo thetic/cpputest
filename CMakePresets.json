@@ -11,7 +11,8 @@
       "cacheVariables": {
         "CMAKE_C_EXTENSIONS": false,
         "CMAKE_CXX_EXTENSIONS": false,
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
       }
     },
     {
@@ -23,7 +24,7 @@
       },
       "environment": {
         "CFLAGS": "-Wall -Wextra -Werror",
-        "CXXFLAGS": "-Wall -Wextra -Werror"
+        "CXXFLAGS": "-Wall -Wextra -Werror -Wsuggest-override"
       }
     },
     {

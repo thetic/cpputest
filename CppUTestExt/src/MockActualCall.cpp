@@ -533,12 +533,12 @@ const void * MockCheckedActualCall::returnConstPointerValueOrDefault(const void 
     return returnConstPointerValue();
 }
 
-void (*MockCheckedActualCall::returnFunctionPointerValue())()
+MockActualCall::FunctionPointer MockCheckedActualCall::returnFunctionPointerValue()
 {
     return returnValue().getFunctionPointerValue();
 }
 
-void (*MockCheckedActualCall::returnFunctionPointerValueOrDefault(void (*default_value)()))()
+MockActualCall::FunctionPointer MockCheckedActualCall::returnFunctionPointerValueOrDefault(FunctionPointer default_value)
 {
     if (!hasReturnValue()) {
         return default_value;
@@ -851,7 +851,7 @@ const void * MockActualCallTrace::returnConstPointerValue()
     return nullptr;
 }
 
-void (*MockActualCallTrace::returnFunctionPointerValue())()
+MockActualCall::FunctionPointer MockActualCallTrace::returnFunctionPointerValue()
 {
     return nullptr;
 }
@@ -866,7 +866,7 @@ void * MockActualCallTrace::returnPointerValueOrDefault(void *)
     return returnPointerValue();
 }
 
-void (*MockActualCallTrace::returnFunctionPointerValueOrDefault(void (*)()))()
+MockActualCall::FunctionPointer MockActualCallTrace::returnFunctionPointerValueOrDefault(FunctionPointer)
 {
     return returnFunctionPointerValue();
 }

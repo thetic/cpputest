@@ -111,8 +111,9 @@ public:
     virtual const void * returnConstPointerValue()=0;
     virtual const void * returnConstPointerValueOrDefault(const void * default_value)=0;
 
-    virtual void (*returnFunctionPointerValue())()=0;
-    virtual void (*returnFunctionPointerValueOrDefault(void (*default_value)()))()=0;
+    using FunctionPointer = void (*)();
+    virtual FunctionPointer returnFunctionPointerValue()=0;
+    virtual FunctionPointer returnFunctionPointerValueOrDefault(FunctionPointer default_value)=0;
 
     virtual MockActualCall& onObject(const void* objectPtr)=0;
 };

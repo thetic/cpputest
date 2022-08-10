@@ -92,8 +92,8 @@ public:
     void * returnPointerValue() override;
     void * returnPointerValueOrDefault(void *) override;
 
-    void (*returnFunctionPointerValue())() override;
-    void (*returnFunctionPointerValueOrDefault(void (*)()))() override;
+    FunctionPointer returnFunctionPointerValue() override;
+    FunctionPointer returnFunctionPointerValueOrDefault(FunctionPointer default_value) override;
 
     MockActualCall& onObject(const void* objectPtr) override;
 
@@ -213,8 +213,8 @@ public:
     const void * returnConstPointerValue() override;
     const void * returnConstPointerValueOrDefault(const void * default_value) override;
 
-    void (*returnFunctionPointerValue())() override;
-    void (*returnFunctionPointerValueOrDefault(void (*)()))() override;
+    FunctionPointer returnFunctionPointerValue() override;
+    FunctionPointer returnFunctionPointerValueOrDefault(FunctionPointer default_value) override;
 
     MockActualCall& onObject(const void* objectPtr) override;
 
@@ -289,8 +289,8 @@ public:
     const void * returnConstPointerValue() override { return nullptr; }
     const void * returnConstPointerValueOrDefault(const void * value) override { return value; }
 
-    void (*returnFunctionPointerValue())() override { return nullptr; }
-    void (*returnFunctionPointerValueOrDefault(void (*value)()))() override { return value; }
+    FunctionPointer returnFunctionPointerValue() override { return nullptr; }
+    FunctionPointer returnFunctionPointerValueOrDefault(FunctionPointer value) override { return value; }
 
     MockActualCall& onObject(const void* ) override { return *this; }
 
