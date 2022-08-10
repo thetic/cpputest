@@ -80,13 +80,6 @@
       }
     },
     {
-      "name": "no-extensions",
-      "inherits": ["defaults"],
-      "cacheVariables": {
-        "CPPUTEST_EXTENSIONS": false
-      }
-    },
-    {
       "name": "no-exceptions",
       "inherits": ["gcc"],
       "cacheVariables": {
