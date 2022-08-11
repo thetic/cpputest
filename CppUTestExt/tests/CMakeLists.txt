@@ -1,5 +1,4 @@
 add_executable(CppUTestExtTests
-    include/IEEE754PluginTest.h
     include/MockFailureReporterForTest.hpp
     include/MockSupport_cTestCFile.h
     include/OrderedTestTest.h
@@ -7,7 +6,6 @@ add_executable(CppUTestExtTests
     src/CodeMemoryReporterTest.cpp
     src/ExpectedFunctionsListTest.cpp
     src/IEEE754PluginTest.cpp
-    src/IEEE754PluginTest_c.c
     src/MemoryReportAllocatorTest.cpp
     src/MemoryReportFormatterTest.cpp
     src/MemoryReporterPluginTest.cpp
