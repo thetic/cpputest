@@ -3,7 +3,6 @@ add_executable(AllTests
     src/AllTests.cpp
     src/CircularBufferTest.cpp
     src/EventDispatcherTest.cpp
-    src/FEDemoTest.cpp
     src/HelloTest.cpp
     src/MockDocumentationTest.cpp
     src/PrinterTest.cpp
