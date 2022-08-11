@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: ctest --test-dir build/defaults -V
 
-  gnu:
+  linux:
     strategy:
       matrix:
         preset:
@@ -31,8 +31,6 @@ jobs:
           - clang
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
         cxx_standard:
           - 11
           - 14
