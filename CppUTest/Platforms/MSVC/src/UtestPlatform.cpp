@@ -1,8 +1,9 @@
+#include <windows.h>
+
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 #include <mmsystem.h>
-#include <windows.h>
 
 #include <cfloat>
 #include <cmath>
