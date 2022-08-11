@@ -416,7 +416,7 @@ static SimpleString getExceptionTypeName(const std::exception& e)
 #if defined(__GNUC__)
     int status = -1;
 
-    std::unique_ptr<char, void (*)(void*)> demangledName(
+    std::unique_ptr< char, void (*)(void*) > demangledName(
         abi::__cxa_demangle(name, nullptr, nullptr, &status),
         std::free);
 

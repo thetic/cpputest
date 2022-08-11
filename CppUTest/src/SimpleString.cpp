@@ -146,7 +146,7 @@ unsigned SimpleString::AtoU(const char* str)
     unsigned result = 0;
     for (; isDigit(*str) && *str >= '0'; str++) {
         result *= 10;
-        result += static_cast<unsigned>(*str - '0');
+        result += static_cast< unsigned >(*str - '0');
     }
     return result;
 }

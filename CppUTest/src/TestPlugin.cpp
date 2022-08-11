@@ -69,7 +69,7 @@ void TestPlugin::runAllPostTestAction(UtestShell& test, TestResult& result)
 
 bool TestPlugin::parseAllArguments(int ac, char** av, int index)
 {
-    return parseAllArguments(ac, const_cast<const char* const*>(av), index);
+    return parseAllArguments(ac, const_cast< const char* const* >(av), index);
 }
 
 bool TestPlugin::parseAllArguments(int ac, const char* const* av, int index)

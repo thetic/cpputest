@@ -55,7 +55,7 @@ TEST_GROUP(FE_Demo) {
 IGNORE_TEST(FE_Demo, should_fail_when_FE_DIVBYZERO_is_set)
 {
     f = 1.0f;
-    CHECK((f /= 0.0f) >= std::numeric_limits<float>::infinity());
+    CHECK((f /= 0.0f) >= std::numeric_limits< float >::infinity());
 }
 
 IGNORE_TEST(FE_Demo, should_fail_when_FE_UNDERFLOW_is_set)
@@ -69,9 +69,9 @@ IGNORE_TEST(FE_Demo, should_fail_when_FE_UNDERFLOW_is_set)
 IGNORE_TEST(FE_Demo, should_fail_when_FE_OVERFLOW_is_set)
 {
     f = 1000.0f;
-    while (f < std::numeric_limits<float>::infinity())
+    while (f < std::numeric_limits< float >::infinity())
         f *= f;
-    CHECK(f >= std::numeric_limits<float>::infinity());
+    CHECK(f >= std::numeric_limits< float >::infinity());
 }
 
 IGNORE_TEST(FE_Demo, should_fail_when_FE_INEXACT_is_set)

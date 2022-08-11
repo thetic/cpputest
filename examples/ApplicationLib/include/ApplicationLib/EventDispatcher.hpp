@@ -48,7 +48,7 @@ public:
 };
 
 class EventDispatcher {
-    std::list<std::pair<EventType, EventObserver*>> observerList_;
+    std::list< std::pair< EventType, EventObserver* > > observerList_;
 
 public:
     EventDispatcher();
