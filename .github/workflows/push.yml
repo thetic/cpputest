@@ -29,14 +29,12 @@ jobs:
         preset:
           - gcc
           - clang
-        os:
-          - ubuntu-latest
         cxx_standard:
           - 11
           - 14
           - 17
           - 20
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -44,7 +42,31 @@ jobs:
         run: >
           cmake
           --preset ${{ matrix.preset }}
-          -G "Unix Makefiles"
+          -DCMAKE_CXX_STANDARD=${{ matrix.cxx_standard }}
+      - name: Build
+        run: cmake --build build/${{ matrix.preset }} -j --verbose
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
+
+  windows:
+    strategy:
+      matrix:
+        preset:
+          - msvc
+          - gcc
+        cxx_standard:
+          - 11
+          - 14
+          - 17
+          - 20
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Configure
+        run: >
+          cmake
+          --preset ${{ matrix.preset }}
           -DCMAKE_CXX_STANDARD=${{ matrix.cxx_standard }}
       - name: Build
         run: cmake --build build/${{ matrix.preset }} -j --verbose

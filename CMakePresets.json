@@ -18,6 +18,7 @@
     {
       "name": "gcc",
       "inherits": ["defaults"],
+      "generator": "Unix Makefiles",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
@@ -33,6 +34,20 @@
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "msvc",
+      "inherits": ["defaults"],
+      "generator": "Visual Studio 17 2022",
+      "environment": {
+        "CFLAGS": "/W3 /WX",
+        "CXXFLAGS": "/W3 /WX"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
