@@ -28,7 +28,6 @@
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
@@ -67,8 +66,6 @@ static void failFunction_()
 [[noreturn]] static void exitNonZeroFunction_();
 static void exitNonZeroFunction_()
 {
-    /* destructor of static objects will be called. If StringCache was there then the allocator will report invalid deallocations of static SimpleString */
-    SimpleString::setStringAllocator(SimpleString::getStringAllocator()->actualAllocator());
     exit(1);
 }
 

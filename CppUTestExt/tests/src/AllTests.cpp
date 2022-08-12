@@ -29,26 +29,14 @@
 #include "CppUTestExt/MockSupportPlugin.hpp"
 
 #include "CppUTest/CommandLineTestRunner.hpp"
-#include "CppUTest/SimpleStringInternalCache.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
 int main(int ac, const char* const* av)
 {
-    int result = 0;
-    GlobalSimpleStringCache simpleStringCache;
 
-    {
-        MemoryReporterPlugin plugin;
-        MockSupportPlugin mockPlugin;
-        TestRegistry::getCurrentRegistry()->installPlugin(&plugin);
-        TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
+    MockSupportPlugin mockPlugin;
+    TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
-        /* Don't have any memory leak detector when running the Google Test tests */
-
-        ConsoleTestOutput output;
-        CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
-        result = runner.runAllTestsMain();
-    }
-
-    return result;
+    CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
+    return runner.runAllTestsMain();
 }

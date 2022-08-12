@@ -2,19 +2,15 @@ add_library(CppUTest
     include/CppUTest/CommandLineArguments.hpp
     include/CppUTest/CommandLineTestRunner.hpp
     include/CppUTest/JUnitTestOutput.hpp
-    include/CppUTest/MemoryLeakDetector.hpp
-    include/CppUTest/MemoryLeakWarningPlugin.hpp
     include/CppUTest/PlatformSpecificFunctions.hpp
     include/CppUTest/PlatformSpecificFunctions.h
     include/CppUTest/SimpleMutex.hpp
     include/CppUTest/SimpleString.hpp
-    include/CppUTest/SimpleStringInternalCache.hpp
     include/CppUTest/TeamCityTestOutput.hpp
     include/CppUTest/TestFailure.hpp
     include/CppUTest/TestFilter.hpp
     include/CppUTest/TestHarness.hpp
     include/CppUTest/TestHarness.h
-    include/CppUTest/TestMemoryAllocator.hpp
     include/CppUTest/TestOutput.hpp
     include/CppUTest/TestPlugin.hpp
     include/CppUTest/TestRegistry.hpp
@@ -25,16 +21,12 @@ add_library(CppUTest
     src/CommandLineArguments.cpp
     src/CommandLineTestRunner.cpp
     src/JUnitTestOutput.cpp
-    src/MemoryLeakDetector.cpp
-    src/MemoryLeakWarningPlugin.cpp
     src/SimpleMutex.cpp
     src/SimpleString.cpp
-    src/SimpleStringInternalCache.cpp
     src/TeamCityTestOutput.cpp
     src/TestFailure.cpp
     src/TestFilter.cpp
     src/TestHarness_c.cpp
-    src/TestMemoryAllocator.cpp
     src/TestOutput.cpp
     src/TestPlugin.cpp
     src/TestRegistry.cpp

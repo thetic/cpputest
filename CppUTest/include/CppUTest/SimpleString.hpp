@@ -25,16 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// SIMPLESTRING.H
-//
-// One of the design goals of CppUnitLite is to compilation with very old C++
-// compilers.  For that reason, the simple string class that provides
-// only the operations needed in CppUnitLite.
-//
-///////////////////////////////////////////////////////////////////////////////
-
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
@@ -43,7 +33,6 @@
 #include <string>
 
 class SimpleStringCollection;
-class TestMemoryAllocator;
 
 class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
@@ -53,7 +42,7 @@ public:
     SimpleString(const char* value = "");
     SimpleString(const char* value, size_t repeatCount);
     SimpleString(const SimpleString& other);
-    ~SimpleString();
+    ~SimpleString() = default;
 
     SimpleString& operator=(const SimpleString& other);
     SimpleString operator+(const SimpleString&) const;
@@ -92,9 +81,6 @@ public:
 
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
-    static TestMemoryAllocator* getStringAllocator();
-    static void setStringAllocator(TestMemoryAllocator* allocator);
-
     static int AtoI(const char* str);
     static unsigned AtoU(const char* str);
     static int StrCmp(const char* s1, const char* s2);
@@ -104,24 +90,11 @@ public:
     static const char* StrStr(const char* s1, const char* s2);
     static char ToLower(char ch);
     static int MemCmp(const void* s1, const void* s2, size_t n);
-    static char* allocStringBuffer(size_t size, const char* file, size_t line);
-    static void deallocStringBuffer(char* str, size_t size, const char* file, size_t line);
 
 private:
     const char* getBuffer() const;
 
-    void deallocateInternalBuffer();
-    void setInternalBufferAsEmptyString();
-    void setInternalBufferToNewBuffer(size_t bufferSize);
-    void setInternalBufferTo(char* buffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const SimpleString& otherBuffer);
-
-    char* buffer_ = nullptr;
-    size_t bufferSize_ = 0;
-
-    static TestMemoryAllocator* stringAllocator_;
+    std::string str_ = "";
 
     char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
@@ -151,39 +124,6 @@ private:
 
     void operator=(SimpleStringCollection&);
     SimpleStringCollection(SimpleStringCollection&);
-};
-
-class GlobalSimpleStringAllocatorStash {
-public:
-    GlobalSimpleStringAllocatorStash();
-    void save();
-    void restore();
-
-private:
-    TestMemoryAllocator* originalAllocator_;
-};
-
-class MemoryAccountant;
-class AccountingTestMemoryAllocator;
-
-class GlobalSimpleStringMemoryAccountant {
-public:
-    GlobalSimpleStringMemoryAccountant();
-    ~GlobalSimpleStringMemoryAccountant();
-
-    void useCacheSizes(size_t cacheSizes[], size_t length);
-
-    void start();
-    void stop();
-    SimpleString report();
-
-    AccountingTestMemoryAllocator* getAllocator();
-
-private:
-    void restoreAllocator();
-
-    AccountingTestMemoryAllocator* allocator_;
-    MemoryAccountant* accountant_;
 };
 
 SimpleString StringFrom(bool value);

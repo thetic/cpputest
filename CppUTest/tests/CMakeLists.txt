@@ -8,16 +8,11 @@ add_executable(CppUTestTests
     src/CommandLineArgumentsTest.cpp
     src/CommandLineTestRunnerTest.cpp
     src/CompatabilityTests.cpp
-    src/DummyMemoryLeakDetector.cpp
     src/JUnitOutputTest.cpp
-    src/MemoryLeakDetectorTest.cpp
-    src/MemoryLeakWarningTest.cpp
-    src/MemoryOperatorOverloadTest.cpp
     src/PluginTest.cpp
     src/PreprocessorTest.cpp
     src/SetPluginTest.cpp
     src/SimpleMutexTest.cpp
-    src/SimpleStringCacheTest.cpp
     src/SimpleStringTest.cpp
     src/TeamCityOutputTest.cpp
     src/TestFailureNaNTest.cpp
@@ -26,7 +21,6 @@ add_executable(CppUTestTests
     src/TestHarness_cTestCFile.c
     src/TestHarness_cTest.cpp
     src/TestInstallerTest.cpp
-    src/TestMemoryAllocatorTest.cpp
     src/TestOutputTest.cpp
     src/TestRegistryTest.cpp
     src/TestResultTest.cpp
@@ -37,7 +31,6 @@ add_executable(CppUTestTests
     include/AllocationInCFile.h
     include/AllocationInCppFile.hpp
     include/AllocLetTestFree.h
-    include/DummyMemoryLeakDetector.hpp
 )
 
 target_include_directories(CppUTestTests PUBLIC include)
