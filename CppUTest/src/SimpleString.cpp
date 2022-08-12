@@ -298,8 +298,6 @@ const char* SimpleString::getBuffer() const
 }
 
 SimpleString::SimpleString(const char* otherBuffer)
-    : buffer_(nullptr)
-    , bufferSize_(0)
 {
     if (otherBuffer == nullptr)
         setInternalBufferAsEmptyString();
@@ -308,8 +306,6 @@ SimpleString::SimpleString(const char* otherBuffer)
 }
 
 SimpleString::SimpleString(const char* other, size_t repeatCount)
-    : buffer_(nullptr)
-    , bufferSize_(0)
 {
     size_t otherStringLength = StrLen(other);
     setInternalBufferToNewBuffer(otherStringLength * repeatCount + 1);
@@ -323,8 +319,6 @@ SimpleString::SimpleString(const char* other, size_t repeatCount)
 }
 
 SimpleString::SimpleString(const SimpleString& other)
-    : buffer_(nullptr)
-    , bufferSize_(0)
 {
     copyBufferToNewInternalBuffer(other.getBuffer());
 }

@@ -118,8 +118,8 @@ private:
     void copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize);
     void copyBufferToNewInternalBuffer(const SimpleString& otherBuffer);
 
-    char* buffer_;
-    size_t bufferSize_;
+    char* buffer_ = nullptr;
+    size_t bufferSize_ = 0;
 
     static TestMemoryAllocator* stringAllocator_;
 
