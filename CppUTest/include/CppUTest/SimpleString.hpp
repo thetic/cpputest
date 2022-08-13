@@ -49,18 +49,14 @@ public:
     SimpleString& operator+=(const SimpleString&);
     SimpleString& operator+=(const char*);
 
-    static const size_t npos = (size_t)-1;
+    static const size_t npos = std::string::npos;
 
-    char at(size_t pos) const;
-    size_t find(char ch) const;
-    size_t findFrom(size_t starting_position, char ch) const;
+    char operator[](size_t pos) const;
+    size_t find(char ch, size_t starting_position = 0) const;
     bool contains(const SimpleString& other) const;
-    bool containsNoCase(const SimpleString& other) const;
-    bool startsWith(const SimpleString& other) const;
-    bool endsWith(const SimpleString& other) const;
-    void split(const SimpleString& split,
-        SimpleStringCollection& outCollection) const;
-    bool equalsNoCase(const SimpleString& str) const;
+    bool starts_with(const SimpleString& other) const;
+    bool ends_with(const SimpleString& other) const;
+    void split(const SimpleString& split, SimpleStringCollection& outCollection) const;
 
     size_t count(const SimpleString& str) const;
 
@@ -68,43 +64,17 @@ public:
     void replace(const char* to, const char* with);
 
     SimpleString lowerCase() const;
-    SimpleString subString(size_t beginPos) const;
-    SimpleString subString(size_t beginPos, size_t amount) const;
-    SimpleString subStringFromTill(char startChar, char lastExcludedChar) const;
-    void copyToBuffer(char* buffer, size_t bufferSize) const;
+    SimpleString substr(size_t beginPos, size_t amount = npos) const;
 
-    SimpleString printable() const;
-
-    const char* asCharString() const;
+    const char* c_str() const;
     size_t size() const;
-    bool isEmpty() const;
+    bool empty() const;
 
-    static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
-
-    static int AtoI(const char* str);
     static unsigned AtoU(const char* str);
-    static int StrCmp(const char* s1, const char* s2);
-    static size_t StrLen(const char*);
-    static int StrNCmp(const char* s1, const char* s2, size_t n);
-    static char* StrNCpy(char* s1, const char* s2, size_t n);
-    static const char* StrStr(const char* s1, const char* s2);
-    static char ToLower(char ch);
-    static int MemCmp(const void* s1, const void* s2, size_t n);
 
 private:
-    const char* getBuffer() const;
-
     std::string str_ = "";
-
-    char* getEmptyString() const;
-    static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
-    static bool isDigit(char ch);
-    static bool isSpace(char ch);
-    static bool isUpper(char ch);
-    static bool isControl(char ch);
-    static bool isControlWithShortEscapeSequence(char ch);
-
-    size_t getPrintableSize() const;
+    static const char* StrStr(const char* s1, const char* s2);
 };
 
 class SimpleStringCollection {
@@ -179,6 +149,5 @@ SimpleString BracketsFormattedHexStringFrom(long long value);
 SimpleString BracketsFormattedHexStringFrom(unsigned long long value);
 SimpleString BracketsFormattedHexStringFrom(signed char value);
 SimpleString BracketsFormattedHexString(SimpleString hexString);
-SimpleString PrintableStringFromOrNull(const char* expected);
 
 #endif

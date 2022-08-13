@@ -215,7 +215,7 @@ TEST(UtestShell, veryVebose)
 
     TestResult result(normalOutput);
     shell.runOneTestInCurrentProcess(&plugin, result);
-    STRCMP_CONTAINS("\n------ before runTest", normalOutput.getOutput().asCharString());
+    STRCMP_CONTAINS("\n------ before runTest", normalOutput.getOutput().c_str());
 }
 
 class defaultUtestShell : public UtestShell {
@@ -349,7 +349,7 @@ TEST(IgnoredUtestShell, runIgnoredOptionSpecifiedThenReturnTESTInFormattedName)
     ignoredTest.setTestName("TestName");
     ignoredTest.setRunIgnored();
     fixture.runAllTests();
-    STRCMP_EQUAL("TEST(TestGroup, TestName)", ignoredTest.getFormattedName().asCharString());
+    STRCMP_EQUAL("TEST(TestGroup, TestName)", ignoredTest.getFormattedName().c_str());
 }
 
 TEST(IgnoredUtestShell, runIgnoredOptionNotSpecifiedThenReturnIGNORETESTInFormattedName)
@@ -357,7 +357,7 @@ TEST(IgnoredUtestShell, runIgnoredOptionNotSpecifiedThenReturnIGNORETESTInFormat
     ignoredTest.setGroupName("TestGroup");
     ignoredTest.setTestName("TestName");
     fixture.runAllTests();
-    STRCMP_EQUAL("IGNORE_TEST(TestGroup, TestName)", ignoredTest.getFormattedName().asCharString());
+    STRCMP_EQUAL("IGNORE_TEST(TestGroup, TestName)", ignoredTest.getFormattedName().c_str());
 }
 
 TEST(IgnoredUtestShell, runIgnoredOptionNotSpecifiedThenWillRunReturnFalse)

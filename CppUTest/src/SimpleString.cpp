@@ -30,78 +30,21 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <cctype>
 #include <climits>
+#include <cstring>
 #include <string>
 
 // does not support + or - prefixes
 unsigned SimpleString::AtoU(const char* str)
 {
-    while (isSpace(*str))
+    while (std::isspace(*str))
         str++;
 
     unsigned result = 0;
-    for (; isDigit(*str) && *str >= '0'; str++) {
+    for (; std::isdigit(*str) && *str >= '0'; str++) {
         result *= 10;
         result += static_cast< unsigned >(*str - '0');
-    }
-    return result;
-}
-
-int SimpleString::AtoI(const char* str)
-{
-    while (isSpace(*str))
-        str++;
-
-    char first_char = *str;
-    if (first_char == '-' || first_char == '+')
-        str++;
-
-    int result = 0;
-    for (; isDigit(*str); str++) {
-        result *= 10;
-        result += *str - '0';
-    }
-    return (first_char == '-') ? -result : result;
-}
-
-int SimpleString::StrCmp(const char* s1, const char* s2)
-{
-    while (*s1 && *s1 == *s2) {
-        ++s1;
-        ++s2;
-    }
-    return *(const unsigned char*)s1 - *(const unsigned char*)s2;
-}
-
-size_t SimpleString::StrLen(const char* str)
-{
-    size_t n = (size_t)-1;
-    do
-        n++;
-    while (*str++);
-    return n;
-}
-
-int SimpleString::StrNCmp(const char* s1, const char* s2, size_t n)
-{
-    while (n && *s1 && *s1 == *s2) {
-        --n;
-        ++s1;
-        ++s2;
-    }
-    return n ? *(const unsigned char*)s1 - *(const unsigned char*)s2 : 0;
-}
-
-char* SimpleString::StrNCpy(char* s1, const char* s2, size_t n)
-{
-    char* result = s1;
-
-    if ((nullptr == s1) || (0 == n))
-        return result;
-
-    *s1 = *s2;
-    while ((--n != 0) && *s1) {
-        *++s1 = *++s2;
     }
     return result;
 }
@@ -110,30 +53,10 @@ const char* SimpleString::StrStr(const char* s1, const char* s2)
 {
     if (!*s2)
         return s1;
-    for (; *s1; s1++)
-        if (StrNCmp(s1, s2, StrLen(s2)) == 0)
-            return s1;
-    return nullptr;
-}
-
-char SimpleString::ToLower(char ch)
-{
-    return isUpper(ch) ? (char)((int)ch + ('a' - 'A')) : ch;
-}
-
-int SimpleString::MemCmp(const void* s1, const void* s2, size_t n)
-{
-    const unsigned char* p1 = (const unsigned char*)s1;
-    const unsigned char* p2 = (const unsigned char*)s2;
-
-    while (n--)
-        if (*p1 != *p2) {
-            return *p1 - *p2;
-        } else {
-            ++p1;
-            ++p2;
-        }
-    return 0;
+    std::string::size_type pos = std::string(s1).find(s2);
+    if (pos == npos)
+        return nullptr;
+    return &s1[pos];
 }
 
 SimpleString::SimpleString(const char* otherBuffer)
@@ -162,25 +85,20 @@ SimpleString& SimpleString::operator=(const SimpleString& other)
 
 bool SimpleString::contains(const SimpleString& other) const
 {
-    return StrStr(str_.c_str(), other.str_.c_str()) != nullptr;
+    return str_.find(other.str_) != npos;
 }
 
-bool SimpleString::containsNoCase(const SimpleString& other) const
-{
-    return lowerCase().contains(other.lowerCase());
-}
-
-bool SimpleString::startsWith(const SimpleString& other) const
+bool SimpleString::starts_with(const SimpleString& other) const
 {
     if (other.size() == 0)
         return true;
     else if (size() == 0)
         return false;
     else
-        return StrStr(str_.c_str(), other.str_.c_str()) == str_.c_str();
+        return str_.find(other.str_) == 0;
 }
 
-bool SimpleString::endsWith(const SimpleString& other) const
+bool SimpleString::ends_with(const SimpleString& other) const
 {
     size_t length = size();
     size_t other_length = other.size();
@@ -192,7 +110,7 @@ bool SimpleString::endsWith(const SimpleString& other) const
     if (length < other_length)
         return false;
 
-    return StrCmp(str_.c_str() + length - other_length, other.str_.c_str()) == 0;
+    return std::strcmp(str_.c_str() + length - other_length, other.str_.c_str()) == 0;
 }
 
 size_t SimpleString::count(const SimpleString& substr) const
@@ -215,7 +133,7 @@ size_t SimpleString::count(const SimpleString& substr) const
 void SimpleString::split(const SimpleString& delimiter, SimpleStringCollection& col) const
 {
     size_t num = count(delimiter);
-    size_t extraEndToken = (endsWith(delimiter)) ? 0 : 1U;
+    size_t extraEndToken = (ends_with(delimiter)) ? 0 : 1U;
     col.allocate(num + extraEndToken);
 
     const char* str = str_.c_str();
@@ -223,7 +141,7 @@ void SimpleString::split(const SimpleString& delimiter, SimpleStringCollection& 
     for (size_t i = 0; i < num; ++i) {
         prev = str;
         str = StrStr(str, delimiter.str_.c_str()) + 1;
-        col[i] = SimpleString(prev).subString(0, size_t(str - prev));
+        col[i] = SimpleString(prev).substr(0, size_t(str - prev));
     }
     if (extraEndToken) {
         col[num] = str;
@@ -246,16 +164,16 @@ void SimpleString::replace(const char* to, const char* with)
         return;
     }
     size_t len = size();
-    size_t tolen = StrLen(to);
-    size_t withlen = StrLen(with);
+    size_t tolen = std::strlen(to);
+    size_t withlen = std::strlen(with);
 
     size_t newsize = len + (withlen * c) - (tolen * c) + 1;
 
     if (newsize > 1) {
         char* newbuf = (char*)PlatformSpecificMalloc(newsize);
         for (size_t i = 0, j = 0; i < len;) {
-            if (StrNCmp(&str_.c_str()[i], to, tolen) == 0) {
-                StrNCpy(&newbuf[j], with, withlen + 1);
+            if (std::strncmp(&str_.c_str()[i], to, tolen) == 0) {
+                std::strncpy(&newbuf[j], with, withlen + 1);
                 j += withlen;
                 i += tolen;
             } else {
@@ -265,64 +183,10 @@ void SimpleString::replace(const char* to, const char* with)
             }
         }
         newbuf[newsize - 1] = '\0';
-        str_ = std::string(newbuf);
+        str_ = newbuf;
+        PlatformSpecificFree(newbuf);
     } else
         str_.clear();
-}
-
-SimpleString SimpleString::printable() const
-{
-    static const char* shortEscapeCodes[] = {
-        "\\a",
-        "\\b",
-        "\\t",
-        "\\n",
-        "\\v",
-        "\\f",
-        "\\r"
-    };
-
-    char* result = (char*)PlatformSpecificMalloc(getPrintableSize() + 1);
-
-    size_t str_size = size();
-    size_t j = 0;
-    for (size_t i = 0; i < str_size; i++) {
-        char c = str_[i];
-        if (isControlWithShortEscapeSequence(c)) {
-            StrNCpy(&result[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
-            j += 2;
-        } else if (isControl(c)) {
-            SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
-            StrNCpy(&result[j], hexEscapeCode.asCharString(), 4);
-            j += 4;
-        } else {
-            result[j] = c;
-            j++;
-        }
-    }
-    result[j] = 0;
-
-    SimpleString ret(result);
-    free(result);
-
-    return ret;
-}
-
-size_t SimpleString::getPrintableSize() const
-{
-    size_t str_size = size();
-    size_t printable_str_size = str_size;
-
-    for (size_t i = 0; i < str_size; i++) {
-        char c = str_[i];
-        if (isControlWithShortEscapeSequence(c)) {
-            printable_str_size += 1;
-        } else if (isControl(c)) {
-            printable_str_size += 3;
-        }
-    }
-
-    return printable_str_size;
 }
 
 SimpleString SimpleString::lowerCase() const
@@ -331,34 +195,29 @@ SimpleString SimpleString::lowerCase() const
 
     size_t str_size = str.size();
     for (size_t i = 0; i < str_size; i++)
-        str.str_[i] = ToLower(str.str_.c_str()[i]);
+        str.str_[i] = std::tolower(str.str_.c_str()[i]);
 
     return str;
 }
 
-const char* SimpleString::asCharString() const
+const char* SimpleString::c_str() const
 {
     return str_.c_str();
 }
 
 size_t SimpleString::size() const
 {
-    return StrLen(str_.c_str());
+    return str_.size();
 }
 
-bool SimpleString::isEmpty() const
+bool SimpleString::empty() const
 {
     return size() == 0;
 }
 
 bool operator==(const SimpleString& left, const SimpleString& right)
 {
-    return 0 == SimpleString::StrCmp(left.asCharString(), right.asCharString());
-}
-
-bool SimpleString::equalsNoCase(const SimpleString& str) const
-{
-    return lowerCase() == str.lowerCase();
+    return left.str_ == right.str_;
 }
 
 bool operator!=(const SimpleString& left, const SimpleString& right)
@@ -384,106 +243,19 @@ SimpleString& SimpleString::operator+=(const char* rhs)
     return *this;
 }
 
-void SimpleString::padStringsToSameLength(SimpleString& str1, SimpleString& str2, char padCharacter)
+SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
 {
-    if (str1.size() > str2.size()) {
-        padStringsToSameLength(str2, str1, padCharacter);
-        return;
-    }
-
-    char pad[2];
-    pad[0] = padCharacter;
-    pad[1] = 0;
-    str1 = SimpleString(pad, str2.size() - str1.size()) + str1;
-}
-
-SimpleString SimpleString::subString(size_t beginPos, size_t amount) const
-{
-    if (beginPos > size() - 1)
-        return "";
-
     return SimpleString(str_.substr(beginPos, amount).c_str());
 }
 
-SimpleString SimpleString::subString(size_t beginPos) const
+char SimpleString::operator[](size_t pos) const
 {
-    return subString(beginPos, npos);
+    return str_[pos];
 }
 
-char SimpleString::at(size_t pos) const
+size_t SimpleString::find(char ch, size_t starting_position) const
 {
-    return str_.c_str()[pos];
-}
-
-size_t SimpleString::find(char ch) const
-{
-    return findFrom(0, ch);
-}
-
-size_t SimpleString::findFrom(size_t starting_position, char ch) const
-{
-    size_t length = size();
-    for (size_t i = starting_position; i < length; i++)
-        if (at(i) == ch)
-            return i;
-    return npos;
-}
-
-SimpleString SimpleString::subStringFromTill(char startChar, char lastExcludedChar) const
-{
-    size_t beginPos = find(startChar);
-    if (beginPos == npos)
-        return "";
-
-    size_t endPos = findFrom(beginPos, lastExcludedChar);
-    if (endPos == npos)
-        return subString(beginPos);
-
-    return subString(beginPos, endPos - beginPos);
-}
-
-char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
-{
-    char* newBuffer = (char*)PlatformSpecificMalloc(bufferSize);
-    StrNCpy(newBuffer, bufferToCopy, bufferSize);
-    newBuffer[bufferSize - 1] = '\0';
-    return newBuffer;
-}
-
-void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
-{
-    if (bufferToCopy == nullptr || bufferSize == 0)
-        return;
-
-    size_t sizeToCopy = (bufferSize - 1 < size()) ? (bufferSize - 1) : size();
-
-    StrNCpy(bufferToCopy, str_.c_str(), sizeToCopy);
-    bufferToCopy[sizeToCopy] = '\0';
-}
-
-bool SimpleString::isDigit(char ch)
-{
-    return '0' <= ch && '9' >= ch;
-}
-
-bool SimpleString::isSpace(char ch)
-{
-    return (ch == ' ') || (0x08 < ch && 0x0E > ch);
-}
-
-bool SimpleString::isUpper(char ch)
-{
-    return 'A' <= ch && 'Z' >= ch;
-}
-
-bool SimpleString::isControl(char ch)
-{
-    return ch < ' ' || ch == char(0x7F);
-}
-
-bool SimpleString::isControlWithShortEscapeSequence(char ch)
-{
-    return '\a' <= ch && '\r' >= ch;
+    return str_.find(ch, starting_position);
 }
 
 SimpleString StringFrom(bool value)
@@ -499,11 +271,6 @@ SimpleString StringFrom(const char* value)
 SimpleString StringFromOrNull(const char* expected)
 {
     return (expected) ? StringFrom(expected) : StringFrom("(null)");
-}
-
-SimpleString PrintableStringFromOrNull(const char* expected)
-{
-    return (expected) ? StringFrom(expected).printable() : StringFrom("(null)");
 }
 
 SimpleString StringFrom(int value)
@@ -541,7 +308,7 @@ SimpleString HexStringFrom(signed char value)
     SimpleString result = StringFromFormat("%x", value);
     if (value < 0) {
         size_t size = result.size();
-        result = result.subString(size - (CHAR_BIT / 4));
+        result = result.substr(size - (CHAR_BIT / 4));
     }
     return result;
 }
@@ -710,7 +477,7 @@ SimpleString StringFromBinary(const unsigned char* value, size_t size)
     for (size_t i = 0; i < size; i++) {
         result += StringFromFormat("%02X ", value[i]);
     }
-    result = result.subString(0, result.size() - 1);
+    result = result.substr(0, result.size() - 1);
 
     return result;
 }

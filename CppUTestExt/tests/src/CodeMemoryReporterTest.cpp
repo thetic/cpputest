@@ -32,8 +32,8 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
-#define TESTOUTPUT_EQUAL(a) STRCMP_EQUAL_LOCATION(a, testOutput.getOutput().asCharString(), "", __FILE__, __LINE__)
-#define TESTOUTPUT_CONTAINS(a) STRCMP_CONTAINS_LOCATION(a, testOutput.getOutput().asCharString(), "", __FILE__, __LINE__)
+#define TESTOUTPUT_EQUAL(a) STRCMP_EQUAL_LOCATION(a, testOutput.getOutput().c_str(), "", __FILE__, __LINE__)
+#define TESTOUTPUT_CONTAINS(a) STRCMP_CONTAINS_LOCATION(a, testOutput.getOutput().c_str(), "", __FILE__, __LINE__)
 
 TEST_GROUP(CodeMemoryReportFormatter)
 {

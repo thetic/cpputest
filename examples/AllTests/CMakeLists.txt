@@ -29,7 +29,7 @@ if(CPPUTEST_DISCOVER)
     )
 else()
     add_test(
-        Name Example
+        NAME Example
         COMMAND AllTests
     )
 endif()

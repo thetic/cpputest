@@ -152,7 +152,7 @@
                 UtestShell::getCurrent()->print("WARNING:\n\tThe \"Actual Parameter\" parameter is evaluated multiple times resulting in different values.\n\tThus the value in the error message is probably incorrect.", file, line);   \
             if ((expected) != (expected))                                                                                                                                                                                                 \
                 UtestShell::getCurrent()->print("WARNING:\n\tThe \"Expected Parameter\" parameter is evaluated multiple times resulting in different values.\n\tThus the value in the error message is probably incorrect.", file, line); \
-            UtestShell::getCurrent()->assertEquals(true, StringFrom(expected).asCharString(), StringFrom(actual).asCharString(), text, file, line);                                                                                       \
+            UtestShell::getCurrent()->assertEquals(true, StringFrom(expected).c_str(), StringFrom(actual).c_str(), text, file, line);                                                                                                     \
         } else {                                                                                                                                                                                                                          \
             UtestShell::getCurrent()->assertLongsEqual((long)0, (long)0, nullptr, file, line);                                                                                                                                            \
         }                                                                                                                                                                                                                                 \
@@ -168,15 +168,15 @@
 #define CHECK_COMPARE_TEXT(first, relop, second, text) \
     CHECK_COMPARE_LOCATION(first, relop, second, text, __FILE__, __LINE__)
 
-#define CHECK_COMPARE_LOCATION(first, relop, second, text, file, line)                                                                            \
-    do {                                                                                                                                          \
-        SimpleString conditionString;                                                                                                             \
-        conditionString += StringFrom(first);                                                                                                     \
-        conditionString += " ";                                                                                                                   \
-        conditionString += #relop;                                                                                                                \
-        conditionString += " ";                                                                                                                   \
-        conditionString += StringFrom(second);                                                                                                    \
-        UtestShell::getCurrent()->assertCompare((first)relop(second), "CHECK_COMPARE", conditionString.asCharString(), text, __FILE__, __LINE__); \
+#define CHECK_COMPARE_LOCATION(first, relop, second, text, file, line)                                                                     \
+    do {                                                                                                                                   \
+        SimpleString conditionString;                                                                                                      \
+        conditionString += StringFrom(first);                                                                                              \
+        conditionString += " ";                                                                                                            \
+        conditionString += #relop;                                                                                                         \
+        conditionString += " ";                                                                                                            \
+        conditionString += StringFrom(second);                                                                                             \
+        UtestShell::getCurrent()->assertCompare((first)relop(second), "CHECK_COMPARE", conditionString.c_str(), text, __FILE__, __LINE__); \
     } while (0)
 
 // This check checks for char* string equality using strcmp.
@@ -371,15 +371,15 @@
 #define ENUMS_EQUAL_TYPE_TEXT(underlying_type, expected, actual, text) \
     ENUMS_EQUAL_TYPE_LOCATION(underlying_type, expected, actual, text, __FILE__, __LINE__)
 
-#define ENUMS_EQUAL_TYPE_LOCATION(underlying_type, expected, actual, text, file, line)                                                                                                \
-    do {                                                                                                                                                                              \
-        underlying_type expected_underlying_value = (underlying_type)(expected);                                                                                                      \
-        underlying_type actual_underlying_value = (underlying_type)(actual);                                                                                                          \
-        if (expected_underlying_value != actual_underlying_value) {                                                                                                                   \
-            UtestShell::getCurrent()->assertEquals(true, StringFrom(expected_underlying_value).asCharString(), StringFrom(actual_underlying_value).asCharString(), text, file, line); \
-        } else {                                                                                                                                                                      \
-            UtestShell::getCurrent()->assertLongsEqual((long)0, long(0), nullptr, file, line);                                                                                        \
-        }                                                                                                                                                                             \
+#define ENUMS_EQUAL_TYPE_LOCATION(underlying_type, expected, actual, text, file, line)                                                                                  \
+    do {                                                                                                                                                                \
+        underlying_type expected_underlying_value = (underlying_type)(expected);                                                                                        \
+        underlying_type actual_underlying_value = (underlying_type)(actual);                                                                                            \
+        if (expected_underlying_value != actual_underlying_value) {                                                                                                     \
+            UtestShell::getCurrent()->assertEquals(true, StringFrom(expected_underlying_value).c_str(), StringFrom(actual_underlying_value).c_str(), text, file, line); \
+        } else {                                                                                                                                                        \
+            UtestShell::getCurrent()->assertLongsEqual((long)0, long(0), nullptr, file, line);                                                                          \
+        }                                                                                                                                                               \
     } while (0)
 
 // Fail if you get to this macro
@@ -416,22 +416,22 @@
     UT_PRINT_LOCATION(text, __FILE__, __LINE__)
 
 #if !CPPUTEST_NO_EXCEPTIONS
-#define CHECK_THROWS(expected, expression)                                                  \
-    do {                                                                                    \
-        SimpleString failure_msg("expected to throw " #expected "\nbut threw nothing");     \
-        bool caught_expected = false;                                                       \
-        try {                                                                               \
-            (expression);                                                                   \
-        } catch (const expected&) {                                                         \
-            caught_expected = true;                                                         \
-        } catch (...) {                                                                     \
-            failure_msg = "expected to throw " #expected "\nbut threw a different type";    \
-        }                                                                                   \
-        if (!caught_expected) {                                                             \
-            UtestShell::getCurrent()->fail(failure_msg.asCharString(), __FILE__, __LINE__); \
-        } else {                                                                            \
-            UtestShell::getCurrent()->countCheck();                                         \
-        }                                                                                   \
+#define CHECK_THROWS(expected, expression)                                               \
+    do {                                                                                 \
+        SimpleString failure_msg("expected to throw " #expected "\nbut threw nothing");  \
+        bool caught_expected = false;                                                    \
+        try {                                                                            \
+            (expression);                                                                \
+        } catch (const expected&) {                                                      \
+            caught_expected = true;                                                      \
+        } catch (...) {                                                                  \
+            failure_msg = "expected to throw " #expected "\nbut threw a different type"; \
+        }                                                                                \
+        if (!caught_expected) {                                                          \
+            UtestShell::getCurrent()->fail(failure_msg.c_str(), __FILE__, __LINE__);     \
+        } else {                                                                         \
+            UtestShell::getCurrent()->countCheck();                                      \
+        }                                                                                \
     } while (0)
 #endif
 

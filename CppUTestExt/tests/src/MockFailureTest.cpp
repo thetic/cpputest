@@ -104,14 +104,14 @@ TEST_GROUP(MockFailureTest)
         MockUnexpectedCallHappenedFailure failure(UtestShell::getCurrent(), "bar", callList);
 
         SimpleString expectedMessage = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: bar\n\tEXPECTED", expectedOrdinal);
-        STRCMP_CONTAINS(expectedMessage.asCharString(), failure.getMessage().asCharString());
+        STRCMP_CONTAINS(expectedMessage.c_str(), failure.getMessage().c_str());
     }
 };
 
 TEST(MockFailureTest, noErrorFailureSomethingGoneWrong)
 {
     MockFailure failure(UtestShell::getCurrent());
-    STRCMP_EQUAL("Test failed with MockFailure without an error! Something went seriously wrong.", failure.getMessage().asCharString());
+    STRCMP_EQUAL("Test failed with MockFailure without an error! Something went seriously wrong.", failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, unexpectedCallHappened)
@@ -122,7 +122,7 @@ TEST(MockFailureTest, unexpectedCallHappened)
                  "\t\t<none>\n"
                  "\tEXPECTED calls that WERE fulfilled:\n"
                  "\t\t<none>",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, expectedCallDidNotHappen)
@@ -140,7 +140,7 @@ TEST(MockFailureTest, expectedCallDidNotHappen)
                  "\t\tworld -> int boo: <2 (0x2)>, const char* hello: <world> (expected 1 call, called 0 times)\n"
                  "\tEXPECTED calls that WERE fulfilled:\n"
                  "\t\thaphaphap -> no parameters (expected 1 call, called 1 time)",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockUnexpectedNthAdditionalCallFailure)
@@ -176,7 +176,7 @@ TEST(MockFailureTest, MockUnexpectedInputParameterFailure)
                  "\t\t<none>\n"
                  "\tACTUAL unexpected parameter passed to function: foo\n"
                  "\t\tint bar: <2 (0x2)>",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockUnexpectedOutputParameterFailure)
@@ -200,7 +200,7 @@ TEST(MockFailureTest, MockUnexpectedOutputParameterFailure)
                  "\t\t<none>\n"
                  "\tACTUAL unexpected output parameter passed to function: foo\n"
                  "\t\tvoid* bar",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockUnexpectedUnmodifiedOutputParameterFailure)
@@ -223,7 +223,7 @@ TEST(MockFailureTest, MockUnexpectedUnmodifiedOutputParameterFailure)
                  "\t\t<none>\n"
                  "\tACTUAL unexpected output parameter passed to function: foo\n"
                  "\t\tvoid* bar",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockUnexpectedParameterValueFailure)
@@ -245,7 +245,7 @@ TEST(MockFailureTest, MockUnexpectedParameterValueFailure)
                  "\t\t<none>\n"
                  "\tACTUAL unexpected parameter passed to function: foo\n"
                  "\t\tint boo: <20 (0x14)>",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockExpectedParameterDidntHappenFailure)
@@ -279,13 +279,13 @@ TEST(MockFailureTest, MockExpectedParameterDidntHappenFailure)
                  "\t\tfoo -> int bar: <20 (0x14)> (expected 1 call, called 0 times)\n"
                  "\tEXPECTED calls that WERE fulfilled related to function: foo\n"
                  "\t\tfoo -> int bar: <10 (0xa)>, const char* boo: <bleh> (expected 1 call, called 1 time)",
-        failure.getMessage().asCharString());
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockNoWayToCompareCustomTypeFailure)
 {
     MockNoWayToCompareCustomTypeFailure failure(UtestShell::getCurrent(), "myType");
-    STRCMP_EQUAL("MockFailure: No way to compare type <myType>. Please install a MockNamedValueComparator.", failure.getMessage().asCharString());
+    STRCMP_EQUAL("MockFailure: No way to compare type <myType>. Please install a MockNamedValueComparator.", failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockUnexpectedObjectFailure)
@@ -306,8 +306,8 @@ TEST(MockFailureTest, MockUnexpectedObjectFailure)
                      "\tEXPECTED calls that WERE fulfilled related to function: foo\n"
                      "\t\t(object address: %p)::foo -> no parameters (expected 1 call, called 1 time)",
                      (void*)0x01, (void*)0x02, (void*)0x03)
-                     .asCharString(),
-        failure.getMessage().asCharString());
+                     .c_str(),
+        failure.getMessage().c_str());
 }
 
 TEST(MockFailureTest, MockExpectedObjectDidntHappenFailure)
@@ -327,6 +327,6 @@ TEST(MockFailureTest, MockExpectedObjectDidntHappenFailure)
                      "\tEXPECTED calls that WERE fulfilled related to function: foo\n"
                      "\t\t(object address: %p)::foo -> no parameters (expected 1 call, called 1 time)",
                      (void*)0x2, (void*)0x3)
-                     .asCharString(),
-        failure.getMessage().asCharString());
+                     .c_str(),
+        failure.getMessage().c_str());
 }

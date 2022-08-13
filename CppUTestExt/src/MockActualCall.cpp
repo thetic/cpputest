@@ -556,7 +556,7 @@ const char* MockCheckedActualCall::returnStringValue()
 
 bool MockCheckedActualCall::hasReturnValue()
 {
-    return !returnValue().getName().isEmpty();
+    return !returnValue().getName().empty();
 }
 
 MockActualCall& MockCheckedActualCall::onObject(const void* objectPtr)
@@ -900,7 +900,7 @@ void MockActualCallTrace::clear()
 
 const char* MockActualCallTrace::getTraceOutput()
 {
-    return traceBuffer_.asCharString();
+    return traceBuffer_.c_str();
 }
 
 MockActualCallTrace* MockActualCallTrace::instance_ = nullptr;

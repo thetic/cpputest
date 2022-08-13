@@ -46,7 +46,7 @@ TEST_GROUP(TestFailure)
         delete test;
     }
 };
-#define FAILURE_EQUAL(a, b) STRCMP_EQUAL_LOCATION(a, b.getMessage().asCharString(), "", __FILE__, __LINE__)
+#define FAILURE_EQUAL(a, b) STRCMP_EQUAL_LOCATION(a, b.getMessage().c_str(), "", __FILE__, __LINE__)
 
 TEST(TestFailure, CreateFailure)
 {
@@ -58,7 +58,7 @@ TEST(TestFailure, CreateFailure)
 TEST(TestFailure, GetTestFileAndLineFromFailure)
 {
     TestFailure f1(test, failFileName, failLineNumber, "the failure message");
-    STRCMP_EQUAL(failFileName, f1.getTestFileName().asCharString());
+    STRCMP_EQUAL(failFileName, f1.getTestFileName().c_str());
     LONGS_EQUAL(1, f1.getTestLineNumber());
 }
 
@@ -453,8 +453,8 @@ TEST(TestFailure, UnexpectedExceptionFailure_StandardException)
 {
     std::runtime_error e("Some error");
     UnexpectedExceptionFailure f(test, e);
-    STRCMP_CONTAINS("Unexpected exception of type '", f.getMessage().asCharString());
-    STRCMP_CONTAINS("runtime_error", f.getMessage().asCharString());
-    STRCMP_CONTAINS("' was thrown: Some error", f.getMessage().asCharString());
+    STRCMP_CONTAINS("Unexpected exception of type '", f.getMessage().c_str());
+    STRCMP_CONTAINS("runtime_error", f.getMessage().c_str());
+    STRCMP_CONTAINS("' was thrown: Some error", f.getMessage().c_str());
 }
 #endif

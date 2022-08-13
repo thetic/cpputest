@@ -111,7 +111,7 @@ MockUnexpectedCallHappenedFailure::MockUnexpectedCallHappenedFailure(UtestShell*
     unsigned int amountOfActualCalls = expectations.amountOfActualCallsFulfilledFor(name);
     if (amountOfActualCalls > 0) {
         SimpleString ordinalNumber = StringFromOrdinalNumber(amountOfActualCalls + 1);
-        message_ = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: ", ordinalNumber.asCharString());
+        message_ = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: ", ordinalNumber.c_str());
     } else {
         message_ = "Mock Failure: Unexpected call to function: ";
     }
@@ -226,13 +226,13 @@ MockExpectedParameterDidntHappenFailure::MockExpectedParameterDidntHappenFailure
 MockNoWayToCompareCustomTypeFailure::MockNoWayToCompareCustomTypeFailure(UtestShell* test, const SimpleString& typeName)
     : MockFailure(test)
 {
-    message_ = StringFromFormat("MockFailure: No way to compare type <%s>. Please install a MockNamedValueComparator.", typeName.asCharString());
+    message_ = StringFromFormat("MockFailure: No way to compare type <%s>. Please install a MockNamedValueComparator.", typeName.c_str());
 }
 
 MockNoWayToCopyCustomTypeFailure::MockNoWayToCopyCustomTypeFailure(UtestShell* test, const SimpleString& typeName)
     : MockFailure(test)
 {
-    message_ = StringFromFormat("MockFailure: No way to copy type <%s>. Please install a MockNamedValueCopier.", typeName.asCharString());
+    message_ = StringFromFormat("MockFailure: No way to copy type <%s>. Please install a MockNamedValueCopier.", typeName.c_str());
 }
 
 MockUnexpectedObjectFailure::MockUnexpectedObjectFailure(UtestShell* test, const SimpleString& functionName, const void* actual, const MockExpectedCallsList& expectations)
@@ -240,13 +240,13 @@ MockUnexpectedObjectFailure::MockUnexpectedObjectFailure(UtestShell* test, const
 {
     message_ = StringFromFormat("MockFailure: Function called on an unexpected object: %s\n"
                                 "\tActual object for call has address: <%p>\n",
-        functionName.asCharString(), actual);
+        functionName.c_str(), actual);
     addExpectationsAndCallHistoryRelatedTo(functionName, expectations);
 }
 
 MockExpectedObjectDidntHappenFailure::MockExpectedObjectDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
-    message_ = StringFromFormat("Mock Failure: Expected call on object for function \"%s\" but it did not happen.\n", functionName.asCharString());
+    message_ = StringFromFormat("Mock Failure: Expected call on object for function \"%s\" but it did not happen.\n", functionName.c_str());
     addExpectationsAndCallHistoryRelatedTo(functionName, expectations);
 }

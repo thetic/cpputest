@@ -157,7 +157,7 @@ void MockSupport::strictOrder()
 
 SimpleString MockSupport::appendScopeToName(const SimpleString& functionName)
 {
-    if (mockName_.isEmpty())
+    if (mockName_.empty())
         return functionName;
     return mockName_ + "::" + functionName;
 }
@@ -465,7 +465,7 @@ MockSupport* MockSupport::getMockSupportScope(const SimpleString& name)
     mockingSupportName += name;
 
     if (hasData(mockingSupportName)) {
-        STRCMP_EQUAL("MockSupport", getData(mockingSupportName).getType().asCharString());
+        STRCMP_EQUAL("MockSupport", getData(mockingSupportName).getType().c_str());
         return (MockSupport*)getData(mockingSupportName).getObjectPointer();
     }
 

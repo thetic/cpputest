@@ -30,7 +30,7 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
-#define TESTOUTPUT_EQUAL(a) STRCMP_EQUAL_LOCATION(a, testOutput.getOutput().asCharString(), "", __FILE__, __LINE__)
+#define TESTOUTPUT_EQUAL(a) STRCMP_EQUAL_LOCATION(a, testOutput.getOutput().c_str(), "", __FILE__, __LINE__)
 
 TEST_GROUP(NormalMemoryReportFormatter)
 {
@@ -55,13 +55,13 @@ TEST_GROUP(NormalMemoryReportFormatter)
 TEST(NormalMemoryReportFormatter, mallocCreatesAnMallocCall)
 {
     formatter.report_alloc_memory(testResult, defaultMallocAllocator(), 10, memory01, "file", 9);
-    TESTOUTPUT_EQUAL(StringFromFormat("\tAllocation using malloc of size: 10 pointer: %p at file:9\n", (void*)memory01).asCharString());
+    TESTOUTPUT_EQUAL(StringFromFormat("\tAllocation using malloc of size: 10 pointer: %p at file:9\n", (void*)memory01).c_str());
 }
 
 TEST(NormalMemoryReportFormatter, freeCreatesAnFreeCall)
 {
     formatter.report_free_memory(testResult, defaultMallocAllocator(), memory01, "boo", 6);
-    TESTOUTPUT_EQUAL(StringFromFormat("\tDeallocation using free of pointer: %p at boo:6\n", (void*)memory01).asCharString());
+    TESTOUTPUT_EQUAL(StringFromFormat("\tDeallocation using free of pointer: %p at boo:6\n", (void*)memory01).c_str());
 }
 
 TEST(NormalMemoryReportFormatter, testStarts)

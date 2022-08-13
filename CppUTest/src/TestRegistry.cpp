@@ -100,9 +100,9 @@ void TestRegistry::listTestGroupNames(TestResult& result)
 
     groupList.replace("#", "");
 
-    if (groupList.endsWith(" "))
-        groupList = groupList.subString(0, groupList.size() - 1);
-    result.print(groupList.asCharString());
+    if (groupList.ends_with(" "))
+        groupList = groupList.substr(0, groupList.size() - 1);
+    result.print(groupList.c_str());
 }
 
 void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
@@ -127,9 +127,9 @@ void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
 
     groupAndNameList.replace("#", "");
 
-    if (groupAndNameList.endsWith(" "))
-        groupAndNameList = groupAndNameList.subString(0, groupAndNameList.size() - 1);
-    result.print(groupAndNameList.asCharString());
+    if (groupAndNameList.ends_with(" "))
+        groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);
+    result.print(groupAndNameList.c_str());
 }
 
 void TestRegistry::listTestLocations(TestResult& result)
@@ -149,7 +149,7 @@ void TestRegistry::listTestLocations(TestResult& result)
         testLocations += testLocation;
     }
 
-    result.print(testLocations.asCharString());
+    result.print(testLocations.c_str());
 }
 
 bool TestRegistry::endOfGroup(UtestShell* test)

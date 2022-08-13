@@ -53,6 +53,9 @@
     {
       "name": "ubsan",
       "inherits": ["clang"],
+      "cacheVariables": {
+        "CPPUTEST_DISCOVER": false
+      },
       "environment": {
         "CFLAGS": "-fsanitize=undefined",
         "CXXFLAGS": "-fsanitize=undefined"
@@ -61,6 +64,9 @@
     {
       "name": "asan",
       "inherits": ["clang"],
+      "cacheVariables": {
+        "CPPUTEST_DISCOVER": false
+      },
       "environment": {
         "CFLAGS": "-fsanitize=address -fno-omit-frame-pointer",
         "CXXFLAGS": "-fsanitize=address -fno-omit-frame-pointer"

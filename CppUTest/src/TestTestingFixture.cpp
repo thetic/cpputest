@@ -157,7 +157,7 @@ bool TestTestingFixture::hasTestFailed()
 
 void TestTestingFixture::assertPrintContains(const SimpleString& contains)
 {
-    STRCMP_CONTAINS(contains.asCharString(), getOutput().asCharString());
+    STRCMP_CONTAINS(contains.c_str(), getOutput().c_str());
 }
 
 void TestTestingFixture::assertPrintContainsNot(const SimpleString& contains)
@@ -183,9 +183,9 @@ void TestTestingFixture::lineExecutedAfterCheck()
 void TestTestingFixture::checkTestFailsWithProperTestLocation(const char* text, const char* file, size_t line)
 {
     if (getFailureCount() != 1)
-        FAIL_LOCATION(StringFromFormat("Expected one test failure, but got %d amount of test failures", (int)getFailureCount()).asCharString(), file, line);
+        FAIL_LOCATION(StringFromFormat("Expected one test failure, but got %d amount of test failures", (int)getFailureCount()).c_str(), file, line);
 
-    STRCMP_CONTAINS_LOCATION(text, output_->getOutput().asCharString(), "", file, line);
+    STRCMP_CONTAINS_LOCATION(text, output_->getOutput().c_str(), "", file, line);
 
     if (lineOfCodeExecutedAfterCheck)
         FAIL_LOCATION("The test should jump/throw on failure and not execute the next line. However, the next line was executed.", file, line);
