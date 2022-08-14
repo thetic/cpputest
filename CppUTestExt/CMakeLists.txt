@@ -33,6 +33,11 @@ add_library(CppUTestExt
 
 target_include_directories(CppUTestExt PUBLIC include)
 
+target_compile_definitions(CppUTestExt
+    PRIVATE
+        $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>
+)
+
 target_link_libraries(CppUTestExt PUBLIC CppUTest::CppUTest)
 
 add_library(CppUTest::CppUTestExt ALIAS CppUTestExt)

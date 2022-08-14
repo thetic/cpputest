@@ -35,14 +35,18 @@ namespace {
 
 unsigned AtoU(const char* str)
 {
+#if !CPPUTEST_NO_EXCEPTIONS
     try {
+#endif
         long long val = std::stoll(str);
         if ((val > 0) && (val <= UINT_MAX))
             return (unsigned)val;
         return 0;
-    } catch (std::invalid_argument) {
+#if !CPPUTEST_NO_EXCEPTIONS
+    } catch (std::invalid_argument const&) {
         return 0;
     }
+#endif
 }
 
 }

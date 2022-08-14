@@ -14,15 +14,9 @@
 #include <cstring>
 #include <ctime>
 
-#ifdef STDC_WANT_SECURE_LIB
-#define FOPEN(fp, filename, flag) fopen_s((fp), (filename), (flag))
-#define _VSNPRINTF(str, size, trunc, format, args) _vsnprintf_s((str), (size), (trunc), (format), (args))
-#define LOCALTIME(_tm, timer) localtime_s((_tm), (timer))
-#else
 #define FOPEN(fp, filename, flag) *(fp) = fopen((filename), (flag))
 #define _VSNPRINTF(str, size, trunc, format, args) _vsnprintf((str), (size), (format), (args))
 #define LOCALTIME(_tm, timer) memcpy(_tm, localtime(timer), sizeof(tm));
-#endif
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

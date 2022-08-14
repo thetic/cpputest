@@ -54,6 +54,8 @@ target_compile_definitions(CppUTest
     PUBLIC
         "CPPUTEST_NO_EXCEPTIONS=$<NOT:$<BOOL:${CPPUTEST_HAVE_EXCEPTIONS}>>"
         "CPPUTEST_HAVE_FENV=$<BOOL:${CPPUTEST_HAVE_FENV}>"
+    PRIVATE
+        $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>
 )
 
 target_compile_features(CppUTest
