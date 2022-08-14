@@ -1,9 +1,5 @@
 add_library(CppUTestExt
-    include/CppUTestExt/CodeMemoryReportFormatter.hpp
     include/CppUTestExt/IEEE754ExceptionsPlugin.hpp
-    include/CppUTestExt/MemoryReportAllocator.hpp
-    include/CppUTestExt/MemoryReportFormatter.hpp
-    include/CppUTestExt/MemoryReporterPlugin.hpp
     include/CppUTestExt/MockActualCall.hpp
     include/CppUTestExt/MockCheckedActualCall.hpp
     include/CppUTestExt/MockCheckedExpectedCall.hpp
@@ -15,11 +11,7 @@ add_library(CppUTestExt
     include/CppUTestExt/MockSupportPlugin.hpp
     include/CppUTestExt/MockSupport.h
     include/CppUTestExt/OrderedTest.hpp
-    src/CodeMemoryReportFormatter.cpp
     src/IEEE754ExceptionsPlugin.cpp
-    src/MemoryReportAllocator.cpp
-    src/MemoryReportFormatter.cpp
-    src/MemoryReporterPlugin.cpp
     src/MockActualCall.cpp
     src/MockExpectedCall.cpp
     src/MockExpectedCallsList.cpp
