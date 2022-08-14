@@ -59,8 +59,7 @@ public:
 
     void Print(long int value) override
     {
-        SimpleString buffer;
-        buffer = StringFromFormat("%ld", value);
+        std::string buffer = StringFromFormat("%ld", value);
         savedOutput.append(buffer.c_str());
     }
 

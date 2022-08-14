@@ -37,160 +37,78 @@
 #include <climits>
 #include <cstring>
 
-SimpleString::SimpleString(const char* otherBuffer)
-    : str_(otherBuffer ? otherBuffer : "")
-{
-}
+namespace Strings {
 
-SimpleString::SimpleString(const char* other, size_t repeatCount)
-{
-    for (size_t i = 0; i < repeatCount; ++i) {
-        str_ += other;
-    }
-}
-
-SimpleString::SimpleString(const SimpleString& other)
-    : str_(other.str_)
-{
-}
-
-SimpleString& SimpleString::operator=(const SimpleString& other)
-{
-    if (this != &other)
-        str_ = other.str_;
-    return *this;
-}
-
-bool Strings::starts_with(const std::string& str, const std::string& substr)
+bool starts_with(const std::string& str, const std::string& substr)
 {
     return str.find(substr) == 0;
 }
 
-bool Strings::ends_with(const std::string& str, const std::string& substr)
+bool ends_with(const std::string& str, const std::string& substr)
 {
     return str.rfind(substr) == (str.size() - substr.size());
 }
 
-bool Strings::contains(const std::string& str, const std::string& substr)
+bool contains(const std::string& str, const std::string& substr)
 {
     return str.find(substr) != std::string::npos;
 }
 
-std::string Strings::replace(std::string& orig, const std::string& to, const std::string& with)
+std::string replace(std::string& orig, const std::string& to, const std::string& with)
 {
     return orig = std::regex_replace(orig, std::regex(to), with);
 }
 
-const char* SimpleString::c_str() const
-{
-    return str_.c_str();
 }
 
-size_t SimpleString::size() const
+std::string StringFrom(bool value)
 {
-    return str_.size();
+    return std::string(StringFromFormat("%s", value ? "true" : "false"));
 }
 
-bool SimpleString::empty() const
+std::string StringFrom(const char* value)
 {
-    return size() == 0;
+    return std::string(value);
 }
 
-bool operator==(const SimpleString& left, const SimpleString& right)
-{
-    return left.str_ == right.str_;
-}
-
-bool operator!=(const SimpleString& left, const SimpleString& right)
-{
-    return !(left == right);
-}
-
-SimpleString SimpleString::operator+(const SimpleString& rhs) const
-{
-    return str_ + rhs.str_;
-}
-
-SimpleString& SimpleString::operator+=(const SimpleString& rhs)
-{
-    str_ += rhs;
-    return *this;
-}
-
-SimpleString& SimpleString::operator+=(const char* rhs)
-{
-    str_ += rhs;
-    return *this;
-}
-
-SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
-{
-    return str_.substr(beginPos, amount).c_str();
-}
-
-char SimpleString::operator[](size_t pos) const
-{
-    return str_[pos];
-}
-
-char& SimpleString::operator[](size_t pos)
-{
-    return str_[pos];
-}
-
-size_t SimpleString::find(char ch, size_t starting_position) const
-{
-    return str_.find(ch, starting_position);
-}
-
-SimpleString StringFrom(bool value)
-{
-    return SimpleString(StringFromFormat("%s", value ? "true" : "false"));
-}
-
-SimpleString StringFrom(const char* value)
-{
-    return SimpleString(value);
-}
-
-SimpleString StringFromOrNull(const char* expected)
+std::string StringFromOrNull(const char* expected)
 {
     return (expected) ? StringFrom(expected) : StringFrom("(null)");
 }
 
-SimpleString StringFrom(int value)
+std::string StringFrom(int value)
 {
     return StringFromFormat("%d", value);
 }
 
-SimpleString StringFrom(long value)
+std::string StringFrom(long value)
 {
     return StringFromFormat("%ld", value);
 }
 
-SimpleString StringFrom(const void* value)
+std::string StringFrom(const void* value)
 {
-    return SimpleString("0x") + HexStringFrom(value);
+    return std::string("0x") + HexStringFrom(value);
 }
 
-SimpleString StringFrom(void (*value)())
+std::string StringFrom(void (*value)())
 {
-    return SimpleString("0x") + HexStringFrom(value);
+    return std::string("0x") + HexStringFrom(value);
 }
 
-SimpleString HexStringFrom(long value)
+std::string HexStringFrom(long value)
 {
     return StringFromFormat("%lx", value);
 }
 
-SimpleString HexStringFrom(int value)
+std::string HexStringFrom(int value)
 {
     return StringFromFormat("%x", value);
 }
 
-SimpleString HexStringFrom(signed char value)
+std::string HexStringFrom(signed char value)
 {
-    SimpleString result = StringFromFormat("%x", value);
+    std::string result = StringFromFormat("%x", value);
     if (value < 0) {
         size_t size = result.size();
         result = result.substr(size - (CHAR_BIT / 4));
@@ -198,93 +116,93 @@ SimpleString HexStringFrom(signed char value)
     return result;
 }
 
-SimpleString HexStringFrom(unsigned long value)
+std::string HexStringFrom(unsigned long value)
 {
     return StringFromFormat("%lx", value);
 }
 
-SimpleString HexStringFrom(unsigned int value)
+std::string HexStringFrom(unsigned int value)
 {
     return StringFromFormat("%x", value);
 }
 
-SimpleString BracketsFormattedHexStringFrom(int value)
+std::string BracketsFormattedHexStringFrom(int value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(unsigned int value)
+std::string BracketsFormattedHexStringFrom(unsigned int value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(long value)
+std::string BracketsFormattedHexStringFrom(long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(unsigned long value)
+std::string BracketsFormattedHexStringFrom(unsigned long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(signed char value)
+std::string BracketsFormattedHexStringFrom(signed char value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexString(SimpleString hexString)
+std::string BracketsFormattedHexString(std::string hexString)
 {
-    return SimpleString("(0x") + hexString + ")";
+    return std::string("(0x") + hexString + ")";
 }
 
-SimpleString StringFrom(const std::nullptr_t value)
+std::string StringFrom(const std::nullptr_t value)
 {
     (void)value;
     return "(null)";
 }
 
-SimpleString StringFrom(long long value)
+std::string StringFrom(long long value)
 {
     return StringFromFormat("%lld", value);
 }
 
-SimpleString StringFrom(unsigned long long value)
+std::string StringFrom(unsigned long long value)
 {
     return StringFromFormat("%llu", value);
 }
 
-SimpleString HexStringFrom(long long value)
+std::string HexStringFrom(long long value)
 {
     return StringFromFormat("%llx", value);
 }
 
-SimpleString HexStringFrom(unsigned long long value)
+std::string HexStringFrom(unsigned long long value)
 {
     return StringFromFormat("%llx", value);
 }
 
-SimpleString HexStringFrom(const void* value)
+std::string HexStringFrom(const void* value)
 {
     return HexStringFrom((unsigned long long)value);
 }
 
-SimpleString HexStringFrom(void (*value)())
+std::string HexStringFrom(void (*value)())
 {
     return HexStringFrom((unsigned long long)value);
 }
 
-SimpleString BracketsFormattedHexStringFrom(long long value)
+std::string BracketsFormattedHexStringFrom(long long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString BracketsFormattedHexStringFrom(unsigned long long value)
+std::string BracketsFormattedHexStringFrom(unsigned long long value)
 {
     return BracketsFormattedHexString(HexStringFrom(value));
 }
 
-SimpleString StringFrom(double value, int precision)
+std::string StringFrom(double value, int precision)
 {
     if (PlatformSpecificIsNan(value))
         return "Nan - Not a number";
@@ -294,19 +212,14 @@ SimpleString StringFrom(double value, int precision)
         return StringFromFormat("%.*g", precision, value);
 }
 
-SimpleString StringFrom(char value)
+std::string StringFrom(char value)
 {
     return StringFromFormat("%c", value);
 }
 
-SimpleString StringFrom(const SimpleString& value)
+std::string StringFromFormat(const char* format, ...)
 {
-    return SimpleString(value);
-}
-
-SimpleString StringFromFormat(const char* format, ...)
-{
-    SimpleString resultString;
+    std::string resultString;
     va_list arguments;
     va_start(arguments, format);
 
@@ -315,22 +228,22 @@ SimpleString StringFromFormat(const char* format, ...)
     return resultString;
 }
 
-SimpleString StringFrom(unsigned int i)
+std::string StringFrom(unsigned int i)
 {
     return StringFromFormat("%u", i);
 }
 
-SimpleString StringFrom(const std::string& value)
+std::string StringFrom(const std::string& value)
 {
-    return SimpleString(value.c_str());
+    return std::string(value.c_str());
 }
 
-SimpleString StringFrom(unsigned long i)
+std::string StringFrom(unsigned long i)
 {
     return StringFromFormat("%lu", i);
 }
 
-SimpleString VStringFromFormat(const char* format, va_list args)
+std::string VStringFromFormat(const char* format, va_list args)
 {
     va_list argsCopy;
     va_copy(argsCopy, args);
@@ -338,16 +251,16 @@ SimpleString VStringFromFormat(const char* format, va_list args)
         sizeOfdefaultBuffer = 100
     };
     char defaultBuffer[sizeOfdefaultBuffer];
-    SimpleString resultString;
+    std::string resultString;
 
     size_t size = (size_t)PlatformSpecificVSNprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
     if (size < sizeOfdefaultBuffer) {
-        resultString = SimpleString(defaultBuffer);
+        resultString = std::string(defaultBuffer);
     } else {
         size_t newBufferSize = size + 1;
         char* newBuffer = (char*)PlatformSpecificMalloc(newBufferSize);
         PlatformSpecificVSNprintf(newBuffer, newBufferSize, format, argsCopy);
-        resultString = SimpleString(newBuffer);
+        resultString = std::string(newBuffer);
 
         free(newBuffer);
     }
@@ -355,9 +268,9 @@ SimpleString VStringFromFormat(const char* format, va_list args)
     return resultString;
 }
 
-SimpleString StringFromBinary(const unsigned char* value, size_t size)
+std::string StringFromBinary(const unsigned char* value, size_t size)
 {
-    SimpleString result;
+    std::string result;
 
     for (size_t i = 0; i < size; i++) {
         result += StringFromFormat("%02X ", value[i]);
@@ -367,14 +280,14 @@ SimpleString StringFromBinary(const unsigned char* value, size_t size)
     return result;
 }
 
-SimpleString StringFromBinaryOrNull(const unsigned char* value, size_t size)
+std::string StringFromBinaryOrNull(const unsigned char* value, size_t size)
 {
     return (value) ? StringFromBinary(value, size) : StringFrom("(null)");
 }
 
-SimpleString StringFromBinaryWithSize(const unsigned char* value, size_t size)
+std::string StringFromBinaryWithSize(const unsigned char* value, size_t size)
 {
-    SimpleString result = StringFromFormat("Size = %u | HexContents = ", (unsigned)size);
+    std::string result = StringFromFormat("Size = %u | HexContents = ", (unsigned)size);
     size_t displayedSize = ((size > 128) ? 128 : size);
     result += StringFromBinaryOrNull(value, displayedSize);
     if (size > displayedSize) {
@@ -383,14 +296,14 @@ SimpleString StringFromBinaryWithSize(const unsigned char* value, size_t size)
     return result;
 }
 
-SimpleString StringFromBinaryWithSizeOrNull(const unsigned char* value, size_t size)
+std::string StringFromBinaryWithSizeOrNull(const unsigned char* value, size_t size)
 {
     return (value) ? StringFromBinaryWithSize(value, size) : StringFrom("(null)");
 }
 
-SimpleString StringFromMaskedBits(unsigned long value, unsigned long mask, size_t byteCount)
+std::string StringFromMaskedBits(unsigned long value, unsigned long mask, size_t byteCount)
 {
-    SimpleString result;
+    std::string result;
     size_t bitCount = (byteCount > sizeof(unsigned long)) ? (sizeof(unsigned long) * CHAR_BIT) : (byteCount * CHAR_BIT);
     const unsigned long msbMask = (((unsigned long)1) << (bitCount - 1));
 
@@ -412,7 +325,7 @@ SimpleString StringFromMaskedBits(unsigned long value, unsigned long mask, size_
     return result;
 }
 
-SimpleString StringFromOrdinalNumber(unsigned int number)
+std::string StringFromOrdinalNumber(unsigned int number)
 {
     unsigned int onesDigit = number % 10;
 

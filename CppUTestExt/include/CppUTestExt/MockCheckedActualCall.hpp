@@ -36,24 +36,24 @@ public:
     MockCheckedActualCall(unsigned int callOrder, MockFailureReporter* reporter, const MockExpectedCallsList& expectations);
     ~MockCheckedActualCall() override;
 
-    MockActualCall& withName(const SimpleString& name) override;
+    MockActualCall& withName(const std::string& name) override;
     MockActualCall& withCallOrder(unsigned int) override;
-    MockActualCall& withBoolParameter(const SimpleString& name, bool value) override;
-    MockActualCall& withIntParameter(const SimpleString& name, int value) override;
-    MockActualCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) override;
-    MockActualCall& withLongIntParameter(const SimpleString& name, long int value) override;
-    MockActualCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) override;
-    MockActualCall& withLongLongIntParameter(const SimpleString& name, long long value) override;
-    MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) override;
-    MockActualCall& withDoubleParameter(const SimpleString& name, double value) override;
-    MockActualCall& withStringParameter(const SimpleString& name, const char* value) override;
-    MockActualCall& withPointerParameter(const SimpleString& name, void* value) override;
-    MockActualCall& withConstPointerParameter(const SimpleString& name, const void* value) override;
-    MockActualCall& withFunctionPointerParameter(const SimpleString& name, void (*value)()) override;
-    MockActualCall& withMemoryBufferParameter(const SimpleString& name, const unsigned char* value, size_t size) override;
-    MockActualCall& withParameterOfType(const SimpleString& type, const SimpleString& name, const void* value) override;
-    MockActualCall& withOutputParameter(const SimpleString& name, void* output) override;
-    MockActualCall& withOutputParameterOfType(const SimpleString& type, const SimpleString& name, void* output) override;
+    MockActualCall& withBoolParameter(const std::string& name, bool value) override;
+    MockActualCall& withIntParameter(const std::string& name, int value) override;
+    MockActualCall& withUnsignedIntParameter(const std::string& name, unsigned int value) override;
+    MockActualCall& withLongIntParameter(const std::string& name, long int value) override;
+    MockActualCall& withUnsignedLongIntParameter(const std::string& name, unsigned long int value) override;
+    MockActualCall& withLongLongIntParameter(const std::string& name, long long value) override;
+    MockActualCall& withUnsignedLongLongIntParameter(const std::string& name, unsigned long long value) override;
+    MockActualCall& withDoubleParameter(const std::string& name, double value) override;
+    MockActualCall& withStringParameter(const std::string& name, const char* value) override;
+    MockActualCall& withPointerParameter(const std::string& name, void* value) override;
+    MockActualCall& withConstPointerParameter(const std::string& name, const void* value) override;
+    MockActualCall& withFunctionPointerParameter(const std::string& name, void (*value)()) override;
+    MockActualCall& withMemoryBufferParameter(const std::string& name, const unsigned char* value, size_t size) override;
+    MockActualCall& withParameterOfType(const std::string& type, const std::string& name, const void* value) override;
+    MockActualCall& withOutputParameter(const std::string& name, void* output) override;
+    MockActualCall& withOutputParameterOfType(const std::string& type, const std::string& name, void* output) override;
 
     bool hasReturnValue() override;
     MockNamedValue returnValue() override;
@@ -104,8 +104,8 @@ public:
     virtual void setMockFailureReporter(MockFailureReporter* reporter);
 
 protected:
-    void setName(const SimpleString& name);
-    SimpleString getName() const;
+    void setName(const std::string& name);
+    std::string getName() const;
     virtual UtestShell* getTest() const;
     virtual void callHasSucceeded();
     virtual void copyOutputParameters(MockCheckedExpectedCall* call);
@@ -123,7 +123,7 @@ protected:
     virtual void setState(ActualCallState state);
 
 private:
-    SimpleString functionName_;
+    std::string functionName_;
     unsigned int callOrder_;
     MockFailureReporter* reporter_;
 
@@ -136,12 +136,12 @@ private:
 
     class MockOutputParametersListNode {
     public:
-        SimpleString name_;
-        SimpleString type_;
+        std::string name_;
+        std::string type_;
         void* ptr_;
 
         MockOutputParametersListNode* next_;
-        MockOutputParametersListNode(const SimpleString& name, const SimpleString& type, void* ptr)
+        MockOutputParametersListNode(const std::string& name, const std::string& type, void* ptr)
             : name_(name)
             , type_(type)
             , ptr_(ptr)
@@ -152,7 +152,7 @@ private:
 
     MockOutputParametersListNode* outputParameterExpectations_;
 
-    virtual void addOutputParameter(const SimpleString& name, const SimpleString& type, void* ptr);
+    virtual void addOutputParameter(const std::string& name, const std::string& type, void* ptr);
     virtual void cleanUpOutputParameterList();
 };
 
@@ -161,24 +161,24 @@ public:
     MockActualCallTrace();
     ~MockActualCallTrace() override;
 
-    MockActualCall& withName(const SimpleString& name) override;
+    MockActualCall& withName(const std::string& name) override;
     MockActualCall& withCallOrder(unsigned int) override;
-    MockActualCall& withBoolParameter(const SimpleString& name, bool value) override;
-    MockActualCall& withIntParameter(const SimpleString& name, int value) override;
-    MockActualCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) override;
-    MockActualCall& withLongIntParameter(const SimpleString& name, long int value) override;
-    MockActualCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) override;
-    MockActualCall& withLongLongIntParameter(const SimpleString& name, long long value) override;
-    MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) override;
-    MockActualCall& withDoubleParameter(const SimpleString& name, double value) override;
-    MockActualCall& withStringParameter(const SimpleString& name, const char* value) override;
-    MockActualCall& withPointerParameter(const SimpleString& name, void* value) override;
-    MockActualCall& withConstPointerParameter(const SimpleString& name, const void* value) override;
-    MockActualCall& withFunctionPointerParameter(const SimpleString& name, void (*value)()) override;
-    MockActualCall& withMemoryBufferParameter(const SimpleString& name, const unsigned char* value, size_t size) override;
-    MockActualCall& withParameterOfType(const SimpleString& typeName, const SimpleString& name, const void* value) override;
-    MockActualCall& withOutputParameter(const SimpleString& name, void* output) override;
-    MockActualCall& withOutputParameterOfType(const SimpleString& typeName, const SimpleString& name, void* output) override;
+    MockActualCall& withBoolParameter(const std::string& name, bool value) override;
+    MockActualCall& withIntParameter(const std::string& name, int value) override;
+    MockActualCall& withUnsignedIntParameter(const std::string& name, unsigned int value) override;
+    MockActualCall& withLongIntParameter(const std::string& name, long int value) override;
+    MockActualCall& withUnsignedLongIntParameter(const std::string& name, unsigned long int value) override;
+    MockActualCall& withLongLongIntParameter(const std::string& name, long long value) override;
+    MockActualCall& withUnsignedLongLongIntParameter(const std::string& name, unsigned long long value) override;
+    MockActualCall& withDoubleParameter(const std::string& name, double value) override;
+    MockActualCall& withStringParameter(const std::string& name, const char* value) override;
+    MockActualCall& withPointerParameter(const std::string& name, void* value) override;
+    MockActualCall& withConstPointerParameter(const std::string& name, const void* value) override;
+    MockActualCall& withFunctionPointerParameter(const std::string& name, void (*value)()) override;
+    MockActualCall& withMemoryBufferParameter(const std::string& name, const unsigned char* value, size_t size) override;
+    MockActualCall& withParameterOfType(const std::string& typeName, const std::string& name, const void* value) override;
+    MockActualCall& withOutputParameter(const std::string& name, void* output) override;
+    MockActualCall& withOutputParameterOfType(const std::string& typeName, const std::string& name, void* output) override;
 
     bool hasReturnValue() override;
     MockNamedValue returnValue() override;
@@ -227,33 +227,33 @@ public:
     static void clearInstance();
 
 private:
-    SimpleString traceBuffer_;
+    std::string traceBuffer_;
 
     static MockActualCallTrace* instance_;
 
-    void addParameterName(const SimpleString& name);
+    void addParameterName(const std::string& name);
 };
 
 class MockIgnoredActualCall : public MockActualCall {
 public:
-    MockActualCall& withName(const SimpleString&) override { return *this; }
+    MockActualCall& withName(const std::string&) override { return *this; }
     MockActualCall& withCallOrder(unsigned int) override { return *this; }
-    MockActualCall& withBoolParameter(const SimpleString&, bool) override { return *this; }
-    MockActualCall& withIntParameter(const SimpleString&, int) override { return *this; }
-    MockActualCall& withUnsignedIntParameter(const SimpleString&, unsigned int) override { return *this; }
-    MockActualCall& withLongIntParameter(const SimpleString&, long int) override { return *this; }
-    MockActualCall& withUnsignedLongIntParameter(const SimpleString&, unsigned long int) override { return *this; }
-    MockActualCall& withLongLongIntParameter(const SimpleString&, long long) override { return *this; }
-    MockActualCall& withUnsignedLongLongIntParameter(const SimpleString&, unsigned long long) override { return *this; }
-    MockActualCall& withDoubleParameter(const SimpleString&, double) override { return *this; }
-    MockActualCall& withStringParameter(const SimpleString&, const char*) override { return *this; }
-    MockActualCall& withPointerParameter(const SimpleString&, void*) override { return *this; }
-    MockActualCall& withConstPointerParameter(const SimpleString&, const void*) override { return *this; }
-    MockActualCall& withFunctionPointerParameter(const SimpleString&, void (*)()) override { return *this; }
-    MockActualCall& withMemoryBufferParameter(const SimpleString&, const unsigned char*, size_t) override { return *this; }
-    MockActualCall& withParameterOfType(const SimpleString&, const SimpleString&, const void*) override { return *this; }
-    MockActualCall& withOutputParameter(const SimpleString&, void*) override { return *this; }
-    MockActualCall& withOutputParameterOfType(const SimpleString&, const SimpleString&, void*) override { return *this; }
+    MockActualCall& withBoolParameter(const std::string&, bool) override { return *this; }
+    MockActualCall& withIntParameter(const std::string&, int) override { return *this; }
+    MockActualCall& withUnsignedIntParameter(const std::string&, unsigned int) override { return *this; }
+    MockActualCall& withLongIntParameter(const std::string&, long int) override { return *this; }
+    MockActualCall& withUnsignedLongIntParameter(const std::string&, unsigned long int) override { return *this; }
+    MockActualCall& withLongLongIntParameter(const std::string&, long long) override { return *this; }
+    MockActualCall& withUnsignedLongLongIntParameter(const std::string&, unsigned long long) override { return *this; }
+    MockActualCall& withDoubleParameter(const std::string&, double) override { return *this; }
+    MockActualCall& withStringParameter(const std::string&, const char*) override { return *this; }
+    MockActualCall& withPointerParameter(const std::string&, void*) override { return *this; }
+    MockActualCall& withConstPointerParameter(const std::string&, const void*) override { return *this; }
+    MockActualCall& withFunctionPointerParameter(const std::string&, void (*)()) override { return *this; }
+    MockActualCall& withMemoryBufferParameter(const std::string&, const unsigned char*, size_t) override { return *this; }
+    MockActualCall& withParameterOfType(const std::string&, const std::string&, const void*) override { return *this; }
+    MockActualCall& withOutputParameter(const std::string&, void*) override { return *this; }
+    MockActualCall& withOutputParameterOfType(const std::string&, const std::string&, void*) override { return *this; }
 
     bool hasReturnValue() override { return false; }
     MockNamedValue returnValue() override { return MockNamedValue(""); }

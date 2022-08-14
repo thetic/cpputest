@@ -134,10 +134,10 @@ void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
 
 void TestRegistry::listTestLocations(TestResult& result)
 {
-    SimpleString testLocations;
+    std::string testLocations;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
-        SimpleString testLocation;
+        std::string testLocation;
         testLocation += test->getGroup();
         testLocation += ".";
         testLocation += test->getName();
@@ -230,12 +230,12 @@ TestPlugin* TestRegistry::getFirstPlugin()
     return firstPlugin_;
 }
 
-TestPlugin* TestRegistry::getPluginByName(const SimpleString& name)
+TestPlugin* TestRegistry::getPluginByName(const std::string& name)
 {
     return firstPlugin_->getPluginByName(name);
 }
 
-void TestRegistry::removePluginByName(const SimpleString& name)
+void TestRegistry::removePluginByName(const std::string& name)
 {
     if (firstPlugin_->removePluginByName(name) == firstPlugin_)
         firstPlugin_ = firstPlugin_->getNext();
@@ -279,7 +279,7 @@ UtestShell* TestRegistry::getTestWithNext(UtestShell* test)
     return current;
 }
 
-UtestShell* TestRegistry::findTestWithName(const SimpleString& name)
+UtestShell* TestRegistry::findTestWithName(const std::string& name)
 {
     UtestShell* current = tests_;
     while (current) {
@@ -290,7 +290,7 @@ UtestShell* TestRegistry::findTestWithName(const SimpleString& name)
     return nullptr;
 }
 
-UtestShell* TestRegistry::findTestWithGroup(const SimpleString& group)
+UtestShell* TestRegistry::findTestWithGroup(const std::string& group)
 {
     UtestShell* current = tests_;
     while (current) {

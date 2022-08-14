@@ -64,12 +64,12 @@ void NormalMemoryReportFormatter::report_testgroup_start(TestResult* result, Ute
 {
     const size_t line_size = 80;
 
-    SimpleString groupName = StringFromFormat("TEST GROUP(%s)", test.getGroup().c_str());
+    std::string groupName = StringFromFormat("TEST GROUP(%s)", test.getGroup().c_str());
     size_t beginPos = (line_size / 2) - (groupName.size() / 2);
 
-    SimpleString line("-", beginPos);
+    std::string line("-", beginPos);
     line += groupName;
-    line += SimpleString("-", line_size - line.size());
+    line += std::string("-", line_size - line.size());
     line += "\n";
     result->print(line.c_str());
 }

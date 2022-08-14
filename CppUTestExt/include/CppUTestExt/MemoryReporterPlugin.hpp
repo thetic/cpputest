@@ -41,7 +41,7 @@ class MemoryReporterPlugin : public TestPlugin {
     MemoryReportAllocator newAllocator;
     MemoryReportAllocator newArrayAllocator;
 
-    SimpleString currentTestGroup_;
+    std::string currentTestGroup_;
 
 public:
     MemoryReporterPlugin();
@@ -56,7 +56,7 @@ public:
     MemoryReportAllocator* getNewArrayAllocator();
 
 protected:
-    virtual MemoryReportFormatter* createMemoryFormatter(const SimpleString& type);
+    virtual MemoryReportFormatter* createMemoryFormatter(const std::string& type);
 
 private:
     void destroyMemoryFormatter(MemoryReportFormatter* formatter);

@@ -49,7 +49,7 @@ public:
     {
         return ((const Event*)object1)->type == ((const Event*)object2)->type;
     }
-    SimpleString valueToString(const void* object) override
+    std::string valueToString(const void* object) override
     {
         return StringFrom(((const Event*)object)->type);
     }

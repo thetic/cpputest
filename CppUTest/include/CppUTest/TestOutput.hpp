@@ -37,7 +37,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 class UtestShell;
 class TestFailure;
@@ -81,15 +81,15 @@ public:
     static WorkingEnvironment getWorkingEnvironment();
 
 protected:
-    virtual void printEclipseErrorInFileOnLine(SimpleString file, size_t lineNumber);
-    virtual void printVisualStudioErrorInFileOnLine(SimpleString file, size_t lineNumber);
+    virtual void printEclipseErrorInFileOnLine(std::string file, size_t lineNumber);
+    virtual void printVisualStudioErrorInFileOnLine(std::string file, size_t lineNumber);
 
     virtual void printProgressIndicator();
     void printFileAndLineForTestAndFailure(const TestFailure& failure);
     void printFileAndLineForFailure(const TestFailure& failure);
-    void printFailureInTest(SimpleString testName);
-    void printFailureMessage(SimpleString reason);
-    void printErrorInFileOnLineFormattedForWorkingEnvironment(SimpleString testFile, size_t lineNumber);
+    void printFailureInTest(std::string testName);
+    void printFailureMessage(std::string reason);
+    void printErrorInFileOnLineFormattedForWorkingEnvironment(std::string testFile, size_t lineNumber);
 
     TestOutput(const TestOutput&);
     TestOutput& operator=(const TestOutput&);
@@ -156,13 +156,13 @@ public:
         output = "";
     }
 
-    const SimpleString& getOutput()
+    const std::string& getOutput()
     {
         return output;
     }
 
 protected:
-    SimpleString output;
+    std::string output;
 
 private:
     StringBufferTestOutput(const StringBufferTestOutput&);

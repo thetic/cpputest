@@ -30,7 +30,7 @@
 
 #include "CppUTestExt/MemoryReportFormatter.hpp"
 
-class SimpleString;
+#include <string>
 
 struct CodeReportingAllocationNode;
 class CodeMemoryReportFormatter : public MemoryReportFormatter {
@@ -54,14 +54,14 @@ public:
 private:
     void addNodeToList(const char* variableName, void* memory, CodeReportingAllocationNode* next);
     CodeReportingAllocationNode* findNode(void* memory);
-    bool variableExists(const SimpleString& variableName);
+    bool variableExists(const std::string& variableName);
     void clearReporting();
 
     bool isNewAllocator(TestMemoryAllocator* allocator);
-    SimpleString createVariableNameFromFileLineInfo(const char* file, size_t line);
+    std::string createVariableNameFromFileLineInfo(const char* file, size_t line);
 
-    SimpleString getAllocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, size_t size);
-    SimpleString getDeallocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, const char* file, size_t line);
+    std::string getAllocationString(TestMemoryAllocator* allocator, const std::string& variableName, size_t size);
+    std::string getDeallocationString(TestMemoryAllocator* allocator, const std::string& variableName, const char* file, size_t line);
 };
 
 #endif

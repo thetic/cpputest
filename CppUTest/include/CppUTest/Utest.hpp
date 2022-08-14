@@ -31,7 +31,7 @@
 #ifndef D_UTest_h
 #define D_UTest_h
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 class TestResult;
 class TestPlugin;
@@ -105,10 +105,10 @@ public:
     virtual size_t countTests();
 
     bool shouldRun(const TestFilter* groupFilters, const TestFilter* nameFilters) const;
-    const SimpleString getName() const;
-    const SimpleString getGroup() const;
-    virtual SimpleString getFormattedName() const;
-    const SimpleString getFile() const;
+    const std::string getName() const;
+    const std::string getGroup() const;
+    virtual std::string getFormattedName() const;
+    const std::string getFile() const;
     size_t getLineNumber() const;
     virtual bool willRun() const;
     virtual bool hasFailed() const;
@@ -136,7 +136,7 @@ public:
     virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
 
     virtual void print(const char* text, const char* fileName, size_t lineNumber);
-    virtual void print(const SimpleString& text, const char* fileName, size_t lineNumber);
+    virtual void print(const std::string& text, const char* fileName, size_t lineNumber);
     virtual void printVeryVerbose(const char* text);
 
     void setFileName(const char* fileName);
@@ -168,7 +168,7 @@ protected:
     UtestShell();
     UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber, UtestShell* nextTest);
 
-    virtual SimpleString getMacroName() const;
+    virtual std::string getMacroName() const;
     TestResult* getTestResult();
 
 private:
@@ -266,7 +266,7 @@ public:
     virtual void setRunIgnored() override;
 
 protected:
-    virtual SimpleString getMacroName() const override;
+    virtual std::string getMacroName() const override;
     virtual void runOneTest(TestPlugin* plugin, TestResult& result) override;
 
 private:

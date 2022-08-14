@@ -57,7 +57,7 @@ bool MemoryReporterPlugin::parseArguments(int /* ac */, const char* const* av, i
     return false;
 }
 
-MemoryReportFormatter* MemoryReporterPlugin::createMemoryFormatter(const SimpleString& type)
+MemoryReportFormatter* MemoryReporterPlugin::createMemoryFormatter(const std::string& type)
 {
     if (type == "normal") {
         return new NormalMemoryReportFormatter;

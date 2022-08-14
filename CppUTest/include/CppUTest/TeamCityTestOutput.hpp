@@ -1,7 +1,6 @@
 #ifndef D_TeamCityTestOutput_h
 #define D_TeamCityTestOutput_h
 
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestOutput.hpp"
 
 class TeamCityTestOutput : public ConsoleTestOutput {
@@ -20,7 +19,7 @@ protected:
 private:
     void printEscaped(const char* s);
     const UtestShell* currtest_;
-    SimpleString currGroup_;
+    std::string currGroup_;
 };
 
 #endif

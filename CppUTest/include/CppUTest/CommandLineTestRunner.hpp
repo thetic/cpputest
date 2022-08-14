@@ -33,6 +33,8 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
+#include <cstring>
+
 class TestRegistry;
 
 #define DEF_PLUGIN_MEM_LEAK "MemoryLeakPlugin"
@@ -50,7 +52,7 @@ public:
 
 protected:
     virtual TestOutput* createTeamCityOutput();
-    virtual TestOutput* createJUnitOutput(const SimpleString& packageName);
+    virtual TestOutput* createJUnitOutput(const std::string& packageName);
     virtual TestOutput* createConsoleOutput();
     virtual TestOutput* createCompositeOutput(TestOutput* outputOne, TestOutput* outputTwo);
 

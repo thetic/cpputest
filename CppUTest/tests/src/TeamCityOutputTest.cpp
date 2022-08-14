@@ -22,13 +22,13 @@ public:
         output = "";
     }
 
-    const SimpleString& getOutput()
+    const std::string& getOutput()
     {
         return output;
     }
 
 private:
-    SimpleString output;
+    std::string output;
 };
 
 static long millisTime;

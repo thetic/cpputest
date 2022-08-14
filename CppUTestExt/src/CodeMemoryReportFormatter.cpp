@@ -27,12 +27,12 @@
 
 #include "CppUTestExt/CodeMemoryReportFormatter.hpp"
 
+#include "CppUTest/PlatformSpecificFunctions.h"
+#include "CppUTest/TestHarness.hpp"
 #include "CppUTestExt/MemoryReportAllocator.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/SimpleString.hpp"
-#include "CppUTest/TestHarness.hpp"
 #include <cstring>
+#include <string>
 
 #define MAX_VARIABLE_NAME_LINE_PART 10
 #define MAX_VARIABLE_NAME_FILE_PART 53
@@ -84,7 +84,7 @@ CodeReportingAllocationNode* CodeMemoryReportFormatter::findNode(void* memory)
     return current;
 }
 
-static SimpleString extractFileNameFromPath(const char* file)
+static std::string extractFileNameFromPath(const char* file)
 {
     const char* fileNameOnly = file + std::strlen(file);
     while (fileNameOnly != file && *fileNameOnly != '/')
@@ -94,7 +94,7 @@ static SimpleString extractFileNameFromPath(const char* file)
     return fileNameOnly;
 }
 
-SimpleString CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const char* file, size_t line)
+std::string CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const char* file, size_t line)
 {
     std::string fileNameOnly = extractFileNameFromPath(file);
     Strings::replace(fileNameOnly, ".", "_");
@@ -114,7 +114,7 @@ bool CodeMemoryReportFormatter::isNewAllocator(TestMemoryAllocator* allocator)
         || std::strcmp(allocator->alloc_name(), defaultNewArrayAllocator()->alloc_name()) == 0);
 }
 
-bool CodeMemoryReportFormatter::variableExists(const SimpleString& variableName)
+bool CodeMemoryReportFormatter::variableExists(const std::string& variableName)
 {
     CodeReportingAllocationNode* current = codeReportingList_;
     while (current) {
@@ -125,7 +125,7 @@ bool CodeMemoryReportFormatter::variableExists(const SimpleString& variableName)
     return false;
 }
 
-SimpleString CodeMemoryReportFormatter::getAllocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, size_t size)
+std::string CodeMemoryReportFormatter::getAllocationString(TestMemoryAllocator* allocator, const std::string& variableName, size_t size)
 {
     if (isNewAllocator(allocator))
         return StringFromFormat("char* %s = new char[%lu]; /* using %s */", variableName.c_str(), (unsigned long)size, allocator->alloc_name());
@@ -133,7 +133,7 @@ SimpleString CodeMemoryReportFormatter::getAllocationString(TestMemoryAllocator*
         return StringFromFormat("void* %s = malloc(%lu);", variableName.c_str(), (unsigned long)size);
 }
 
-SimpleString CodeMemoryReportFormatter::getDeallocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, const char* file, size_t line)
+std::string CodeMemoryReportFormatter::getDeallocationString(TestMemoryAllocator* allocator, const std::string& variableName, const char* file, size_t line)
 {
     if (isNewAllocator(allocator))
         return StringFromFormat("delete [] %s; /* using %s at %s:%d */", variableName.c_str(), allocator->free_name(), file, (int)line);
@@ -163,14 +163,14 @@ void CodeMemoryReportFormatter::report_testgroup_start(TestResult* result, Utest
 
 void CodeMemoryReportFormatter::report_alloc_memory(TestResult* result, TestMemoryAllocator* allocator, size_t size, char* memory, const char* file, size_t line)
 {
-    SimpleString variableName = createVariableNameFromFileLineInfo(file, line);
+    std::string variableName = createVariableNameFromFileLineInfo(file, line);
     result->print(StringFromFormat("\t%s\n", getAllocationString(allocator, variableName, size).c_str()).c_str());
     addNodeToList(variableName.c_str(), memory, codeReportingList_);
 }
 
 void CodeMemoryReportFormatter::report_free_memory(TestResult* result, TestMemoryAllocator* allocator, char* memory, const char* file, size_t line)
 {
-    SimpleString variableName;
+    std::string variableName;
     CodeReportingAllocationNode* node = findNode(memory);
 
     if (memory == nullptr)

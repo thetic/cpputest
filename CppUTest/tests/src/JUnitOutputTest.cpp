@@ -27,21 +27,20 @@
 
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/SimpleStringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
 
 class FileForJUnitOutputTests {
-    SimpleString name_;
+    std::string name_;
     bool isOpen_;
-    SimpleString buffer_;
+    std::string buffer_;
     FileForJUnitOutputTests* next_;
 
     SimpleStringCollection linesOfFile_;
 
 public:
-    FileForJUnitOutputTests(const SimpleString& filename, FileForJUnitOutputTests* next)
+    FileForJUnitOutputTests(const std::string& filename, FileForJUnitOutputTests* next)
         : name_(filename)
         , isOpen_(true)
         , next_(next)
@@ -53,12 +52,12 @@ public:
         return next_;
     }
 
-    SimpleString name()
+    std::string name()
     {
         return name_;
     }
 
-    void write(const SimpleString& buffer)
+    void write(const std::string& buffer)
     {
         buffer_ += buffer;
     }
@@ -85,7 +84,7 @@ public:
         return linesOfFile_.size();
     }
 
-    SimpleString content()
+    std::string content()
     {
         return buffer_;
     }
@@ -110,7 +109,7 @@ public:
         }
     }
 
-    FileForJUnitOutputTests* openFile(const SimpleString& filename)
+    FileForJUnitOutputTests* openFile(const std::string& filename)
     {
         firstFile_ = new FileForJUnitOutputTests(filename, firstFile_);
         return firstFile_;

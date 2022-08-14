@@ -52,7 +52,7 @@ public:
         const TypeForTestingExpectedFunctionCall* obj2 = (const TypeForTestingExpectedFunctionCall*)object2;
         return *(obj1->value) == *(obj2->value);
     }
-    SimpleString valueToString(const void* object) override
+    std::string valueToString(const void* object) override
     {
         const TypeForTestingExpectedFunctionCall* obj = (const TypeForTestingExpectedFunctionCall*)object;
         return StringFrom(*(obj->value));
@@ -176,7 +176,7 @@ TEST(MockExpectedCall, callWithoutParameterSetOrNotFound)
 
 TEST(MockExpectedCall, callWithUnsignedIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     unsigned int value = 356;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("unsigned int", call->getInputParameterType(paramName).c_str());
@@ -187,7 +187,7 @@ TEST(MockExpectedCall, callWithUnsignedIntegerParameter)
 
 TEST(MockExpectedCall, callWithIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     int value = 2;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("int", call->getInputParameterType(paramName).c_str());
@@ -198,7 +198,7 @@ TEST(MockExpectedCall, callWithIntegerParameter)
 
 TEST(MockExpectedCall, callWithBooleanParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     bool value = true;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("bool", call->getInputParameterType(paramName).c_str());
@@ -209,7 +209,7 @@ TEST(MockExpectedCall, callWithBooleanParameter)
 
 TEST(MockExpectedCall, callWithUnsignedLongIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     unsigned long value = 888;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("unsigned long int", call->getInputParameterType(paramName).c_str());
@@ -220,7 +220,7 @@ TEST(MockExpectedCall, callWithUnsignedLongIntegerParameter)
 
 TEST(MockExpectedCall, callWithLongIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     long value = 777;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("long int", call->getInputParameterType(paramName).c_str());
@@ -231,7 +231,7 @@ TEST(MockExpectedCall, callWithLongIntegerParameter)
 
 TEST(MockExpectedCall, callWithUnsignedLongLongIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     unsigned long long value = 888;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("unsigned long long int", call->getInputParameterType(paramName).c_str());
@@ -242,7 +242,7 @@ TEST(MockExpectedCall, callWithUnsignedLongLongIntegerParameter)
 
 TEST(MockExpectedCall, callWithLongLongIntegerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     long long value = 777;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("long long int", call->getInputParameterType(paramName).c_str());
@@ -253,7 +253,7 @@ TEST(MockExpectedCall, callWithLongLongIntegerParameter)
 
 TEST(MockExpectedCall, callWithDoubleParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     double value = 1.2;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("double", call->getInputParameterType(paramName).c_str());
@@ -263,7 +263,7 @@ TEST(MockExpectedCall, callWithDoubleParameter)
 
 TEST(MockExpectedCall, callWithDoubleParameterAndTolerance)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     double value = 1.2;
     double tolerance = 0.2;
     call->withParameter(paramName, value, tolerance);
@@ -275,7 +275,7 @@ TEST(MockExpectedCall, callWithDoubleParameterAndTolerance)
 
 TEST(MockExpectedCall, callWithStringParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     const char* value = "hello world";
     call->withParameter(paramName, value);
     STRCMP_EQUAL("const char*", call->getInputParameterType(paramName).c_str());
@@ -285,7 +285,7 @@ TEST(MockExpectedCall, callWithStringParameter)
 
 TEST(MockExpectedCall, callWithPointerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     void* value = (void*)0x123;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("void*", call->getInputParameterType(paramName).c_str());
@@ -295,7 +295,7 @@ TEST(MockExpectedCall, callWithPointerParameter)
 
 TEST(MockExpectedCall, callWithConstPointerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     const void* value = (const void*)0x345;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("const void*", call->getInputParameterType(paramName).c_str());
@@ -305,7 +305,7 @@ TEST(MockExpectedCall, callWithConstPointerParameter)
 
 TEST(MockExpectedCall, callWithFunctionPointerParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     void (*value)() = (void (*)())0xdead;
     call->withParameter(paramName, value);
     STRCMP_EQUAL("void (*)()", call->getInputParameterType(paramName).c_str());
@@ -315,7 +315,7 @@ TEST(MockExpectedCall, callWithFunctionPointerParameter)
 
 TEST(MockExpectedCall, callWithMemoryBuffer)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     const unsigned char value[] = { 0x12, 0xFE, 0xA1 };
     call->withParameter(paramName, value, sizeof(value));
     STRCMP_EQUAL("const unsigned char*", call->getInputParameterType(paramName).c_str());
@@ -326,7 +326,7 @@ TEST(MockExpectedCall, callWithMemoryBuffer)
 
 TEST(MockExpectedCall, callWithObjectParameter)
 {
-    const SimpleString paramName = "paramName";
+    const std::string paramName = "paramName";
     void* value = (void*)0x123;
     call->withParameterOfType("ClassName", paramName, value);
     POINTERS_EQUAL(value, call->getInputParameter(paramName).getConstObjectPointer());

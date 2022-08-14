@@ -155,17 +155,17 @@ bool TestTestingFixture::hasTestFailed()
     return genTest_->hasFailed();
 }
 
-void TestTestingFixture::assertPrintContains(const SimpleString& contains)
+void TestTestingFixture::assertPrintContains(const std::string& contains)
 {
     STRCMP_CONTAINS(contains.c_str(), getOutput().c_str());
 }
 
-void TestTestingFixture::assertPrintContainsNot(const SimpleString& contains)
+void TestTestingFixture::assertPrintContainsNot(const std::string& contains)
 {
     CHECK(!Strings::contains(getOutput(), contains));
 }
 
-const SimpleString& TestTestingFixture::getOutput()
+const std::string& TestTestingFixture::getOutput()
 {
     return output_->getOutput();
 }

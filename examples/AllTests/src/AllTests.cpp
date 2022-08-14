@@ -38,7 +38,7 @@ public:
         return object1 == object2;
     }
 
-    SimpleString valueToString(const void* object) override
+    std::string valueToString(const void* object) override
     {
         return StringFrom(object);
     }

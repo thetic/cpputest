@@ -52,7 +52,7 @@ public:
     }
 };
 
-MockSupportPlugin::MockSupportPlugin(const SimpleString& name)
+MockSupportPlugin::MockSupportPlugin(const std::string& name)
     : TestPlugin(name)
 {
 }
@@ -83,12 +83,12 @@ void MockSupportPlugin::postTestAction(UtestShell& test, TestResult& result)
     mock().removeAllComparatorsAndCopiers();
 }
 
-void MockSupportPlugin::installComparator(const SimpleString& name, MockNamedValueComparator& comparator)
+void MockSupportPlugin::installComparator(const std::string& name, MockNamedValueComparator& comparator)
 {
     repository_.installComparator(name, comparator);
 }
 
-void MockSupportPlugin::installCopier(const SimpleString& name, MockNamedValueCopier& copier)
+void MockSupportPlugin::installCopier(const std::string& name, MockNamedValueCopier& copier)
 {
     repository_.installCopier(name, copier);
 }

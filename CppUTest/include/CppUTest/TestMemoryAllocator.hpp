@@ -29,10 +29,10 @@
 #define D_TestMemoryAllocator_h
 
 #include <cstddef>
+#include <string>
 
 struct MemoryLeakNode;
 class TestMemoryAllocator;
-class SimpleString;
 
 extern void setCurrentNewAllocator(TestMemoryAllocator* allocator);
 extern TestMemoryAllocator* getCurrentNewAllocator();
@@ -172,7 +172,7 @@ public:
     size_t totalAllocations() const;
     size_t totalDeallocations() const;
 
-    SimpleString report() const;
+    std::string report() const;
 
     void setAllocator(TestMemoryAllocator* allocator);
 
@@ -189,11 +189,11 @@ private:
     TestMemoryAllocator* allocator_;
     bool useCacheSizes_;
 
-    SimpleString reportNoAllocations() const;
-    SimpleString reportTitle() const;
-    SimpleString reportHeader() const;
-    SimpleString reportFooter() const;
-    SimpleString stringSize(size_t size) const;
+    std::string reportNoAllocations() const;
+    std::string reportTitle() const;
+    std::string reportHeader() const;
+    std::string reportFooter() const;
+    std::string stringSize(size_t size) const;
 };
 
 struct AccountingTestMemoryAllocatorMemoryNode;
@@ -233,8 +233,8 @@ public:
 
     void start();
     void stop();
-    SimpleString report();
-    SimpleString reportWithCacheSizes(size_t sizes[], size_t length);
+    std::string report();
+    std::string reportWithCacheSizes(size_t sizes[], size_t length);
 
     TestMemoryAllocator* getMallocAllocator();
     TestMemoryAllocator* getNewAllocator();

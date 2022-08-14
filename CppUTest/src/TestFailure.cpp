@@ -29,7 +29,6 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
 
 #include <cstring>
 #include <typeinfo>
@@ -39,7 +38,7 @@
 #endif
 
 namespace {
-void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char padCharacter)
+void padStringsToSameLength(std::string& str1, std::string& str2, char padCharacter)
 {
     if (str1.size() > str2.size()) {
         padStringsToSameLength(str2, str1, padCharacter);
@@ -49,7 +48,11 @@ void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char padChar
     char pad[2];
     pad[0] = padCharacter;
     pad[1] = 0;
-    str1 = SimpleString(pad, str2.size() - str1.size()) + str1;
+    std::string padded;
+    for (size_t i = 0; i < str2.size() - str1.size(); ++i) {
+        padded += pad;
+    }
+    str1 = padded + str1;
 }
 
 bool isControlWithShortEscapeSequence(char ch)
@@ -57,7 +60,7 @@ bool isControlWithShortEscapeSequence(char ch)
     return '\a' <= ch && '\r' >= ch;
 }
 
-size_t getPrintableSize(const SimpleString& str)
+size_t getPrintableSize(const std::string& str)
 {
     size_t str_size = str.size();
     size_t printable_str_size = str_size;
@@ -74,7 +77,7 @@ size_t getPrintableSize(const SimpleString& str)
     return printable_str_size;
 }
 
-SimpleString printable(const SimpleString& orig)
+std::string printable(const std::string& orig)
 {
     static const char* shortEscapeCodes[] = {
         "\\a",
@@ -96,7 +99,7 @@ SimpleString printable(const SimpleString& orig)
             std::strncpy(&result[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
             j += 2;
         } else if (std::iscntrl(c)) {
-            SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
+            std::string hexEscapeCode = StringFromFormat("\\x%02X ", c);
             std::strncpy(&result[j], hexEscapeCode.c_str(), 4);
             j += 4;
         } else {
@@ -106,19 +109,19 @@ SimpleString printable(const SimpleString& orig)
     }
     result[j] = 0;
 
-    SimpleString ret(result);
+    std::string ret(result);
     free(result);
 
     return ret;
 }
 
-SimpleString PrintableStringFromOrNull(const char* expected)
+std::string PrintableStringFromOrNull(const char* expected)
 {
     return (expected) ? printable(StringFrom(expected)) : StringFrom("(null)");
 }
 }
 
-TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& theMessage)
+TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& theMessage)
     : testName_(test->getFormattedName())
     , testNameOnly_(test->getName())
     , fileName_(fileName)
@@ -129,7 +132,7 @@ TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumb
 {
 }
 
-TestFailure::TestFailure(UtestShell* test, const SimpleString& theMessage)
+TestFailure::TestFailure(UtestShell* test, const std::string& theMessage)
     : testName_(test->getFormattedName())
     , testNameOnly_(test->getName())
     , fileName_(test->getFile())
@@ -166,22 +169,22 @@ TestFailure::~TestFailure()
 {
 }
 
-SimpleString TestFailure::getFileName() const
+std::string TestFailure::getFileName() const
 {
     return fileName_;
 }
 
-SimpleString TestFailure::getTestFileName() const
+std::string TestFailure::getTestFileName() const
 {
     return testFileName_;
 }
 
-SimpleString TestFailure::getTestName() const
+std::string TestFailure::getTestName() const
 {
     return testName_;
 }
 
-SimpleString TestFailure::getTestNameOnly() const
+std::string TestFailure::getTestNameOnly() const
 {
     return testNameOnly_;
 }
@@ -196,7 +199,7 @@ size_t TestFailure::getTestLineNumber() const
     return testLineNumber_;
 }
 
-SimpleString TestFailure::getMessage() const
+std::string TestFailure::getMessage() const
 {
     return message_;
 }
@@ -211,31 +214,31 @@ bool TestFailure::isInHelperFunction() const
     return lineNumber_ < testLineNumber_;
 }
 
-SimpleString TestFailure::createButWasString(const SimpleString& expected, const SimpleString& actual)
+std::string TestFailure::createButWasString(const std::string& expected, const std::string& actual)
 {
     return StringFromFormat("expected <%s>\n\tbut was  <%s>", expected.c_str(), actual.c_str());
 }
 
-SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual, size_t offset, size_t reportedPosition)
+std::string TestFailure::createDifferenceAtPosString(const std::string& actual, size_t offset, size_t reportedPosition)
 {
-    SimpleString result;
+    std::string result;
     const size_t extraCharactersWindow = 20;
     const size_t halfOfExtraCharactersWindow = extraCharactersWindow / 2;
 
-    SimpleString paddingForPreventingOutOfBounds(" ", halfOfExtraCharactersWindow);
-    SimpleString actualString = paddingForPreventingOutOfBounds + actual + paddingForPreventingOutOfBounds;
-    SimpleString differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
+    std::string paddingForPreventingOutOfBounds(" ", halfOfExtraCharactersWindow);
+    std::string actualString = paddingForPreventingOutOfBounds + actual + paddingForPreventingOutOfBounds;
+    std::string differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
 
     result += "\n";
     result += StringFromFormat("\t%s%s>\n", differentString.c_str(), actualString.substr(offset, extraCharactersWindow).c_str());
 
-    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).c_str());
+    result += StringFromFormat("\t%s^", std::string(" ", (differentString.size() + halfOfExtraCharactersWindow)).c_str());
     return result;
 }
 
-SimpleString TestFailure::createUserText(const SimpleString& text)
+std::string TestFailure::createUserText(const std::string& text)
 {
-    SimpleString userMessage = "";
+    std::string userMessage = "";
     if (!text.empty()) {
         // This is a kludge to turn off "Message: " for this case.
         // I don't think "Message: " adds anything, as you get to see the
@@ -248,7 +251,7 @@ SimpleString TestFailure::createUserText(const SimpleString& text)
     return userMessage;
 }
 
-EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const char* expected, const char* actual, const SimpleString& text)
+EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const char* expected, const char* actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -256,7 +259,7 @@ EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t line
     message_ += createButWasString(StringFromOrNull(expected), StringFromOrNull(actual));
 }
 
-EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& expected, const SimpleString& actual, const SimpleString& text)
+EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& expected, const std::string& actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -264,7 +267,7 @@ EqualsFailure::EqualsFailure(UtestShell* test, const char* fileName, size_t line
     message_ += createButWasString(expected, actual);
 }
 
-DoublesEqualFailure::DoublesEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, double expected, double actual, double threshold, const SimpleString& text)
+DoublesEqualFailure::DoublesEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, double expected, double actual, double threshold, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -278,13 +281,13 @@ DoublesEqualFailure::DoublesEqualFailure(UtestShell* test, const char* fileName,
         message_ += "\n\tCannot make comparisons with Nan";
 }
 
-CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& expected, const SimpleString& actual, const SimpleString& text)
+CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& expected, const std::string& actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString printableExpected = PrintableStringFromOrNull(expected.c_str());
-    SimpleString printableActual = PrintableStringFromOrNull(actual.c_str());
+    std::string printableExpected = PrintableStringFromOrNull(expected.c_str());
+    std::string printableActual = PrintableStringFromOrNull(actual.c_str());
 
     message_ += createButWasString(printableExpected, printableActual);
 
@@ -297,7 +300,7 @@ CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, siz
     message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
 }
 
-ComparisonFailure::ComparisonFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& checkString, const SimpleString& comparisonString, const SimpleString& text)
+ComparisonFailure::ComparisonFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& checkString, const std::string& comparisonString, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -307,7 +310,7 @@ ComparisonFailure::ComparisonFailure(UtestShell* test, const char* fileName, siz
     message_ += ") failed";
 }
 
-ContainsFailure::ContainsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& expected, const SimpleString& actual, const SimpleString& text)
+ContainsFailure::ContainsFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& expected, const std::string& actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -315,7 +318,7 @@ ContainsFailure::ContainsFailure(UtestShell* test, const char* fileName, size_t 
     message_ += StringFromFormat("actual <%s>\n\tdid not contain  <%s>", actual.c_str(), expected.c_str());
 }
 
-CheckFailure::CheckFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& checkString, const SimpleString& conditionString, const SimpleString& text)
+CheckFailure::CheckFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& checkString, const std::string& conditionString, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -326,95 +329,101 @@ CheckFailure::CheckFailure(UtestShell* test, const char* fileName, size_t lineNu
     message_ += ") failed";
 }
 
-FailFailure::FailFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& message)
+FailFailure::FailFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& message)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = message;
 }
 
-LongsEqualFailure::LongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, long expected, long actual, const SimpleString& text)
+LongsEqualFailure::LongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, long expected, long actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
     padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
+    std::string expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
     message_ += createButWasString(expectedReported, actualReported);
 }
 
-UnsignedLongsEqualFailure::UnsignedLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, unsigned long expected, unsigned long actual, const SimpleString& text)
+UnsignedLongsEqualFailure::UnsignedLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, unsigned long expected, unsigned long actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
     padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
+    std::string expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
 
     message_ += createButWasString(expectedReported, actualReported);
 }
 
-LongLongsEqualFailure::LongLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, long long expected, long long actual, const SimpleString& text)
+LongLongsEqualFailure::LongLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, long long expected, long long actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
     padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
+    std::string expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
     message_ += createButWasString(expectedReported, actualReported);
 }
 
-UnsignedLongLongsEqualFailure::UnsignedLongLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, unsigned long long expected, unsigned long long actual, const SimpleString& text)
+UnsignedLongLongsEqualFailure::UnsignedLongLongsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, unsigned long long expected, unsigned long long actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
     padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
+    std::string expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
     message_ += createButWasString(expectedReported, actualReported);
 }
 
-SignedBytesEqualFailure::SignedBytesEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, signed char expected, signed char actual, const SimpleString& text)
+SignedBytesEqualFailure::SignedBytesEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, signed char expected, signed char actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom((int)actual);
-    SimpleString eDecimal = StringFrom((int)expected);
+    std::string aDecimal = StringFrom((int)actual);
+    std::string eDecimal = StringFrom((int)expected);
 
     padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
+    std::string expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
     message_ += createButWasString(expectedReported, actualReported);
 }
 
-StringEqualFailure::StringEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, const char* expected, const char* actual, const SimpleString& text)
+StringEqualFailure::StringEqualFailure(
+    UtestShell* test,
+    const char* fileName,
+    size_t lineNumber,
+    const char* expected,
+    const char* actual,
+    const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString printableExpected = PrintableStringFromOrNull(expected);
-    SimpleString printableActual = PrintableStringFromOrNull(actual);
+    std::string printableExpected = PrintableStringFromOrNull(expected);
+    std::string printableActual = PrintableStringFromOrNull(actual);
 
     message_ += createButWasString(printableExpected, printableActual);
     if ((expected) && (actual)) {
@@ -428,13 +437,13 @@ StringEqualFailure::StringEqualFailure(UtestShell* test, const char* fileName, s
     }
 }
 
-StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char* fileName, size_t lineNumber, const char* expected, const char* actual, const SimpleString& text)
+StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char* fileName, size_t lineNumber, const char* expected, const char* actual, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString printableExpected = PrintableStringFromOrNull(expected);
-    SimpleString printableActual = PrintableStringFromOrNull(actual);
+    std::string printableExpected = PrintableStringFromOrNull(expected);
+    std::string printableActual = PrintableStringFromOrNull(actual);
 
     message_ += createButWasString(printableExpected, printableActual);
     if ((expected) && (actual)) {
@@ -451,12 +460,12 @@ StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char*
 }
 
 BinaryEqualFailure::BinaryEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, const unsigned char* expected,
-    const unsigned char* actual, size_t size, const SimpleString& text)
+    const unsigned char* actual, size_t size, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
 
-    SimpleString actualHex = StringFromBinaryOrNull(actual, size);
+    std::string actualHex = StringFromBinaryOrNull(actual, size);
 
     message_ += createButWasString(StringFromBinaryOrNull(expected, size), actualHex);
     if ((expected) && (actual)) {
@@ -468,7 +477,7 @@ BinaryEqualFailure::BinaryEqualFailure(UtestShell* test, const char* fileName, s
 }
 
 BitsEqualFailure::BitsEqualFailure(UtestShell* test, const char* fileName, size_t lineNumber, unsigned long expected, unsigned long actual,
-    unsigned long mask, size_t byteCount, const SimpleString& text)
+    unsigned long mask, size_t byteCount, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -477,7 +486,7 @@ BitsEqualFailure::BitsEqualFailure(UtestShell* test, const char* fileName, size_
 }
 
 FeatureUnsupportedFailure::FeatureUnsupportedFailure(UtestShell* test, const char* fileName, size_t lineNumber,
-    const SimpleString& featureName, const SimpleString& text)
+    const std::string& featureName, const std::string& text)
     : TestFailure(test, fileName, lineNumber)
 {
     message_ = createUserText(text);
@@ -491,7 +500,7 @@ UnexpectedExceptionFailure::UnexpectedExceptionFailure(UtestShell* test)
 {
 }
 
-static SimpleString getExceptionTypeName(const std::exception& e)
+static std::string getExceptionTypeName(const std::exception& e)
 {
     const char* name = typeid(e).name();
 #if defined(__GNUC__)
