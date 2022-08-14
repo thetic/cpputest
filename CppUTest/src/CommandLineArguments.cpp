@@ -28,6 +28,7 @@
 #include "CppUTest/CommandLineArguments.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleStringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 namespace {

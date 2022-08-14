@@ -28,6 +28,7 @@
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
+#include "CppUTest/SimpleStringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
 

@@ -73,27 +73,6 @@ bool ends_with(const std::string& str, const std::string& substr);
 bool contains(const std::string& str, const std::string& substr);
 }
 
-class SimpleStringCollection {
-public:
-    SimpleStringCollection();
-    SimpleStringCollection(const SimpleString& orig, const SimpleString& delimiter);
-    ~SimpleStringCollection();
-
-    void allocate(size_t size);
-
-    size_t size() const;
-    SimpleString& operator[](size_t index);
-    SimpleStringCollection& operator=(SimpleStringCollection&& rhs);
-
-private:
-    SimpleString* collection_;
-    SimpleString empty_;
-    size_t size_;
-
-    void operator=(SimpleStringCollection&);
-    SimpleStringCollection(SimpleStringCollection&);
-};
-
 SimpleString StringFrom(bool value);
 SimpleString StringFrom(const void* value);
 SimpleString StringFrom(void (*value)());

@@ -27,6 +27,7 @@
 
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleStringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
@@ -375,14 +376,6 @@ TEST(SimpleString, NullParameters2)
 {
     SimpleString* arr = new SimpleString[100];
     delete[] arr;
-}
-
-TEST(SimpleString, CollectionMultipleAllocateNoLeaksMemory)
-{
-    SimpleStringCollection col;
-    col.allocate(5);
-    col.allocate(5);
-    // CHECK no memory leak
 }
 
 TEST(SimpleString, CollectionReadOutOfBoundsReturnsEmptyString)
