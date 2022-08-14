@@ -38,6 +38,21 @@
 #define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
 
+namespace {
+
+SimpleString lowerCase(const SimpleString& orig)
+{
+    SimpleString str(orig);
+
+    size_t str_size = str.size();
+    for (size_t i = 0; i < str_size; i++)
+        str[i] = std::tolower(str.c_str()[i]);
+
+    return str;
+}
+
+}
+
 bool doubles_equal(double d1, double d2, double threshold)
 {
     if (PlatformSpecificIsNan(d1) || PlatformSpecificIsNan(d2) || PlatformSpecificIsNan(threshold))
@@ -473,7 +488,7 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
             actual,
             text));
     }
-    if (SimpleString(expected).lowerCase() != SimpleString(actual).lowerCase()) {
+    if (lowerCase(expected) != lowerCase(actual)) {
         failWith(StringEqualNoCaseFailure(
             this,
             fileName,
@@ -491,7 +506,7 @@ void UtestShell::assertCstrContains(const char* expected, const char* actual, co
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(actual).contains(expected))
+    if (!Strings::contains(actual, expected))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -502,7 +517,7 @@ void UtestShell::assertCstrNoCaseContains(const char* expected, const char* actu
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(actual).lowerCase().contains(SimpleString(expected).lowerCase()))
+    if (!Strings::contains(lowerCase(actual), lowerCase(expected)))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 

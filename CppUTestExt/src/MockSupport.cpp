@@ -477,8 +477,11 @@ MockSupport* MockSupport::getMockSupportScope(const SimpleString& name)
 
 MockSupport* MockSupport::getMockSupport(MockNamedValueListNode* node)
 {
-    if (node->getType() == "MockSupport" && node->getName().contains(MOCK_SUPPORT_SCOPE_PREFIX))
+    if (
+        (node->getType() == "MockSupport")
+        && Strings::contains(node->getName(), MOCK_SUPPORT_SCOPE_PREFIX)) {
         return (MockSupport*)node->item()->getObjectPointer();
+    }
     return nullptr;
 }
 

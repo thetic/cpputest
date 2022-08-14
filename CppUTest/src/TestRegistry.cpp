@@ -84,50 +84,50 @@ void TestRegistry::runAllTests(TestResult& result)
 
 void TestRegistry::listTestGroupNames(TestResult& result)
 {
-    SimpleString groupList;
+    std::string groupList;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
-        SimpleString gname;
+        std::string gname;
         gname += "#";
         gname += test->getGroup();
         gname += "#";
 
-        if (!groupList.contains(gname)) {
+        if (!Strings::contains(groupList, gname)) {
             groupList += gname;
             groupList += " ";
         }
     }
 
-    groupList.replace("#", "");
+    Strings::replace(groupList, "#", "");
 
-    if (groupList.ends_with(" "))
+    if (Strings::ends_with(groupList, " "))
         groupList = groupList.substr(0, groupList.size() - 1);
     result.print(groupList.c_str());
 }
 
 void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
 {
-    SimpleString groupAndNameList;
+    std::string groupAndNameList;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
         if (testShouldRun(test, result)) {
-            SimpleString groupAndName;
+            std::string groupAndName;
             groupAndName += "#";
             groupAndName += test->getGroup();
             groupAndName += ".";
             groupAndName += test->getName();
             groupAndName += "#";
 
-            if (!groupAndNameList.contains(groupAndName)) {
+            if (!Strings::contains(groupAndNameList, groupAndName)) {
                 groupAndNameList += groupAndName;
                 groupAndNameList += " ";
             }
         }
     }
 
-    groupAndNameList.replace("#", "");
+    Strings::replace(groupAndNameList, "#", "");
 
-    if (groupAndNameList.ends_with(" "))
+    if (Strings::ends_with(groupAndNameList, " "))
         groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);
     result.print(groupAndNameList.c_str());
 }

@@ -172,7 +172,11 @@ SimpleString JUnitTestOutput::encodeFileName(const SimpleString& fileName)
 
     SimpleString result = fileName;
     for (const char* sym = forbiddenCharacters; *sym; ++sym) {
-        result.replace(*sym, '_');
+        for (size_t i = 0; i < result.size(); ++i) {
+            if (result[i] == *sym) {
+                result[i] = '_';
+            }
+        }
     }
     return result;
 }
@@ -211,12 +215,12 @@ void JUnitTestOutput::writeProperties()
 
 SimpleString JUnitTestOutput::encodeXmlText(const SimpleString& textbody)
 {
-    SimpleString buf = textbody.c_str();
-    buf.replace("&", "&amp;");
-    buf.replace("\"", "&quot;");
-    buf.replace("<", "&lt;");
-    buf.replace(">", "&gt;");
-    buf.replace("\n", "{newline}");
+    std::string buf = textbody;
+    Strings::replace(buf, "&", "&amp;");
+    Strings::replace(buf, "\"", "&quot;");
+    Strings::replace(buf, "<", "&lt;");
+    Strings::replace(buf, ">", "&gt;");
+    Strings::replace(buf, "\n", "{newline}");
     return buf;
 }
 

@@ -30,33 +30,41 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <regex>
+#include <string>
+
 #include <cctype>
 #include <climits>
 #include <cstring>
-#include <string>
 
-// does not support + or - prefixes
-unsigned SimpleString::AtoU(const char* str)
-{
-    while (std::isspace(*str))
-        str++;
+namespace {
 
-    unsigned result = 0;
-    for (; std::isdigit(*str) && *str >= '0'; str++) {
-        result *= 10;
-        result += static_cast< unsigned >(*str - '0');
-    }
-    return result;
-}
-
-const char* SimpleString::StrStr(const char* s1, const char* s2)
+const char* StrStr(const char* s1, const char* s2)
 {
     if (!*s2)
         return s1;
     std::string::size_type pos = std::string(s1).find(s2);
-    if (pos == npos)
+    if (pos == std::string::npos)
         return nullptr;
     return &s1[pos];
+}
+
+size_t count(const SimpleString& str, const SimpleString& substr)
+{
+    size_t num = 0;
+    const char* c_str = str.c_str();
+    const char* strpart = nullptr;
+    if (*c_str) {
+        strpart = StrStr(c_str, substr.c_str());
+    }
+    while (*c_str && strpart) {
+        c_str = strpart;
+        c_str++;
+        num++;
+        strpart = StrStr(c_str, substr.c_str());
+    }
+    return num;
+}
 }
 
 SimpleString::SimpleString(const char* otherBuffer)
@@ -83,121 +91,24 @@ SimpleString& SimpleString::operator=(const SimpleString& other)
     return *this;
 }
 
-bool SimpleString::contains(const SimpleString& other) const
+bool Strings::starts_with(const std::string& str, const std::string& substr)
 {
-    return str_.find(other.str_) != npos;
+    return str.find(substr) == 0;
 }
 
-bool SimpleString::starts_with(const SimpleString& other) const
+bool Strings::ends_with(const std::string& str, const std::string& substr)
 {
-    if (other.size() == 0)
-        return true;
-    else if (size() == 0)
-        return false;
-    else
-        return str_.find(other.str_) == 0;
+    return str.rfind(substr) == (str.size() - substr.size());
 }
 
-bool SimpleString::ends_with(const SimpleString& other) const
+bool Strings::contains(const std::string& str, const std::string& substr)
 {
-    size_t length = size();
-    size_t other_length = other.size();
-
-    if (other_length == 0)
-        return true;
-    if (length == 0)
-        return false;
-    if (length < other_length)
-        return false;
-
-    return std::strcmp(str_.c_str() + length - other_length, other.str_.c_str()) == 0;
+    return str.find(substr) != std::string::npos;
 }
 
-size_t SimpleString::count(const SimpleString& substr) const
+std::string Strings::replace(std::string& orig, const std::string& to, const std::string& with)
 {
-    size_t num = 0;
-    const char* str = str_.c_str();
-    const char* strpart = nullptr;
-    if (*str) {
-        strpart = StrStr(str, substr.str_.c_str());
-    }
-    while (*str && strpart) {
-        str = strpart;
-        str++;
-        num++;
-        strpart = StrStr(str, substr.str_.c_str());
-    }
-    return num;
-}
-
-void SimpleString::split(const SimpleString& delimiter, SimpleStringCollection& col) const
-{
-    size_t num = count(delimiter);
-    size_t extraEndToken = (ends_with(delimiter)) ? 0 : 1U;
-    col.allocate(num + extraEndToken);
-
-    const char* str = str_.c_str();
-    const char* prev;
-    for (size_t i = 0; i < num; ++i) {
-        prev = str;
-        str = StrStr(str, delimiter.str_.c_str()) + 1;
-        col[i] = SimpleString(prev).substr(0, size_t(str - prev));
-    }
-    if (extraEndToken) {
-        col[num] = str;
-    }
-}
-
-void SimpleString::replace(char to, char with)
-{
-    size_t s = size();
-    for (size_t i = 0; i < s; i++) {
-        if (str_.c_str()[i] == to)
-            str_[i] = with;
-    }
-}
-
-void SimpleString::replace(const char* to, const char* with)
-{
-    size_t c = count(to);
-    if (c == 0) {
-        return;
-    }
-    size_t len = size();
-    size_t tolen = std::strlen(to);
-    size_t withlen = std::strlen(with);
-
-    size_t newsize = len + (withlen * c) - (tolen * c) + 1;
-
-    if (newsize > 1) {
-        char* newbuf = (char*)PlatformSpecificMalloc(newsize);
-        for (size_t i = 0, j = 0; i < len;) {
-            if (std::strncmp(&str_.c_str()[i], to, tolen) == 0) {
-                std::strncpy(&newbuf[j], with, withlen + 1);
-                j += withlen;
-                i += tolen;
-            } else {
-                newbuf[j] = str_.c_str()[i];
-                j++;
-                i++;
-            }
-        }
-        newbuf[newsize - 1] = '\0';
-        str_ = newbuf;
-        PlatformSpecificFree(newbuf);
-    } else
-        str_.clear();
-}
-
-SimpleString SimpleString::lowerCase() const
-{
-    SimpleString str(*this);
-
-    size_t str_size = str.size();
-    for (size_t i = 0; i < str_size; i++)
-        str.str_[i] = std::tolower(str.str_.c_str()[i]);
-
-    return str;
+    return orig = std::regex_replace(orig, std::regex(to), with);
 }
 
 const char* SimpleString::c_str() const
@@ -227,14 +138,13 @@ bool operator!=(const SimpleString& left, const SimpleString& right)
 
 SimpleString SimpleString::operator+(const SimpleString& rhs) const
 {
-    SimpleString t(str_.c_str());
-    t += rhs.str_.c_str();
-    return t;
+    return str_ + rhs.str_;
 }
 
 SimpleString& SimpleString::operator+=(const SimpleString& rhs)
 {
-    return operator+=(rhs.str_.c_str());
+    str_ += rhs;
+    return *this;
 }
 
 SimpleString& SimpleString::operator+=(const char* rhs)
@@ -245,10 +155,15 @@ SimpleString& SimpleString::operator+=(const char* rhs)
 
 SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
 {
-    return SimpleString(str_.substr(beginPos, amount).c_str());
+    return str_.substr(beginPos, amount).c_str();
 }
 
 char SimpleString::operator[](size_t pos) const
+{
+    return str_[pos];
+}
+
+char& SimpleString::operator[](size_t pos)
 {
     return str_[pos];
 }
@@ -553,6 +468,27 @@ SimpleStringCollection::SimpleStringCollection()
     size_ = 0;
 }
 
+SimpleStringCollection::SimpleStringCollection(
+    const SimpleString& orig,
+    const SimpleString& delimiter)
+{
+    size_t num = count(orig, delimiter);
+    size_t extraEndToken = (Strings::ends_with(orig, delimiter)) ? 0 : 1U;
+    size_ = num + extraEndToken;
+    collection_ = new SimpleString[size_];
+
+    const char* str = orig.c_str();
+    const char* prev;
+    for (size_t i = 0; i < num; ++i) {
+        prev = str;
+        str = StrStr(str, delimiter.c_str()) + 1;
+        collection_[i] = SimpleString(prev).substr(0, size_t(str - prev));
+    }
+    if (extraEndToken) {
+        collection_[num] = str;
+    }
+}
+
 void SimpleStringCollection::allocate(size_t _size)
 {
     delete[] collection_;
@@ -579,4 +515,18 @@ SimpleString& SimpleStringCollection::operator[](size_t index)
     }
 
     return collection_[index];
+}
+
+SimpleStringCollection& SimpleStringCollection::operator=(SimpleStringCollection&& rhs)
+{
+    delete[] collection_;
+    collection_ = rhs.collection_;
+    rhs.collection_ = nullptr;
+
+    empty_ = rhs.empty_;
+
+    size_ = rhs.size_;
+    rhs.size_ = 0;
+
+    return *this;
 }

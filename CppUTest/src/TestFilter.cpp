@@ -78,7 +78,7 @@ bool TestFilter::match(const SimpleString& name) const
     if (strictMatching_)
         matches = name == filter_;
     else
-        matches = name.contains(filter_);
+        matches = Strings::contains(name, filter_);
 
     return invertMatching_ ? !matches : matches;
 }

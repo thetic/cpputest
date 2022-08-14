@@ -58,7 +58,7 @@ TEST_GROUP(TestResult)
 TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
 {
     res->testsEnded();
-    CHECK(mock->getOutput().contains("10 ms"));
+    CHECK(Strings::contains(mock->getOutput(), "10 ms"));
 }
 
 TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)

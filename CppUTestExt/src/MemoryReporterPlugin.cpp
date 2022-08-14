@@ -46,9 +46,9 @@ MemoryReporterPlugin::~MemoryReporterPlugin()
 
 bool MemoryReporterPlugin::parseArguments(int /* ac */, const char* const* av, int index)
 {
-    SimpleString argument(av[index]);
-    if (argument.contains("-pmemoryreport=")) {
-        argument.replace("-pmemoryreport=", "");
+    std::string argument(av[index]);
+    if (argument.find("-pmemoryreport") != std::string::npos) {
+        Strings::replace(argument, "-pmemoryreport", "");
 
         destroyMemoryFormatter(formatter_);
         formatter_ = createMemoryFormatter(argument);

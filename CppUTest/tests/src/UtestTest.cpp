@@ -267,7 +267,9 @@ TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
     fixture.assertPrintContains("Failed in separate process - killed by signal");
 
     /* Signal 11 usually happens, but with clang3.7 on Linux, it produced signal 4 */
-    CHECK(fixture.getOutput().contains("signal 11") || fixture.getOutput().contains("signal 4"));
+    CHECK(
+        Strings::contains(fixture.getOutput(), "signal 11")
+        || Strings::contains(fixture.getOutput(), "signal 4"));
 }
 
 #endif

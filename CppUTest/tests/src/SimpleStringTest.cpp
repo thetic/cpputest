@@ -106,14 +106,6 @@ TEST(SimpleString, Size)
     LONGS_EQUAL(6, s1.size());
 }
 
-TEST(SimpleString, lowerCase)
-{
-    SimpleString s1("AbCdEfG1234");
-    SimpleString s2(s1.lowerCase());
-    STRCMP_EQUAL("abcdefg1234", s2.c_str());
-    STRCMP_EQUAL("AbCdEfG1234", s1.c_str());
-}
-
 TEST(SimpleString, Addition)
 {
     SimpleString s1("hello!");
@@ -140,132 +132,6 @@ TEST(SimpleString, Concatenation)
     s4 += s4;
 
     CHECK_EQUAL(s5, s4);
-}
-
-TEST(SimpleString, Contains)
-{
-    SimpleString s("hello!");
-    SimpleString empty("");
-    SimpleString beginning("hello");
-    SimpleString end("lo!");
-    SimpleString mid("l");
-    SimpleString notPartOfString("xxxx");
-
-    CHECK(s.contains(empty));
-    CHECK(s.contains(beginning));
-    CHECK(s.contains(end));
-    CHECK(s.contains(mid));
-    CHECK(!s.contains(notPartOfString));
-
-    CHECK(empty.contains(empty));
-    CHECK(!empty.contains(s));
-}
-
-TEST(SimpleString, startsWith)
-{
-    SimpleString hi("Hi you!");
-    SimpleString part("Hi");
-    SimpleString diff("Hrrm Hi you! ffdsfd");
-    CHECK(hi.starts_with(part));
-    CHECK(!part.starts_with(hi));
-    CHECK(!diff.starts_with(hi));
-}
-
-TEST(SimpleString, split)
-{
-    SimpleString hi("hello\nworld\nhow\ndo\nyou\ndo\n\n");
-
-    SimpleStringCollection collection;
-    hi.split("\n", collection);
-
-    LONGS_EQUAL(7, collection.size());
-    STRCMP_EQUAL("hello\n", collection[0].c_str());
-    STRCMP_EQUAL("world\n", collection[1].c_str());
-    STRCMP_EQUAL("how\n", collection[2].c_str());
-    STRCMP_EQUAL("do\n", collection[3].c_str());
-    STRCMP_EQUAL("you\n", collection[4].c_str());
-    STRCMP_EQUAL("do\n", collection[5].c_str());
-    STRCMP_EQUAL("\n", collection[6].c_str());
-}
-
-TEST(SimpleString, splitNoTokenOnTheEnd)
-{
-    SimpleString string("Bah Yah oops");
-    SimpleStringCollection collection;
-
-    string.split(" ", collection);
-    LONGS_EQUAL(3, collection.size());
-    STRCMP_EQUAL("Bah ", collection[0].c_str());
-    STRCMP_EQUAL("Yah ", collection[1].c_str());
-    STRCMP_EQUAL("oops", collection[2].c_str());
-}
-
-TEST(SimpleString, count)
-{
-    SimpleString str("ha ha ha ha");
-    LONGS_EQUAL(4, str.count("ha"));
-}
-
-TEST(SimpleString, countTogether)
-{
-    SimpleString str("hahahaha");
-    LONGS_EQUAL(4, str.count("ha"));
-}
-
-TEST(SimpleString, countEmptyString)
-{
-    SimpleString str("hahahaha");
-    LONGS_EQUAL(8, str.count(""));
-}
-
-TEST(SimpleString, countEmptyStringInEmptyString)
-{
-    SimpleString str;
-    LONGS_EQUAL(0, str.count(""));
-}
-
-TEST(SimpleString, endsWith)
-{
-    SimpleString str("Hello World");
-    CHECK(str.ends_with("World"));
-    CHECK(!str.ends_with("Worl"));
-    CHECK(!str.ends_with("Hello"));
-    SimpleString str2("ah");
-    CHECK(str2.ends_with("ah"));
-    CHECK(!str2.ends_with("baah"));
-    SimpleString str3("");
-    CHECK(!str3.ends_with("baah"));
-
-    SimpleString str4("ha ha ha ha");
-    CHECK(str4.ends_with("ha"));
-}
-
-TEST(SimpleString, replaceCharWithChar)
-{
-    SimpleString str("abcabcabca");
-    str.replace('a', 'b');
-    STRCMP_EQUAL("bbcbbcbbcb", str.c_str());
-}
-
-TEST(SimpleString, replaceEmptyStringWithEmptyString)
-{
-    SimpleString str;
-    str.replace("", "");
-    STRCMP_EQUAL("", str.c_str());
-}
-
-TEST(SimpleString, replaceWholeString)
-{
-    SimpleString str("boo");
-    str.replace("boo", "");
-    STRCMP_EQUAL("", str.c_str());
-}
-
-TEST(SimpleString, replaceStringWithString)
-{
-    SimpleString str("boo baa boo baa boo");
-    str.replace("boo", "boohoo");
-    STRCMP_EQUAL("boohoo baa boohoo baa boohoo", str.c_str());
 }
 
 TEST(SimpleString, subStringFromEmptyString)
@@ -309,7 +175,7 @@ TEST(SimpleString, findNormal)
     SimpleString str("Hello World");
     LONGS_EQUAL(0, str.find('H'));
     LONGS_EQUAL(1, str.find('e'));
-    LONGS_EQUAL(SimpleString::npos, str.find('!'));
+    LONGS_EQUAL(std::string::npos, str.find('!'));
 }
 
 TEST(SimpleString, at)
@@ -472,13 +338,6 @@ TEST(SimpleString, StringFromFormatpointer)
         FAIL("Off %p behavior");
 }
 
-TEST(SimpleString, StringFromFormatLarge)
-{
-    const char* s = "ThisIsAPrettyLargeStringAndIfWeAddThisManyTimesToABufferItWillbeFull";
-    SimpleString h1 = StringFromFormat("%s%s%s%s%s%s%s%s%s%s", s, s, s, s, s, s, s, s, s, s);
-    LONGS_EQUAL(10, h1.count(s));
-}
-
 TEST(SimpleString, StringFromConstSimpleString)
 {
     STRCMP_EQUAL("bla", StringFrom(SimpleString("bla")).c_str());
@@ -625,23 +484,6 @@ TEST(SimpleString, unsigned_long)
     SimpleString result = StringFrom(i);
     const char* expected_string = "4294967295";
     CHECK_EQUAL(expected_string, result);
-}
-
-TEST(SimpleString, AtoU)
-{
-    char max_short_str[] = "65535";
-    CHECK(12345 == SimpleString::AtoU("012345"));
-    CHECK(6789 == SimpleString::AtoU("6789"));
-    CHECK(12345 == SimpleString::AtoU("12345/"));
-    CHECK(12345 == SimpleString::AtoU("12345:"));
-    CHECK(123 == SimpleString::AtoU("\t \r\n123"));
-    CHECK(123 == SimpleString::AtoU("123-foo"));
-    CHECK(65535 == SimpleString::AtoU(max_short_str));
-    CHECK(0 == SimpleString::AtoU("foo"));
-    CHECK(0 == SimpleString::AtoU("-foo"));
-    CHECK(0 == SimpleString::AtoU("+1"));
-    CHECK(0 == SimpleString::AtoU("-1"));
-    CHECK(0 == SimpleString::AtoU("0"));
 }
 
 TEST(SimpleString, Binary)

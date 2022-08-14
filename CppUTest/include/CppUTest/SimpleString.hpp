@@ -32,8 +32,6 @@
 #include <cstddef>
 #include <string>
 
-class SimpleStringCollection;
-
 class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
     friend bool operator!=(const SimpleString& left, const SimpleString& right);
@@ -44,48 +42,48 @@ public:
     SimpleString(const SimpleString& other);
     ~SimpleString() = default;
 
+    SimpleString(const std::string& other)
+        : str_(other)
+    {
+    }
+    operator std::string() { return str_; }
+    operator const std::string&() const { return str_; }
+
     SimpleString& operator=(const SimpleString& other);
     SimpleString operator+(const SimpleString&) const;
     SimpleString& operator+=(const SimpleString&);
     SimpleString& operator+=(const char*);
 
-    static const size_t npos = std::string::npos;
-
     char operator[](size_t pos) const;
+    char& operator[](size_t pos);
     size_t find(char ch, size_t starting_position = 0) const;
-    bool contains(const SimpleString& other) const;
-    bool starts_with(const SimpleString& other) const;
-    bool ends_with(const SimpleString& other) const;
-    void split(const SimpleString& split, SimpleStringCollection& outCollection) const;
-
-    size_t count(const SimpleString& str) const;
-
-    void replace(char to, char with);
-    void replace(const char* to, const char* with);
-
-    SimpleString lowerCase() const;
-    SimpleString substr(size_t beginPos, size_t amount = npos) const;
-
+    SimpleString substr(size_t beginPos, size_t amount = std::string::npos) const;
     const char* c_str() const;
     size_t size() const;
     bool empty() const;
 
-    static unsigned AtoU(const char* str);
-
 private:
     std::string str_ = "";
-    static const char* StrStr(const char* s1, const char* s2);
 };
+
+namespace Strings {
+std::string replace(std::string& orig, const std::string& to, const std::string& with);
+bool starts_with(const std::string& str, const std::string& substr);
+bool ends_with(const std::string& str, const std::string& substr);
+bool contains(const std::string& str, const std::string& substr);
+}
 
 class SimpleStringCollection {
 public:
     SimpleStringCollection();
+    SimpleStringCollection(const SimpleString& orig, const SimpleString& delimiter);
     ~SimpleStringCollection();
 
     void allocate(size_t size);
 
     size_t size() const;
     SimpleString& operator[](size_t index);
+    SimpleStringCollection& operator=(SimpleStringCollection&& rhs);
 
 private:
     SimpleString* collection_;

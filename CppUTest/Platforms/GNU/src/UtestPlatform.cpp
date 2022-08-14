@@ -81,7 +81,7 @@ static void SetTestFailureByStatusCode(UtestShell* shell, TestResult* result, in
     if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
         result->addFailure(TestFailure(shell, "Failed in separate process"));
     } else if (WIFSIGNALED(status)) {
-        SimpleString message("Failed in separate process - killed by signal ");
+        std::string message("Failed in separate process - killed by signal ");
         message += StringFrom(WTERMSIG(status));
         result->addFailure(TestFailure(shell, message));
     } else if (WIFSTOPPED(status)) {
