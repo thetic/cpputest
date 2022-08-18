@@ -43,7 +43,6 @@
 #include <string>
 
 class SimpleStringCollection;
-class TestMemoryAllocator;
 
 class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
@@ -92,9 +91,6 @@ public:
 
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
-    static TestMemoryAllocator* getStringAllocator();
-    static void setStringAllocator(TestMemoryAllocator* allocator);
-
     static int AtoI(const char* str);
     static unsigned AtoU(const char* str);
     static int StrCmp(const char* s1, const char* s2);
@@ -120,8 +116,6 @@ private:
 
     char* buffer_ = nullptr;
     size_t bufferSize_ = 0;
-
-    static TestMemoryAllocator* stringAllocator_;
 
     char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
@@ -151,39 +145,6 @@ private:
 
     void operator=(SimpleStringCollection&);
     SimpleStringCollection(SimpleStringCollection&);
-};
-
-class GlobalSimpleStringAllocatorStash {
-public:
-    GlobalSimpleStringAllocatorStash();
-    void save();
-    void restore();
-
-private:
-    TestMemoryAllocator* originalAllocator_;
-};
-
-class MemoryAccountant;
-class AccountingTestMemoryAllocator;
-
-class GlobalSimpleStringMemoryAccountant {
-public:
-    GlobalSimpleStringMemoryAccountant();
-    ~GlobalSimpleStringMemoryAccountant();
-
-    void useCacheSizes(size_t cacheSizes[], size_t length);
-
-    void start();
-    void stop();
-    SimpleString report();
-
-    AccountingTestMemoryAllocator* getAllocator();
-
-private:
-    void restoreAllocator();
-
-    AccountingTestMemoryAllocator* allocator_;
-    MemoryAccountant* accountant_;
 };
 
 SimpleString StringFrom(bool value);

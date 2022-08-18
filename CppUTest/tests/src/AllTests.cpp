@@ -26,13 +26,10 @@
  */
 
 #include "CppUTest/CommandLineTestRunner.hpp"
-#include "CppUTest/SimpleStringInternalCache.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
 
 int main(int ac, char** av)
 {
-    GlobalSimpleStringCache stringCache;
-
     /* These checks are here to make sure assertions outside test runs don't crash */
     CHECK(true);
     LONGS_EQUAL(1, 1);

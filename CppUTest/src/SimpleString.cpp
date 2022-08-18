@@ -34,100 +34,15 @@
 #include <climits>
 #include <string>
 
-GlobalSimpleStringAllocatorStash::GlobalSimpleStringAllocatorStash()
-    : originalAllocator_(nullptr)
-{
-}
-
-void GlobalSimpleStringAllocatorStash::save()
-{
-    originalAllocator_ = SimpleString::getStringAllocator();
-}
-
-void GlobalSimpleStringAllocatorStash::restore()
-{
-    SimpleString::setStringAllocator(originalAllocator_);
-}
-
-GlobalSimpleStringMemoryAccountant::GlobalSimpleStringMemoryAccountant()
-    : allocator_(nullptr)
-{
-    accountant_ = new MemoryAccountant();
-}
-
-GlobalSimpleStringMemoryAccountant::~GlobalSimpleStringMemoryAccountant()
-{
-    restoreAllocator();
-
-    delete accountant_;
-    delete allocator_;
-}
-
-void GlobalSimpleStringMemoryAccountant::restoreAllocator()
-{
-    if (SimpleString::getStringAllocator() == allocator_)
-        SimpleString::setStringAllocator(allocator_->originalAllocator());
-}
-
-void GlobalSimpleStringMemoryAccountant::useCacheSizes(size_t cacheSizes[], size_t length)
-{
-    accountant_->useCacheSizes(cacheSizes, length);
-}
-
-void GlobalSimpleStringMemoryAccountant::start()
-{
-    if (allocator_ != nullptr)
-        return;
-
-    allocator_ = new AccountingTestMemoryAllocator(*accountant_, SimpleString::getStringAllocator());
-
-    SimpleString::setStringAllocator(allocator_);
-}
-
-void GlobalSimpleStringMemoryAccountant::stop()
-{
-    if (allocator_ == nullptr)
-        FAIL("Global SimpleString allocator stopped without starting");
-
-    if (SimpleString::getStringAllocator() != allocator_)
-        FAIL("GlobalStrimpleStringMemoryAccountant: allocator has changed between start and stop!");
-
-    restoreAllocator();
-}
-
-SimpleString GlobalSimpleStringMemoryAccountant::report()
-{
-    return accountant_->report();
-}
-
-AccountingTestMemoryAllocator* GlobalSimpleStringMemoryAccountant::getAllocator()
-{
-    return allocator_;
-}
-
-TestMemoryAllocator* SimpleString::stringAllocator_ = nullptr;
-
-TestMemoryAllocator* SimpleString::getStringAllocator()
-{
-    if (stringAllocator_ == nullptr)
-        return defaultNewArrayAllocator();
-    return stringAllocator_;
-}
-
-void SimpleString::setStringAllocator(TestMemoryAllocator* allocator)
-{
-    stringAllocator_ = allocator;
-}
-
 /* Avoid using the memory leak detector INSIDE SimpleString as its used inside the detector */
-char* SimpleString::allocStringBuffer(size_t _size, const char* file, size_t line)
+char* SimpleString::allocStringBuffer(size_t size, const char*, size_t)
 {
-    return getStringAllocator()->alloc_memory(_size, file, line);
+    return (char*)PlatformSpecificMalloc(size);
 }
 
-void SimpleString::deallocStringBuffer(char* str, size_t size, const char* file, size_t line)
+void SimpleString::deallocStringBuffer(char* str, size_t, const char*, size_t)
 {
-    getStringAllocator()->free_memory(str, size, file, line);
+    PlatformSpecificFree(str);
 }
 
 char* SimpleString::getEmptyString() const

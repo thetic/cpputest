@@ -17,7 +17,6 @@ add_executable(CppUTestTests
     src/PreprocessorTest.cpp
     src/SetPluginTest.cpp
     src/SimpleMutexTest.cpp
-    src/SimpleStringCacheTest.cpp
     src/SimpleStringTest.cpp
     src/TeamCityOutputTest.cpp
     src/TestFailureNaNTest.cpp
