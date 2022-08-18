@@ -66,7 +66,7 @@ public:
     bool contains(const SimpleString& other) const;
     bool containsNoCase(const SimpleString& other) const;
     bool starts_with(const SimpleString& other) const;
-    bool endsWith(const SimpleString& other) const;
+    bool ends_with(const SimpleString& other) const;
     void split(const SimpleString& split,
         SimpleStringCollection& outCollection) const;
     bool equalsNoCase(const SimpleString& str) const;

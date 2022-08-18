@@ -261,17 +261,17 @@ TEST(SimpleString, countEmptyStringInEmptyString)
 TEST(SimpleString, endsWith)
 {
     SimpleString str("Hello World");
-    CHECK(str.endsWith("World"));
-    CHECK(!str.endsWith("Worl"));
-    CHECK(!str.endsWith("Hello"));
+    CHECK(str.ends_with("World"));
+    CHECK(!str.ends_with("Worl"));
+    CHECK(!str.ends_with("Hello"));
     SimpleString str2("ah");
-    CHECK(str2.endsWith("ah"));
-    CHECK(!str2.endsWith("baah"));
+    CHECK(str2.ends_with("ah"));
+    CHECK(!str2.ends_with("baah"));
     SimpleString str3("");
-    CHECK(!str3.endsWith("baah"));
+    CHECK(!str3.ends_with("baah"));
 
     SimpleString str4("ha ha ha ha");
-    CHECK(str4.endsWith("ha"));
+    CHECK(str4.ends_with("ha"));
 }
 
 TEST(SimpleString, replaceCharWithChar)
