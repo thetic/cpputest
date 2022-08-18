@@ -257,7 +257,7 @@ void SimpleString::replace(const char* to, const char* with)
         setInternalBufferAsEmptyString();
 }
 
-SimpleString SimpleString::printable() const
+SimpleString SimpleString::printable(const SimpleString& string)
 {
     static const char* shortEscapeCodes[] = {
         "\\a",
@@ -270,12 +270,12 @@ SimpleString SimpleString::printable() const
     };
 
     SimpleString result;
-    result.setInternalBufferToNewBuffer(getPrintableSize() + 1);
+    result.setInternalBufferToNewBuffer(string.getPrintableSize() + 1);
 
-    size_t str_size = size();
+    size_t str_size = string.size();
     size_t j = 0;
     for (size_t i = 0; i < str_size; i++) {
-        char c = buffer_[i];
+        char c = string[i];
         if (isControlWithShortEscapeSequence(c)) {
             std::strncpy(&result.buffer_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
             j += 2;
@@ -469,7 +469,7 @@ SimpleString StringFromOrNull(const char* expected)
 
 SimpleString PrintableStringFromOrNull(const char* expected)
 {
-    return (expected) ? StringFrom(expected).printable() : StringFrom("(null)");
+    return (expected) ? SimpleString::printable(expected) : StringFrom("(null)");
 }
 
 SimpleString StringFrom(int value)

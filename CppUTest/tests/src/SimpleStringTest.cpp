@@ -117,7 +117,7 @@ TEST(SimpleString, printable)
 {
     SimpleString s1("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
                     "abc");
-    SimpleString s2(s1.printable());
+    SimpleString s2 = SimpleString::printable(s1);
     STRCMP_EQUAL("ABC\\x01\\x06\\a\\n\\r\\b\\t\\v\\f\\x0E\\x1F\\x7Fabc", s2.c_str());
     STRCMP_EQUAL("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
                  "abc",

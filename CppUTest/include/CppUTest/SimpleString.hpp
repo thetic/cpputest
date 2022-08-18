@@ -74,13 +74,12 @@ public:
     SimpleString subStringFromTill(char startChar, char lastExcludedChar) const;
     void copyToBuffer(char* buffer, size_t bufferSize) const;
 
-    SimpleString printable() const;
-
     const char* c_str() const;
     const char* data() const;
     size_t size() const;
     bool empty() const;
 
+    static SimpleString printable(const SimpleString&);
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
     static SimpleString lowerCase(const SimpleString&);
