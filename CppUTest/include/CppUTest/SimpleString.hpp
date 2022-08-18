@@ -83,7 +83,6 @@ public:
 
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
-    static int AtoI(const char* str);
     static unsigned AtoU(const char* str);
     static int StrCmp(const char* s1, const char* s2);
     static size_t StrLen(const char*);

@@ -849,23 +849,6 @@ TEST(SimpleString, StrStr)
     CHECK(SimpleString::StrStr(foo, foo) == foo);
 }
 
-TEST(SimpleString, AtoI)
-{
-    char max_short_str[] = "32767";
-    char min_short_str[] = "-32768";
-
-    CHECK(12345 == SimpleString::AtoI("012345"));
-    CHECK(6789 == SimpleString::AtoI("6789"));
-    CHECK(12345 == SimpleString::AtoI("12345/"));
-    CHECK(12345 == SimpleString::AtoI("12345:"));
-    CHECK(-12345 == SimpleString::AtoI("-12345"));
-    CHECK(123 == SimpleString::AtoI("\t \r\n123"));
-    CHECK(123 == SimpleString::AtoI("123-foo"));
-    CHECK(0 == SimpleString::AtoI("-foo"));
-    CHECK(-32768 == SimpleString::AtoI(min_short_str));
-    CHECK(32767 == SimpleString::AtoI(max_short_str));
-}
-
 TEST(SimpleString, AtoU)
 {
     char max_short_str[] = "65535";

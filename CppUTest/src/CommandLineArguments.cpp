@@ -300,9 +300,9 @@ void CommandLineArguments::setRepeatCount(int ac, const char* const* av, int& i)
 
     SimpleString repeatParameter(av[i]);
     if (repeatParameter.size() > 2)
-        repeat_ = (size_t)(SimpleString::AtoI(av[i] + 2));
+        repeat_ = (size_t)(std::atoi(av[i] + 2));
     else if (i + 1 < ac) {
-        repeat_ = (size_t)(SimpleString::AtoI(av[i + 1]));
+        repeat_ = (size_t)(std::atoi(av[i + 1]));
         if (repeat_ != 0)
             i++;
     }
