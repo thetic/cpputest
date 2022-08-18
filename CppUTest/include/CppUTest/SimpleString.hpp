@@ -84,7 +84,6 @@ public:
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
     static unsigned AtoU(const char* str);
-    static int StrNCmp(const char* s1, const char* s2, size_t n);
     static char* StrNCpy(char* s1, const char* s2, size_t n);
     static const char* StrStr(const char* s1, const char* s2);
     static char ToLower(char ch);

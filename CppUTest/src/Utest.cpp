@@ -454,7 +454,7 @@ void UtestShell::assertCstrNEqual(const char* expected, const char* actual, size
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-    if (SimpleString::StrNCmp(expected, actual, length) != 0)
+    if (std::strncmp(expected, actual, length) != 0)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
 }
 

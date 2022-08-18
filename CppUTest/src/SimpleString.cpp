@@ -69,16 +69,6 @@ unsigned SimpleString::AtoU(const char* str)
     return result;
 }
 
-int SimpleString::StrNCmp(const char* s1, const char* s2, size_t n)
-{
-    while (n && *s1 && *s1 == *s2) {
-        --n;
-        ++s1;
-        ++s2;
-    }
-    return n ? *(const unsigned char*)s1 - *(const unsigned char*)s2 : 0;
-}
-
 char* SimpleString::StrNCpy(char* s1, const char* s2, size_t n)
 {
     char* result = s1;
@@ -98,7 +88,7 @@ const char* SimpleString::StrStr(const char* s1, const char* s2)
     if (!*s2)
         return s1;
     for (; *s1; s1++)
-        if (StrNCmp(s1, s2, std::strlen(s2)) == 0)
+        if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
             return s1;
     return nullptr;
 }
@@ -284,7 +274,7 @@ void SimpleString::replace(const char* to, const char* with)
     if (newsize > 1) {
         char* newbuf = allocStringBuffer(newsize, __FILE__, __LINE__);
         for (size_t i = 0, j = 0; i < len;) {
-            if (StrNCmp(&getBuffer()[i], to, tolen) == 0) {
+            if (std::strncmp(&getBuffer()[i], to, tolen) == 0) {
                 StrNCpy(&newbuf[j], with, withlen + 1);
                 j += withlen;
                 i += tolen;
