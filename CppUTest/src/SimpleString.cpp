@@ -431,7 +431,7 @@ size_t SimpleString::size() const
     return StrLen(getBuffer());
 }
 
-bool SimpleString::isEmpty() const
+bool SimpleString::empty() const
 {
     return size() == 0;
 }

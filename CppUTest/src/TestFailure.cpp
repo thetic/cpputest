@@ -155,7 +155,7 @@ SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual
 SimpleString TestFailure::createUserText(const SimpleString& text)
 {
     SimpleString userMessage = "";
-    if (!text.isEmpty()) {
+    if (!text.empty()) {
         // This is a kludge to turn off "Message: " for this case.
         // I don't think "Message: " adds anything, as you get to see the
         // message. I propose we remove "Message: " lead in

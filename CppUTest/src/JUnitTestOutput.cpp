@@ -157,7 +157,7 @@ void JUnitTestOutput::printCurrentTestStarted(const UtestShell& test)
 SimpleString JUnitTestOutput::createFileName(const SimpleString& group)
 {
     SimpleString fileName = "cpputest_";
-    if (!impl_->package_.isEmpty()) {
+    if (!impl_->package_.empty()) {
         fileName += impl_->package_;
         fileName += "_";
     }
@@ -228,7 +228,7 @@ void JUnitTestOutput::writeTestCases()
         SimpleString buf = StringFromFormat(
             "<testcase classname=\"%s%s%s\" name=\"%s\" assertions=\"%d\" time=\"%d.%03d\" file=\"%s\" line=\"%d\">\n",
             impl_->package_.c_str(),
-            impl_->package_.isEmpty() ? "" : ".",
+            impl_->package_.empty() ? "" : ".",
             impl_->results_.group_.c_str(),
             cur->name_.c_str(),
             (int)(cur->checkCount_ - impl_->results_.totalCheckCount_),

@@ -556,7 +556,7 @@ const char* MockCheckedActualCall::returnStringValue()
 
 bool MockCheckedActualCall::hasReturnValue()
 {
-    return !returnValue().getName().isEmpty();
+    return !returnValue().getName().empty();
 }
 
 MockActualCall& MockCheckedActualCall::onObject(const void* objectPtr)

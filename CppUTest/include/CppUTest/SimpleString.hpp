@@ -86,7 +86,7 @@ public:
 
     const char* c_str() const;
     size_t size() const;
-    bool isEmpty() const;
+    bool empty() const;
 
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
