@@ -61,7 +61,7 @@ public:
     {
         SimpleString buffer;
         buffer = StringFromFormat("%ld", value);
-        savedOutput.append(buffer.asCharString());
+        savedOutput.append(buffer.c_str());
     }
 
     std::string getOutput() const

@@ -72,17 +72,17 @@ void TestOutput::print(const char* str)
 
 void TestOutput::print(long n)
 {
-    print(StringFrom(n).asCharString());
+    print(StringFrom(n).c_str());
 }
 
 void TestOutput::print(size_t n)
 {
-    print(StringFrom(n).asCharString());
+    print(StringFrom(n).c_str());
 }
 
 void TestOutput::printDouble(double d)
 {
-    print(StringFrom(d).asCharString());
+    print(StringFrom(d).c_str());
 }
 
 TestOutput& operator<<(TestOutput& p, const char* s)
@@ -100,7 +100,7 @@ TestOutput& operator<<(TestOutput& p, long int i)
 void TestOutput::printCurrentTestStarted(const UtestShell& test)
 {
     if (verbose_ > level_quiet)
-        print(test.getFormattedName().asCharString());
+        print(test.getFormattedName().c_str());
 
     if (test.willRun()) {
         setProgressIndicator(".");
@@ -227,14 +227,14 @@ void TestOutput::printFileAndLineForFailure(const TestFailure& failure)
 void TestOutput::printFailureInTest(SimpleString testName)
 {
     print(" Failure in ");
-    print(testName.asCharString());
+    print(testName.c_str());
 }
 
 void TestOutput::printFailureMessage(SimpleString reason)
 {
     print("\n");
     print("\t");
-    print(reason.asCharString());
+    print(reason.c_str());
     print("\n\n");
 }
 
@@ -249,7 +249,7 @@ void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(SimpleStri
 void TestOutput::printEclipseErrorInFileOnLine(SimpleString file, size_t lineNumber)
 {
     print("\n");
-    print(file.asCharString());
+    print(file.c_str());
     print(":");
     print(lineNumber);
     print(":");
@@ -259,7 +259,7 @@ void TestOutput::printEclipseErrorInFileOnLine(SimpleString file, size_t lineNum
 void TestOutput::printVisualStudioErrorInFileOnLine(SimpleString file, size_t lineNumber)
 {
     print("\n");
-    print(file.asCharString());
+    print(file.c_str());
     print("(");
     print(lineNumber);
     print("):");

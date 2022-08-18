@@ -184,7 +184,7 @@ SimpleString MockNamedValue::getType() const
 
 bool MockNamedValue::getBoolValue() const
 {
-    STRCMP_EQUAL("bool", type_.asCharString());
+    STRCMP_EQUAL("bool", type_.c_str());
     return value_.boolValue_;
 }
 
@@ -193,14 +193,14 @@ unsigned int MockNamedValue::getUnsignedIntValue() const
     if (type_ == "int" && value_.intValue_ >= 0)
         return (unsigned int)value_.intValue_;
     else {
-        STRCMP_EQUAL("unsigned int", type_.asCharString());
+        STRCMP_EQUAL("unsigned int", type_.c_str());
         return value_.unsignedIntValue_;
     }
 }
 
 int MockNamedValue::getIntValue() const
 {
-    STRCMP_EQUAL("int", type_.asCharString());
+    STRCMP_EQUAL("int", type_.c_str());
     return value_.intValue_;
 }
 
@@ -211,7 +211,7 @@ long int MockNamedValue::getLongIntValue() const
     else if (type_ == "unsigned int")
         return (long int)value_.unsignedIntValue_;
     else {
-        STRCMP_EQUAL("long int", type_.asCharString());
+        STRCMP_EQUAL("long int", type_.c_str());
         return value_.longIntValue_;
     }
 }
@@ -225,7 +225,7 @@ unsigned long int MockNamedValue::getUnsignedLongIntValue() const
     else if (type_ == "long int" && value_.longIntValue_ >= 0)
         return (unsigned long int)value_.longIntValue_;
     else {
-        STRCMP_EQUAL("unsigned long int", type_.asCharString());
+        STRCMP_EQUAL("unsigned long int", type_.c_str());
         return value_.unsignedLongIntValue_;
     }
 }
@@ -241,7 +241,7 @@ long long MockNamedValue::getLongLongIntValue() const
     else if (type_ == "unsigned long int")
         return (long long int)value_.unsignedLongIntValue_;
     else {
-        STRCMP_EQUAL("long long int", type_.asCharString());
+        STRCMP_EQUAL("long long int", type_.c_str());
         return value_.longLongIntValue_;
     }
 }
@@ -259,50 +259,50 @@ unsigned long long MockNamedValue::getUnsignedLongLongIntValue() const
     else if (type_ == "long long int" && value_.longLongIntValue_ >= 0)
         return (unsigned long long int)value_.longLongIntValue_;
     else {
-        STRCMP_EQUAL("unsigned long long int", type_.asCharString());
+        STRCMP_EQUAL("unsigned long long int", type_.c_str());
         return value_.unsignedLongLongIntValue_;
     }
 }
 
 double MockNamedValue::getDoubleValue() const
 {
-    STRCMP_EQUAL("double", type_.asCharString());
+    STRCMP_EQUAL("double", type_.c_str());
     return value_.doubleValue_.value;
 }
 
 double MockNamedValue::getDoubleTolerance() const
 {
-    STRCMP_EQUAL("double", type_.asCharString());
+    STRCMP_EQUAL("double", type_.c_str());
     return value_.doubleValue_.tolerance;
 }
 
 const char* MockNamedValue::getStringValue() const
 {
-    STRCMP_EQUAL("const char*", type_.asCharString());
+    STRCMP_EQUAL("const char*", type_.c_str());
     return value_.stringValue_;
 }
 
 void* MockNamedValue::getPointerValue() const
 {
-    STRCMP_EQUAL("void*", type_.asCharString());
+    STRCMP_EQUAL("void*", type_.c_str());
     return value_.pointerValue_;
 }
 
 const void* MockNamedValue::getConstPointerValue() const
 {
-    STRCMP_EQUAL("const void*", type_.asCharString());
+    STRCMP_EQUAL("const void*", type_.c_str());
     return value_.pointerValue_;
 }
 
 void (*MockNamedValue::getFunctionPointerValue() const)()
 {
-    STRCMP_EQUAL("void (*)()", type_.asCharString());
+    STRCMP_EQUAL("void (*)()", type_.c_str());
     return value_.functionPointerValue_;
 }
 
 const unsigned char* MockNamedValue::getMemoryBuffer() const
 {
-    STRCMP_EQUAL("const unsigned char*", type_.asCharString());
+    STRCMP_EQUAL("const unsigned char*", type_.c_str());
     return value_.memoryBufferValue_;
 }
 
@@ -477,7 +477,7 @@ SimpleString MockNamedValue::toString() const
     if (comparator_)
         return comparator_->valueToString(value_.constObjectPointerValue_);
 
-    return StringFromFormat("No comparator found for type: \"%s\"", type_.asCharString());
+    return StringFromFormat("No comparator found for type: \"%s\"", type_.c_str());
 }
 
 void MockNamedValueListNode::setNext(MockNamedValueListNode* node)

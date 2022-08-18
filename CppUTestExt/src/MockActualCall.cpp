@@ -900,7 +900,7 @@ void MockActualCallTrace::clear()
 
 const char* MockActualCallTrace::getTraceOutput()
 {
-    return traceBuffer_.asCharString();
+    return traceBuffer_.c_str();
 }
 
 MockActualCallTrace* MockActualCallTrace::instance_ = nullptr;

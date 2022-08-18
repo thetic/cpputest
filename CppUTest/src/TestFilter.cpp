@@ -95,7 +95,7 @@ bool TestFilter::operator!=(const TestFilter& filter) const
 
 SimpleString TestFilter::asString() const
 {
-    SimpleString textFilter = StringFromFormat("TestFilter: \"%s\"", filter_.asCharString());
+    SimpleString textFilter = StringFromFormat("TestFilter: \"%s\"", filter_.c_str());
     if (strictMatching_ && invertMatching_)
         textFilter += " with strict, invert matching";
     else if (strictMatching_)

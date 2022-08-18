@@ -95,7 +95,7 @@ class MemoryReporterPluginUnderTest : public MemoryReporterPlugin {
 public:
     MemoryReportFormatter* createMemoryFormatter(const SimpleString& type) override
     {
-        mock("reporter").actualCall("createMemoryFormatter").onObject(this).withParameter("type", type.asCharString());
+        mock("reporter").actualCall("createMemoryFormatter").onObject(this).withParameter("type", type.c_str());
         return new MockMemoryReportFormatter;
     }
 };

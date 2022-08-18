@@ -132,7 +132,7 @@ bool TestFailure::isInHelperFunction() const
 
 SimpleString TestFailure::createButWasString(const SimpleString& expected, const SimpleString& actual)
 {
-    return StringFromFormat("expected <%s>\n\tbut was  <%s>", expected.asCharString(), actual.asCharString());
+    return StringFromFormat("expected <%s>\n\tbut was  <%s>", expected.c_str(), actual.c_str());
 }
 
 SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual, size_t offset, size_t reportedPosition)
@@ -146,9 +146,9 @@ SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual
     SimpleString differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
 
     result += "\n";
-    result += StringFromFormat("\t%s%s>\n", differentString.asCharString(), actualString.substr(offset, extraCharactersWindow).asCharString());
+    result += StringFromFormat("\t%s%s>\n", differentString.c_str(), actualString.substr(offset, extraCharactersWindow).c_str());
 
-    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).asCharString());
+    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).c_str());
     return result;
 }
 
@@ -202,8 +202,8 @@ CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, siz
 {
     message_ = createUserText(text);
 
-    SimpleString printableExpected = PrintableStringFromOrNull(expected.asCharString());
-    SimpleString printableActual = PrintableStringFromOrNull(actual.asCharString());
+    SimpleString printableExpected = PrintableStringFromOrNull(expected.c_str());
+    SimpleString printableActual = PrintableStringFromOrNull(actual.c_str());
 
     message_ += createButWasString(printableExpected, printableActual);
 
@@ -231,7 +231,7 @@ ContainsFailure::ContainsFailure(UtestShell* test, const char* fileName, size_t 
 {
     message_ = createUserText(text);
 
-    message_ += StringFromFormat("actual <%s>\n\tdid not contain  <%s>", actual.asCharString(), expected.asCharString());
+    message_ += StringFromFormat("actual <%s>\n\tdid not contain  <%s>", actual.c_str(), expected.c_str());
 }
 
 CheckFailure::CheckFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& checkString, const SimpleString& conditionString, const SimpleString& text)
@@ -401,7 +401,7 @@ FeatureUnsupportedFailure::FeatureUnsupportedFailure(UtestShell* test, const cha
 {
     message_ = createUserText(text);
 
-    message_ += StringFromFormat("The feature \"%s\" is not supported in this environment or with the feature set selected when building the library.", featureName.asCharString());
+    message_ += StringFromFormat("The feature \"%s\" is not supported in this environment or with the feature set selected when building the library.", featureName.c_str());
 }
 
 #if !CPPUTEST_NO_EXCEPTIONS
@@ -427,7 +427,7 @@ static SimpleString getExceptionTypeName(const std::exception& e)
 }
 
 UnexpectedExceptionFailure::UnexpectedExceptionFailure(UtestShell* test, const std::exception& e)
-    : TestFailure(test, StringFromFormat("Unexpected exception of type '%s' was thrown: %s", getExceptionTypeName(e).asCharString(), e.what()))
+    : TestFailure(test, StringFromFormat("Unexpected exception of type '%s' was thrown: %s", getExceptionTypeName(e).c_str(), e.what()))
 {
 }
 #endif

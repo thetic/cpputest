@@ -268,7 +268,7 @@ TEST(TestMemoryAccountant, countMaximumAllocationsAtATime)
 
 TEST(TestMemoryAccountant, reportNoAllocations)
 {
-    STRCMP_EQUAL("CppUTest Memory Accountant has not noticed any allocations or deallocations. Sorry\n", accountant.report().asCharString());
+    STRCMP_EQUAL("CppUTest Memory Accountant has not noticed any allocations or deallocations. Sorry\n", accountant.report().c_str());
 }
 
 TEST(TestMemoryAccountant, reportAllocations)
@@ -285,7 +285,7 @@ TEST(TestMemoryAccountant, reportAllocations)
                  "    4                   2                1                 1\n"
                  "    8                   0                3                 0\n"
                  "   Thank you for your business\n",
-        accountant.report().asCharString());
+        accountant.report().c_str());
 }
 
 TEST(TestMemoryAccountant, reportAllocationsWithSizeZero)
@@ -301,7 +301,7 @@ TEST(TestMemoryAccountant, reportAllocationsWithSizeZero)
                  "other                   0                1                 0\n"
                  "    4                   1                2                 1\n"
                  "   Thank you for your business\n",
-        accountant.report().asCharString());
+        accountant.report().c_str());
 }
 
 static void failUseCacheSizesAfterAllocation_(MemoryAccountant* accountant)
@@ -332,7 +332,7 @@ TEST(TestMemoryAccountant, reportWithCacheSizesEmpty)
                  "Cache size          # allocations    # deallocations   max # allocations at one time\n"
                  "other                   1                0                 1\n"
                  "   Thank you for your business\n",
-        accountant.report().asCharString());
+        accountant.report().c_str());
 }
 
 TEST(TestMemoryAccountant, reportWithCacheSizes)
@@ -352,7 +352,7 @@ TEST(TestMemoryAccountant, reportWithCacheSizes)
                  "    4                   2                1                 1\n"
                  "other                   0                3                 0\n"
                  "   Thank you for your business\n",
-        accountant.report().asCharString());
+        accountant.report().c_str());
 }
 
 TEST(TestMemoryAccountant, reportWithCacheSizesMultipleCaches)
@@ -374,7 +374,7 @@ TEST(TestMemoryAccountant, reportWithCacheSizesMultipleCaches)
                  "   20                   2                0                 2\n"
                  "other                   0                0                 0\n"
                  "   Thank you for your business\n",
-        accountant.report().asCharString());
+        accountant.report().c_str());
 }
 
 TEST_GROUP(AccountingTestMemoryAllocator)

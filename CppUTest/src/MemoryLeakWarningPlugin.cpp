@@ -113,7 +113,7 @@ public:
     void fail(char* fail_string) override
     {
         UtestShell* currentTest = UtestShell::getCurrent();
-        currentTest->failWith(FailFailure(currentTest, currentTest->getName().asCharString(), currentTest->getLineNumber(), fail_string), TestTerminatorWithoutExceptions());
+        currentTest->failWith(FailFailure(currentTest, currentTest->getName().c_str(), currentTest->getLineNumber(), fail_string), TestTerminatorWithoutExceptions());
     } // LCOV_EXCL_LINE
 };
 
@@ -220,7 +220,7 @@ void MemoryLeakWarningPlugin::postTestAction(UtestShell& test, TestResult& resul
             TestFailure f(&test, memLeakDetector_->report(mem_leak_period_checking));
             result.addFailure(f);
         } else if (expectedLeaks_ > 0) {
-            result.print(StringFromFormat("Warning: Expected %d leak(s), but leak detection was disabled", (int)expectedLeaks_).asCharString());
+            result.print(StringFromFormat("Warning: Expected %d leak(s), but leak detection was disabled", (int)expectedLeaks_).c_str());
         }
     }
     memLeakDetector_->markCheckingPeriodLeaksAsNonCheckingPeriod();

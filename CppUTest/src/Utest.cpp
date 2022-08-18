@@ -588,12 +588,12 @@ void UtestShell::print(const char* text, const char* fileName, size_t lineNumber
     stringToPrint += StringFrom(lineNumber);
     stringToPrint += " ";
     stringToPrint += text;
-    getTestResult()->print(stringToPrint.asCharString());
+    getTestResult()->print(stringToPrint.c_str());
 }
 
 void UtestShell::print(const SimpleString& text, const char* fileName, size_t lineNumber)
 {
-    print(text.asCharString(), fileName, lineNumber);
+    print(text.c_str(), fileName, lineNumber);
 }
 
 void UtestShell::printVeryVerbose(const char* text)

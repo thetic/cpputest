@@ -15,11 +15,11 @@ TeamCityTestOutput::~TeamCityTestOutput()
 void TeamCityTestOutput::printCurrentTestStarted(const UtestShell& test)
 {
     print("##teamcity[testStarted name='");
-    printEscaped(test.getName().asCharString());
+    printEscaped(test.getName().c_str());
     print("']\n");
     if (!test.willRun()) {
         print("##teamcity[testIgnored name='");
-        printEscaped(test.getName().asCharString());
+        printEscaped(test.getName().c_str());
         print("']\n");
     }
     currtest_ = &test;
@@ -31,7 +31,7 @@ void TeamCityTestOutput::printCurrentTestEnded(const TestResult& res)
         return;
 
     print("##teamcity[testFinished name='");
-    printEscaped(currtest_->getName().asCharString());
+    printEscaped(currtest_->getName().c_str());
     print("' duration='");
     print(res.getCurrentTestTotalExecutionTime());
     print("']\n");
@@ -41,7 +41,7 @@ void TeamCityTestOutput::printCurrentGroupStarted(const UtestShell& test)
 {
     currGroup_ = test.getGroup();
     print("##teamcity[testSuiteStarted name='");
-    printEscaped(currGroup_.asCharString());
+    printEscaped(currGroup_.c_str());
     print("']\n");
 }
 
@@ -51,7 +51,7 @@ void TeamCityTestOutput::printCurrentGroupEnded(const TestResult& /*res*/)
         return;
 
     print("##teamcity[testSuiteFinished name='");
-    printEscaped(currGroup_.asCharString());
+    printEscaped(currGroup_.c_str());
     print("']\n");
 }
 
@@ -83,21 +83,21 @@ void TeamCityTestOutput::printEscaped(const char* s)
 void TeamCityTestOutput::printFailure(const TestFailure& failure)
 {
     print("##teamcity[testFailed name='");
-    printEscaped(failure.getTestNameOnly().asCharString());
+    printEscaped(failure.getTestNameOnly().c_str());
     print("' message='");
     if (failure.isOutsideTestFile() || failure.isInHelperFunction()) {
         print("TEST failed (");
-        print(failure.getTestFileName().asCharString());
+        print(failure.getTestFileName().c_str());
         print(":");
         print(failure.getTestLineNumber());
         print("): ");
     }
 
-    printEscaped(failure.getFileName().asCharString());
+    printEscaped(failure.getFileName().c_str());
     print(":");
     print(failure.getFailureLineNumber());
 
     print("' details='");
-    printEscaped(failure.getMessage().asCharString());
+    printEscaped(failure.getMessage().c_str());
     print("']\n");
 }

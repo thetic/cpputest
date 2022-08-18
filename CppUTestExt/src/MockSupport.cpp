@@ -465,7 +465,7 @@ MockSupport* MockSupport::getMockSupportScope(const SimpleString& name)
     mockingSupportName += name;
 
     if (hasData(mockingSupportName)) {
-        STRCMP_EQUAL("MockSupport", getData(mockingSupportName).getType().asCharString());
+        STRCMP_EQUAL("MockSupport", getData(mockingSupportName).getType().c_str());
         return (MockSupport*)getData(mockingSupportName).getObjectPointer();
     }
 

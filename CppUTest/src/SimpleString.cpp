@@ -381,7 +381,7 @@ SimpleString SimpleString::printable() const
             j += 2;
         } else if (isControl(c)) {
             SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
-            StrNCpy(&result.buffer_[j], hexEscapeCode.asCharString(), 4);
+            StrNCpy(&result.buffer_[j], hexEscapeCode.c_str(), 4);
             j += 4;
         } else {
             result.buffer_[j] = c;
@@ -421,7 +421,7 @@ SimpleString SimpleString::lowerCase() const
     return str;
 }
 
-const char* SimpleString::asCharString() const
+const char* SimpleString::c_str() const
 {
     return getBuffer();
 }
@@ -443,7 +443,7 @@ SimpleString::~SimpleString()
 
 bool operator==(const SimpleString& left, const SimpleString& right)
 {
-    return 0 == SimpleString::StrCmp(left.asCharString(), right.asCharString());
+    return 0 == SimpleString::StrCmp(left.c_str(), right.c_str());
 }
 
 bool SimpleString::equalsNoCase(const SimpleString& str) const

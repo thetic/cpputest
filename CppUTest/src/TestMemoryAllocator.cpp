@@ -392,7 +392,7 @@ void FailableMemoryAllocator::checkAllFailedAllocsWereDone()
         else
             failText = StringFromFormat("Expected allocation number %d was never done", (int)head_->allocNumberToFail_);
 
-        currentTest->failWith(FailFailure(currentTest, currentTest->getName().asCharString(), currentTest->getLineNumber(), failText));
+        currentTest->failWith(FailFailure(currentTest, currentTest->getName().c_str(), currentTest->getLineNumber(), failText));
     }
 }
 
@@ -621,7 +621,7 @@ SimpleString MemoryAccountant::report() const
     SimpleString accountantReport = reportTitle() + reportHeader();
 
     for (MemoryAccountantAllocationNode* node = head_; node; node = node->next_)
-        accountantReport += StringFromFormat(MEMORY_ACCOUNTANT_ROW_FORMAT, stringSize(node->size_).asCharString(), (int)node->allocations_, (int)node->deallocations_, (int)node->maxAllocations_);
+        accountantReport += StringFromFormat(MEMORY_ACCOUNTANT_ROW_FORMAT, stringSize(node->size_).c_str(), (int)node->allocations_, (int)node->deallocations_, (int)node->maxAllocations_);
 
     return accountantReport + reportFooter();
 }

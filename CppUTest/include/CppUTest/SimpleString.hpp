@@ -84,7 +84,7 @@ public:
 
     SimpleString printable() const;
 
-    const char* asCharString() const;
+    const char* c_str() const;
     size_t size() const;
     bool isEmpty() const;
 
