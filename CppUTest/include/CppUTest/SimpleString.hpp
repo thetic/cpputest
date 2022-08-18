@@ -64,12 +64,10 @@ public:
     char operator[](size_t pos) const;
     size_t find(char ch, size_t pos = 0) const;
     bool contains(const SimpleString& other) const;
-    bool containsNoCase(const SimpleString& other) const;
     bool starts_with(const SimpleString& other) const;
     bool ends_with(const SimpleString& other) const;
     void split(const SimpleString& split,
         SimpleStringCollection& outCollection) const;
-    bool equalsNoCase(const SimpleString& str) const;
 
     size_t count(const SimpleString& str) const;
 

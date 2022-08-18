@@ -252,11 +252,6 @@ bool SimpleString::contains(const SimpleString& other) const
     return StrStr(getBuffer(), other.getBuffer()) != nullptr;
 }
 
-bool SimpleString::containsNoCase(const SimpleString& other) const
-{
-    return lowerCase().contains(other.lowerCase());
-}
-
 bool SimpleString::starts_with(const SimpleString& other) const
 {
     if (other.size() == 0)
@@ -444,11 +439,6 @@ SimpleString::~SimpleString()
 bool operator==(const SimpleString& left, const SimpleString& right)
 {
     return 0 == SimpleString::StrCmp(left.c_str(), right.c_str());
-}
-
-bool SimpleString::equalsNoCase(const SimpleString& str) const
-{
-    return lowerCase() == str.lowerCase();
 }
 
 bool operator!=(const SimpleString& left, const SimpleString& right)

@@ -91,30 +91,6 @@ TEST(SimpleString, InEquality)
     CHECK(s1 != s2);
 }
 
-TEST(SimpleString, CompareNoCaseWithoutCase)
-{
-    SimpleString s1("hello");
-    SimpleString s2("hello");
-
-    CHECK(s1.equalsNoCase(s2));
-}
-
-TEST(SimpleString, CompareNoCaseWithCase)
-{
-    SimpleString s1("hello");
-    SimpleString s2("HELLO");
-
-    CHECK(s1.equalsNoCase(s2));
-}
-
-TEST(SimpleString, CompareNoCaseWithCaseNotEqual)
-{
-    SimpleString s1("hello");
-    SimpleString s2("WORLD");
-
-    CHECK(!s1.equalsNoCase(s2));
-}
-
 TEST(SimpleString, c_str)
 {
     SimpleString s1("hello");
