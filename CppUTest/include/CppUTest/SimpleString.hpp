@@ -68,7 +68,6 @@ public:
     size_t count(const SimpleString& str) const;
 
     SimpleString substr(size_t beginPos, size_t amount = npos) const;
-    void copyToBuffer(char* buffer, size_t bufferSize) const;
 
     const char* c_str() const;
     const char* data() const;

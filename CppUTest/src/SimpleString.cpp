@@ -436,17 +436,6 @@ char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
     return newBuffer;
 }
 
-void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
-{
-    if (bufferToCopy == nullptr || bufferSize == 0)
-        return;
-
-    size_t sizeToCopy = (bufferSize - 1 < size()) ? (bufferSize - 1) : size();
-
-    std::strncpy(bufferToCopy, data(), sizeToCopy);
-    bufferToCopy[sizeToCopy] = '\0';
-}
-
 bool SimpleString::isControlWithShortEscapeSequence(char ch)
 {
     return '\a' <= ch && '\r' >= ch;

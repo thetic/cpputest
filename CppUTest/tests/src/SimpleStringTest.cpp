@@ -356,45 +356,6 @@ TEST(SimpleString, at)
     BYTES_EQUAL('H', str[0]);
 }
 
-TEST(SimpleString, copyInBufferNormal)
-{
-    SimpleString str("Hello World");
-    size_t bufferSize = str.size() + 1;
-    char* buffer = (char*)PlatformSpecificMalloc(bufferSize);
-    str.copyToBuffer(buffer, bufferSize);
-    STRCMP_EQUAL(str.c_str(), buffer);
-    PlatformSpecificFree(buffer);
-}
-
-TEST(SimpleString, copyInBufferWithEmptyBuffer)
-{
-    SimpleString str("Hello World");
-    char* buffer = nullptr;
-    str.copyToBuffer(buffer, 0);
-    POINTERS_EQUAL(nullptr, buffer);
-}
-
-TEST(SimpleString, copyInBufferWithBiggerBufferThanNeeded)
-{
-    SimpleString str("Hello");
-    size_t bufferSize = 20;
-    char* buffer = (char*)PlatformSpecificMalloc(bufferSize);
-    str.copyToBuffer(buffer, bufferSize);
-    STRCMP_EQUAL(str.c_str(), buffer);
-    PlatformSpecificFree(buffer);
-}
-
-TEST(SimpleString, copyInBufferWithSmallerBufferThanNeeded)
-{
-    SimpleString str("Hello");
-    size_t bufferSize = str.size();
-    char* buffer = (char*)PlatformSpecificMalloc(bufferSize);
-    str.copyToBuffer(buffer, bufferSize);
-    STRNCMP_EQUAL(str.c_str(), buffer, (bufferSize - 1));
-    LONGS_EQUAL(0, buffer[bufferSize - 1]);
-    PlatformSpecificFree(buffer);
-}
-
 TEST(SimpleString, ContainsNull)
 {
     SimpleString s(nullptr);
