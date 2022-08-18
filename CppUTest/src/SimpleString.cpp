@@ -50,20 +50,9 @@ const char* StrStr(const char* s1, const char* s2)
 
 const size_t SimpleString::npos = std::string::npos;
 
-/* Avoid using the memory leak detector INSIDE SimpleString as its used inside the detector */
-char* SimpleString::allocStringBuffer(size_t size, const char*, size_t)
-{
-    return (char*)PlatformSpecificMalloc(size);
-}
-
-void SimpleString::deallocStringBuffer(char* str, size_t, const char*, size_t)
-{
-    PlatformSpecificFree(str);
-}
-
 char* SimpleString::getEmptyString() const
 {
-    char* empty = allocStringBuffer(1, __FILE__, __LINE__);
+    char* empty = (char*)PlatformSpecificMalloc(1);
     empty[0] = '\0';
     return empty;
 }
@@ -85,7 +74,7 @@ unsigned SimpleString::AtoU(const char* str)
 void SimpleString::deallocateInternalBuffer()
 {
     if (buffer_) {
-        deallocStringBuffer(buffer_, bufferSize_, __FILE__, __LINE__);
+        PlatformSpecificFree(buffer_);
         buffer_ = nullptr;
         bufferSize_ = 0;
     }
@@ -112,7 +101,7 @@ void SimpleString::setInternalBufferToNewBuffer(size_t bufferSize)
     deallocateInternalBuffer();
 
     bufferSize_ = bufferSize;
-    buffer_ = allocStringBuffer(bufferSize_, __FILE__, __LINE__);
+    buffer_ = (char*)PlatformSpecificMalloc(bufferSize_);
     buffer_[0] = '\0';
 }
 
@@ -241,7 +230,7 @@ void SimpleString::replaceAll(SimpleString& string, const char* to, const char* 
     size_t newsize = len + (withlen * c) - (tolen * c) + 1;
 
     if (newsize > 1) {
-        char* newbuf = allocStringBuffer(newsize, __FILE__, __LINE__);
+        char* newbuf = (char*)PlatformSpecificMalloc(newsize);
         for (size_t i = 0, j = 0; i < len;) {
             if (std::strncmp(&string.data()[i], to, tolen) == 0) {
                 std::strncpy(&newbuf[j], with, withlen + 1);
@@ -432,7 +421,7 @@ SimpleString SimpleString::subStringFromTill(const SimpleString& original, char 
 
 char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
 {
-    char* newBuffer = allocStringBuffer(bufferSize, __FILE__, __LINE__);
+    char* newBuffer = (char*)PlatformSpecificMalloc(bufferSize);
     std::strncpy(newBuffer, bufferToCopy, bufferSize);
     newBuffer[bufferSize - 1] = '\0';
     return newBuffer;
@@ -650,11 +639,11 @@ SimpleString VStringFromFormat(const char* format, va_list args)
         resultString = SimpleString(defaultBuffer);
     } else {
         size_t newBufferSize = size + 1;
-        char* newBuffer = SimpleString::allocStringBuffer(newBufferSize, __FILE__, __LINE__);
+        char* newBuffer = (char*)PlatformSpecificMalloc(newBufferSize);
         PlatformSpecificVSNprintf(newBuffer, newBufferSize, format, argsCopy);
         resultString = SimpleString(newBuffer);
 
-        SimpleString::deallocStringBuffer(newBuffer, newBufferSize, __FILE__, __LINE__);
+        PlatformSpecificFree(newBuffer);
     }
     va_end(argsCopy);
     return resultString;

@@ -82,8 +82,6 @@ public:
 
     static SimpleString lowerCase(const SimpleString&);
     static unsigned AtoU(const char* str);
-    static char* allocStringBuffer(size_t size, const char* file, size_t line);
-    static void deallocStringBuffer(char* str, size_t size, const char* file, size_t line);
 
 private:
     void deallocateInternalBuffer();
