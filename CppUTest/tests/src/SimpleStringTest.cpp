@@ -185,8 +185,7 @@ TEST(SimpleString, split)
 {
     SimpleString hi("hello\nworld\nhow\ndo\nyou\ndo\n\n");
 
-    SimpleStringCollection collection;
-    hi.split("\n", collection);
+    SimpleStringCollection collection(hi, "\n");
 
     LONGS_EQUAL(7, collection.size());
     STRCMP_EQUAL("hello\n", collection[0].c_str());
@@ -201,9 +200,8 @@ TEST(SimpleString, split)
 TEST(SimpleString, splitNoTokenOnTheEnd)
 {
     SimpleString string("Bah Yah oops");
-    SimpleStringCollection collection;
+    SimpleStringCollection collection(string, " ");
 
-    string.split(" ", collection);
     LONGS_EQUAL(3, collection.size());
     STRCMP_EQUAL("Bah ", collection[0].c_str());
     STRCMP_EQUAL("Yah ", collection[1].c_str());

@@ -42,8 +42,6 @@
 #include <cstddef>
 #include <string>
 
-class SimpleStringCollection;
-
 class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
     friend bool operator!=(const SimpleString& left, const SimpleString& right);
@@ -66,8 +64,6 @@ public:
     bool contains(const SimpleString& other) const;
     bool starts_with(const SimpleString& other) const;
     bool ends_with(const SimpleString& other) const;
-    void split(const SimpleString& split,
-        SimpleStringCollection& outCollection) const;
 
     size_t count(const SimpleString& str) const;
 
@@ -126,8 +122,11 @@ private:
 
 class SimpleStringCollection {
 public:
-    SimpleStringCollection();
+    SimpleStringCollection() = default;
+    SimpleStringCollection(const SimpleString& string, const SimpleString& delimiter);
     ~SimpleStringCollection();
+
+    SimpleStringCollection& operator=(SimpleStringCollection&&);
 
     void allocate(size_t size);
 
@@ -135,9 +134,9 @@ public:
     SimpleString& operator[](size_t index);
 
 private:
-    SimpleString* collection_;
+    SimpleString* collection_ = nullptr;
     SimpleString empty_;
-    size_t size_;
+    size_t size_ = 0;
 
     void operator=(SimpleStringCollection&);
     SimpleStringCollection(SimpleStringCollection&);

@@ -69,7 +69,7 @@ public:
 
     const char* line(size_t lineNumber)
     {
-        buffer_.split("\n", linesOfFile_);
+        linesOfFile_ = SimpleStringCollection(buffer_, "\n");
         return linesOfFile_[lineNumber - 1].c_str();
     }
 
@@ -80,7 +80,7 @@ public:
 
     size_t amountOfLines()
     {
-        buffer_.split("\n", linesOfFile_);
+        linesOfFile_ = SimpleStringCollection(buffer_, "\n");
         return linesOfFile_.size();
     }
 

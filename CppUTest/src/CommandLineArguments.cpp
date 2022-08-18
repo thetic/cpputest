@@ -354,8 +354,7 @@ bool CommandLineArguments::addGroupDotNameFilter(int ac, const char* const* av, 
     bool strict, bool exclude)
 {
     SimpleString groupDotName = getParameterField(ac, av, i, parameterName);
-    SimpleStringCollection collection;
-    groupDotName.split(".", collection);
+    SimpleStringCollection collection(groupDotName, ".");
 
     if (collection.size() != 2)
         return false;

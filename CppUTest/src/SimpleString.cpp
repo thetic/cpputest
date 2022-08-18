@@ -294,24 +294,6 @@ size_t SimpleString::count(const SimpleString& substr) const
     return num;
 }
 
-void SimpleString::split(const SimpleString& delimiter, SimpleStringCollection& col) const
-{
-    size_t num = count(delimiter);
-    size_t extraEndToken = (ends_with(delimiter)) ? 0 : 1U;
-    col.allocate(num + extraEndToken);
-
-    const char* str = getBuffer();
-    const char* prev;
-    for (size_t i = 0; i < num; ++i) {
-        prev = str;
-        str = StrStr(str, delimiter.getBuffer()) + 1;
-        col[i] = SimpleString(prev).substr(0, size_t(str - prev));
-    }
-    if (extraEndToken) {
-        col[num] = str;
-    }
-}
-
 void SimpleString::replace(char to, char with)
 {
     size_t s = size();
@@ -861,10 +843,36 @@ SimpleString StringFromOrdinalNumber(unsigned int number)
     return StringFromFormat("%u%s", number, suffix);
 }
 
-SimpleStringCollection::SimpleStringCollection()
+SimpleStringCollection::SimpleStringCollection(
+    const SimpleString& string,
+    const SimpleString& delimiter)
 {
-    collection_ = nullptr;
-    size_ = 0;
+    size_t num = string.count(delimiter);
+    size_t extraEndToken = (string.ends_with(delimiter)) ? 0 : 1U;
+    allocate(num + extraEndToken);
+
+    const char* str = string.c_str();
+    const char* prev;
+    for (size_t i = 0; i < num; ++i) {
+        prev = str;
+        str = SimpleString::StrStr(str, delimiter.c_str()) + 1;
+        collection_[i] = SimpleString(prev).substr(0, size_t(str - prev));
+    }
+    if (extraEndToken) {
+        collection_[num] = str;
+    }
+}
+
+SimpleStringCollection& SimpleStringCollection::operator=(SimpleStringCollection&& rhs)
+{
+    delete[] collection_;
+    collection_ = rhs.collection_;
+    rhs.collection_ = nullptr;
+
+    size_ = rhs.size_;
+    rhs.size_ = 0;
+
+    return *this;
 }
 
 void SimpleStringCollection::allocate(size_t _size)
