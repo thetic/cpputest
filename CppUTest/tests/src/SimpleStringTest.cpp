@@ -700,19 +700,6 @@ TEST(SimpleString, unsigned_long)
     CHECK_EQUAL(expected_string, result);
 }
 
-TEST(SimpleString, StrStr)
-{
-    char foo[] = "foo";
-    char empty[] = "";
-    char foobarfoo[] = "foobarfoo";
-    char barf[] = "barf";
-    CHECK(SimpleString::StrStr(foo, empty) == foo);
-    CHECK(SimpleString::StrStr(empty, foo) == nullptr);
-    CHECK(SimpleString::StrStr(foobarfoo, barf) == foobarfoo + 3);
-    CHECK(SimpleString::StrStr(barf, foobarfoo) == nullptr);
-    CHECK(SimpleString::StrStr(foo, foo) == foo);
-}
-
 TEST(SimpleString, AtoU)
 {
     char max_short_str[] = "65535";

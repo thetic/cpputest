@@ -36,6 +36,18 @@
 #include <cstring>
 #include <string>
 
+namespace {
+const char* StrStr(const char* s1, const char* s2)
+{
+    if (!*s2)
+        return s1;
+    for (; *s1; s1++)
+        if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
+            return s1;
+    return nullptr;
+}
+}
+
 const size_t SimpleString::npos = std::string::npos;
 
 /* Avoid using the memory leak detector INSIDE SimpleString as its used inside the detector */
@@ -68,16 +80,6 @@ unsigned SimpleString::AtoU(const char* str)
         result += static_cast< unsigned >(*str - '0');
     }
     return result;
-}
-
-const char* SimpleString::StrStr(const char* s1, const char* s2)
-{
-    if (!*s2)
-        return s1;
-    for (; *s1; s1++)
-        if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
-            return s1;
-    return nullptr;
 }
 
 void SimpleString::deallocateInternalBuffer()
@@ -747,7 +749,7 @@ SimpleStringCollection::SimpleStringCollection(
     const char* prev;
     for (size_t i = 0; i < num; ++i) {
         prev = str;
-        str = SimpleString::StrStr(str, delimiter.c_str()) + 1;
+        str = StrStr(str, delimiter.c_str()) + 1;
         collection_[i] = SimpleString(prev).substr(0, size_t(str - prev));
     }
     if (extraEndToken) {
