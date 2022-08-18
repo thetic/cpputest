@@ -279,7 +279,7 @@ SimpleString SimpleString::printable() const
         if (isControlWithShortEscapeSequence(c)) {
             std::strncpy(&result.buffer_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
             j += 2;
-        } else if (isControl(c)) {
+        } else if (std::iscntrl(c)) {
             SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
             std::strncpy(&result.buffer_[j], hexEscapeCode.c_str(), 4);
             j += 4;
@@ -302,7 +302,7 @@ size_t SimpleString::getPrintableSize() const
         char c = buffer_[i];
         if (isControlWithShortEscapeSequence(c)) {
             printable_str_size += 1;
-        } else if (isControl(c)) {
+        } else if (std::iscntrl(c)) {
             printable_str_size += 3;
         }
     }
@@ -445,11 +445,6 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
 
     std::strncpy(bufferToCopy, data(), sizeToCopy);
     bufferToCopy[sizeToCopy] = '\0';
-}
-
-bool SimpleString::isControl(char ch)
-{
-    return ch < ' ' || ch == char(0x7F);
 }
 
 bool SimpleString::isControlWithShortEscapeSequence(char ch)
