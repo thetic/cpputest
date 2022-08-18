@@ -108,7 +108,7 @@ TEST(SimpleString, Size)
 TEST(SimpleString, lowerCase)
 {
     SimpleString s1("AbCdEfG1234");
-    SimpleString s2(s1.lowerCase());
+    SimpleString s2 = SimpleString::lowerCase(s1);
     STRCMP_EQUAL("abcdefg1234", s2.c_str());
     STRCMP_EQUAL("AbCdEfG1234", s1.c_str());
 }

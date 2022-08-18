@@ -70,7 +70,6 @@ public:
     void replace(char to, char with);
     void replace(const char* to, const char* with);
 
-    SimpleString lowerCase() const;
     SimpleString substr(size_t beginPos, size_t amount = npos) const;
     SimpleString subStringFromTill(char startChar, char lastExcludedChar) const;
     void copyToBuffer(char* buffer, size_t bufferSize) const;
@@ -84,6 +83,7 @@ public:
 
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
+    static SimpleString lowerCase(const SimpleString&);
     static unsigned AtoU(const char* str);
     static const char* StrStr(const char* s1, const char* s2);
     static char* allocStringBuffer(size_t size, const char* file, size_t line);

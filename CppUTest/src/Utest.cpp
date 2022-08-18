@@ -465,7 +465,7 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
-    if (SimpleString(expected).lowerCase() != SimpleString(actual).lowerCase())
+    if (SimpleString::lowerCase(expected) != SimpleString::lowerCase(actual))
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -487,7 +487,7 @@ void UtestShell::assertCstrNoCaseContains(const char* expected, const char* actu
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(actual).lowerCase().contains(SimpleString(expected).lowerCase()))
+    if (!SimpleString::lowerCase(actual).contains(SimpleString::lowerCase(expected)))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 

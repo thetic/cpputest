@@ -310,9 +310,9 @@ size_t SimpleString::getPrintableSize() const
     return printable_str_size;
 }
 
-SimpleString SimpleString::lowerCase() const
+SimpleString SimpleString::lowerCase(const SimpleString& original)
 {
-    SimpleString str(*this);
+    SimpleString str(original);
 
     size_t str_size = str.size();
     for (size_t i = 0; i < str_size; i++)
