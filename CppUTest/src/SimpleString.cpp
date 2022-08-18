@@ -310,7 +310,7 @@ void SimpleString::split(const SimpleString& delimiter, SimpleStringCollection& 
     for (size_t i = 0; i < num; ++i) {
         prev = str;
         str = StrStr(str, delimiter.getBuffer()) + 1;
-        col[i] = SimpleString(prev).subString(0, size_t(str - prev));
+        col[i] = SimpleString(prev).substr(0, size_t(str - prev));
     }
     if (extraEndToken) {
         col[num] = str;
@@ -493,7 +493,7 @@ void SimpleString::padStringsToSameLength(SimpleString& str1, SimpleString& str2
     str1 = SimpleString(pad, str2.size() - str1.size()) + str1;
 }
 
-SimpleString SimpleString::subString(size_t beginPos, size_t amount) const
+SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
 {
     if (beginPos > size() - 1)
         return "";
@@ -504,11 +504,6 @@ SimpleString SimpleString::subString(size_t beginPos, size_t amount) const
         newString.buffer_[amount] = '\0';
 
     return newString;
-}
-
-SimpleString SimpleString::subString(size_t beginPos) const
-{
-    return subString(beginPos, npos);
 }
 
 char SimpleString::operator[](size_t pos) const
@@ -538,9 +533,9 @@ SimpleString SimpleString::subStringFromTill(char startChar, char lastExcludedCh
 
     size_t endPos = findFrom(beginPos, lastExcludedChar);
     if (endPos == npos)
-        return subString(beginPos);
+        return substr(beginPos);
 
-    return subString(beginPos, endPos - beginPos);
+    return substr(beginPos, endPos - beginPos);
 }
 
 char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
@@ -642,7 +637,7 @@ SimpleString HexStringFrom(signed char value)
     SimpleString result = StringFromFormat("%x", value);
     if (value < 0) {
         size_t size = result.size();
-        result = result.subString(size - (CHAR_BIT / 4));
+        result = result.substr(size - (CHAR_BIT / 4));
     }
     return result;
 }
@@ -811,7 +806,7 @@ SimpleString StringFromBinary(const unsigned char* value, size_t size)
     for (size_t i = 0; i < size; i++) {
         result += StringFromFormat("%02X ", value[i]);
     }
-    result = result.subString(0, result.size() - 1);
+    result = result.substr(0, result.size() - 1);
 
     return result;
 }

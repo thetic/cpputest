@@ -101,7 +101,7 @@ void TestRegistry::listTestGroupNames(TestResult& result)
     groupList.replace("#", "");
 
     if (groupList.endsWith(" "))
-        groupList = groupList.subString(0, groupList.size() - 1);
+        groupList = groupList.substr(0, groupList.size() - 1);
     result.print(groupList.asCharString());
 }
 
@@ -128,7 +128,7 @@ void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
     groupAndNameList.replace("#", "");
 
     if (groupAndNameList.endsWith(" "))
-        groupAndNameList = groupAndNameList.subString(0, groupAndNameList.size() - 1);
+        groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);
     result.print(groupAndNameList.asCharString());
 }
 

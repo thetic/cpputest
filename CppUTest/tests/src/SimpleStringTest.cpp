@@ -305,43 +305,43 @@ TEST(SimpleString, replaceStringWithString)
 TEST(SimpleString, subStringFromEmptyString)
 {
     SimpleString str("");
-    STRCMP_EQUAL("", str.subString(0, 1).asCharString());
+    STRCMP_EQUAL("", str.substr(0, 1).asCharString());
 }
 
 TEST(SimpleString, subStringFromSmallString)
 {
     SimpleString str("H");
-    STRCMP_EQUAL("H", str.subString(0, 1).asCharString());
+    STRCMP_EQUAL("H", str.substr(0, 1).asCharString());
 }
 
 TEST(SimpleString, subStringFromPos0)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("Hello", str.subString(0, 5).asCharString());
+    STRCMP_EQUAL("Hello", str.substr(0, 5).asCharString());
 }
 
 TEST(SimpleString, subStringFromPos1)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("ello ", str.subString(1, 5).asCharString());
+    STRCMP_EQUAL("ello ", str.substr(1, 5).asCharString());
 }
 
 TEST(SimpleString, subStringFromPos5WithAmountLargerThanString)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.subString(6, 10).asCharString());
+    STRCMP_EQUAL("World", str.substr(6, 10).asCharString());
 }
 
 TEST(SimpleString, subStringFromPos6ToEndOfString)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.subString(6).asCharString());
+    STRCMP_EQUAL("World", str.substr(6).asCharString());
 }
 
 TEST(SimpleString, subStringBeginPosOutOfBounds)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("", str.subString(13, 5).asCharString());
+    STRCMP_EQUAL("", str.substr(13, 5).asCharString());
 }
 
 TEST(SimpleString, subStringFromTillNormal)

@@ -146,7 +146,7 @@ SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual
     SimpleString differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
 
     result += "\n";
-    result += StringFromFormat("\t%s%s>\n", differentString.asCharString(), actualString.subString(offset, extraCharactersWindow).asCharString());
+    result += StringFromFormat("\t%s%s>\n", differentString.asCharString(), actualString.substr(offset, extraCharactersWindow).asCharString());
 
     result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).asCharString());
     return result;
