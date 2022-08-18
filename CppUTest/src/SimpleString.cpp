@@ -59,7 +59,7 @@ char* SimpleString::getEmptyString() const
 // does not support + or - prefixes
 unsigned SimpleString::AtoU(const char* str)
 {
-    while (isSpace(*str))
+    while (std::isspace(*str))
         str++;
 
     unsigned result = 0;
@@ -445,11 +445,6 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
 
     std::strncpy(bufferToCopy, data(), sizeToCopy);
     bufferToCopy[sizeToCopy] = '\0';
-}
-
-bool SimpleString::isSpace(char ch)
-{
-    return (ch == ' ') || (0x08 < ch && 0x0E > ch);
 }
 
 bool SimpleString::isUpper(char ch)
