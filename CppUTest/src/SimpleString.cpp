@@ -447,11 +447,6 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
     bufferToCopy[sizeToCopy] = '\0';
 }
 
-bool SimpleString::isUpper(char ch)
-{
-    return 'A' <= ch && 'Z' >= ch;
-}
-
 bool SimpleString::isControl(char ch)
 {
     return ch < ' ' || ch == char(0x7F);
