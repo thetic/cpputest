@@ -103,7 +103,6 @@ private:
 
     char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
-    static bool isDigit(char ch);
     static bool isSpace(char ch);
     static bool isUpper(char ch);
     static bool isControl(char ch);

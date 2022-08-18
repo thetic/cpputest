@@ -31,6 +31,7 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
 
+#include <cctype>
 #include <climits>
 #include <cstring>
 #include <string>
@@ -62,7 +63,7 @@ unsigned SimpleString::AtoU(const char* str)
         str++;
 
     unsigned result = 0;
-    for (; isDigit(*str) && *str >= '0'; str++) {
+    for (; std::isdigit(*str) && *str >= '0'; str++) {
         result *= 10;
         result += static_cast< unsigned >(*str - '0');
     }
@@ -444,11 +445,6 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
 
     std::strncpy(bufferToCopy, data(), sizeToCopy);
     bufferToCopy[sizeToCopy] = '\0';
-}
-
-bool SimpleString::isDigit(char ch)
-{
-    return '0' <= ch && '9' >= ch;
 }
 
 bool SimpleString::isSpace(char ch)
