@@ -78,6 +78,7 @@ public:
     SimpleString printable() const;
 
     const char* c_str() const;
+    const char* data() const;
     size_t size() const;
     bool empty() const;
 
@@ -89,8 +90,6 @@ public:
     static void deallocStringBuffer(char* str, size_t size, const char* file, size_t line);
 
 private:
-    const char* getBuffer() const;
-
     void deallocateInternalBuffer();
     void setInternalBufferAsEmptyString();
     void setInternalBufferToNewBuffer(size_t bufferSize);

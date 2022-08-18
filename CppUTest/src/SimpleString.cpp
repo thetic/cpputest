@@ -131,7 +131,7 @@ void SimpleString::copyBufferToNewInternalBuffer(const char* otherBuffer)
     copyBufferToNewInternalBuffer(otherBuffer, std::strlen(otherBuffer) + 1);
 }
 
-const char* SimpleString::getBuffer() const
+const char* SimpleString::data() const
 {
     return buffer_;
 }
@@ -159,7 +159,7 @@ SimpleString::SimpleString(const char* other, size_t repeatCount)
 
 SimpleString::SimpleString(const SimpleString& other)
 {
-    copyBufferToNewInternalBuffer(other.getBuffer());
+    copyBufferToNewInternalBuffer(other.data());
 }
 
 SimpleString& SimpleString::operator=(const SimpleString& other)
@@ -171,7 +171,7 @@ SimpleString& SimpleString::operator=(const SimpleString& other)
 
 bool SimpleString::contains(const SimpleString& other) const
 {
-    return StrStr(getBuffer(), other.getBuffer()) != nullptr;
+    return StrStr(data(), other.data()) != nullptr;
 }
 
 bool SimpleString::starts_with(const SimpleString& other) const
@@ -181,7 +181,7 @@ bool SimpleString::starts_with(const SimpleString& other) const
     else if (size() == 0)
         return false;
     else
-        return StrStr(getBuffer(), other.getBuffer()) == getBuffer();
+        return StrStr(data(), other.data()) == data();
 }
 
 bool SimpleString::ends_with(const SimpleString& other) const
@@ -196,22 +196,22 @@ bool SimpleString::ends_with(const SimpleString& other) const
     if (length < other_length)
         return false;
 
-    return std::strcmp(getBuffer() + length - other_length, other.getBuffer()) == 0;
+    return std::strcmp(data() + length - other_length, other.data()) == 0;
 }
 
 size_t SimpleString::count(const SimpleString& substr) const
 {
     size_t num = 0;
-    const char* str = getBuffer();
+    const char* str = data();
     const char* strpart = nullptr;
     if (*str) {
-        strpart = StrStr(str, substr.getBuffer());
+        strpart = StrStr(str, substr.data());
     }
     while (*str && strpart) {
         str = strpart;
         str++;
         num++;
-        strpart = StrStr(str, substr.getBuffer());
+        strpart = StrStr(str, substr.data());
     }
     return num;
 }
@@ -220,7 +220,7 @@ void SimpleString::replace(char to, char with)
 {
     size_t s = size();
     for (size_t i = 0; i < s; i++) {
-        if (getBuffer()[i] == to)
+        if (data()[i] == to)
             buffer_[i] = with;
     }
 }
@@ -240,12 +240,12 @@ void SimpleString::replace(const char* to, const char* with)
     if (newsize > 1) {
         char* newbuf = allocStringBuffer(newsize, __FILE__, __LINE__);
         for (size_t i = 0, j = 0; i < len;) {
-            if (std::strncmp(&getBuffer()[i], to, tolen) == 0) {
+            if (std::strncmp(&data()[i], to, tolen) == 0) {
                 std::strncpy(&newbuf[j], with, withlen + 1);
                 j += withlen;
                 i += tolen;
             } else {
-                newbuf[j] = getBuffer()[i];
+                newbuf[j] = data()[i];
                 j++;
                 i++;
             }
@@ -315,19 +315,19 @@ SimpleString SimpleString::lowerCase() const
 
     size_t str_size = str.size();
     for (size_t i = 0; i < str_size; i++)
-        str.buffer_[i] = std::tolower(str.getBuffer()[i]);
+        str.buffer_[i] = std::tolower(str.data()[i]);
 
     return str;
 }
 
 const char* SimpleString::c_str() const
 {
-    return getBuffer();
+    return data();
 }
 
 size_t SimpleString::size() const
 {
-    return std::strlen(getBuffer());
+    return std::strlen(data());
 }
 
 bool SimpleString::empty() const
@@ -352,14 +352,14 @@ bool operator!=(const SimpleString& left, const SimpleString& right)
 
 SimpleString SimpleString::operator+(const SimpleString& rhs) const
 {
-    SimpleString t(getBuffer());
-    t += rhs.getBuffer();
+    SimpleString t(data());
+    t += rhs.data();
     return t;
 }
 
 SimpleString& SimpleString::operator+=(const SimpleString& rhs)
 {
-    return operator+=(rhs.getBuffer());
+    return operator+=(rhs.data());
 }
 
 SimpleString& SimpleString::operator+=(const char* rhs)
@@ -367,7 +367,7 @@ SimpleString& SimpleString::operator+=(const char* rhs)
     size_t originalSize = this->size();
     size_t additionalStringSize = std::strlen(rhs) + 1;
     size_t sizeOfNewString = originalSize + additionalStringSize;
-    char* tbuffer = copyToNewBuffer(this->getBuffer(), sizeOfNewString);
+    char* tbuffer = copyToNewBuffer(this->data(), sizeOfNewString);
     std::strncpy(tbuffer + originalSize, rhs, additionalStringSize);
 
     setInternalBufferTo(tbuffer, sizeOfNewString);
@@ -392,7 +392,7 @@ SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
     if (beginPos > size() - 1)
         return "";
 
-    SimpleString newString = getBuffer() + beginPos;
+    SimpleString newString = data() + beginPos;
 
     if (newString.size() > amount)
         newString.buffer_[amount] = '\0';
@@ -402,7 +402,7 @@ SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
 
 char SimpleString::operator[](size_t pos) const
 {
-    return getBuffer()[pos];
+    return data()[pos];
 }
 
 size_t SimpleString::find(char ch, size_t starting_position) const
@@ -442,7 +442,7 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
 
     size_t sizeToCopy = (bufferSize - 1 < size()) ? (bufferSize - 1) : size();
 
-    std::strncpy(bufferToCopy, getBuffer(), sizeToCopy);
+    std::strncpy(bufferToCopy, data(), sizeToCopy);
     bufferToCopy[sizeToCopy] = '\0';
 }
 
