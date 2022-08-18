@@ -101,8 +101,7 @@ private:
     char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
     static bool isControlWithShortEscapeSequence(char ch);
-
-    size_t getPrintableSize() const;
+    static size_t getPrintableSize(const SimpleString&);
 };
 
 class SimpleStringCollection {

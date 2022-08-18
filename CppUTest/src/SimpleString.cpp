@@ -270,7 +270,7 @@ SimpleString SimpleString::printable(const SimpleString& string)
     };
 
     SimpleString result;
-    result.setInternalBufferToNewBuffer(string.getPrintableSize() + 1);
+    result.setInternalBufferToNewBuffer(getPrintableSize(string) + 1);
 
     size_t str_size = string.size();
     size_t j = 0;
@@ -293,13 +293,13 @@ SimpleString SimpleString::printable(const SimpleString& string)
     return result;
 }
 
-size_t SimpleString::getPrintableSize() const
+size_t SimpleString::getPrintableSize(const SimpleString& string)
 {
-    size_t str_size = size();
+    size_t str_size = string.size();
     size_t printable_str_size = str_size;
 
     for (size_t i = 0; i < str_size; i++) {
-        char c = buffer_[i];
+        char c = string[i];
         if (isControlWithShortEscapeSequence(c)) {
             printable_str_size += 1;
         } else if (std::iscntrl(c)) {
