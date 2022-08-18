@@ -33,6 +33,8 @@
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <cstring>
+
 #define MAX_VARIABLE_NAME_LINE_PART 10
 #define MAX_VARIABLE_NAME_FILE_PART 53
 #define MAX_VARIABLE_NAME_SEPERATOR_PART 1
@@ -108,7 +110,9 @@ SimpleString CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const
 
 bool CodeMemoryReportFormatter::isNewAllocator(TestMemoryAllocator* allocator)
 {
-    return SimpleString::StrCmp(allocator->alloc_name(), defaultNewAllocator()->alloc_name()) == 0 || SimpleString::StrCmp(allocator->alloc_name(), defaultNewArrayAllocator()->alloc_name()) == 0;
+    return (
+        std::strcmp(allocator->alloc_name(), defaultNewAllocator()->alloc_name()) == 0
+        || std::strcmp(allocator->alloc_name(), defaultNewArrayAllocator()->alloc_name()) == 0);
 }
 
 bool CodeMemoryReportFormatter::variableExists(const SimpleString& variableName)

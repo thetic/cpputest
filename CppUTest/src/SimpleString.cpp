@@ -32,6 +32,7 @@
 #include "CppUTest/TestMemoryAllocator.hpp"
 
 #include <climits>
+#include <cstring>
 #include <string>
 
 const size_t SimpleString::npos = std::string::npos;
@@ -66,15 +67,6 @@ unsigned SimpleString::AtoU(const char* str)
         result += static_cast< unsigned >(*str - '0');
     }
     return result;
-}
-
-int SimpleString::StrCmp(const char* s1, const char* s2)
-{
-    while (*s1 && *s1 == *s2) {
-        ++s1;
-        ++s2;
-    }
-    return *(const unsigned char*)s1 - *(const unsigned char*)s2;
 }
 
 size_t SimpleString::StrLen(const char* str)
@@ -257,7 +249,7 @@ bool SimpleString::ends_with(const SimpleString& other) const
     if (length < other_length)
         return false;
 
-    return StrCmp(getBuffer() + length - other_length, other.getBuffer()) == 0;
+    return std::strcmp(getBuffer() + length - other_length, other.getBuffer()) == 0;
 }
 
 size_t SimpleString::count(const SimpleString& substr) const
@@ -403,7 +395,7 @@ SimpleString::~SimpleString()
 
 bool operator==(const SimpleString& left, const SimpleString& right)
 {
-    return 0 == SimpleString::StrCmp(left.c_str(), right.c_str());
+    return 0 == std::strcmp(left.c_str(), right.c_str());
 }
 
 bool operator!=(const SimpleString& left, const SimpleString& right)

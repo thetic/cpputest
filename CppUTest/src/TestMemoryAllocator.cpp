@@ -31,6 +31,8 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <cstring>
+
 static char* checkedMalloc(size_t size)
 {
     char* mem = (char*)PlatformSpecificMalloc(size);
@@ -158,7 +160,7 @@ bool TestMemoryAllocator::hasBeenDestroyed()
 
 bool TestMemoryAllocator::isOfEqualType(TestMemoryAllocator* allocator)
 {
-    return SimpleString::StrCmp(this->name(), allocator->name()) == 0;
+    return std::strcmp(this->name(), allocator->name()) == 0;
 }
 
 char* TestMemoryAllocator::allocMemoryLeakNode(size_t size)
@@ -310,7 +312,7 @@ public:
 
     bool shouldFail(int allocationNumber, const char* file, size_t line)
     {
-        if (file_ && SimpleString::StrCmp(file, file_) == 0 && line == line_) {
+        if (file_ && std::strcmp(file, file_) == 0 && line == line_) {
             actualAllocNumber_++;
             return actualAllocNumber_ == allocNumberToFail_;
         }

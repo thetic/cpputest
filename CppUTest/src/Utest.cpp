@@ -32,6 +32,7 @@
 #include "CppUTest/TestRegistry.hpp"
 
 #include <csignal>
+#include <cstring>
 
 #if defined(__GNUC__) && __GNUC__ >= 11
 #define NEEDS_DISABLE_NULL_WARNING
@@ -442,7 +443,7 @@ void UtestShell::assertCstrEqual(const char* expected, const char* actual, const
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-    if (SimpleString::StrCmp(expected, actual) != 0)
+    if (std::strcmp(expected, actual) != 0)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
 }
 

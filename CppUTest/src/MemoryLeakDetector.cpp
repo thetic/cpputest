@@ -31,6 +31,8 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
 
+#include <cstring>
+
 static const char* UNKNOWN = "<unknown>";
 
 static const char GuardBytes[] = { 'B', 'A', 'S' };
@@ -178,7 +180,7 @@ void MemoryLeakOutputStringBuffer::reportMemoryLeak(MemoryLeakDetectorNode* leak
         leak->number_, (unsigned long)leak->size_, leak->file_, (int)leak->line_, leak->allocator_->alloc_name(), (void*)leak->memory_);
     outputBuffer_.addMemoryDump(leak->memory_, leak->size_);
 
-    if (SimpleString::StrCmp(leak->allocator_->alloc_name(), (const char*)"malloc") == 0)
+    if (std::strcmp(leak->allocator_->alloc_name(), (const char*)"malloc") == 0)
         giveWarningOnUsingMalloc_ = true;
 }
 

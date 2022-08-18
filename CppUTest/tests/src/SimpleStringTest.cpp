@@ -739,19 +739,6 @@ TEST(SimpleString, unsigned_long)
     CHECK_EQUAL(expected_string, result);
 }
 
-TEST(SimpleString, StrCmp)
-{
-    char empty[] = "";
-    char blabla[] = "blabla";
-    char bla[] = "bla";
-    CHECK(SimpleString::StrCmp(empty, empty) == 0);
-    CHECK(SimpleString::StrCmp(bla, blabla) == -(int)'b');
-    CHECK(SimpleString::StrCmp(blabla, bla) == 'b');
-    CHECK(SimpleString::StrCmp(bla, empty) == 'b');
-    CHECK(SimpleString::StrCmp(empty, bla) == -(int)'b');
-    CHECK(SimpleString::StrCmp(bla, bla) == 0);
-}
-
 TEST(SimpleString, StrNCpy_no_zero_termination)
 {
     char str[] = "XXXXXXXXXX";
