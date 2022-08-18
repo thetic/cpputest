@@ -69,15 +69,6 @@ unsigned SimpleString::AtoU(const char* str)
     return result;
 }
 
-size_t SimpleString::StrLen(const char* str)
-{
-    size_t n = (size_t)-1;
-    do
-        n++;
-    while (*str++);
-    return n;
-}
-
 int SimpleString::StrNCmp(const char* s1, const char* s2, size_t n)
 {
     while (n && *s1 && *s1 == *s2) {
@@ -107,7 +98,7 @@ const char* SimpleString::StrStr(const char* s1, const char* s2)
     if (!*s2)
         return s1;
     for (; *s1; s1++)
-        if (StrNCmp(s1, s2, StrLen(s2)) == 0)
+        if (StrNCmp(s1, s2, std::strlen(s2)) == 0)
             return s1;
     return nullptr;
 }
@@ -181,7 +172,7 @@ void SimpleString::copyBufferToNewInternalBuffer(const SimpleString& otherBuffer
 
 void SimpleString::copyBufferToNewInternalBuffer(const char* otherBuffer)
 {
-    copyBufferToNewInternalBuffer(otherBuffer, StrLen(otherBuffer) + 1);
+    copyBufferToNewInternalBuffer(otherBuffer, std::strlen(otherBuffer) + 1);
 }
 
 const char* SimpleString::getBuffer() const
@@ -199,7 +190,7 @@ SimpleString::SimpleString(const char* otherBuffer)
 
 SimpleString::SimpleString(const char* other, size_t repeatCount)
 {
-    size_t otherStringLength = StrLen(other);
+    size_t otherStringLength = std::strlen(other);
     setInternalBufferToNewBuffer(otherStringLength * repeatCount + 1);
 
     char* next = buffer_;
@@ -285,8 +276,8 @@ void SimpleString::replace(const char* to, const char* with)
         return;
     }
     size_t len = size();
-    size_t tolen = StrLen(to);
-    size_t withlen = StrLen(with);
+    size_t tolen = std::strlen(to);
+    size_t withlen = std::strlen(with);
 
     size_t newsize = len + (withlen * c) - (tolen * c) + 1;
 
@@ -380,7 +371,7 @@ const char* SimpleString::c_str() const
 
 size_t SimpleString::size() const
 {
-    return StrLen(getBuffer());
+    return std::strlen(getBuffer());
 }
 
 bool SimpleString::empty() const
@@ -418,7 +409,7 @@ SimpleString& SimpleString::operator+=(const SimpleString& rhs)
 SimpleString& SimpleString::operator+=(const char* rhs)
 {
     size_t originalSize = this->size();
-    size_t additionalStringSize = StrLen(rhs) + 1;
+    size_t additionalStringSize = std::strlen(rhs) + 1;
     size_t sizeOfNewString = originalSize + additionalStringSize;
     char* tbuffer = copyToNewBuffer(this->getBuffer(), sizeOfNewString);
     StrNCpy(tbuffer + originalSize, rhs, additionalStringSize);
