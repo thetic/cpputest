@@ -415,17 +415,17 @@ size_t SimpleString::find(char ch, size_t starting_position) const
     return npos;
 }
 
-SimpleString SimpleString::subStringFromTill(char startChar, char lastExcludedChar) const
+SimpleString SimpleString::subStringFromTill(const SimpleString& original, char startChar, char lastExcludedChar)
 {
-    size_t beginPos = find(startChar);
+    size_t beginPos = original.find(startChar);
     if (beginPos == npos)
         return "";
 
-    size_t endPos = find(lastExcludedChar, beginPos);
+    size_t endPos = original.find(lastExcludedChar, beginPos);
     if (endPos == npos)
-        return substr(beginPos);
+        return original.substr(beginPos);
 
-    return substr(beginPos, endPos - beginPos);
+    return original.substr(beginPos, endPos - beginPos);
 }
 
 char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)

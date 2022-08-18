@@ -71,7 +71,6 @@ public:
     void replace(const char* to, const char* with);
 
     SimpleString substr(size_t beginPos, size_t amount = npos) const;
-    SimpleString subStringFromTill(char startChar, char lastExcludedChar) const;
     void copyToBuffer(char* buffer, size_t bufferSize) const;
 
     const char* c_str() const;
@@ -79,6 +78,7 @@ public:
     size_t size() const;
     bool empty() const;
 
+    static SimpleString subStringFromTill(const SimpleString&, char startChar, char lastExcludedChar);
     static SimpleString printable(const SimpleString&);
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 

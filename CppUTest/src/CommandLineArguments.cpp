@@ -427,10 +427,11 @@ void CommandLineArguments::addExcludeStrictNameFilter(int ac, const char* const*
 void CommandLineArguments::addTestToRunBasedOnVerboseOutput(int ac, const char* const* av, int& index, const char* parameterName)
 {
     SimpleString wholename = getParameterField(ac, av, index, parameterName);
-    SimpleString testname = wholename.subStringFromTill(',', ')');
+    SimpleString testname = SimpleString::subStringFromTill(wholename, ',', ')');
     testname = testname.substr(2);
     TestFilter* namefilter = new TestFilter(testname);
-    TestFilter* groupfilter = new TestFilter(wholename.subStringFromTill(wholename[0], ','));
+    TestFilter* groupfilter = new TestFilter(
+        SimpleString::subStringFromTill(wholename, wholename[0], ','));
     namefilter->strictMatching();
     groupfilter->strictMatching();
     groupFilters_ = groupfilter->add(groupFilters_);

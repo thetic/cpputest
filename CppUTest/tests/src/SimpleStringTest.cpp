@@ -321,25 +321,25 @@ TEST(SimpleString, subStringBeginPosOutOfBounds)
 TEST(SimpleString, subStringFromTillNormal)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("Hello", str.subStringFromTill('H', ' ').c_str());
+    STRCMP_EQUAL("Hello", SimpleString::subStringFromTill(str, 'H', ' ').c_str());
 }
 
 TEST(SimpleString, subStringFromTillOutOfBounds)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.subStringFromTill('W', '!').c_str());
+    STRCMP_EQUAL("World", SimpleString::subStringFromTill(str, 'W', '!').c_str());
 }
 
 TEST(SimpleString, subStringFromTillStartDoesntExist)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("", str.subStringFromTill('!', ' ').c_str());
+    STRCMP_EQUAL("", SimpleString::subStringFromTill(str, '!', ' ').c_str());
 }
 
 TEST(SimpleString, subStringFromTillWhenTheEndAppearsBeforeTheStart)
 {
     SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.subStringFromTill('W', 'H').c_str());
+    STRCMP_EQUAL("World", SimpleString::subStringFromTill(str, 'W', 'H').c_str());
 }
 
 TEST(SimpleString, findNormal)
