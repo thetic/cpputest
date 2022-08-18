@@ -30,6 +30,8 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <cstring>
+
 MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = nullptr;
 const double MockNamedValue::defaultDoubleTolerance = 0.005;
 
@@ -425,7 +427,7 @@ bool MockNamedValue::equals(const MockNamedValue& p) const
         if (size_ != p.size_) {
             return false;
         }
-        return SimpleString::MemCmp(value_.memoryBufferValue_, p.value_.memoryBufferValue_, size_) == 0;
+        return std::memcmp(value_.memoryBufferValue_, p.value_.memoryBufferValue_, size_) == 0;
     }
 
     if (comparator_)

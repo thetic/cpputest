@@ -79,21 +79,6 @@ const char* SimpleString::StrStr(const char* s1, const char* s2)
     return nullptr;
 }
 
-int SimpleString::MemCmp(const void* s1, const void* s2, size_t n)
-{
-    const unsigned char* p1 = (const unsigned char*)s1;
-    const unsigned char* p2 = (const unsigned char*)s2;
-
-    while (n--)
-        if (*p1 != *p2) {
-            return *p1 - *p2;
-        } else {
-            ++p1;
-            ++p2;
-        }
-    return 0;
-}
-
 void SimpleString::deallocateInternalBuffer()
 {
     if (buffer_) {

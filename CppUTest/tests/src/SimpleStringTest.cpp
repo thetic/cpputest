@@ -800,26 +800,6 @@ TEST(SimpleString, BinaryWithSizeLargerThan128)
     STRCMP_CONTAINS("00 ...", StringFromBinaryWithSize(value, sizeof(value)).c_str());
 }
 
-TEST(SimpleString, MemCmp)
-{
-    unsigned char smaller[] = { 0x00, 0x01, 0x2A, 0xFF };
-    unsigned char greater[] = { 0x00, 0x01, 0xFF, 0xFF };
-
-    LONGS_EQUAL(0, SimpleString::MemCmp(smaller, smaller, sizeof(smaller)));
-    CHECK(SimpleString::MemCmp(smaller, greater, sizeof(smaller)) < 0);
-    CHECK(SimpleString::MemCmp(greater, smaller, sizeof(smaller)) > 0);
-    LONGS_EQUAL(0, SimpleString::MemCmp(nullptr, nullptr, 0));
-}
-
-TEST(SimpleString, MemCmpFirstLastNotMatching)
-{
-    unsigned char base[] = { 0x00, 0x01, 0x2A, 0xFF };
-    unsigned char firstNotMatching[] = { 0x01, 0x01, 0x2A, 0xFF };
-    unsigned char lastNotMatching[] = { 0x00, 0x01, 0x2A, 0x00 };
-    CHECK(0 != SimpleString::MemCmp(base, firstNotMatching, sizeof(base)));
-    CHECK(0 != SimpleString::MemCmp(base, lastNotMatching, sizeof(base)));
-}
-
 #if (CHAR_BIT == 16)
 TEST(SimpleString, MaskedBitsChar)
 {

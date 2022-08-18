@@ -556,7 +556,7 @@ void UtestShell::assertBinaryEqual(const void* expected, const void* actual, siz
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char*)expected, (const unsigned char*)actual, length, text), testTerminator);
-    if (SimpleString::MemCmp(expected, actual, length) != 0)
+    if (std::memcmp(expected, actual, length) != 0)
         failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char*)expected, (const unsigned char*)actual, length, text), testTerminator);
 }
 
