@@ -79,11 +79,6 @@ const char* SimpleString::StrStr(const char* s1, const char* s2)
     return nullptr;
 }
 
-char SimpleString::ToLower(char ch)
-{
-    return isUpper(ch) ? (char)((int)ch + ('a' - 'A')) : ch;
-}
-
 int SimpleString::MemCmp(const void* s1, const void* s2, size_t n)
 {
     const unsigned char* p1 = (const unsigned char*)s1;
@@ -335,7 +330,7 @@ SimpleString SimpleString::lowerCase() const
 
     size_t str_size = str.size();
     for (size_t i = 0; i < str_size; i++)
-        str.buffer_[i] = ToLower(str.getBuffer()[i]);
+        str.buffer_[i] = std::tolower(str.getBuffer()[i]);
 
     return str;
 }

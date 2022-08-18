@@ -358,11 +358,11 @@ StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char*
     message_ += createButWasString(printableExpected, printableActual);
     if ((expected) && (actual)) {
         size_t failStart;
-        for (failStart = 0; SimpleString::ToLower(actual[failStart]) == SimpleString::ToLower(expected[failStart]); failStart++)
+        for (failStart = 0; std::tolower(actual[failStart]) == std::tolower(expected[failStart]); failStart++)
             ;
         size_t failStartPrintable;
         for (failStartPrintable = 0;
-             SimpleString::ToLower(printableActual[failStartPrintable]) == SimpleString::ToLower(printableExpected[failStartPrintable]);
+             std::tolower(printableActual[failStartPrintable]) == std::tolower(printableExpected[failStartPrintable]);
              failStartPrintable++)
             ;
         message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
