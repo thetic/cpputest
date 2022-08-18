@@ -66,7 +66,7 @@ public:
     size_t findFrom(size_t starting_position, char ch) const;
     bool contains(const SimpleString& other) const;
     bool containsNoCase(const SimpleString& other) const;
-    bool startsWith(const SimpleString& other) const;
+    bool starts_with(const SimpleString& other) const;
     bool endsWith(const SimpleString& other) const;
     void split(const SimpleString& split,
         SimpleStringCollection& outCollection) const;

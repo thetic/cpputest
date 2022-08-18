@@ -200,9 +200,9 @@ TEST(SimpleString, startsWith)
     SimpleString hi("Hi you!");
     SimpleString part("Hi");
     SimpleString diff("Hrrm Hi you! ffdsfd");
-    CHECK(hi.startsWith(part));
-    CHECK(!part.startsWith(hi));
-    CHECK(!diff.startsWith(hi));
+    CHECK(hi.starts_with(part));
+    CHECK(!part.starts_with(hi));
+    CHECK(!diff.starts_with(hi));
 }
 
 TEST(SimpleString, split)

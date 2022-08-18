@@ -257,7 +257,7 @@ bool SimpleString::containsNoCase(const SimpleString& other) const
     return lowerCase().contains(other.lowerCase());
 }
 
-bool SimpleString::startsWith(const SimpleString& other) const
+bool SimpleString::starts_with(const SimpleString& other) const
 {
     if (other.size() == 0)
         return true;
