@@ -69,20 +69,6 @@ unsigned SimpleString::AtoU(const char* str)
     return result;
 }
 
-char* SimpleString::StrNCpy(char* s1, const char* s2, size_t n)
-{
-    char* result = s1;
-
-    if ((nullptr == s1) || (0 == n))
-        return result;
-
-    *s1 = *s2;
-    while ((--n != 0) && *s1) {
-        *++s1 = *++s2;
-    }
-    return result;
-}
-
 const char* SimpleString::StrStr(const char* s1, const char* s2)
 {
     if (!*s2)
@@ -185,7 +171,7 @@ SimpleString::SimpleString(const char* other, size_t repeatCount)
 
     char* next = buffer_;
     for (size_t i = 0; i < repeatCount; i++) {
-        StrNCpy(next, other, otherStringLength + 1);
+        std::strncpy(next, other, otherStringLength + 1);
         next += otherStringLength;
     }
     *next = 0;
@@ -275,7 +261,7 @@ void SimpleString::replace(const char* to, const char* with)
         char* newbuf = allocStringBuffer(newsize, __FILE__, __LINE__);
         for (size_t i = 0, j = 0; i < len;) {
             if (std::strncmp(&getBuffer()[i], to, tolen) == 0) {
-                StrNCpy(&newbuf[j], with, withlen + 1);
+                std::strncpy(&newbuf[j], with, withlen + 1);
                 j += withlen;
                 i += tolen;
             } else {
@@ -310,11 +296,11 @@ SimpleString SimpleString::printable() const
     for (size_t i = 0; i < str_size; i++) {
         char c = buffer_[i];
         if (isControlWithShortEscapeSequence(c)) {
-            StrNCpy(&result.buffer_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
+            std::strncpy(&result.buffer_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
             j += 2;
         } else if (isControl(c)) {
             SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
-            StrNCpy(&result.buffer_[j], hexEscapeCode.c_str(), 4);
+            std::strncpy(&result.buffer_[j], hexEscapeCode.c_str(), 4);
             j += 4;
         } else {
             result.buffer_[j] = c;
@@ -402,7 +388,7 @@ SimpleString& SimpleString::operator+=(const char* rhs)
     size_t additionalStringSize = std::strlen(rhs) + 1;
     size_t sizeOfNewString = originalSize + additionalStringSize;
     char* tbuffer = copyToNewBuffer(this->getBuffer(), sizeOfNewString);
-    StrNCpy(tbuffer + originalSize, rhs, additionalStringSize);
+    std::strncpy(tbuffer + originalSize, rhs, additionalStringSize);
 
     setInternalBufferTo(tbuffer, sizeOfNewString);
     return *this;
@@ -464,7 +450,7 @@ SimpleString SimpleString::subStringFromTill(char startChar, char lastExcludedCh
 char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
 {
     char* newBuffer = allocStringBuffer(bufferSize, __FILE__, __LINE__);
-    StrNCpy(newBuffer, bufferToCopy, bufferSize);
+    std::strncpy(newBuffer, bufferToCopy, bufferSize);
     newBuffer[bufferSize - 1] = '\0';
     return newBuffer;
 }
@@ -476,7 +462,7 @@ void SimpleString::copyToBuffer(char* bufferToCopy, size_t bufferSize) const
 
     size_t sizeToCopy = (bufferSize - 1 < size()) ? (bufferSize - 1) : size();
 
-    StrNCpy(bufferToCopy, getBuffer(), sizeToCopy);
+    std::strncpy(bufferToCopy, getBuffer(), sizeToCopy);
     bufferToCopy[sizeToCopy] = '\0';
 }
 

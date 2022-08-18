@@ -29,6 +29,7 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
+#include <cstring>
 
 class MemoryLeakFailureForTest : public MemoryLeakFailure {
 public:
@@ -164,7 +165,7 @@ TEST(MemoryLeakDetectorTest, sequenceNumbersOfMemoryLeaks)
 TEST(MemoryLeakDetectorTest, memoryDumpOutput)
 {
     char* mem = detector->allocMemory(defaultNewAllocator(), 6);
-    SimpleString::StrNCpy(mem, "test1", 6);
+    std::strncpy(mem, "test1", 6);
     SimpleString output = detector->report(mem_leak_period_checking);
 
     STRCMP_CONTAINS("Alloc num (1)", output.c_str());
