@@ -379,7 +379,7 @@ TEST(SimpleString, findNormal)
 TEST(SimpleString, at)
 {
     SimpleString str("Hello World");
-    BYTES_EQUAL('H', str.at(0));
+    BYTES_EQUAL('H', str[0]);
 }
 
 TEST(SimpleString, copyInBufferNormal)

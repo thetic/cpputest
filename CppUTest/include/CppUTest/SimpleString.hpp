@@ -59,9 +59,9 @@ public:
     SimpleString& operator+=(const SimpleString&);
     SimpleString& operator+=(const char*);
 
-    static const size_t npos = (size_t)-1;
+    static const size_t npos;
 
-    char at(size_t pos) const;
+    char operator[](size_t pos) const;
     size_t find(char ch) const;
     size_t findFrom(size_t starting_position, char ch) const;
     bool contains(const SimpleString& other) const;

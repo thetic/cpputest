@@ -34,6 +34,8 @@
 #include <climits>
 #include <string>
 
+const size_t SimpleString::npos = std::string::npos;
+
 /* Avoid using the memory leak detector INSIDE SimpleString as its used inside the detector */
 char* SimpleString::allocStringBuffer(size_t size, const char*, size_t)
 {
@@ -509,7 +511,7 @@ SimpleString SimpleString::subString(size_t beginPos) const
     return subString(beginPos, npos);
 }
 
-char SimpleString::at(size_t pos) const
+char SimpleString::operator[](size_t pos) const
 {
     return getBuffer()[pos];
 }
@@ -523,7 +525,7 @@ size_t SimpleString::findFrom(size_t starting_position, char ch) const
 {
     size_t length = size();
     for (size_t i = starting_position; i < length; i++)
-        if (at(i) == ch)
+        if ((*this)[i] == ch)
             return i;
     return npos;
 }

@@ -208,10 +208,10 @@ CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, siz
     message_ += createButWasString(printableExpected, printableActual);
 
     size_t failStart;
-    for (failStart = 0; actual.at(failStart) == expected.at(failStart); failStart++)
+    for (failStart = 0; actual[failStart] == expected[failStart]; failStart++)
         ;
     size_t failStartPrintable;
-    for (failStartPrintable = 0; printableActual.at(failStartPrintable) == printableExpected.at(failStartPrintable); failStartPrintable++)
+    for (failStartPrintable = 0; printableActual[failStartPrintable] == printableExpected[failStartPrintable]; failStartPrintable++)
         ;
     message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
 }
@@ -341,7 +341,7 @@ StringEqualFailure::StringEqualFailure(UtestShell* test, const char* fileName, s
         for (failStart = 0; actual[failStart] == expected[failStart]; failStart++)
             ;
         size_t failStartPrintable;
-        for (failStartPrintable = 0; printableActual.at(failStartPrintable) == printableExpected.at(failStartPrintable); failStartPrintable++)
+        for (failStartPrintable = 0; printableActual[failStartPrintable] == printableExpected[failStartPrintable]; failStartPrintable++)
             ;
         message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
     }
@@ -362,7 +362,7 @@ StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char*
             ;
         size_t failStartPrintable;
         for (failStartPrintable = 0;
-             SimpleString::ToLower(printableActual.at(failStartPrintable)) == SimpleString::ToLower(printableExpected.at(failStartPrintable));
+             SimpleString::ToLower(printableActual[failStartPrintable]) == SimpleString::ToLower(printableExpected[failStartPrintable]);
              failStartPrintable++)
             ;
         message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
