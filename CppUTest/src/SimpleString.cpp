@@ -511,12 +511,7 @@ char SimpleString::operator[](size_t pos) const
     return getBuffer()[pos];
 }
 
-size_t SimpleString::find(char ch) const
-{
-    return findFrom(0, ch);
-}
-
-size_t SimpleString::findFrom(size_t starting_position, char ch) const
+size_t SimpleString::find(char ch, size_t starting_position) const
 {
     size_t length = size();
     for (size_t i = starting_position; i < length; i++)
@@ -531,7 +526,7 @@ SimpleString SimpleString::subStringFromTill(char startChar, char lastExcludedCh
     if (beginPos == npos)
         return "";
 
-    size_t endPos = findFrom(beginPos, lastExcludedChar);
+    size_t endPos = find(lastExcludedChar, beginPos);
     if (endPos == npos)
         return substr(beginPos);
 

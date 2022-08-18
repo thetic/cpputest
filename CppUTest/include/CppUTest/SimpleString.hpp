@@ -62,8 +62,7 @@ public:
     static const size_t npos;
 
     char operator[](size_t pos) const;
-    size_t find(char ch) const;
-    size_t findFrom(size_t starting_position, char ch) const;
+    size_t find(char ch, size_t pos = 0) const;
     bool contains(const SimpleString& other) const;
     bool containsNoCase(const SimpleString& other) const;
     bool starts_with(const SimpleString& other) const;
