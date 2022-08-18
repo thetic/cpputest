@@ -98,7 +98,7 @@ void TestRegistry::listTestGroupNames(TestResult& result)
         }
     }
 
-    groupList.replace("#", "");
+    SimpleString::replaceAll(groupList, "#", "");
 
     if (groupList.ends_with(" "))
         groupList = groupList.substr(0, groupList.size() - 1);
@@ -125,7 +125,7 @@ void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
         }
     }
 
-    groupAndNameList.replace("#", "");
+    SimpleString::replaceAll(groupAndNameList, "#", "");
 
     if (groupAndNameList.ends_with(" "))
         groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);

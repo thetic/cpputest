@@ -251,28 +251,28 @@ TEST(SimpleString, endsWith)
 TEST(SimpleString, replaceCharWithChar)
 {
     SimpleString str("abcabcabca");
-    str.replace('a', 'b');
+    SimpleString::replaceAll(str, 'a', 'b');
     STRCMP_EQUAL("bbcbbcbbcb", str.c_str());
 }
 
 TEST(SimpleString, replaceEmptyStringWithEmptyString)
 {
     SimpleString str;
-    str.replace("", "");
+    SimpleString::replaceAll(str, "", "");
     STRCMP_EQUAL("", str.c_str());
 }
 
 TEST(SimpleString, replaceWholeString)
 {
     SimpleString str("boo");
-    str.replace("boo", "");
+    SimpleString::replaceAll(str, "boo", "");
     STRCMP_EQUAL("", str.c_str());
 }
 
 TEST(SimpleString, replaceStringWithString)
 {
     SimpleString str("boo baa boo baa boo");
-    str.replace("boo", "boohoo");
+    SimpleString::replaceAll(str, "boo", "boohoo");
     STRCMP_EQUAL("boohoo baa boohoo baa boohoo", str.c_str());
 }
 

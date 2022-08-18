@@ -98,7 +98,7 @@ static SimpleString extractFileNameFromPath(const char* file)
 SimpleString CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const char* file, size_t line)
 {
     SimpleString fileNameOnly = extractFileNameFromPath(file);
-    fileNameOnly.replace(".", "_");
+    SimpleString::replaceAll(fileNameOnly, ".", "_");
 
     for (int i = 1; i < 100; i++) {
         SimpleString variableName = StringFromFormat("%s_%d_%d", fileNameOnly.c_str(), (int)line, i);

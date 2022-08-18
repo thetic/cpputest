@@ -217,22 +217,22 @@ size_t SimpleString::count(const SimpleString& substr) const
     return num;
 }
 
-void SimpleString::replace(char to, char with)
+void SimpleString::replaceAll(SimpleString& string, char to, char with)
 {
-    size_t s = size();
+    size_t s = string.size();
     for (size_t i = 0; i < s; i++) {
-        if (data()[i] == to)
-            buffer_[i] = with;
+        if (string.data()[i] == to)
+            string.buffer_[i] = with;
     }
 }
 
-void SimpleString::replace(const char* to, const char* with)
+void SimpleString::replaceAll(SimpleString& string, const char* to, const char* with)
 {
-    size_t c = count(to);
+    size_t c = string.count(to);
     if (c == 0) {
         return;
     }
-    size_t len = size();
+    size_t len = string.size();
     size_t tolen = std::strlen(to);
     size_t withlen = std::strlen(with);
 
@@ -241,20 +241,20 @@ void SimpleString::replace(const char* to, const char* with)
     if (newsize > 1) {
         char* newbuf = allocStringBuffer(newsize, __FILE__, __LINE__);
         for (size_t i = 0, j = 0; i < len;) {
-            if (std::strncmp(&data()[i], to, tolen) == 0) {
+            if (std::strncmp(&string.data()[i], to, tolen) == 0) {
                 std::strncpy(&newbuf[j], with, withlen + 1);
                 j += withlen;
                 i += tolen;
             } else {
-                newbuf[j] = data()[i];
+                newbuf[j] = string.data()[i];
                 j++;
                 i++;
             }
         }
         newbuf[newsize - 1] = '\0';
-        setInternalBufferTo(newbuf, newsize);
+        string.setInternalBufferTo(newbuf, newsize);
     } else
-        setInternalBufferAsEmptyString();
+        string.setInternalBufferAsEmptyString();
 }
 
 SimpleString SimpleString::printable(const SimpleString& string)
