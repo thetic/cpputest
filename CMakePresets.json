@@ -51,6 +51,18 @@
       }
     },
     {
+      "name": "coverage",
+      "inherits": ["gcc"],
+      "cacheVariables": {
+        "CPPUTEST_DISCOVER": false
+      },
+      "environment": {
+        "CFLAGS": "--coverage",
+        "CXXFLAGS": "--coverage",
+        "LDFLAGS": "--coverage"
+      }
+    },
+    {
       "name": "ubsan",
       "inherits": ["clang"],
       "environment": {
