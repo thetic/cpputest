@@ -312,12 +312,6 @@ TEST(SimpleString, subStringFromPos6ToEndOfString)
     STRCMP_EQUAL("World", str.substr(6).c_str());
 }
 
-TEST(SimpleString, subStringBeginPosOutOfBounds)
-{
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("", str.substr(13, 5).c_str());
-}
-
 TEST(SimpleString, subStringFromTillNormal)
 {
     SimpleString str("Hello World");

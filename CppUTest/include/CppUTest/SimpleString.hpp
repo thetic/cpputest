@@ -50,7 +50,7 @@ public:
     SimpleString(const char* value = "");
     SimpleString(const char* value, size_t repeatCount);
     SimpleString(const SimpleString& other);
-    ~SimpleString();
+    ~SimpleString() = default;
 
     SimpleString& operator=(const SimpleString& other);
     SimpleString operator+(const SimpleString&) const;
@@ -84,18 +84,8 @@ public:
     static unsigned AtoU(const char* str);
 
 private:
-    void deallocateInternalBuffer();
-    void setInternalBufferAsEmptyString();
-    void setInternalBufferToNewBuffer(size_t bufferSize);
-    void setInternalBufferTo(char* buffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const SimpleString& otherBuffer);
+    std::string string_;
 
-    char* buffer_ = nullptr;
-    size_t bufferSize_ = 0;
-
-    char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
     static bool isControlWithShortEscapeSequence(char ch);
     static size_t getPrintableSize(const SimpleString&);

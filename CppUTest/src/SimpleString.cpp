@@ -50,13 +50,6 @@ const char* StrStr(const char* s1, const char* s2)
 
 const size_t SimpleString::npos = std::string::npos;
 
-char* SimpleString::getEmptyString() const
-{
-    char* empty = (char*)PlatformSpecificMalloc(1);
-    empty[0] = '\0';
-    return empty;
-}
-
 // does not support + or - prefixes
 unsigned SimpleString::AtoU(const char* str)
 {
@@ -71,93 +64,31 @@ unsigned SimpleString::AtoU(const char* str)
     return result;
 }
 
-void SimpleString::deallocateInternalBuffer()
-{
-    if (buffer_) {
-        PlatformSpecificFree(buffer_);
-        buffer_ = nullptr;
-        bufferSize_ = 0;
-    }
-}
-
-void SimpleString::setInternalBufferAsEmptyString()
-{
-    deallocateInternalBuffer();
-
-    bufferSize_ = 1;
-    buffer_ = getEmptyString();
-}
-
-void SimpleString::copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize)
-{
-    deallocateInternalBuffer();
-
-    bufferSize_ = bufferSize;
-    buffer_ = copyToNewBuffer(otherBuffer, bufferSize_);
-}
-
-void SimpleString::setInternalBufferToNewBuffer(size_t bufferSize)
-{
-    deallocateInternalBuffer();
-
-    bufferSize_ = bufferSize;
-    buffer_ = (char*)PlatformSpecificMalloc(bufferSize_);
-    buffer_[0] = '\0';
-}
-
-void SimpleString::setInternalBufferTo(char* buffer, size_t bufferSize)
-{
-    deallocateInternalBuffer();
-
-    bufferSize_ = bufferSize;
-    buffer_ = buffer;
-}
-
-void SimpleString::copyBufferToNewInternalBuffer(const SimpleString& otherBuffer)
-{
-    copyBufferToNewInternalBuffer(otherBuffer.buffer_, otherBuffer.size() + 1);
-}
-
-void SimpleString::copyBufferToNewInternalBuffer(const char* otherBuffer)
-{
-    copyBufferToNewInternalBuffer(otherBuffer, std::strlen(otherBuffer) + 1);
-}
-
 const char* SimpleString::data() const
 {
-    return buffer_;
+    return string_.data();
 }
 
 SimpleString::SimpleString(const char* otherBuffer)
+    : string_(otherBuffer ? otherBuffer : "")
 {
-    if (otherBuffer == nullptr)
-        setInternalBufferAsEmptyString();
-    else
-        copyBufferToNewInternalBuffer(otherBuffer);
 }
 
 SimpleString::SimpleString(const char* other, size_t repeatCount)
 {
-    size_t otherStringLength = std::strlen(other);
-    setInternalBufferToNewBuffer(otherStringLength * repeatCount + 1);
-
-    char* next = buffer_;
-    for (size_t i = 0; i < repeatCount; i++) {
-        std::strncpy(next, other, otherStringLength + 1);
-        next += otherStringLength;
-    }
-    *next = 0;
+    string_ = "";
+    for (size_t i = 0; i < repeatCount; ++i)
+        string_ += other;
 }
 
 SimpleString::SimpleString(const SimpleString& other)
+    : string_(other.string_)
 {
-    copyBufferToNewInternalBuffer(other.data());
 }
 
 SimpleString& SimpleString::operator=(const SimpleString& other)
 {
-    if (this != &other)
-        copyBufferToNewInternalBuffer(other);
+    string_ = other.string_;
     return *this;
 }
 
@@ -210,10 +141,10 @@ size_t SimpleString::count(const SimpleString& substr) const
 
 void SimpleString::replaceAll(SimpleString& string, char to, char with)
 {
-    size_t s = string.size();
-    for (size_t i = 0; i < s; i++) {
-        if (string.data()[i] == to)
-            string.buffer_[i] = with;
+    for (auto& c : string.string_) {
+        if (c == to) {
+            c = with;
+        }
     }
 }
 
@@ -243,9 +174,10 @@ void SimpleString::replaceAll(SimpleString& string, const char* to, const char* 
             }
         }
         newbuf[newsize - 1] = '\0';
-        string.setInternalBufferTo(newbuf, newsize);
+        string.string_ = newbuf;
+        PlatformSpecificFree(newbuf);
     } else
-        string.setInternalBufferAsEmptyString();
+        string.string_.clear();
 }
 
 SimpleString SimpleString::printable(const SimpleString& string)
@@ -260,26 +192,25 @@ SimpleString SimpleString::printable(const SimpleString& string)
         "\\r"
     };
 
-    SimpleString result;
-    result.setInternalBufferToNewBuffer(getPrintableSize(string) + 1);
+    SimpleString result(" ", getPrintableSize(string));
 
     size_t str_size = string.size();
     size_t j = 0;
     for (size_t i = 0; i < str_size; i++) {
         char c = string[i];
         if (isControlWithShortEscapeSequence(c)) {
-            std::strncpy(&result.buffer_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
+            std::strncpy(&result.string_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
             j += 2;
         } else if (std::iscntrl(c)) {
             SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
-            std::strncpy(&result.buffer_[j], hexEscapeCode.c_str(), 4);
+            std::strncpy(&result.string_[j], hexEscapeCode.c_str(), 4);
             j += 4;
         } else {
-            result.buffer_[j] = c;
+            result.string_[j] = c;
             j++;
         }
     }
-    result.buffer_[j] = 0;
+    result.string_[j] = 0;
 
     return result;
 }
@@ -305,31 +236,25 @@ SimpleString SimpleString::lowerCase(const SimpleString& original)
 {
     SimpleString str(original);
 
-    size_t str_size = str.size();
-    for (size_t i = 0; i < str_size; i++)
-        str.buffer_[i] = std::tolower(str.data()[i]);
+    for (auto& c : str.string_)
+        c = std::tolower(c);
 
     return str;
 }
 
 const char* SimpleString::c_str() const
 {
-    return data();
+    return string_.c_str();
 }
 
 size_t SimpleString::size() const
 {
-    return std::strlen(data());
+    return string_.size();
 }
 
 bool SimpleString::empty() const
 {
-    return size() == 0;
-}
-
-SimpleString::~SimpleString()
-{
-    deallocateInternalBuffer();
+    return string_.empty();
 }
 
 bool operator==(const SimpleString& left, const SimpleString& right)
@@ -351,18 +276,13 @@ SimpleString SimpleString::operator+(const SimpleString& rhs) const
 
 SimpleString& SimpleString::operator+=(const SimpleString& rhs)
 {
-    return operator+=(rhs.data());
+    string_ += rhs.string_;
+    return *this;
 }
 
 SimpleString& SimpleString::operator+=(const char* rhs)
 {
-    size_t originalSize = this->size();
-    size_t additionalStringSize = std::strlen(rhs) + 1;
-    size_t sizeOfNewString = originalSize + additionalStringSize;
-    char* tbuffer = copyToNewBuffer(this->data(), sizeOfNewString);
-    std::strncpy(tbuffer + originalSize, rhs, additionalStringSize);
-
-    setInternalBufferTo(tbuffer, sizeOfNewString);
+    string_ += rhs;
     return *this;
 }
 
@@ -381,15 +301,7 @@ void SimpleString::padStringsToSameLength(SimpleString& str1, SimpleString& str2
 
 SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
 {
-    if (beginPos > size() - 1)
-        return "";
-
-    SimpleString newString = data() + beginPos;
-
-    if (newString.size() > amount)
-        newString.buffer_[amount] = '\0';
-
-    return newString;
+    return SimpleString(string_.substr(beginPos, amount).c_str());
 }
 
 char SimpleString::operator[](size_t pos) const
@@ -399,11 +311,7 @@ char SimpleString::operator[](size_t pos) const
 
 size_t SimpleString::find(char ch, size_t starting_position) const
 {
-    size_t length = size();
-    for (size_t i = starting_position; i < length; i++)
-        if ((*this)[i] == ch)
-            return i;
-    return npos;
+    return string_.find(ch, starting_position);
 }
 
 SimpleString SimpleString::subStringFromTill(const SimpleString& original, char startChar, char lastExcludedChar)
