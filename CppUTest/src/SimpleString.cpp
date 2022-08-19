@@ -29,7 +29,6 @@
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 
 #include <cctype>
 #include <climits>

@@ -28,9 +28,7 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestHarness.hpp"
 
-#include "CppUTest/MemoryLeakDetector.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 
 void CHECK_EQUAL_C_BOOL_LOCATION(int expected, int actual, const char* text, const char* fileName, size_t lineNumber)
 {

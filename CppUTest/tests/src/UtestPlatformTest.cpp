@@ -28,7 +28,6 @@
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)

@@ -32,9 +32,6 @@
  * a lot of memory in embedded apps. Change it if you experience the memory leak detector to be slow.
  */
 
-#define MEMORY_LEAK_HASH_TABLE_SIZE 73
-
-#include "CppUTest/MemoryLeakWarningPlugin.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestPlugin.hpp"

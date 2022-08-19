@@ -26,10 +26,8 @@
  */
 
 #include "CppUTest/SimpleString.hpp"
-#include "CppUTest/MemoryLeakDetector.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
 #if defined(__LP64__) || defined(_LP64) || (defined(__WORDSIZE) && (__WORDSIZE == 64)) || defined(__x86_64) || defined(_WIN64)

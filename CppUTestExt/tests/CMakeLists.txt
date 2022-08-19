@@ -3,12 +3,8 @@ add_executable(CppUTestExtTests
     include/MockSupport_cTestCFile.h
     include/OrderedTestTest.h
     src/AllTests.cpp
-    src/CodeMemoryReporterTest.cpp
     src/ExpectedFunctionsListTest.cpp
     src/IEEE754PluginTest.cpp
-    src/MemoryReportAllocatorTest.cpp
-    src/MemoryReportFormatterTest.cpp
-    src/MemoryReporterPluginTest.cpp
     src/MockActualCallTest.cpp
     src/MockCallTest.cpp
     src/MockCheatSheetTest.cpp

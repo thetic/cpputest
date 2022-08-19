@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTestExt/MemoryReporterPlugin.hpp"
 #include "CppUTestExt/MockSupportPlugin.hpp"
 
 #include "CppUTest/CommandLineTestRunner.hpp"
@@ -33,20 +32,9 @@
 
 int main(int ac, const char* const* av)
 {
-    int result = 0;
+    MockSupportPlugin mockPlugin;
+    TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
-    {
-        MemoryReporterPlugin plugin;
-        MockSupportPlugin mockPlugin;
-        TestRegistry::getCurrentRegistry()->installPlugin(&plugin);
-        TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
-
-        /* Don't have any memory leak detector when running the Google Test tests */
-
-        ConsoleTestOutput output;
-        CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
-        result = runner.runAllTestsMain();
-    }
-
-    return result;
+    CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
+    return runner.runAllTestsMain();
 }

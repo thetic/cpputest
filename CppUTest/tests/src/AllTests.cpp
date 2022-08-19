@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/CommandLineTestRunner.hpp"
-#include "CppUTest/TestMemoryAllocator.hpp"
 
 int main(int ac, char** av)
 {
