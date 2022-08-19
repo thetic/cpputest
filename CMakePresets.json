@@ -41,8 +41,8 @@
       "inherits": ["defaults"],
       "generator": "Visual Studio 17 2022",
       "environment": {
-        "CFLAGS": "/W3 /WX",
-        "CXXFLAGS": "/W3 /WX"
+        "CFLAGS": "/W3 /WX /D_CRT_SECURE_NO_WARNINGS",
+        "CXXFLAGS": "/W3 /WX /D_CRT_SECURE_NO_WARNINGS"
       },
       "condition": {
         "type": "equals",
