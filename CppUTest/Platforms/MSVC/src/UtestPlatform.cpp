@@ -87,7 +87,7 @@ static const char* VisualCppTimeString()
     time_t the_time = time(NULL);
     struct tm the_local_time;
     static char dateTime[80];
-    memcpy(&the_local_time, localtime, sizeof(the_local_time));
+    memcpy(&the_local_time, localtime(&the_time), sizeof(the_local_time));
     strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", &the_local_time);
     return dateTime;
 }
