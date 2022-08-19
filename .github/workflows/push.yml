@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: cmake --build build/defaults -j --verbose
       - name: Test
-        run: ctest --test-dir build/defaults -V
+        run: ctest --test-dir build/defaults -V -j
 
   linux:
     strategy:
@@ -56,7 +56,7 @@ jobs:
       - name: Build
         run: cmake --build build/${{ matrix.preset }} -j --verbose
       - name: Test
-        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure -j
 
   windows:
     strategy:
@@ -84,4 +84,4 @@ jobs:
       - name: Build
         run: cmake --build build/${{ matrix.preset }} -j --verbose
       - name: Test
-        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure -j
