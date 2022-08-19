@@ -8,7 +8,6 @@ add_library(CppUTest
     include/CppUTest/PlatformSpecificFunctions.h
     include/CppUTest/SimpleMutex.hpp
     include/CppUTest/SimpleString.hpp
-    include/CppUTest/SimpleStringInternalCache.hpp
     include/CppUTest/TeamCityTestOutput.hpp
     include/CppUTest/TestFailure.hpp
     include/CppUTest/TestFilter.hpp
@@ -29,7 +28,6 @@ add_library(CppUTest
     src/MemoryLeakWarningPlugin.cpp
     src/SimpleMutex.cpp
     src/SimpleString.cpp
-    src/SimpleStringInternalCache.cpp
     src/TeamCityTestOutput.cpp
     src/TestFailure.cpp
     src/TestFilter.cpp

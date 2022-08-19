@@ -33,6 +33,8 @@
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+#include <cstring>
+
 #define MAX_VARIABLE_NAME_LINE_PART 10
 #define MAX_VARIABLE_NAME_FILE_PART 53
 #define MAX_VARIABLE_NAME_SEPERATOR_PART 1
@@ -69,7 +71,7 @@ void CodeMemoryReportFormatter::addNodeToList(const char* variableName, void* me
     CodeReportingAllocationNode* newNode = (CodeReportingAllocationNode*)(void*)internalAllocator_->alloc_memory(sizeof(CodeReportingAllocationNode), __FILE__, __LINE__);
     newNode->memory_ = memory;
     newNode->next_ = next;
-    SimpleString::StrNCpy(newNode->variableName_, variableName, MAX_VARIABLE_NAME_LENGTH);
+    std::strncpy(newNode->variableName_, variableName, MAX_VARIABLE_NAME_LENGTH);
     codeReportingList_ = newNode;
 }
 
@@ -85,7 +87,7 @@ CodeReportingAllocationNode* CodeMemoryReportFormatter::findNode(void* memory)
 
 static SimpleString extractFileNameFromPath(const char* file)
 {
-    const char* fileNameOnly = file + SimpleString::StrLen(file);
+    const char* fileNameOnly = file + std::strlen(file);
     while (fileNameOnly != file && *fileNameOnly != '/')
         fileNameOnly--;
     if (*fileNameOnly == '/')
@@ -96,10 +98,10 @@ static SimpleString extractFileNameFromPath(const char* file)
 SimpleString CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const char* file, size_t line)
 {
     SimpleString fileNameOnly = extractFileNameFromPath(file);
-    fileNameOnly.replace(".", "_");
+    SimpleString::replaceAll(fileNameOnly, ".", "_");
 
     for (int i = 1; i < 100; i++) {
-        SimpleString variableName = StringFromFormat("%s_%d_%d", fileNameOnly.asCharString(), (int)line, i);
+        SimpleString variableName = StringFromFormat("%s_%d_%d", fileNameOnly.c_str(), (int)line, i);
         if (!variableExists(variableName))
             return variableName;
     }
@@ -108,7 +110,9 @@ SimpleString CodeMemoryReportFormatter::createVariableNameFromFileLineInfo(const
 
 bool CodeMemoryReportFormatter::isNewAllocator(TestMemoryAllocator* allocator)
 {
-    return SimpleString::StrCmp(allocator->alloc_name(), defaultNewAllocator()->alloc_name()) == 0 || SimpleString::StrCmp(allocator->alloc_name(), defaultNewArrayAllocator()->alloc_name()) == 0;
+    return (
+        std::strcmp(allocator->alloc_name(), defaultNewAllocator()->alloc_name()) == 0
+        || std::strcmp(allocator->alloc_name(), defaultNewArrayAllocator()->alloc_name()) == 0);
 }
 
 bool CodeMemoryReportFormatter::variableExists(const SimpleString& variableName)
@@ -125,25 +129,25 @@ bool CodeMemoryReportFormatter::variableExists(const SimpleString& variableName)
 SimpleString CodeMemoryReportFormatter::getAllocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, size_t size)
 {
     if (isNewAllocator(allocator))
-        return StringFromFormat("char* %s = new char[%lu]; /* using %s */", variableName.asCharString(), (unsigned long)size, allocator->alloc_name());
+        return StringFromFormat("char* %s = new char[%lu]; /* using %s */", variableName.c_str(), (unsigned long)size, allocator->alloc_name());
     else
-        return StringFromFormat("void* %s = malloc(%lu);", variableName.asCharString(), (unsigned long)size);
+        return StringFromFormat("void* %s = malloc(%lu);", variableName.c_str(), (unsigned long)size);
 }
 
 SimpleString CodeMemoryReportFormatter::getDeallocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, const char* file, size_t line)
 {
     if (isNewAllocator(allocator))
-        return StringFromFormat("delete [] %s; /* using %s at %s:%d */", variableName.asCharString(), allocator->free_name(), file, (int)line);
+        return StringFromFormat("delete [] %s; /* using %s at %s:%d */", variableName.c_str(), allocator->free_name(), file, (int)line);
     else
-        return StringFromFormat("free(%s); /* at %s:%d */", variableName.asCharString(), file, (int)line);
+        return StringFromFormat("free(%s); /* at %s:%d */", variableName.c_str(), file, (int)line);
 }
 
 void CodeMemoryReportFormatter::report_test_start(TestResult* result, UtestShell& test)
 {
     clearReporting();
     result->print(StringFromFormat("*/\nTEST(%s_memoryReport, %s)\n{ /* at %s:%d */\n",
-        test.getGroup().asCharString(), test.getName().asCharString(), test.getFile().asCharString(), (int)test.getLineNumber())
-                      .asCharString());
+        test.getGroup().c_str(), test.getName().c_str(), test.getFile().c_str(), (int)test.getLineNumber())
+                      .c_str());
 }
 
 void CodeMemoryReportFormatter::report_test_end(TestResult* result, UtestShell&)
@@ -154,15 +158,15 @@ void CodeMemoryReportFormatter::report_test_end(TestResult* result, UtestShell&)
 void CodeMemoryReportFormatter::report_testgroup_start(TestResult* result, UtestShell& test)
 {
     result->print(StringFromFormat("*/TEST_GROUP(%s_memoryReport)\n{\n};\n/*",
-        test.getGroup().asCharString())
-                      .asCharString());
+        test.getGroup().c_str())
+                      .c_str());
 }
 
 void CodeMemoryReportFormatter::report_alloc_memory(TestResult* result, TestMemoryAllocator* allocator, size_t size, char* memory, const char* file, size_t line)
 {
     SimpleString variableName = createVariableNameFromFileLineInfo(file, line);
-    result->print(StringFromFormat("\t%s\n", getAllocationString(allocator, variableName, size).asCharString()).asCharString());
-    addNodeToList(variableName.asCharString(), memory, codeReportingList_);
+    result->print(StringFromFormat("\t%s\n", getAllocationString(allocator, variableName, size).c_str()).c_str());
+    addNodeToList(variableName.c_str(), memory, codeReportingList_);
 }
 
 void CodeMemoryReportFormatter::report_free_memory(TestResult* result, TestMemoryAllocator* allocator, char* memory, const char* file, size_t line)
@@ -175,5 +179,5 @@ void CodeMemoryReportFormatter::report_free_memory(TestResult* result, TestMemor
     else
         variableName = node->variableName_;
 
-    result->print(StringFromFormat("\t%s\n", getDeallocationString(allocator, variableName, file, line).asCharString()).asCharString());
+    result->print(StringFromFormat("\t%s\n", getDeallocationString(allocator, variableName, file, line).c_str()).c_str());
 }

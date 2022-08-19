@@ -32,6 +32,7 @@
 #include "CppUTest/TestRegistry.hpp"
 
 #include <csignal>
+#include <cstring>
 
 #if defined(__GNUC__) && __GNUC__ >= 11
 #define NEEDS_DISABLE_NULL_WARNING
@@ -442,7 +443,7 @@ void UtestShell::assertCstrEqual(const char* expected, const char* actual, const
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-    if (SimpleString::StrCmp(expected, actual) != 0)
+    if (std::strcmp(expected, actual) != 0)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
 }
 
@@ -453,7 +454,7 @@ void UtestShell::assertCstrNEqual(const char* expected, const char* actual, size
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
-    if (SimpleString::StrNCmp(expected, actual, length) != 0)
+    if (std::strncmp(expected, actual, length) != 0)
         failWith(StringEqualFailure(this, fileName, lineNumber, expected, actual, text), testTerminator);
 }
 
@@ -464,7 +465,7 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(expected).equalsNoCase(actual))
+    if (SimpleString::lowerCase(expected) != SimpleString::lowerCase(actual))
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -486,7 +487,7 @@ void UtestShell::assertCstrNoCaseContains(const char* expected, const char* actu
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(actual).containsNoCase(expected))
+    if (!SimpleString::lowerCase(actual).contains(SimpleString::lowerCase(expected)))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -555,7 +556,7 @@ void UtestShell::assertBinaryEqual(const void* expected, const void* actual, siz
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char*)expected, (const unsigned char*)actual, length, text), testTerminator);
-    if (SimpleString::MemCmp(expected, actual, length) != 0)
+    if (std::memcmp(expected, actual, length) != 0)
         failWith(BinaryEqualFailure(this, fileName, lineNumber, (const unsigned char*)expected, (const unsigned char*)actual, length, text), testTerminator);
 }
 
@@ -588,12 +589,12 @@ void UtestShell::print(const char* text, const char* fileName, size_t lineNumber
     stringToPrint += StringFrom(lineNumber);
     stringToPrint += " ";
     stringToPrint += text;
-    getTestResult()->print(stringToPrint.asCharString());
+    getTestResult()->print(stringToPrint.c_str());
 }
 
 void UtestShell::print(const SimpleString& text, const char* fileName, size_t lineNumber)
 {
-    print(text.asCharString(), fileName, lineNumber);
+    print(text.c_str(), fileName, lineNumber);
 }
 
 void UtestShell::printVeryVerbose(const char* text)

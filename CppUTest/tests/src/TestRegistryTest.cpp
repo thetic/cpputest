@@ -339,7 +339,7 @@ TEST(TestRegistry, listTestGroupNames_shouldListBackwardsGroup1AfterGroup11AndGr
 
     myRegistry->listTestGroupNames(*result);
     SimpleString s = output->getOutput();
-    STRCMP_EQUAL("GROUP_2 GROUP_11 GROUP_1", s.asCharString());
+    STRCMP_EQUAL("GROUP_2 GROUP_11 GROUP_1", s.c_str());
 }
 
 TEST(TestRegistry, listTestGroupAndCaseNames_shouldListBackwardsGroupATestaAfterGroupAtestaa)
@@ -356,7 +356,7 @@ TEST(TestRegistry, listTestGroupAndCaseNames_shouldListBackwardsGroupATestaAfter
 
     myRegistry->listTestGroupAndCaseNames(*result);
     SimpleString s = output->getOutput();
-    STRCMP_EQUAL("GROUP_A.test_aa GROUP_B.test_b GROUP_A.test_a", s.asCharString());
+    STRCMP_EQUAL("GROUP_A.test_aa GROUP_B.test_b GROUP_A.test_a", s.c_str());
 }
 
 TEST(TestRegistry, listTestLocations_shouldListBackwardsGroupATestaAfterGroupAtestaa)
@@ -379,7 +379,7 @@ TEST(TestRegistry, listTestLocations_shouldListBackwardsGroupATestaAfterGroupAte
 
     myRegistry->listTestLocations(*result);
     SimpleString s = output->getOutput();
-    STRCMP_EQUAL("GROUP_A.test_aa.cpptest_simple/my_tests/testaa.cpp.300\nGROUP_B.test_b.cpptest_simple/my tests/testb.cpp.200\nGROUP_A.test_a.cpptest_simple/my_tests/testa.cpp.100\n", s.asCharString());
+    STRCMP_EQUAL("GROUP_A.test_aa.cpptest_simple/my_tests/testaa.cpp.300\nGROUP_B.test_b.cpptest_simple/my tests/testb.cpp.200\nGROUP_A.test_a.cpptest_simple/my_tests/testa.cpp.100\n", s.c_str());
 }
 
 TEST(TestRegistry, shuffleEmptyListIsNoOp)

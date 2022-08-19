@@ -132,7 +132,7 @@ bool TestFailure::isInHelperFunction() const
 
 SimpleString TestFailure::createButWasString(const SimpleString& expected, const SimpleString& actual)
 {
-    return StringFromFormat("expected <%s>\n\tbut was  <%s>", expected.asCharString(), actual.asCharString());
+    return StringFromFormat("expected <%s>\n\tbut was  <%s>", expected.c_str(), actual.c_str());
 }
 
 SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual, size_t offset, size_t reportedPosition)
@@ -146,20 +146,20 @@ SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual
     SimpleString differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
 
     result += "\n";
-    result += StringFromFormat("\t%s%s>\n", differentString.asCharString(), actualString.subString(offset, extraCharactersWindow).asCharString());
+    result += StringFromFormat("\t%s%s>\n", differentString.c_str(), actualString.substr(offset, extraCharactersWindow).c_str());
 
-    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).asCharString());
+    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).c_str());
     return result;
 }
 
 SimpleString TestFailure::createUserText(const SimpleString& text)
 {
     SimpleString userMessage = "";
-    if (!text.isEmpty()) {
+    if (!text.empty()) {
         // This is a kludge to turn off "Message: " for this case.
         // I don't think "Message: " adds anything, as you get to see the
         // message. I propose we remove "Message: " lead in
-        if (!text.startsWith("LONGS_EQUAL"))
+        if (!text.starts_with("LONGS_EQUAL"))
             userMessage += "Message: ";
         userMessage += text;
         userMessage += "\n\t";
@@ -202,16 +202,16 @@ CheckEqualFailure::CheckEqualFailure(UtestShell* test, const char* fileName, siz
 {
     message_ = createUserText(text);
 
-    SimpleString printableExpected = PrintableStringFromOrNull(expected.asCharString());
-    SimpleString printableActual = PrintableStringFromOrNull(actual.asCharString());
+    SimpleString printableExpected = PrintableStringFromOrNull(expected.c_str());
+    SimpleString printableActual = PrintableStringFromOrNull(actual.c_str());
 
     message_ += createButWasString(printableExpected, printableActual);
 
     size_t failStart;
-    for (failStart = 0; actual.at(failStart) == expected.at(failStart); failStart++)
+    for (failStart = 0; actual[failStart] == expected[failStart]; failStart++)
         ;
     size_t failStartPrintable;
-    for (failStartPrintable = 0; printableActual.at(failStartPrintable) == printableExpected.at(failStartPrintable); failStartPrintable++)
+    for (failStartPrintable = 0; printableActual[failStartPrintable] == printableExpected[failStartPrintable]; failStartPrintable++)
         ;
     message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
 }
@@ -231,7 +231,7 @@ ContainsFailure::ContainsFailure(UtestShell* test, const char* fileName, size_t 
 {
     message_ = createUserText(text);
 
-    message_ += StringFromFormat("actual <%s>\n\tdid not contain  <%s>", actual.asCharString(), expected.asCharString());
+    message_ += StringFromFormat("actual <%s>\n\tdid not contain  <%s>", actual.c_str(), expected.c_str());
 }
 
 CheckFailure::CheckFailure(UtestShell* test, const char* fileName, size_t lineNumber, const SimpleString& checkString, const SimpleString& conditionString, const SimpleString& text)
@@ -341,7 +341,7 @@ StringEqualFailure::StringEqualFailure(UtestShell* test, const char* fileName, s
         for (failStart = 0; actual[failStart] == expected[failStart]; failStart++)
             ;
         size_t failStartPrintable;
-        for (failStartPrintable = 0; printableActual.at(failStartPrintable) == printableExpected.at(failStartPrintable); failStartPrintable++)
+        for (failStartPrintable = 0; printableActual[failStartPrintable] == printableExpected[failStartPrintable]; failStartPrintable++)
             ;
         message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
     }
@@ -358,11 +358,11 @@ StringEqualNoCaseFailure::StringEqualNoCaseFailure(UtestShell* test, const char*
     message_ += createButWasString(printableExpected, printableActual);
     if ((expected) && (actual)) {
         size_t failStart;
-        for (failStart = 0; SimpleString::ToLower(actual[failStart]) == SimpleString::ToLower(expected[failStart]); failStart++)
+        for (failStart = 0; std::tolower(actual[failStart]) == std::tolower(expected[failStart]); failStart++)
             ;
         size_t failStartPrintable;
         for (failStartPrintable = 0;
-             SimpleString::ToLower(printableActual.at(failStartPrintable)) == SimpleString::ToLower(printableExpected.at(failStartPrintable));
+             std::tolower(printableActual[failStartPrintable]) == std::tolower(printableExpected[failStartPrintable]);
              failStartPrintable++)
             ;
         message_ += createDifferenceAtPosString(printableActual, failStartPrintable, failStart);
@@ -401,7 +401,7 @@ FeatureUnsupportedFailure::FeatureUnsupportedFailure(UtestShell* test, const cha
 {
     message_ = createUserText(text);
 
-    message_ += StringFromFormat("The feature \"%s\" is not supported in this environment or with the feature set selected when building the library.", featureName.asCharString());
+    message_ += StringFromFormat("The feature \"%s\" is not supported in this environment or with the feature set selected when building the library.", featureName.c_str());
 }
 
 #if !CPPUTEST_NO_EXCEPTIONS
@@ -427,7 +427,7 @@ static SimpleString getExceptionTypeName(const std::exception& e)
 }
 
 UnexpectedExceptionFailure::UnexpectedExceptionFailure(UtestShell* test, const std::exception& e)
-    : TestFailure(test, StringFromFormat("Unexpected exception of type '%s' was thrown: %s", getExceptionTypeName(e).asCharString(), e.what()))
+    : TestFailure(test, StringFromFormat("Unexpected exception of type '%s' was thrown: %s", getExceptionTypeName(e).c_str(), e.what()))
 {
 }
 #endif

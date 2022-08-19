@@ -48,7 +48,7 @@ bool MemoryReporterPlugin::parseArguments(int /* ac */, const char* const* av, i
 {
     SimpleString argument(av[index]);
     if (argument.contains("-pmemoryreport=")) {
-        argument.replace("-pmemoryreport=", "");
+        SimpleString::replaceAll(argument, "-pmemoryreport=", "");
 
         destroyMemoryFormatter(formatter_);
         formatter_ = createMemoryFormatter(argument);

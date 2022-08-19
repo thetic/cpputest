@@ -42,9 +42,6 @@
 #include <cstddef>
 #include <string>
 
-class SimpleStringCollection;
-class TestMemoryAllocator;
-
 class SimpleString {
     friend bool operator==(const SimpleString& left, const SimpleString& right);
     friend bool operator!=(const SimpleString& left, const SimpleString& right);
@@ -53,91 +50,54 @@ public:
     SimpleString(const char* value = "");
     SimpleString(const char* value, size_t repeatCount);
     SimpleString(const SimpleString& other);
-    ~SimpleString();
+    ~SimpleString() = default;
 
     SimpleString& operator=(const SimpleString& other);
     SimpleString operator+(const SimpleString&) const;
     SimpleString& operator+=(const SimpleString&);
     SimpleString& operator+=(const char*);
 
-    static const size_t npos = (size_t)-1;
+    static const size_t npos;
 
-    char at(size_t pos) const;
-    size_t find(char ch) const;
-    size_t findFrom(size_t starting_position, char ch) const;
+    char operator[](size_t pos) const;
+    size_t find(char ch, size_t pos = 0) const;
     bool contains(const SimpleString& other) const;
-    bool containsNoCase(const SimpleString& other) const;
-    bool startsWith(const SimpleString& other) const;
-    bool endsWith(const SimpleString& other) const;
-    void split(const SimpleString& split,
-        SimpleStringCollection& outCollection) const;
-    bool equalsNoCase(const SimpleString& str) const;
+    bool starts_with(const SimpleString& other) const;
+    bool ends_with(const SimpleString& other) const;
 
     size_t count(const SimpleString& str) const;
 
-    void replace(char to, char with);
-    void replace(const char* to, const char* with);
+    SimpleString substr(size_t beginPos, size_t amount = npos) const;
 
-    SimpleString lowerCase() const;
-    SimpleString subString(size_t beginPos) const;
-    SimpleString subString(size_t beginPos, size_t amount) const;
-    SimpleString subStringFromTill(char startChar, char lastExcludedChar) const;
-    void copyToBuffer(char* buffer, size_t bufferSize) const;
-
-    SimpleString printable() const;
-
-    const char* asCharString() const;
+    const char* c_str() const;
+    const char* data() const;
     size_t size() const;
-    bool isEmpty() const;
+    bool empty() const;
 
+    static void replaceAll(SimpleString&, char to, char with);
+    static void replaceAll(SimpleString&, const char* to, const char* with);
+    static SimpleString subStringFromTill(const SimpleString&, char startChar, char lastExcludedChar);
+    static SimpleString printable(const SimpleString&);
     static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
 
-    static TestMemoryAllocator* getStringAllocator();
-    static void setStringAllocator(TestMemoryAllocator* allocator);
-
-    static int AtoI(const char* str);
+    static SimpleString lowerCase(const SimpleString&);
     static unsigned AtoU(const char* str);
-    static int StrCmp(const char* s1, const char* s2);
-    static size_t StrLen(const char*);
-    static int StrNCmp(const char* s1, const char* s2, size_t n);
-    static char* StrNCpy(char* s1, const char* s2, size_t n);
-    static const char* StrStr(const char* s1, const char* s2);
-    static char ToLower(char ch);
-    static int MemCmp(const void* s1, const void* s2, size_t n);
-    static char* allocStringBuffer(size_t size, const char* file, size_t line);
-    static void deallocStringBuffer(char* str, size_t size, const char* file, size_t line);
 
 private:
-    const char* getBuffer() const;
+    std::string string_;
 
-    void deallocateInternalBuffer();
-    void setInternalBufferAsEmptyString();
-    void setInternalBufferToNewBuffer(size_t bufferSize);
-    void setInternalBufferTo(char* buffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer);
-    void copyBufferToNewInternalBuffer(const char* otherBuffer, size_t bufferSize);
-    void copyBufferToNewInternalBuffer(const SimpleString& otherBuffer);
-
-    char* buffer_;
-    size_t bufferSize_;
-
-    static TestMemoryAllocator* stringAllocator_;
-
-    char* getEmptyString() const;
     static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
-    static bool isDigit(char ch);
-    static bool isSpace(char ch);
-    static bool isUpper(char ch);
-    static bool isControl(char ch);
     static bool isControlWithShortEscapeSequence(char ch);
-
-    size_t getPrintableSize() const;
+    static size_t getPrintableSize(const SimpleString&);
 };
 
 class SimpleStringCollection {
 public:
-    SimpleStringCollection();
+    SimpleStringCollection() = default;
+    SimpleStringCollection(const SimpleString& string, const SimpleString& delimiter);
     ~SimpleStringCollection();
+
+    SimpleStringCollection& operator=(SimpleStringCollection&&);
 
     void allocate(size_t size);
 
@@ -145,45 +105,12 @@ public:
     SimpleString& operator[](size_t index);
 
 private:
-    SimpleString* collection_;
+    SimpleString* collection_ = nullptr;
     SimpleString empty_;
-    size_t size_;
+    size_t size_ = 0;
 
     void operator=(SimpleStringCollection&);
     SimpleStringCollection(SimpleStringCollection&);
-};
-
-class GlobalSimpleStringAllocatorStash {
-public:
-    GlobalSimpleStringAllocatorStash();
-    void save();
-    void restore();
-
-private:
-    TestMemoryAllocator* originalAllocator_;
-};
-
-class MemoryAccountant;
-class AccountingTestMemoryAllocator;
-
-class GlobalSimpleStringMemoryAccountant {
-public:
-    GlobalSimpleStringMemoryAccountant();
-    ~GlobalSimpleStringMemoryAccountant();
-
-    void useCacheSizes(size_t cacheSizes[], size_t length);
-
-    void start();
-    void stop();
-    SimpleString report();
-
-    AccountingTestMemoryAllocator* getAllocator();
-
-private:
-    void restoreAllocator();
-
-    AccountingTestMemoryAllocator* allocator_;
-    MemoryAccountant* accountant_;
 };
 
 SimpleString StringFrom(bool value);

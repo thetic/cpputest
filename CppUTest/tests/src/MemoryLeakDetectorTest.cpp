@@ -29,6 +29,7 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestMemoryAllocator.hpp"
+#include <cstring>
 
 class MemoryLeakFailureForTest : public MemoryLeakFailure {
 public:
@@ -135,11 +136,11 @@ TEST(MemoryLeakDetectorTest, OneLeak)
     char* mem = detector->allocMemory(testAllocator, 3);
     detector->stopChecking();
     SimpleString output = detector->report(mem_leak_period_checking);
-    STRCMP_CONTAINS("Memory leak(s) found", output.asCharString());
-    STRCMP_CONTAINS("size: 3", output.asCharString());
-    STRCMP_CONTAINS("alloc", output.asCharString());
-    STRCMP_CONTAINS(StringFromFormat("%p", (void*)mem).asCharString(), output.asCharString());
-    STRCMP_CONTAINS("Total number of leaks", output.asCharString());
+    STRCMP_CONTAINS("Memory leak(s) found", output.c_str());
+    STRCMP_CONTAINS("size: 3", output.c_str());
+    STRCMP_CONTAINS("alloc", output.c_str());
+    STRCMP_CONTAINS(StringFromFormat("%p", (void*)mem).c_str(), output.c_str());
+    STRCMP_CONTAINS("Total number of leaks", output.c_str());
     PlatformSpecificFree(mem);
     LONGS_EQUAL(1, testAllocator->alloc_called);
     LONGS_EQUAL(0, testAllocator->free_called);
@@ -152,9 +153,9 @@ TEST(MemoryLeakDetectorTest, sequenceNumbersOfMemoryLeaks)
     char* mem3 = detector->allocMemory(defaultNewAllocator(), 3);
     SimpleString output = detector->report(mem_leak_period_checking);
 
-    STRCMP_CONTAINS("Alloc num (1)", output.asCharString());
-    STRCMP_CONTAINS("Alloc num (2)", output.asCharString());
-    STRCMP_CONTAINS("Alloc num (3)", output.asCharString());
+    STRCMP_CONTAINS("Alloc num (1)", output.c_str());
+    STRCMP_CONTAINS("Alloc num (2)", output.c_str());
+    STRCMP_CONTAINS("Alloc num (3)", output.c_str());
 
     PlatformSpecificFree(mem);
     PlatformSpecificFree(mem2);
@@ -164,13 +165,13 @@ TEST(MemoryLeakDetectorTest, sequenceNumbersOfMemoryLeaks)
 TEST(MemoryLeakDetectorTest, memoryDumpOutput)
 {
     char* mem = detector->allocMemory(defaultNewAllocator(), 6);
-    SimpleString::StrNCpy(mem, "test1", 6);
+    std::strncpy(mem, "test1", 6);
     SimpleString output = detector->report(mem_leak_period_checking);
 
-    STRCMP_CONTAINS("Alloc num (1)", output.asCharString());
-    STRCMP_CONTAINS("Leak size: 6 Allocated at", output.asCharString());
-    STRCMP_CONTAINS("Content:", output.asCharString());
-    STRCMP_CONTAINS("0000: 74 65 73 74 31 00                                |test1.|", output.asCharString());
+    STRCMP_CONTAINS("Alloc num (1)", output.c_str());
+    STRCMP_CONTAINS("Leak size: 6 Allocated at", output.c_str());
+    STRCMP_CONTAINS("Content:", output.c_str());
+    STRCMP_CONTAINS("0000: 74 65 73 74 31 00                                |test1.|", output.c_str());
 
     PlatformSpecificFree(mem);
 }
@@ -185,9 +186,9 @@ TEST(MemoryLeakDetectorTest, OneHundredLeaks)
 
     SimpleString output = detector->report(mem_leak_period_checking);
 
-    STRCMP_CONTAINS("Memory leak(s) found", output.asCharString());
-    STRCMP_CONTAINS("Total number of leaks", output.asCharString());
-    STRCMP_CONTAINS("Memory leak reports about malloc and free", output.asCharString());
+    STRCMP_CONTAINS("Memory leak(s) found", output.c_str());
+    STRCMP_CONTAINS("Total number of leaks", output.c_str());
+    STRCMP_CONTAINS("Memory leak reports about malloc and free", output.c_str());
 
     // don't reuse i for vc6 compatibility
     for (int j = 0; j < amount_alloc; j++)
@@ -393,7 +394,7 @@ TEST(MemoryLeakDetectorTest, AllocOneTypeFreeAnotherTypeWithCheckingDisabled)
     char* mem = detector->allocMemory(defaultNewArrayAllocator(), 100, "ALLOC.c", 10);
     detector->deallocMemory(defaultNewAllocator(), mem, "FREE.c", 100);
     detector->stopChecking();
-    STRCMP_EQUAL("", reporter->message->asCharString());
+    STRCMP_EQUAL("", reporter->message->c_str());
     detector->enableAllocationTypeChecking();
 }
 
@@ -402,7 +403,7 @@ TEST(MemoryLeakDetectorTest, mallocLeakGivesAdditionalWarning)
     char* mem = detector->allocMemory(defaultMallocAllocator(), 100, "ALLOC.c", 10);
     detector->stopChecking();
     SimpleString output = detector->report(mem_leak_period_checking);
-    STRCMP_CONTAINS("Memory leak reports about malloc and free can be caused by allocating using the cpputest version of malloc", output.asCharString());
+    STRCMP_CONTAINS("Memory leak reports about malloc and free can be caused by allocating using the cpputest version of malloc", output.c_str());
     PlatformSpecificFree(mem);
 }
 
@@ -444,7 +445,7 @@ TEST(MemoryLeakDetectorTest, memoryCorruption)
 TEST(MemoryLeakDetectorTest, safelyDeleteNULL)
 {
     detector->deallocMemory(defaultNewAllocator(), nullptr);
-    STRCMP_EQUAL("", reporter->message->asCharString());
+    STRCMP_EQUAL("", reporter->message->c_str());
 }
 
 TEST(MemoryLeakDetectorTest, periodDisabled)
@@ -582,7 +583,7 @@ TEST(SimpleStringBuffer, writePastLimit)
     for (int i = 0; i < SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN * 2; i++)
         buffer.add("h");
     SimpleString str("h", SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN - 1);
-    STRCMP_EQUAL(str.asCharString(), buffer.toString());
+    STRCMP_EQUAL(str.c_str(), buffer.toString());
 }
 
 TEST(SimpleStringBuffer, setWriteLimit)
@@ -592,7 +593,7 @@ TEST(SimpleStringBuffer, setWriteLimit)
     for (int i = 0; i < SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN; i++)
         buffer.add("h");
     SimpleString str("h", 10);
-    STRCMP_EQUAL(str.asCharString(), buffer.toString());
+    STRCMP_EQUAL(str.c_str(), buffer.toString());
 }
 
 TEST(SimpleStringBuffer, setWriteLimitTooHighIsIgnored)
@@ -602,7 +603,7 @@ TEST(SimpleStringBuffer, setWriteLimitTooHighIsIgnored)
     for (int i = 0; i < SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN + 10; i++)
         buffer.add("h");
     SimpleString str("h", SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN - 1);
-    STRCMP_EQUAL(str.asCharString(), buffer.toString());
+    STRCMP_EQUAL(str.c_str(), buffer.toString());
 }
 
 TEST(SimpleStringBuffer, resetWriteLimit)
@@ -612,10 +613,10 @@ TEST(SimpleStringBuffer, resetWriteLimit)
     for (int i = 0; i < SimpleStringBuffer::SIMPLE_STRING_BUFFER_LEN; i++)
         buffer.add("h");
     buffer.resetWriteLimit();
-    buffer.add("%s", SimpleString("h", 10).asCharString());
+    buffer.add("%s", SimpleString("h", 10).c_str());
 
     SimpleString str("h", 20);
-    STRCMP_EQUAL(str.asCharString(), buffer.toString());
+    STRCMP_EQUAL(str.c_str(), buffer.toString());
 }
 
 TEST(SimpleStringBuffer, addMemoryDumpOneLinePlusOnePartial)

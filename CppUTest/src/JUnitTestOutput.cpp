@@ -157,7 +157,7 @@ void JUnitTestOutput::printCurrentTestStarted(const UtestShell& test)
 SimpleString JUnitTestOutput::createFileName(const SimpleString& group)
 {
     SimpleString fileName = "cpputest_";
-    if (!impl_->package_.isEmpty()) {
+    if (!impl_->package_.empty()) {
         fileName += impl_->package_;
         fileName += "_";
     }
@@ -172,7 +172,7 @@ SimpleString JUnitTestOutput::encodeFileName(const SimpleString& fileName)
 
     SimpleString result = fileName;
     for (const char* sym = forbiddenCharacters; *sym; ++sym) {
-        result.replace(*sym, '_');
+        SimpleString::replaceAll(result, *sym, '_');
     }
     return result;
 }
@@ -196,11 +196,11 @@ void JUnitTestOutput::writeTestSuiteSummary()
         = StringFromFormat(
             "<testsuite errors=\"0\" failures=\"%d\" hostname=\"localhost\" name=\"%s\" tests=\"%d\" time=\"%d.%03d\" timestamp=\"%s\">\n",
             (int)impl_->results_.failureCount_,
-            impl_->results_.group_.asCharString(),
+            impl_->results_.group_.c_str(),
             (int)impl_->results_.testCount_,
             (int)(impl_->results_.groupExecTime_ / 1000), (int)(impl_->results_.groupExecTime_ % 1000),
             GetPlatformSpecificTimeString());
-    writeToFile(buf.asCharString());
+    writeToFile(buf.c_str());
 }
 
 void JUnitTestOutput::writeProperties()
@@ -211,12 +211,12 @@ void JUnitTestOutput::writeProperties()
 
 SimpleString JUnitTestOutput::encodeXmlText(const SimpleString& textbody)
 {
-    SimpleString buf = textbody.asCharString();
-    buf.replace("&", "&amp;");
-    buf.replace("\"", "&quot;");
-    buf.replace("<", "&lt;");
-    buf.replace(">", "&gt;");
-    buf.replace("\n", "{newline}");
+    SimpleString buf = textbody.c_str();
+    SimpleString::replaceAll(buf, "&", "&amp;");
+    SimpleString::replaceAll(buf, "\"", "&quot;");
+    SimpleString::replaceAll(buf, "<", "&lt;");
+    SimpleString::replaceAll(buf, ">", "&gt;");
+    SimpleString::replaceAll(buf, "\n", "{newline}");
     return buf;
 }
 
@@ -227,15 +227,15 @@ void JUnitTestOutput::writeTestCases()
     while (cur) {
         SimpleString buf = StringFromFormat(
             "<testcase classname=\"%s%s%s\" name=\"%s\" assertions=\"%d\" time=\"%d.%03d\" file=\"%s\" line=\"%d\">\n",
-            impl_->package_.asCharString(),
-            impl_->package_.isEmpty() ? "" : ".",
-            impl_->results_.group_.asCharString(),
-            cur->name_.asCharString(),
+            impl_->package_.c_str(),
+            impl_->package_.empty() ? "" : ".",
+            impl_->results_.group_.c_str(),
+            cur->name_.c_str(),
             (int)(cur->checkCount_ - impl_->results_.totalCheckCount_),
             (int)(cur->execTime_ / 1000), (int)(cur->execTime_ % 1000),
-            cur->file_.asCharString(),
+            cur->file_.c_str(),
             (int)cur->lineNumber_);
-        writeToFile(buf.asCharString());
+        writeToFile(buf.c_str());
 
         impl_->results_.totalCheckCount_ = cur->checkCount_;
 
@@ -253,10 +253,10 @@ void JUnitTestOutput::writeFailure(JUnitTestCaseResultNode* node)
 {
     SimpleString buf = StringFromFormat(
         "<failure message=\"%s:%d: %s\" type=\"AssertionFailedError\">\n",
-        node->failure_->getFileName().asCharString(),
+        node->failure_->getFileName().c_str(),
         (int)node->failure_->getFailureLineNumber(),
-        encodeXmlText(node->failure_->getMessage()).asCharString());
-    writeToFile(buf.asCharString());
+        encodeXmlText(node->failure_->getMessage()).c_str());
+    writeToFile(buf.c_str());
     writeToFile("</failure>\n");
 }
 
@@ -315,12 +315,12 @@ void JUnitTestOutput::printFailure(const TestFailure& failure)
 
 void JUnitTestOutput::openFileForWrite(const SimpleString& fileName)
 {
-    impl_->file_ = PlatformSpecificFOpen(fileName.asCharString(), "w");
+    impl_->file_ = PlatformSpecificFOpen(fileName.c_str(), "w");
 }
 
 void JUnitTestOutput::writeToFile(const SimpleString& buffer)
 {
-    PlatformSpecificFPuts(buffer.asCharString(), impl_->file_);
+    PlatformSpecificFPuts(buffer.c_str(), impl_->file_);
 }
 
 void JUnitTestOutput::closeFile()

@@ -102,43 +102,43 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
             rethrowExceptions_ = false;
         else if (argument == "-ci")
             rethrowExceptions_ = false;
-        else if (argument.startsWith("-r"))
+        else if (argument.starts_with("-r"))
             setRepeatCount(ac_, av_, i);
-        else if (argument.startsWith("-g"))
+        else if (argument.starts_with("-g"))
             addGroupFilter(ac_, av_, i);
-        else if (argument.startsWith("-t"))
+        else if (argument.starts_with("-t"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-t", false, false);
-        else if (argument.startsWith("-st"))
+        else if (argument.starts_with("-st"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-st", true, false);
-        else if (argument.startsWith("-xt"))
+        else if (argument.starts_with("-xt"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xt", false, true);
-        else if (argument.startsWith("-xst"))
+        else if (argument.starts_with("-xst"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xst", true, true);
-        else if (argument.startsWith("-sg"))
+        else if (argument.starts_with("-sg"))
             addStrictGroupFilter(ac_, av_, i);
-        else if (argument.startsWith("-xg"))
+        else if (argument.starts_with("-xg"))
             addExcludeGroupFilter(ac_, av_, i);
-        else if (argument.startsWith("-xsg"))
+        else if (argument.starts_with("-xsg"))
             addExcludeStrictGroupFilter(ac_, av_, i);
-        else if (argument.startsWith("-n"))
+        else if (argument.starts_with("-n"))
             addNameFilter(ac_, av_, i);
-        else if (argument.startsWith("-sn"))
+        else if (argument.starts_with("-sn"))
             addStrictNameFilter(ac_, av_, i);
-        else if (argument.startsWith("-xn"))
+        else if (argument.starts_with("-xn"))
             addExcludeNameFilter(ac_, av_, i);
-        else if (argument.startsWith("-xsn"))
+        else if (argument.starts_with("-xsn"))
             addExcludeStrictNameFilter(ac_, av_, i);
-        else if (argument.startsWith("-s"))
+        else if (argument.starts_with("-s"))
             correctParameters = setShuffle(ac_, av_, i);
-        else if (argument.startsWith("TEST("))
+        else if (argument.starts_with("TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "TEST(");
-        else if (argument.startsWith("IGNORE_TEST("))
+        else if (argument.starts_with("IGNORE_TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "IGNORE_TEST(");
-        else if (argument.startsWith("-o"))
+        else if (argument.starts_with("-o"))
             correctParameters = setOutputType(ac_, av_, i);
-        else if (argument.startsWith("-p"))
+        else if (argument.starts_with("-p"))
             correctParameters = plugin->parseAllArguments(ac_, av_, i);
-        else if (argument.startsWith("-k"))
+        else if (argument.starts_with("-k"))
             setPackageName(ac_, av_, i);
         else
             correctParameters = false;
@@ -300,9 +300,9 @@ void CommandLineArguments::setRepeatCount(int ac, const char* const* av, int& i)
 
     SimpleString repeatParameter(av[i]);
     if (repeatParameter.size() > 2)
-        repeat_ = (size_t)(SimpleString::AtoI(av[i] + 2));
+        repeat_ = (size_t)(std::atoi(av[i] + 2));
     else if (i + 1 < ac) {
-        repeat_ = (size_t)(SimpleString::AtoI(av[i + 1]));
+        repeat_ = (size_t)(std::atoi(av[i + 1]));
         if (repeat_ != 0)
             i++;
     }
@@ -354,13 +354,12 @@ bool CommandLineArguments::addGroupDotNameFilter(int ac, const char* const* av, 
     bool strict, bool exclude)
 {
     SimpleString groupDotName = getParameterField(ac, av, i, parameterName);
-    SimpleStringCollection collection;
-    groupDotName.split(".", collection);
+    SimpleStringCollection collection(groupDotName, ".");
 
     if (collection.size() != 2)
         return false;
 
-    TestFilter* groupFilter = new TestFilter(collection[0].subString(0, collection[0].size() - 1));
+    TestFilter* groupFilter = new TestFilter(collection[0].substr(0, collection[0].size() - 1));
     TestFilter* nameFilter = new TestFilter(collection[1]);
     if (strict) {
         groupFilter->strictMatching();
@@ -428,10 +427,11 @@ void CommandLineArguments::addExcludeStrictNameFilter(int ac, const char* const*
 void CommandLineArguments::addTestToRunBasedOnVerboseOutput(int ac, const char* const* av, int& index, const char* parameterName)
 {
     SimpleString wholename = getParameterField(ac, av, index, parameterName);
-    SimpleString testname = wholename.subStringFromTill(',', ')');
-    testname = testname.subString(2);
+    SimpleString testname = SimpleString::subStringFromTill(wholename, ',', ')');
+    testname = testname.substr(2);
     TestFilter* namefilter = new TestFilter(testname);
-    TestFilter* groupfilter = new TestFilter(wholename.subStringFromTill(wholename.at(0), ','));
+    TestFilter* groupfilter = new TestFilter(
+        SimpleString::subStringFromTill(wholename, wholename[0], ','));
     namefilter->strictMatching();
     groupfilter->strictMatching();
     groupFilters_ = groupfilter->add(groupFilters_);

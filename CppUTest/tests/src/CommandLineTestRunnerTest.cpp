@@ -161,7 +161,7 @@ TEST(CommandLineTestRunner, ReturnsOnePrintsHelpOnHelp)
     int returned = commandLineTestRunner.runAllTestsMain();
 
     LONGS_EQUAL(1, returned);
-    STRCMP_CONTAINS("Thanks for using CppUTest.", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("Thanks for using CppUTest.", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, ReturnsZeroWhenNoErrors)
@@ -207,8 +207,8 @@ TEST(CommandLineTestRunner, JunitOutputAndVerboseEnabled)
 
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(3, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
-    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeJUnitOutputWhichIsReallyABuffer_->getOutput().asCharString());
-    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeJUnitOutputWhichIsReallyABuffer_->getOutput().c_str());
+    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, veryVerboseSetOnOutput)
@@ -217,8 +217,8 @@ TEST(CommandLineTestRunner, veryVerboseSetOnOutput)
 
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
-    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
-    STRCMP_CONTAINS("destroyTest", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("TEST(group1, test1)", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
+    STRCMP_CONTAINS("destroyTest", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, defaultTestsAreRunInOrderTheyAreInRepository)
@@ -229,10 +229,11 @@ TEST(CommandLineTestRunner, defaultTestsAreRunInOrderTheyAreInRepository)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection;
-    commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().split("\n", stringCollection);
-    STRCMP_CONTAINS("test2", stringCollection[0].asCharString());
-    STRCMP_CONTAINS("test1", stringCollection[1].asCharString());
+    SimpleStringCollection stringCollection(
+        commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
+        "\n");
+    STRCMP_CONTAINS("test2", stringCollection[0].c_str());
+    STRCMP_CONTAINS("test1", stringCollection[1].c_str());
 }
 
 TEST(CommandLineTestRunner, testsCanBeRunInReverseOrder)
@@ -243,10 +244,11 @@ TEST(CommandLineTestRunner, testsCanBeRunInReverseOrder)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(3, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection;
-    commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().split("\n", stringCollection);
-    STRCMP_CONTAINS("test1", stringCollection[0].asCharString());
-    STRCMP_CONTAINS("test2", stringCollection[1].asCharString());
+    SimpleStringCollection stringCollection(
+        commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
+        "\n");
+    STRCMP_CONTAINS("test1", stringCollection[0].c_str());
+    STRCMP_CONTAINS("test2", stringCollection[1].c_str());
 }
 
 TEST(CommandLineTestRunner, listTestGroupNamesShouldWorkProperly)
@@ -256,7 +258,7 @@ TEST(CommandLineTestRunner, listTestGroupNamesShouldWorkProperly)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    STRCMP_CONTAINS("group", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("group", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, listTestGroupAndCaseNamesShouldWorkProperly)
@@ -266,7 +268,7 @@ TEST(CommandLineTestRunner, listTestGroupAndCaseNamesShouldWorkProperly)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    STRCMP_CONTAINS("group1.test1", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("group1.test1", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, listTestLocationsShouldWorkProperly)
@@ -276,7 +278,7 @@ TEST(CommandLineTestRunner, listTestLocationsShouldWorkProperly)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    STRCMP_CONTAINS("group1.test1", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().asCharString());
+    STRCMP_CONTAINS("group1.test1", commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput().c_str());
 }
 
 TEST(CommandLineTestRunner, randomShuffleSeedIsPrintedAndRandFuncIsExercised)
@@ -287,7 +289,7 @@ TEST(CommandLineTestRunner, randomShuffleSeedIsPrintedAndRandFuncIsExercised)
 
     const char* argv[] = { "tests.exe", "-s" };
     SimpleString text = runAndGetOutput(2, argv);
-    STRCMP_CONTAINS("shuffling enabled with seed:", text.asCharString());
+    STRCMP_CONTAINS("shuffling enabled with seed:", text.c_str());
 
     delete anotherTest;
 }
@@ -296,7 +298,7 @@ TEST(CommandLineTestRunner, specificShuffleSeedIsPrintedVerbose)
 {
     const char* argv[] = { "tests.exe", "-s2", "-v" };
     SimpleString text = runAndGetOutput(3, argv);
-    STRCMP_CONTAINS("shuffling enabled with seed: 2", text.asCharString());
+    STRCMP_CONTAINS("shuffling enabled with seed: 2", text.c_str());
 }
 
 typedef PlatformSpecificFile (*FOpenFunc)(const char*, const char*);
@@ -387,8 +389,8 @@ TEST(CommandLineTestRunner, realJunitOutputShouldBeCreatedAndWorkProperly)
 
     fakeOutput.restoreOriginals();
 
-    STRCMP_CONTAINS("<testcase classname=\"package.group1\" name=\"test1\"", fakeOutput.file.asCharString());
-    STRCMP_CONTAINS("TEST(group1, test1)", fakeOutput.console.asCharString());
+    STRCMP_CONTAINS("<testcase classname=\"package.group1\" name=\"test1\"", fakeOutput.file.c_str());
+    STRCMP_CONTAINS("TEST(group1, test1)", fakeOutput.console.c_str());
 }
 
 TEST(CommandLineTestRunner, realTeamCityOutputShouldBeCreatedAndWorkProperly)
@@ -407,10 +409,10 @@ TEST(CommandLineTestRunner, realTeamCityOutputShouldBeCreatedAndWorkProperly)
 
     fakeOutput.restoreOriginals();
 
-    STRCMP_CONTAINS("##teamcity[testSuiteStarted name='group1'", fakeOutput.console.asCharString());
-    STRCMP_CONTAINS("##teamcity[testStarted name='test1'", fakeOutput.console.asCharString());
-    STRCMP_CONTAINS("##teamcity[testFinished name='test1'", fakeOutput.console.asCharString());
-    STRCMP_CONTAINS("##teamcity[testSuiteFinished name='group1'", fakeOutput.console.asCharString());
+    STRCMP_CONTAINS("##teamcity[testSuiteStarted name='group1'", fakeOutput.console.c_str());
+    STRCMP_CONTAINS("##teamcity[testStarted name='test1'", fakeOutput.console.c_str());
+    STRCMP_CONTAINS("##teamcity[testFinished name='test1'", fakeOutput.console.c_str());
+    STRCMP_CONTAINS("##teamcity[testSuiteFinished name='group1'", fakeOutput.console.c_str());
 }
 
 class RunIgnoredUtest : public Utest {
