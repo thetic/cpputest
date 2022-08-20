@@ -4,7 +4,6 @@ add_library(CppUTest
     include/CppUTest/JUnitTestOutput.hpp
     include/CppUTest/PlatformSpecificFunctions.hpp
     include/CppUTest/PlatformSpecificFunctions.h
-    include/CppUTest/SimpleMutex.hpp
     include/CppUTest/SimpleString.hpp
     include/CppUTest/TeamCityTestOutput.hpp
     include/CppUTest/TestFailure.hpp
@@ -21,7 +20,6 @@ add_library(CppUTest
     src/CommandLineArguments.cpp
     src/CommandLineTestRunner.cpp
     src/JUnitTestOutput.cpp
-    src/SimpleMutex.cpp
     src/SimpleString.cpp
     src/TeamCityTestOutput.cpp
     src/TestFailure.cpp
