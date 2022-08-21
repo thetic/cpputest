@@ -28,6 +28,7 @@
 #include "CppUTest/CommandLineArguments.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 CommandLineArguments::CommandLineArguments(int ac, const char* const* av)
@@ -73,7 +74,7 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
 {
     bool correctParameters = true;
     for (int i = 1; i < ac_; i++) {
-        SimpleString argument = av_[i];
+        std::string argument = av_[i];
 
         if (argument == "-h") {
             needHelp_ = true;
@@ -102,43 +103,43 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
             rethrowExceptions_ = false;
         else if (argument == "-ci")
             rethrowExceptions_ = false;
-        else if (argument.starts_with("-r"))
+        else if (strings::starts_with(argument, "-r"))
             setRepeatCount(ac_, av_, i);
-        else if (argument.starts_with("-g"))
+        else if (strings::starts_with(argument, "-g"))
             addGroupFilter(ac_, av_, i);
-        else if (argument.starts_with("-t"))
+        else if (strings::starts_with(argument, "-t"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-t", false, false);
-        else if (argument.starts_with("-st"))
+        else if (strings::starts_with(argument, "-st"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-st", true, false);
-        else if (argument.starts_with("-xt"))
+        else if (strings::starts_with(argument, "-xt"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xt", false, true);
-        else if (argument.starts_with("-xst"))
+        else if (strings::starts_with(argument, "-xst"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xst", true, true);
-        else if (argument.starts_with("-sg"))
+        else if (strings::starts_with(argument, "-sg"))
             addStrictGroupFilter(ac_, av_, i);
-        else if (argument.starts_with("-xg"))
+        else if (strings::starts_with(argument, "-xg"))
             addExcludeGroupFilter(ac_, av_, i);
-        else if (argument.starts_with("-xsg"))
+        else if (strings::starts_with(argument, "-xsg"))
             addExcludeStrictGroupFilter(ac_, av_, i);
-        else if (argument.starts_with("-n"))
+        else if (strings::starts_with(argument, "-n"))
             addNameFilter(ac_, av_, i);
-        else if (argument.starts_with("-sn"))
+        else if (strings::starts_with(argument, "-sn"))
             addStrictNameFilter(ac_, av_, i);
-        else if (argument.starts_with("-xn"))
+        else if (strings::starts_with(argument, "-xn"))
             addExcludeNameFilter(ac_, av_, i);
-        else if (argument.starts_with("-xsn"))
+        else if (strings::starts_with(argument, "-xsn"))
             addExcludeStrictNameFilter(ac_, av_, i);
-        else if (argument.starts_with("-s"))
+        else if (strings::starts_with(argument, "-s"))
             correctParameters = setShuffle(ac_, av_, i);
-        else if (argument.starts_with("TEST("))
+        else if (strings::starts_with(argument, "TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "TEST(");
-        else if (argument.starts_with("IGNORE_TEST("))
+        else if (strings::starts_with(argument, "IGNORE_TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "IGNORE_TEST(");
-        else if (argument.starts_with("-o"))
+        else if (strings::starts_with(argument, "-o"))
             correctParameters = setOutputType(ac_, av_, i);
-        else if (argument.starts_with("-p"))
+        else if (strings::starts_with(argument, "-p"))
             correctParameters = plugin->parseAllArguments(ac_, av_, i);
-        else if (argument.starts_with("-k"))
+        else if (strings::starts_with(argument, "-k"))
             setPackageName(ac_, av_, i);
         else
             correctParameters = false;
@@ -298,7 +299,7 @@ void CommandLineArguments::setRepeatCount(int ac, const char* const* av, int& i)
 {
     repeat_ = 0;
 
-    SimpleString repeatParameter(av[i]);
+    std::string repeatParameter(av[i]);
     if (repeatParameter.size() > 2)
         repeat_ = (size_t)(std::atoi(av[i] + 2));
     else if (i + 1 < ac) {
@@ -318,12 +319,12 @@ bool CommandLineArguments::setShuffle(int ac, const char* const* av, int& i)
     if (shuffleSeed_ == 0)
         shuffleSeed_++;
 
-    SimpleString shuffleParameter = av[i];
+    std::string shuffleParameter = av[i];
     if (shuffleParameter.size() > 2) {
         shufflingPreSeeded_ = true;
-        shuffleSeed_ = SimpleString::AtoU(av[i] + 2);
+        shuffleSeed_ = strings::atou(av[i] + 2);
     } else if (i + 1 < ac) {
-        unsigned int parsedParameter = SimpleString::AtoU(av[i + 1]);
+        unsigned int parsedParameter = strings::atou(av[i + 1]);
         if (parsedParameter != 0) {
             shufflingPreSeeded_ = true;
             shuffleSeed_ = parsedParameter;
@@ -333,10 +334,10 @@ bool CommandLineArguments::setShuffle(int ac, const char* const* av, int& i)
     return (shuffleSeed_ != 0);
 }
 
-SimpleString CommandLineArguments::getParameterField(int ac, const char* const* av, int& i, const SimpleString& parameterName)
+std::string CommandLineArguments::getParameterField(int ac, const char* const* av, int& i, const std::string& parameterName)
 {
     size_t parameterLength = parameterName.size();
-    SimpleString parameter(av[i]);
+    std::string parameter(av[i]);
     if (parameter.size() > parameterLength)
         return av[i] + parameterLength;
     else if (i + 1 < ac)
@@ -350,11 +351,11 @@ void CommandLineArguments::addGroupFilter(int ac, const char* const* av, int& i)
     groupFilters_ = groupFilter->add(groupFilters_);
 }
 
-bool CommandLineArguments::addGroupDotNameFilter(int ac, const char* const* av, int& i, const SimpleString& parameterName,
+bool CommandLineArguments::addGroupDotNameFilter(int ac, const char* const* av, int& i, const std::string& parameterName,
     bool strict, bool exclude)
 {
-    SimpleString groupDotName = getParameterField(ac, av, i, parameterName);
-    SimpleStringCollection collection(groupDotName, ".");
+    std::string groupDotName = getParameterField(ac, av, i, parameterName);
+    StringCollection collection(groupDotName, '.');
 
     if (collection.size() != 2)
         return false;
@@ -426,12 +427,12 @@ void CommandLineArguments::addExcludeStrictNameFilter(int ac, const char* const*
 
 void CommandLineArguments::addTestToRunBasedOnVerboseOutput(int ac, const char* const* av, int& index, const char* parameterName)
 {
-    SimpleString wholename = getParameterField(ac, av, index, parameterName);
-    SimpleString testname = SimpleString::subStringFromTill(wholename, ',', ')');
+    std::string wholename = getParameterField(ac, av, index, parameterName);
+    std::string testname = strings::subStringFromTill(wholename, ',', ')');
     testname = testname.substr(2);
     TestFilter* namefilter = new TestFilter(testname);
     TestFilter* groupfilter = new TestFilter(
-        SimpleString::subStringFromTill(wholename, wholename[0], ','));
+        strings::subStringFromTill(wholename, wholename[0], ','));
     namefilter->strictMatching();
     groupfilter->strictMatching();
     groupFilters_ = groupfilter->add(groupFilters_);
@@ -440,7 +441,7 @@ void CommandLineArguments::addTestToRunBasedOnVerboseOutput(int ac, const char* 
 
 void CommandLineArguments::setPackageName(int ac, const char* const* av, int& i)
 {
-    SimpleString packageName = getParameterField(ac, av, i, "-k");
+    std::string packageName = getParameterField(ac, av, i, "-k");
     if (packageName.size() == 0)
         return;
 
@@ -449,7 +450,7 @@ void CommandLineArguments::setPackageName(int ac, const char* const* av, int& i)
 
 bool CommandLineArguments::setOutputType(int ac, const char* const* av, int& i)
 {
-    SimpleString outputType = getParameterField(ac, av, i, "-o");
+    std::string outputType = getParameterField(ac, av, i, "-o");
     if (outputType.size() == 0)
         return false;
 
@@ -484,7 +485,7 @@ bool CommandLineArguments::isTeamCityOutput() const
     return outputType_ == OUTPUT_TEAMCITY;
 }
 
-const SimpleString& CommandLineArguments::getPackageName() const
+const std::string& CommandLineArguments::getPackageName() const
 {
     return packageName_;
 }

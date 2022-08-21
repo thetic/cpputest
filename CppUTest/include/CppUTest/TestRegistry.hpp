@@ -33,8 +33,9 @@
 #ifndef D_TestRegistry_h
 #define D_TestRegistry_h
 
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFilter.hpp"
+
+#include <string>
 
 class UtestShell;
 class TestResult;
@@ -59,15 +60,15 @@ public:
     virtual void installPlugin(TestPlugin* plugin);
     virtual void resetPlugins();
     virtual TestPlugin* getFirstPlugin();
-    virtual TestPlugin* getPluginByName(const SimpleString& name);
-    virtual void removePluginByName(const SimpleString& name);
+    virtual TestPlugin* getPluginByName(const std::string& name);
+    virtual void removePluginByName(const std::string& name);
     virtual int countPlugins();
 
     virtual UtestShell* getFirstTest();
     virtual UtestShell* getTestWithNext(UtestShell* test);
 
-    virtual UtestShell* findTestWithName(const SimpleString& name);
-    virtual UtestShell* findTestWithGroup(const SimpleString& name);
+    virtual UtestShell* findTestWithName(const std::string& name);
+    virtual UtestShell* findTestWithGroup(const std::string& name);
 
     static TestRegistry* getCurrentRegistry();
     virtual void setCurrentRegistry(TestRegistry* registry);

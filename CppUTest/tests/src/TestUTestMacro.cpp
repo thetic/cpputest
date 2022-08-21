@@ -25,9 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 #define CHECK_TEST_FAILS_PROPER_WITH_TEXT(text) fixture.checkTestFailsWithProperTestLocation(text, __FILE__, __LINE__)
 
@@ -654,7 +656,7 @@ TEST(UnitTestMacros, FailureWithLONGS_EQUALShowsSymbolicParameters)
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("LONGS_EQUAL(MONDAY, day_of_the_week) failed");
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("expected <1 (0x1)>");
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("but was  <2 (0x2)>");
-    CHECK_FALSE(fixture.getOutput().contains("Message: "));
+    CHECK_FALSE(strings::contains(fixture.getOutput(), "Message: "));
 }
 
 TEST(UnitTestMacros, LONGS_EQUALBehavesAsProperMacro)

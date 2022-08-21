@@ -154,7 +154,7 @@ TEST(TestFilter, listOfFilters)
 TEST(TestFilter, constructors)
 {
     TestFilter filter1;
-    TestFilter filter2(SimpleString("a"));
+    TestFilter filter2("a");
     TestFilter filter3("a");
     CHECK(filter1.getNext() == nullptr);
     CHECK(filter2.getNext() == nullptr);

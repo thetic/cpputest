@@ -224,13 +224,13 @@ void TestOutput::printFileAndLineForFailure(const TestFailure& failure)
     printFailureInTest(failure.getTestName());
 }
 
-void TestOutput::printFailureInTest(SimpleString testName)
+void TestOutput::printFailureInTest(std::string testName)
 {
     print(" Failure in ");
     print(testName.c_str());
 }
 
-void TestOutput::printFailureMessage(SimpleString reason)
+void TestOutput::printFailureMessage(std::string reason)
 {
     print("\n");
     print("\t");
@@ -238,7 +238,7 @@ void TestOutput::printFailureMessage(SimpleString reason)
     print("\n\n");
 }
 
-void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(SimpleString file, size_t lineNumber)
+void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(std::string file, size_t lineNumber)
 {
     if (TestOutput::getWorkingEnvironment() == TestOutput::visualStudio)
         printVisualStudioErrorInFileOnLine(file, lineNumber);
@@ -246,7 +246,7 @@ void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(SimpleStri
         printEclipseErrorInFileOnLine(file, lineNumber);
 }
 
-void TestOutput::printEclipseErrorInFileOnLine(SimpleString file, size_t lineNumber)
+void TestOutput::printEclipseErrorInFileOnLine(std::string file, size_t lineNumber)
 {
     print("\n");
     print(file.c_str());
@@ -256,7 +256,7 @@ void TestOutput::printEclipseErrorInFileOnLine(SimpleString file, size_t lineNum
     print(" error:");
 }
 
-void TestOutput::printVisualStudioErrorInFileOnLine(SimpleString file, size_t lineNumber)
+void TestOutput::printVisualStudioErrorInFileOnLine(std::string file, size_t lineNumber)
 {
     print("\n");
     print(file.c_str());

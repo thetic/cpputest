@@ -28,6 +28,7 @@
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
@@ -38,7 +39,7 @@ public:
     bool returnValue;
     int amountOfPlugins;
 
-    DummyPluginWhichCountsThePlugins(const SimpleString& name, TestRegistry* registry)
+    DummyPluginWhichCountsThePlugins(const std::string& name, TestRegistry* registry)
         : TestPlugin(name)
         , returnValue(true)
         , amountOfPlugins(0)
@@ -77,7 +78,7 @@ public:
         return fakeConsoleOutputWhichIsReallyABuffer;
     }
 
-    TestOutput* createJUnitOutput(const SimpleString&) override
+    TestOutput* createJUnitOutput(const std::string&) override
     {
         fakeJUnitOutputWhichIsReallyABuffer_ = new StringBufferTestOutput;
         return fakeJUnitOutputWhichIsReallyABuffer_;
@@ -111,7 +112,7 @@ TEST_GROUP(CommandLineTestRunner)
         delete test1;
     }
 
-    SimpleString runAndGetOutput(const int argc, const char* argv[])
+    std::string runAndGetOutput(const int argc, const char* argv[])
     {
         CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(argc, argv, &registry);
         commandLineTestRunner.runAllTestsMain();
@@ -229,9 +230,9 @@ TEST(CommandLineTestRunner, defaultTestsAreRunInOrderTheyAreInRepository)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection(
+    StringCollection stringCollection(
         commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
-        "\n");
+        '\n');
     STRCMP_CONTAINS("test2", stringCollection[0].c_str());
     STRCMP_CONTAINS("test1", stringCollection[1].c_str());
 }
@@ -244,9 +245,9 @@ TEST(CommandLineTestRunner, testsCanBeRunInReverseOrder)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(3, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection(
+    StringCollection stringCollection(
         commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
-        "\n");
+        '\n');
     STRCMP_CONTAINS("test1", stringCollection[0].c_str());
     STRCMP_CONTAINS("test2", stringCollection[1].c_str());
 }
@@ -288,7 +289,7 @@ TEST(CommandLineTestRunner, randomShuffleSeedIsPrintedAndRandFuncIsExercised)
     registry.addTest(anotherTest);
 
     const char* argv[] = { "tests.exe", "-s" };
-    SimpleString text = runAndGetOutput(2, argv);
+    std::string text = runAndGetOutput(2, argv);
     STRCMP_CONTAINS("shuffling enabled with seed:", text.c_str());
 
     delete anotherTest;
@@ -297,7 +298,7 @@ TEST(CommandLineTestRunner, randomShuffleSeedIsPrintedAndRandFuncIsExercised)
 TEST(CommandLineTestRunner, specificShuffleSeedIsPrintedVerbose)
 {
     const char* argv[] = { "tests.exe", "-s2", "-v" };
-    SimpleString text = runAndGetOutput(3, argv);
+    std::string text = runAndGetOutput(3, argv);
     STRCMP_CONTAINS("shuffling enabled with seed: 2", text.c_str());
 }
 
@@ -359,8 +360,8 @@ struct FakeOutput {
         return c;
     }
 
-    SimpleString file;
-    SimpleString console;
+    std::string file;
+    std::string console;
 
     static FakeOutput* currentFake;
 

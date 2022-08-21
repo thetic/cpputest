@@ -298,24 +298,24 @@ size_t UtestShell::countTests()
     return next_ ? next_->countTests() + 1 : 1;
 }
 
-SimpleString UtestShell::getMacroName() const
+std::string UtestShell::getMacroName() const
 {
     return "TEST";
 }
 
-const SimpleString UtestShell::getName() const
+const std::string UtestShell::getName() const
 {
-    return SimpleString(name_);
+    return name_;
 }
 
-const SimpleString UtestShell::getGroup() const
+const std::string UtestShell::getGroup() const
 {
-    return SimpleString(group_);
+    return group_;
 }
 
-SimpleString UtestShell::getFormattedName() const
+std::string UtestShell::getFormattedName() const
 {
-    SimpleString formattedName(getMacroName());
+    std::string formattedName(getMacroName());
     formattedName += "(";
     formattedName += group_;
     formattedName += ", ";
@@ -374,9 +374,9 @@ void UtestShell::setTestName(const char* testName)
     name_ = testName;
 }
 
-const SimpleString UtestShell::getFile() const
+const std::string UtestShell::getFile() const
 {
-    return SimpleString(file_);
+    return file_;
 }
 
 size_t UtestShell::getLineNumber() const
@@ -465,29 +465,39 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
-    if (SimpleString::lowerCase(expected) != SimpleString::lowerCase(actual))
+    if (strings::lowercase(expected) != strings::lowercase(actual))
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
-void UtestShell::assertCstrContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber)
+void UtestShell::assertCstrContains(
+    const char* expected,
+    const char* actual,
+    const char* text,
+    const char* fileName,
+    size_t lineNumber)
 {
     getTestResult()->countCheck();
     if (actual == nullptr && expected == nullptr)
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString(actual).contains(expected))
+    if (!strings::contains(actual, expected))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
-void UtestShell::assertCstrNoCaseContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber)
+void UtestShell::assertCstrNoCaseContains(
+    const char* expected,
+    const char* actual,
+    const char* text,
+    const char* fileName,
+    size_t lineNumber)
 {
     getTestResult()->countCheck();
     if (actual == nullptr && expected == nullptr)
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!SimpleString::lowerCase(actual).contains(SimpleString::lowerCase(expected)))
+    if (!strings::contains(strings::lowercase(actual), strings::lowercase(expected)))
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -583,7 +593,7 @@ void UtestShell::assertCompare(bool comparison, const char* checkString, const c
 
 void UtestShell::print(const char* text, const char* fileName, size_t lineNumber)
 {
-    SimpleString stringToPrint = "\n";
+    std::string stringToPrint = "\n";
     stringToPrint += fileName;
     stringToPrint += ":";
     stringToPrint += StringFrom(lineNumber);
@@ -592,7 +602,7 @@ void UtestShell::print(const char* text, const char* fileName, size_t lineNumber
     getTestResult()->print(stringToPrint.c_str());
 }
 
-void UtestShell::print(const SimpleString& text, const char* fileName, size_t lineNumber)
+void UtestShell::print(const std::string& text, const char* fileName, size_t lineNumber)
 {
     print(text.c_str(), fileName, lineNumber);
 }
@@ -853,7 +863,7 @@ bool IgnoredUtestShell::willRun() const
     return false;
 }
 
-SimpleString IgnoredUtestShell::getMacroName() const
+std::string IgnoredUtestShell::getMacroName() const
 {
     if (runIgnored_)
         return "TEST";

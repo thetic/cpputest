@@ -37,7 +37,7 @@ public:
     ~MyComparator() override { }
 
     bool isEqual(const void*, const void*) override { return false; }
-    SimpleString valueToString(const void*) override { return ""; }
+    std::string valueToString(const void*) override { return ""; }
 };
 
 class MyCopier : public MockNamedValueCopier {

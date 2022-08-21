@@ -80,7 +80,7 @@ void MockFailure::addExpectationsAndCallHistory(const MockExpectedCallsList& exp
     message_ += expectations.fulfilledCallsToString("\t\t");
 }
 
-void MockFailure::addExpectationsAndCallHistoryRelatedTo(const SimpleString& name, const MockExpectedCallsList& expectations)
+void MockFailure::addExpectationsAndCallHistoryRelatedTo(const std::string& name, const MockExpectedCallsList& expectations)
 {
     MockExpectedCallsList expectationsForFunction;
     expectationsForFunction.addExpectationsRelatedTo(name, expectations);
@@ -105,12 +105,12 @@ MockExpectedCallsDidntHappenFailure::MockExpectedCallsDidntHappenFailure(UtestSh
     addExpectationsAndCallHistory(expectations);
 }
 
-MockUnexpectedCallHappenedFailure::MockUnexpectedCallHappenedFailure(UtestShell* test, const SimpleString& name, const MockExpectedCallsList& expectations)
+MockUnexpectedCallHappenedFailure::MockUnexpectedCallHappenedFailure(UtestShell* test, const std::string& name, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
     unsigned int amountOfActualCalls = expectations.amountOfActualCallsFulfilledFor(name);
     if (amountOfActualCalls > 0) {
-        SimpleString ordinalNumber = StringFromOrdinalNumber(amountOfActualCalls + 1);
+        std::string ordinalNumber = StringFromOrdinalNumber(amountOfActualCalls + 1);
         message_ = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: ", ordinalNumber.c_str());
     } else {
         message_ = "Mock Failure: Unexpected call to function: ";
@@ -132,7 +132,7 @@ MockCallOrderFailure::MockCallOrderFailure(UtestShell* test, const MockExpectedC
     addExpectationsAndCallHistory(expectationsForOutOfOrder);
 }
 
-MockUnexpectedInputParameterFailure::MockUnexpectedInputParameterFailure(UtestShell* test, const SimpleString& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations)
+MockUnexpectedInputParameterFailure::MockUnexpectedInputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
     MockExpectedCallsList expectationsForFunctionWithParameterName;
@@ -170,7 +170,7 @@ MockUnexpectedInputParameterFailure::MockUnexpectedInputParameterFailure(UtestSh
     message_ += ">";
 }
 
-MockUnexpectedOutputParameterFailure::MockUnexpectedOutputParameterFailure(UtestShell* test, const SimpleString& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations)
+MockUnexpectedOutputParameterFailure::MockUnexpectedOutputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
     MockExpectedCallsList expectationsForFunctionWithParameterName;
@@ -205,7 +205,7 @@ MockUnexpectedOutputParameterFailure::MockUnexpectedOutputParameterFailure(Utest
     message_ += parameter.getName();
 }
 
-MockExpectedParameterDidntHappenFailure::MockExpectedParameterDidntHappenFailure(UtestShell* test, const SimpleString& functionName,
+MockExpectedParameterDidntHappenFailure::MockExpectedParameterDidntHappenFailure(UtestShell* test, const std::string& functionName,
     const MockExpectedCallsList& allExpectations,
     const MockExpectedCallsList& matchingExpectations)
     : MockFailure(test)
@@ -223,19 +223,19 @@ MockExpectedParameterDidntHappenFailure::MockExpectedParameterDidntHappenFailure
     addExpectationsAndCallHistoryRelatedTo(functionName, allExpectations);
 }
 
-MockNoWayToCompareCustomTypeFailure::MockNoWayToCompareCustomTypeFailure(UtestShell* test, const SimpleString& typeName)
+MockNoWayToCompareCustomTypeFailure::MockNoWayToCompareCustomTypeFailure(UtestShell* test, const std::string& typeName)
     : MockFailure(test)
 {
     message_ = StringFromFormat("MockFailure: No way to compare type <%s>. Please install a MockNamedValueComparator.", typeName.c_str());
 }
 
-MockNoWayToCopyCustomTypeFailure::MockNoWayToCopyCustomTypeFailure(UtestShell* test, const SimpleString& typeName)
+MockNoWayToCopyCustomTypeFailure::MockNoWayToCopyCustomTypeFailure(UtestShell* test, const std::string& typeName)
     : MockFailure(test)
 {
     message_ = StringFromFormat("MockFailure: No way to copy type <%s>. Please install a MockNamedValueCopier.", typeName.c_str());
 }
 
-MockUnexpectedObjectFailure::MockUnexpectedObjectFailure(UtestShell* test, const SimpleString& functionName, const void* actual, const MockExpectedCallsList& expectations)
+MockUnexpectedObjectFailure::MockUnexpectedObjectFailure(UtestShell* test, const std::string& functionName, const void* actual, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
     message_ = StringFromFormat("MockFailure: Function called on an unexpected object: %s\n"
@@ -244,7 +244,7 @@ MockUnexpectedObjectFailure::MockUnexpectedObjectFailure(UtestShell* test, const
     addExpectationsAndCallHistoryRelatedTo(functionName, expectations);
 }
 
-MockExpectedObjectDidntHappenFailure::MockExpectedObjectDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& expectations)
+MockExpectedObjectDidntHappenFailure::MockExpectedObjectDidntHappenFailure(UtestShell* test, const std::string& functionName, const MockExpectedCallsList& expectations)
     : MockFailure(test)
 {
     message_ = StringFromFormat("Mock Failure: Expected call on object for function \"%s\" but it did not happen.\n", functionName.c_str());

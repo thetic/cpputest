@@ -8,8 +8,8 @@ add_executable(CppUTestTests
     src/PluginTest.cpp
     src/PreprocessorTest.cpp
     src/SetPluginTest.cpp
-    src/SimpleMutexTest.cpp
     src/SimpleStringTest.cpp
+    src/StringCollectionTest.cpp
     src/TeamCityOutputTest.cpp
     src/TestFailureNaNTest.cpp
     src/TestFailureTest.cpp

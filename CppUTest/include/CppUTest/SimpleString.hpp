@@ -25,16 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// SIMPLESTRING.H
-//
-// One of the design goals of CppUnitLite is to compilation with very old C++
-// compilers.  For that reason, the simple string class that provides
-// only the operations needed in CppUnitLite.
-//
-///////////////////////////////////////////////////////////////////////////////
-
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
@@ -42,102 +32,45 @@
 #include <cstddef>
 #include <string>
 
-class SimpleString {
-    friend bool operator==(const SimpleString& left, const SimpleString& right);
-    friend bool operator!=(const SimpleString& left, const SimpleString& right);
+namespace strings {
+std::string& replaceAll(std::string& str, const std::string& to, const std::string& with);
+std::string& replaceAll(std::string& str, char to, char with);
+size_t count(const std::string& string, const std::string& substring);
+std::string subStringFromTill(const std::string&, char startChar, char lastExcludedChar);
+std::string printable(const std::string&);
+void padStringsToSameLength(std::string& str1, std::string& str2, char ch);
+std::string lowercase(const std::string&);
+unsigned atou(const char* str);
+bool contains(const std::string& string, const std::string& substring);
+bool ends_with(const std::string& string, const std::string& suffix);
+bool starts_with(const std::string& string, const std::string& prefix);
+}
 
-public:
-    SimpleString(const char* value = "");
-    SimpleString(const char* value, size_t repeatCount);
-    SimpleString(const SimpleString& other);
-    ~SimpleString() = default;
-
-    SimpleString& operator=(const SimpleString& other);
-    SimpleString operator+(const SimpleString&) const;
-    SimpleString& operator+=(const SimpleString&);
-    SimpleString& operator+=(const char*);
-
-    static const size_t npos;
-
-    char operator[](size_t pos) const;
-    size_t find(char ch, size_t pos = 0) const;
-    bool contains(const SimpleString& other) const;
-    bool starts_with(const SimpleString& other) const;
-    bool ends_with(const SimpleString& other) const;
-
-    size_t count(const SimpleString& str) const;
-
-    SimpleString substr(size_t beginPos, size_t amount = npos) const;
-
-    const char* c_str() const;
-    const char* data() const;
-    size_t size() const;
-    bool empty() const;
-
-    static void replaceAll(SimpleString&, char to, char with);
-    static void replaceAll(SimpleString&, const char* to, const char* with);
-    static SimpleString subStringFromTill(const SimpleString&, char startChar, char lastExcludedChar);
-    static SimpleString printable(const SimpleString&);
-    static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
-
-    static SimpleString lowerCase(const SimpleString&);
-    static unsigned AtoU(const char* str);
-
-private:
-    std::string string_;
-
-    static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
-    static bool isControlWithShortEscapeSequence(char ch);
-    static size_t getPrintableSize(const SimpleString&);
-};
-
-class SimpleStringCollection {
-public:
-    SimpleStringCollection() = default;
-    SimpleStringCollection(const SimpleString& string, const SimpleString& delimiter);
-    ~SimpleStringCollection();
-
-    SimpleStringCollection& operator=(SimpleStringCollection&&);
-
-    void allocate(size_t size);
-
-    size_t size() const;
-    SimpleString& operator[](size_t index);
-
-private:
-    SimpleString* collection_ = nullptr;
-    SimpleString empty_;
-    size_t size_ = 0;
-
-    void operator=(SimpleStringCollection&);
-    SimpleStringCollection(SimpleStringCollection&);
-};
-
-SimpleString StringFrom(bool value);
-SimpleString StringFrom(const void* value);
-SimpleString StringFrom(void (*value)());
-SimpleString StringFrom(char value);
-SimpleString StringFrom(const char* value);
-SimpleString StringFromOrNull(const char* value);
-SimpleString StringFrom(int value);
-SimpleString StringFrom(unsigned int value);
-SimpleString StringFrom(long value);
-SimpleString StringFrom(unsigned long value);
-SimpleString StringFrom(long long value);
-SimpleString StringFrom(unsigned long long value);
-SimpleString HexStringFrom(unsigned int value);
-SimpleString HexStringFrom(int value);
-SimpleString HexStringFrom(signed char value);
-SimpleString HexStringFrom(long value);
-SimpleString HexStringFrom(unsigned long value);
-SimpleString HexStringFrom(long long value);
-SimpleString HexStringFrom(unsigned long long value);
-SimpleString HexStringFrom(const void* value);
-SimpleString HexStringFrom(void (*value)());
-SimpleString StringFrom(double value, int precision = 6);
-SimpleString StringFrom(const SimpleString& other);
-SimpleString StringFrom(const std::nullptr_t value);
-SimpleString StringFrom(const std::string& other);
+std::string StringFrom(bool value);
+std::string StringFrom(const void* value);
+std::string StringFrom(void (*value)());
+std::string StringFrom(char value);
+std::string StringFrom(const char* value);
+std::string StringFromOrNull(const char* value);
+std::string StringFrom(int value);
+std::string StringFrom(unsigned int value);
+std::string StringFrom(long value);
+std::string StringFrom(unsigned long value);
+std::string StringFrom(long long value);
+std::string StringFrom(unsigned long long value);
+std::string HexStringFrom(unsigned int value);
+std::string HexStringFrom(int value);
+std::string HexStringFrom(signed char value);
+std::string HexStringFrom(long value);
+std::string HexStringFrom(unsigned long value);
+std::string HexStringFrom(long long value);
+std::string HexStringFrom(unsigned long long value);
+std::string HexStringFrom(const void* value);
+std::string HexStringFrom(void (*value)());
+std::string StringFrom(double value, int precision = 6);
+std::string StringFrom(const std::string& other);
+std::string StringFrom(const std::nullptr_t value);
+std::string StringFrom(const std::string& other);
 
 #ifdef __has_attribute
 #if __has_attribute(format)
@@ -148,24 +81,24 @@ __attribute__((format(printf, 1, 2)))
 #endif
 #endif
 #endif
-SimpleString
+std::string
 StringFromFormat(const char* format, ...);
 
-SimpleString VStringFromFormat(const char* format, va_list args);
-SimpleString StringFromBinary(const unsigned char* value, size_t size);
-SimpleString StringFromBinaryOrNull(const unsigned char* value, size_t size);
-SimpleString StringFromBinaryWithSize(const unsigned char* value, size_t size);
-SimpleString StringFromBinaryWithSizeOrNull(const unsigned char* value, size_t size);
-SimpleString StringFromMaskedBits(unsigned long value, unsigned long mask, size_t byteCount);
-SimpleString StringFromOrdinalNumber(unsigned int number);
-SimpleString BracketsFormattedHexStringFrom(int value);
-SimpleString BracketsFormattedHexStringFrom(unsigned int value);
-SimpleString BracketsFormattedHexStringFrom(long value);
-SimpleString BracketsFormattedHexStringFrom(unsigned long value);
-SimpleString BracketsFormattedHexStringFrom(long long value);
-SimpleString BracketsFormattedHexStringFrom(unsigned long long value);
-SimpleString BracketsFormattedHexStringFrom(signed char value);
-SimpleString BracketsFormattedHexString(SimpleString hexString);
-SimpleString PrintableStringFromOrNull(const char* expected);
+std::string VStringFromFormat(const char* format, va_list args);
+std::string StringFromBinary(const unsigned char* value, size_t size);
+std::string StringFromBinaryOrNull(const unsigned char* value, size_t size);
+std::string StringFromBinaryWithSize(const unsigned char* value, size_t size);
+std::string StringFromBinaryWithSizeOrNull(const unsigned char* value, size_t size);
+std::string StringFromMaskedBits(unsigned long value, unsigned long mask, size_t byteCount);
+std::string StringFromOrdinalNumber(unsigned int number);
+std::string BracketsFormattedHexStringFrom(int value);
+std::string BracketsFormattedHexStringFrom(unsigned int value);
+std::string BracketsFormattedHexStringFrom(long value);
+std::string BracketsFormattedHexStringFrom(unsigned long value);
+std::string BracketsFormattedHexStringFrom(long long value);
+std::string BracketsFormattedHexStringFrom(unsigned long long value);
+std::string BracketsFormattedHexStringFrom(signed char value);
+std::string BracketsFormattedHexString(std::string hexString);
+std::string PrintableStringFromOrNull(const char* expected);
 
 #endif

@@ -59,7 +59,7 @@ public:
         const MyTypeForTesting* obj2 = (const MyTypeForTesting*)object2;
         return *(obj1->value) == *(obj2->value);
     }
-    SimpleString valueToString(const void* object) override
+    std::string valueToString(const void* object) override
     {
         const MyTypeForTesting* obj = (const MyTypeForTesting*)object;
         return StringFrom(*(obj->value));
@@ -119,7 +119,7 @@ static bool myTypeIsEqual(const void* object1, const void* object2)
     return ((const MyTypeForTesting*)object1)->value == ((const MyTypeForTesting*)object2)->value;
 }
 
-static SimpleString myTypeValueToString(const void* object)
+static std::string myTypeValueToString(const void* object)
 {
     return StringFrom(((const MyTypeForTesting*)object)->value);
 }
@@ -559,7 +559,7 @@ public:
     {
         return true;
     }
-    SimpleString valueToString(const void*) override
+    std::string valueToString(const void*) override
     {
         return "";
     }

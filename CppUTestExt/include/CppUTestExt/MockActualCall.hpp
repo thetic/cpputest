@@ -41,38 +41,38 @@ public:
     MockActualCall();
     virtual ~MockActualCall();
 
-    virtual MockActualCall& withName(const SimpleString& name) = 0;
+    virtual MockActualCall& withName(const std::string& name) = 0;
     virtual MockActualCall& withCallOrder(unsigned int callOrder) = 0;
-    MockActualCall& withParameter(const SimpleString& name, bool value) { return withBoolParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, int value) { return withIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, unsigned int value) { return withUnsignedIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, long int value) { return withLongIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, unsigned long int value) { return withUnsignedLongIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, long long value) { return withLongLongIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, unsigned long long value) { return withUnsignedLongLongIntParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, double value) { return withDoubleParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, const char* value) { return withStringParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, void* value) { return withPointerParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, void (*value)()) { return withFunctionPointerParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, const void* value) { return withConstPointerParameter(name, value); }
-    MockActualCall& withParameter(const SimpleString& name, const unsigned char* value, size_t size) { return withMemoryBufferParameter(name, value, size); }
-    virtual MockActualCall& withParameterOfType(const SimpleString& typeName, const SimpleString& name, const void* value) = 0;
-    virtual MockActualCall& withOutputParameter(const SimpleString& name, void* output) = 0;
-    virtual MockActualCall& withOutputParameterOfType(const SimpleString& typeName, const SimpleString& name, void* output) = 0;
+    MockActualCall& withParameter(const std::string& name, bool value) { return withBoolParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, int value) { return withIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, unsigned int value) { return withUnsignedIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, long int value) { return withLongIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, unsigned long int value) { return withUnsignedLongIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, long long value) { return withLongLongIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, unsigned long long value) { return withUnsignedLongLongIntParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, double value) { return withDoubleParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, const char* value) { return withStringParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, void* value) { return withPointerParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, void (*value)()) { return withFunctionPointerParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, const void* value) { return withConstPointerParameter(name, value); }
+    MockActualCall& withParameter(const std::string& name, const unsigned char* value, size_t size) { return withMemoryBufferParameter(name, value, size); }
+    virtual MockActualCall& withParameterOfType(const std::string& typeName, const std::string& name, const void* value) = 0;
+    virtual MockActualCall& withOutputParameter(const std::string& name, void* output) = 0;
+    virtual MockActualCall& withOutputParameterOfType(const std::string& typeName, const std::string& name, void* output) = 0;
 
-    virtual MockActualCall& withBoolParameter(const SimpleString& name, bool value) = 0;
-    virtual MockActualCall& withIntParameter(const SimpleString& name, int value) = 0;
-    virtual MockActualCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) = 0;
-    virtual MockActualCall& withLongIntParameter(const SimpleString& name, long int value) = 0;
-    virtual MockActualCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) = 0;
-    virtual MockActualCall& withLongLongIntParameter(const SimpleString& name, long long value) = 0;
-    virtual MockActualCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) = 0;
-    virtual MockActualCall& withDoubleParameter(const SimpleString& name, double value) = 0;
-    virtual MockActualCall& withStringParameter(const SimpleString& name, const char* value) = 0;
-    virtual MockActualCall& withPointerParameter(const SimpleString& name, void* value) = 0;
-    virtual MockActualCall& withFunctionPointerParameter(const SimpleString& name, void (*value)()) = 0;
-    virtual MockActualCall& withConstPointerParameter(const SimpleString& name, const void* value) = 0;
-    virtual MockActualCall& withMemoryBufferParameter(const SimpleString& name, const unsigned char* value, size_t size) = 0;
+    virtual MockActualCall& withBoolParameter(const std::string& name, bool value) = 0;
+    virtual MockActualCall& withIntParameter(const std::string& name, int value) = 0;
+    virtual MockActualCall& withUnsignedIntParameter(const std::string& name, unsigned int value) = 0;
+    virtual MockActualCall& withLongIntParameter(const std::string& name, long int value) = 0;
+    virtual MockActualCall& withUnsignedLongIntParameter(const std::string& name, unsigned long int value) = 0;
+    virtual MockActualCall& withLongLongIntParameter(const std::string& name, long long value) = 0;
+    virtual MockActualCall& withUnsignedLongLongIntParameter(const std::string& name, unsigned long long value) = 0;
+    virtual MockActualCall& withDoubleParameter(const std::string& name, double value) = 0;
+    virtual MockActualCall& withStringParameter(const std::string& name, const char* value) = 0;
+    virtual MockActualCall& withPointerParameter(const std::string& name, void* value) = 0;
+    virtual MockActualCall& withFunctionPointerParameter(const std::string& name, void (*value)()) = 0;
+    virtual MockActualCall& withConstPointerParameter(const std::string& name, const void* value) = 0;
+    virtual MockActualCall& withMemoryBufferParameter(const std::string& name, const unsigned char* value, size_t size) = 0;
 
     virtual bool hasReturnValue() = 0;
     virtual MockNamedValue returnValue() = 0;

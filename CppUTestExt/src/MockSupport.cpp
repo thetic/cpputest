@@ -27,6 +27,7 @@
 
 #include "CppUTestExt/MockSupport.hpp"
 
+#include "CppUTest/SimpleString.hpp"
 #include "CppUTestExt/MockActualCall.hpp"
 #include "CppUTestExt/MockExpectedCall.hpp"
 #include "CppUTestExt/MockFailure.hpp"
@@ -37,7 +38,7 @@
 
 static MockSupport global_mock;
 
-MockSupport& mock(const SimpleString& mockName, MockFailureReporter* failureReporterForThisCall)
+MockSupport& mock(const std::string& mockName, MockFailureReporter* failureReporterForThisCall)
 {
     MockSupport& mock_support = (mockName != "") ? *global_mock.getMockSupportScope(mockName) : global_mock;
     mock_support.setActiveReporter(failureReporterForThisCall);
@@ -45,7 +46,7 @@ MockSupport& mock(const SimpleString& mockName, MockFailureReporter* failureRepo
     return mock_support;
 }
 
-MockSupport::MockSupport(const SimpleString& mockName)
+MockSupport::MockSupport(const std::string& mockName)
     : actualCallOrder_(0)
     , expectedCallOrder_(0)
     , strictOrdering_(false)
@@ -90,7 +91,7 @@ void MockSupport::setDefaultComparatorsAndCopiersRepository()
     MockNamedValue::setDefaultComparatorsAndCopiersRepository(&comparatorsAndCopiersRepository_);
 }
 
-void MockSupport::installComparator(const SimpleString& typeName, MockNamedValueComparator& comparator)
+void MockSupport::installComparator(const std::string& typeName, MockNamedValueComparator& comparator)
 {
     comparatorsAndCopiersRepository_.installComparator(typeName, comparator);
 
@@ -99,7 +100,7 @@ void MockSupport::installComparator(const SimpleString& typeName, MockNamedValue
             getMockSupport(p)->installComparator(typeName, comparator);
 }
 
-void MockSupport::installCopier(const SimpleString& typeName, MockNamedValueCopier& copier)
+void MockSupport::installCopier(const std::string& typeName, MockNamedValueCopier& copier)
 {
     comparatorsAndCopiersRepository_.installCopier(typeName, copier);
 
@@ -155,24 +156,24 @@ void MockSupport::strictOrder()
     strictOrdering_ = true;
 }
 
-SimpleString MockSupport::appendScopeToName(const SimpleString& functionName)
+std::string MockSupport::appendScopeToName(const std::string& functionName)
 {
     if (mockName_.empty())
         return functionName;
     return mockName_ + "::" + functionName;
 }
 
-MockExpectedCall& MockSupport::expectOneCall(const SimpleString& functionName)
+MockExpectedCall& MockSupport::expectOneCall(const std::string& functionName)
 {
     return expectNCalls(1, functionName);
 }
 
-void MockSupport::expectNoCall(const SimpleString& functionName)
+void MockSupport::expectNoCall(const std::string& functionName)
 {
     expectNCalls(0, functionName);
 }
 
-MockExpectedCall& MockSupport::expectNCalls(unsigned int amount, const SimpleString& functionName)
+MockExpectedCall& MockSupport::expectNCalls(unsigned int amount, const std::string& functionName)
 {
     if (!enabled_)
         return MockIgnoredExpectedCall::instance();
@@ -195,14 +196,14 @@ MockCheckedActualCall* MockSupport::createActualCall()
     return lastActualFunctionCall_;
 }
 
-bool MockSupport::callIsIgnored(const SimpleString& functionName)
+bool MockSupport::callIsIgnored(const std::string& functionName)
 {
     return ignoreOtherCalls_ && !expectations_.hasExpectationWithName(functionName);
 }
 
-MockActualCall& MockSupport::actualCall(const SimpleString& functionName)
+MockActualCall& MockSupport::actualCall(const std::string& functionName)
 {
-    const SimpleString scopeFunctionName = appendScopeToName(functionName);
+    const std::string scopeFunctionName = appendScopeToName(functionName);
 
     if (lastActualFunctionCall_) {
         lastActualFunctionCall_->checkExpectations();
@@ -358,12 +359,12 @@ void MockSupport::checkExpectations()
         failTestWithOutOfOrderCalls();
 }
 
-bool MockSupport::hasData(const SimpleString& name)
+bool MockSupport::hasData(const std::string& name)
 {
     return data_.getValueByName(name) != nullptr;
 }
 
-MockNamedValue* MockSupport::retrieveDataFromStore(const SimpleString& name)
+MockNamedValue* MockSupport::retrieveDataFromStore(const std::string& name)
 {
     MockNamedValue* newData = data_.getValueByName(name);
     if (newData == nullptr) {
@@ -373,67 +374,67 @@ MockNamedValue* MockSupport::retrieveDataFromStore(const SimpleString& name)
     return newData;
 }
 
-void MockSupport::setData(const SimpleString& name, bool value)
+void MockSupport::setData(const std::string& name, bool value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, unsigned int value)
+void MockSupport::setData(const std::string& name, unsigned int value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, int value)
+void MockSupport::setData(const std::string& name, int value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, const char* value)
+void MockSupport::setData(const std::string& name, const char* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, double value)
+void MockSupport::setData(const std::string& name, double value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, void* value)
+void MockSupport::setData(const std::string& name, void* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, const void* value)
+void MockSupport::setData(const std::string& name, const void* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setData(const SimpleString& name, void (*value)())
+void MockSupport::setData(const std::string& name, void (*value)())
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setValue(value);
 }
 
-void MockSupport::setDataObject(const SimpleString& name, const SimpleString& type, void* value)
+void MockSupport::setDataObject(const std::string& name, const std::string& type, void* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setObjectPointer(type, value);
 }
 
-void MockSupport::setDataConstObject(const SimpleString& name, const SimpleString& type, const void* value)
+void MockSupport::setDataConstObject(const std::string& name, const std::string& type, const void* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);
     newData->setConstObjectPointer(type, value);
 }
 
-MockNamedValue MockSupport::getData(const SimpleString& name)
+MockNamedValue MockSupport::getData(const std::string& name)
 {
     MockNamedValue* value = data_.getValueByName(name);
     if (value == nullptr)
@@ -441,7 +442,7 @@ MockNamedValue MockSupport::getData(const SimpleString& name)
     return *value;
 }
 
-MockSupport* MockSupport::clone(const SimpleString& mockName)
+MockSupport* MockSupport::clone(const std::string& mockName)
 {
     MockSupport* newMock = new MockSupport(mockName);
     newMock->setMockFailureStandardReporter(standardReporter_);
@@ -459,9 +460,9 @@ MockSupport* MockSupport::clone(const SimpleString& mockName)
     return newMock;
 }
 
-MockSupport* MockSupport::getMockSupportScope(const SimpleString& name)
+MockSupport* MockSupport::getMockSupportScope(const std::string& name)
 {
-    SimpleString mockingSupportName = MOCK_SUPPORT_SCOPE_PREFIX;
+    std::string mockingSupportName = MOCK_SUPPORT_SCOPE_PREFIX;
     mockingSupportName += name;
 
     if (hasData(mockingSupportName)) {
@@ -477,8 +478,9 @@ MockSupport* MockSupport::getMockSupportScope(const SimpleString& name)
 
 MockSupport* MockSupport::getMockSupport(MockNamedValueListNode* node)
 {
-    if (node->getType() == "MockSupport" && node->getName().contains(MOCK_SUPPORT_SCOPE_PREFIX))
+    if ((node->getType() == "MockSupport") && strings::contains(node->getName(), MOCK_SUPPORT_SCOPE_PREFIX))
         return (MockSupport*)node->item()->getObjectPointer();
+
     return nullptr;
 }
 

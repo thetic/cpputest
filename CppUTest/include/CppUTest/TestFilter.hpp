@@ -28,18 +28,18 @@
 #ifndef TESTFILTER_H_
 #define TESTFILTER_H_
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 class TestFilter {
 public:
     TestFilter();
     TestFilter(const char* filter);
-    TestFilter(const SimpleString& filter);
+    TestFilter(const std::string& filter);
 
     TestFilter* add(TestFilter* filter);
     TestFilter* getNext() const;
 
-    bool match(const SimpleString& name) const;
+    bool match(const std::string& name) const;
 
     void strictMatching();
     void invertMatching();
@@ -47,15 +47,15 @@ public:
     bool operator==(const TestFilter& filter) const;
     bool operator!=(const TestFilter& filter) const;
 
-    SimpleString asString() const;
+    std::string asString() const;
 
 private:
-    SimpleString filter_;
+    std::string filter_;
     bool strictMatching_;
     bool invertMatching_;
     TestFilter* next_;
 };
 
-SimpleString StringFrom(const TestFilter& filter);
+std::string StringFrom(const TestFilter& filter);
 
 #endif

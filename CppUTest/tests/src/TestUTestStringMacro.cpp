@@ -77,7 +77,7 @@ static void STRCMP_CONTAINSWithExpectedIsNULLTestMethod_()
 TEST(UnitTestStringMacros, FailureWithSTRCMP_CONTAINSAndExpectedIsNULL)
 {
     fixture.runTestWithMethod(STRCMP_CONTAINSWithExpectedIsNULLTestMethod_);
-    CHECK_TEST_FAILS_PROPER_WITH_TEXT("did not contain  <>");
+    CHECK_TEST_FAILS_PROPER_WITH_TEXT("did not contain  <(null)>");
 }
 
 static void STRNCMP_EQUALWithActualIsNULLTestMethod_()
@@ -154,7 +154,7 @@ static void STRCMP_NOCASE_CONTAINSWithExpectedIsNULLTestMethod_()
 TEST(UnitTestStringMacros, FailureWithSTRCMP_NOCASE_CONTAINSAndExpectedIsNULL)
 {
     fixture.runTestWithMethod(STRCMP_NOCASE_CONTAINSWithExpectedIsNULLTestMethod_);
-    CHECK_TEST_FAILS_PROPER_WITH_TEXT("did not contain  <>");
+    CHECK_TEST_FAILS_PROPER_WITH_TEXT("did not contain  <(null)>");
 }
 
 static void failingTestMethodWithSTRCMP_EQUAL_()

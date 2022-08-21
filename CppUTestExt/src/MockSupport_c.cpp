@@ -87,9 +87,9 @@ public:
     {
         return equal_(object1, object2) != 0;
     }
-    SimpleString valueToString(const void* object) override
+    std::string valueToString(const void* object) override
     {
-        return SimpleString(toString_(object));
+        return toString_(object);
     }
 
     MockCFunctionComparatorNode* next_;

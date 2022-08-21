@@ -32,7 +32,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-static SimpleString* buffer;
+static std::string* buffer;
 
 TEST_GROUP(HelloWorld) {
     static int output_method(const char* output, ...) {
@@ -45,7 +45,7 @@ return 1;
 
 void setup() override
 {
-    buffer = new SimpleString();
+    buffer = new std::string();
     UT_PTR_SET(PrintFormated, &output_method);
 }
 
