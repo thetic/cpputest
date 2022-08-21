@@ -958,7 +958,7 @@ void UtestShellPointerArray::shuffle(size_t seed)
     if (count_ == 0)
         return;
 
-    PlatformSpecificSrand((unsigned int)seed);
+    std::srand((unsigned int)seed);
 
     for (size_t i = count_ - 1; i >= 1; --i) {
         if (count_ == 0)

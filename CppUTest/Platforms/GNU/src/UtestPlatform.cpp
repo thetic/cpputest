@@ -224,6 +224,5 @@ void (*PlatformSpecificFClose)(PlatformSpecificFile) = PlatformSpecificFCloseImp
 int (*PlatformSpecificPutchar)(int) = putchar;
 void (*PlatformSpecificFlush)() = PlatformSpecificFlushImplementation;
 
-void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit; /// this was undefined before

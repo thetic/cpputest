@@ -96,7 +96,6 @@ static void VisualCppFlush()
 int (*PlatformSpecificPutchar)(int c) = putchar;
 void (*PlatformSpecificFlush)(void) = VisualCppFlush;
 
-void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit;

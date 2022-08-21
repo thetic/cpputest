@@ -61,10 +61,6 @@ extern int (*PlatformSpecificPutchar)(int c);
 extern void (*PlatformSpecificFlush)(void);
 
 /* Random operations */
-extern void (*PlatformSpecificSrand)(unsigned int);
-extern int (*PlatformSpecificRand)(void);
-
-extern void (*PlatformSpecificSrand)(unsigned int);
 extern int (*PlatformSpecificRand)(void);
 
 #ifdef __cplusplus
