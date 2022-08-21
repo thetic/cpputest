@@ -31,6 +31,7 @@
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/UtestMacros.hpp"
+#include <cstring>
 
 MockActualCall::MockActualCall()
 {
@@ -95,7 +96,7 @@ void MockCheckedActualCall::copyOutputParameters(MockCheckedExpectedCall* expect
         } else if ((outputParameter.getType() == "const void*") && (p->type_ == "void*")) {
             const void* data = outputParameter.getConstPointerValue();
             size_t size = outputParameter.getSize();
-            PlatformSpecificMemCpy(p->ptr_, data, size);
+            std::memcpy(p->ptr_, data, size);
         } else if (outputParameter.getName() != "") {
             std::string type = expectedCall->getOutputParameter(p->name_).getType();
             MockNoWayToCopyCustomTypeFailure failure(getTest(), type);

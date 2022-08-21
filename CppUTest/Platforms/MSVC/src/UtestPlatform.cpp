@@ -95,28 +95,8 @@ static void VisualCppFlush()
 int (*PlatformSpecificPutchar)(int c) = putchar;
 void (*PlatformSpecificFlush)(void) = VisualCppFlush;
 
-static void* VisualCppMalloc(size_t size)
-{
-    return malloc(size);
-}
-
-static void* VisualCppReAlloc(void* memory, size_t size)
-{
-    return realloc(memory, size);
-}
-
-static void VisualCppFree(void* memory)
-{
-    free(memory);
-}
-
 void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
-void* (*PlatformSpecificMalloc)(size_t size) = VisualCppMalloc;
-void* (*PlatformSpecificRealloc)(void* memory, size_t size) = VisualCppReAlloc;
-void (*PlatformSpecificFree)(void* memory) = VisualCppFree;
-void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = memcpy;
-void* (*PlatformSpecificMemset)(void* mem, int c, size_t size) = memset;
 
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit;
 

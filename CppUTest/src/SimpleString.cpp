@@ -405,11 +405,11 @@ std::string VStringFromFormat(const char* format, va_list args)
         resultString = std::string(defaultBuffer);
     } else {
         size_t newBufferSize = size + 1;
-        char* newBuffer = (char*)PlatformSpecificMalloc(newBufferSize);
+        char* newBuffer = (char*)std::malloc(newBufferSize);
         std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
         resultString = std::string(newBuffer);
 
-        PlatformSpecificFree(newBuffer);
+        std::free(newBuffer);
     }
     va_end(argsCopy);
     return resultString;
