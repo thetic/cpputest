@@ -399,13 +399,13 @@ std::string VStringFromFormat(const char* format, va_list args)
     char defaultBuffer[sizeOfdefaultBuffer];
     std::string resultString;
 
-    size_t size = (size_t)PlatformSpecificVSNprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
+    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
     if (size < sizeOfdefaultBuffer) {
         resultString = std::string(defaultBuffer);
     } else {
         size_t newBufferSize = size + 1;
         char* newBuffer = (char*)PlatformSpecificMalloc(newBufferSize);
-        PlatformSpecificVSNprintf(newBuffer, newBufferSize, format, argsCopy);
+        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
         resultString = std::string(newBuffer);
 
         PlatformSpecificFree(newBuffer);

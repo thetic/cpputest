@@ -68,30 +68,6 @@ static const char* VisualCppTimeString()
 
 const char* (*GetPlatformSpecificTimeString)() = VisualCppTimeString;
 
-////// taken from gcc
-
-static int VisualCppVSNprintf(char* str, size_t size, const char* format, va_list args)
-{
-    char* buf = 0;
-    size_t sizeGuess = size;
-
-    int result = _vsnprintf(str, size, format, args);
-    str[size - 1] = 0;
-    while (result == -1) {
-        if (buf != 0)
-            free(buf);
-        sizeGuess += 10;
-        buf = (char*)malloc(sizeGuess);
-        result = _vsnprintf(buf, sizeGuess, format, args);
-    }
-
-    if (buf != 0)
-        free(buf);
-    return result;
-}
-
-int (*PlatformSpecificVSNprintf)(char* str, size_t size, const char* format, va_list va_args_list) = VisualCppVSNprintf;
-
 static PlatformSpecificFile VisualCppFOpen(const char* filename, const char* flag)
 {
     return fopen(filename, flag);

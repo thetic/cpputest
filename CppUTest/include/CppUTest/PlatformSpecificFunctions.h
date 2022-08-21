@@ -47,9 +47,6 @@ extern "C" {
 extern long (*GetPlatformSpecificTimeInMillis)(void);
 extern const char* (*GetPlatformSpecificTimeString)(void);
 
-/* String operations */
-extern int (*PlatformSpecificVSNprintf)(char* str, size_t size, const char* format, va_list va_args_list);
-
 /* Misc */
 extern double (*PlatformSpecificFabs)(double d);
 extern int (*PlatformSpecificIsNan)(double d);
