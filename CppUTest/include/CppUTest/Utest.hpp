@@ -289,6 +289,8 @@ public:
     UtestShell* getFirstTest() const;
     UtestShell* get(size_t index) const;
 
+    static int (*rand_)(void);
+
 private:
     void swap(size_t index1, size_t index2);
 

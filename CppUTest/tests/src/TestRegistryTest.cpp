@@ -403,9 +403,9 @@ static int getZero()
     return 0;
 }
 
-IGNORE_TEST(TestRegistry, shuffleTestList)
+TEST(TestRegistry, shuffleTestList)
 {
-    UT_PTR_SET(PlatformSpecificRand, getZero);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getZero);
     myRegistry->addTest(test3);
     myRegistry->addTest(test2);
     myRegistry->addTest(test1);

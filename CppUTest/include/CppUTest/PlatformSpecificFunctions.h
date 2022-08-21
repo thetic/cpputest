@@ -60,9 +60,6 @@ extern void (*PlatformSpecificFClose)(PlatformSpecificFile file);
 extern int (*PlatformSpecificPutchar)(int c);
 extern void (*PlatformSpecificFlush)(void);
 
-/* Random operations */
-extern int (*PlatformSpecificRand)(void);
-
 #ifdef __cplusplus
 }
 #endif

@@ -509,7 +509,7 @@ TEST(UtestShellPointerArrayTest, firstTestisNotTheFirstTestWithSeed1234)
 
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 {
-    UT_PTR_SET(PlatformSpecificRand, getZero);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getZero);
 
     UtestShellPointerArray tests(test0);
     tests.shuffle(3);
@@ -521,7 +521,7 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 // swaps with 4 mod 3 (1) then 4 mod 2 (0): 1, [2], [0] --> [1], [0], 2 --> 0, 1, 2
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 {
-    UT_PTR_SET(PlatformSpecificRand, getOne);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
 
     UtestShellPointerArray tests(test0);
     tests.shuffle(3);
@@ -532,7 +532,7 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 
 TEST(UtestShellPointerArrayTest, reverse)
 {
-    UT_PTR_SET(PlatformSpecificRand, getOne);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
 
     UtestShellPointerArray tests(test0);
     tests.reverse();

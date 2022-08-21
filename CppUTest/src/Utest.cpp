@@ -923,6 +923,8 @@ void IgnoredUtestShell::setRunIgnored()
 
 //////////////////// UtestShellPointerArray
 
+int (*UtestShellPointerArray::rand_)(void) = std::rand;
+
 UtestShellPointerArray::UtestShellPointerArray(UtestShell* firstTest)
     : arrayOfTests_(nullptr)
     , count_(0)
@@ -964,7 +966,7 @@ void UtestShellPointerArray::shuffle(size_t seed)
         if (count_ == 0)
             return;
 
-        const size_t j = ((size_t)PlatformSpecificRand()) % (i + 1); // distribution biased by modulo, but good enough for shuffling
+        const size_t j = ((size_t)rand_()) % (i + 1); // distribution biased by modulo, but good enough for shuffling
         swap(i, j);
     }
     relinkTestsInOrder();
