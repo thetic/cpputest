@@ -78,7 +78,7 @@ struct JUnitTestGroupResult {
 
 struct JUnitTestOutputImpl {
     JUnitTestGroupResult results_;
-    PlatformSpecificFile file_;
+    std::FILE* file_;
     std::string package_;
     std::string stdOutput_;
 };
@@ -317,15 +317,15 @@ void JUnitTestOutput::printFailure(const TestFailure& failure)
 
 void JUnitTestOutput::openFileForWrite(const std::string& fileName)
 {
-    impl_->file_ = PlatformSpecificFOpen(fileName.c_str(), "w");
+    impl_->file_ = fopen(fileName.c_str(), "w");
 }
 
 void JUnitTestOutput::writeToFile(const std::string& buffer)
 {
-    PlatformSpecificFPuts(buffer.c_str(), impl_->file_);
+    fputs(buffer.c_str(), impl_->file_);
 }
 
 void JUnitTestOutput::closeFile()
 {
-    PlatformSpecificFClose(impl_->file_);
+    fclose(impl_->file_);
 }

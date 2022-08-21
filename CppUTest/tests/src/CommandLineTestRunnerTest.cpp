@@ -92,6 +92,9 @@ public:
     }
 };
 
+static std::string file;
+static std::string console;
+
 TEST_GROUP(CommandLineTestRunner)
 {
     TestRegistry registry;
@@ -105,6 +108,13 @@ TEST_GROUP(CommandLineTestRunner)
         test2 = new UtestShell("group2", "test2", "file2", 2);
         registry.addTest(test1);
         pluginCountingPlugin = new DummyPluginWhichCountsThePlugins("PluginCountingPlugin", &registry);
+
+        file = "";
+        console = "";
+        UT_PTR_SET(TestOutput::fopen, fopen_fake);
+        UT_PTR_SET(TestOutput::fputs, fputs_fake);
+        UT_PTR_SET(TestOutput::fclose, fclose_fake);
+        UT_PTR_SET(TestOutput::putchar, putchar_fake);
     }
     void teardown() override
     {
@@ -118,6 +128,28 @@ TEST_GROUP(CommandLineTestRunner)
         CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(argc, argv, &registry);
         commandLineTestRunner.runAllTestsMain();
         return commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput();
+    }
+
+    static std::FILE* fopen_fake(const char*, const char*)
+    {
+        return nullptr;
+    }
+
+    static int fputs_fake(const char* str, std::FILE*)
+    {
+        file += str;
+        return 0;
+    }
+
+    static int fclose_fake(std::FILE*)
+    {
+        return 0;
+    }
+
+    static int putchar_fake(int c)
+    {
+        console += StringFrom((char)c);
+        return c;
     }
 };
 
@@ -303,78 +335,6 @@ TEST(CommandLineTestRunner, specificShuffleSeedIsPrintedVerbose)
     STRCMP_CONTAINS("shuffling enabled with seed: 2", text.c_str());
 }
 
-typedef PlatformSpecificFile (*FOpenFunc)(const char*, const char*);
-typedef void (*FPutsFunc)(const char*, PlatformSpecificFile);
-typedef void (*FCloseFunc)(PlatformSpecificFile);
-typedef int (*PutcharFunc)(int);
-
-struct FakeOutput {
-    FakeOutput()
-        : SaveFOpen(PlatformSpecificFOpen)
-        , SaveFPuts(PlatformSpecificFPuts)
-        , SaveFClose(PlatformSpecificFClose)
-        , SavePutchar(PlatformSpecificPutchar)
-    {
-        installFakes();
-        currentFake = this;
-    }
-
-    ~FakeOutput()
-    {
-        currentFake = nullptr;
-        restoreOriginals();
-    }
-
-    void installFakes()
-    {
-        PlatformSpecificFOpen = (FOpenFunc)fopen_fake;
-        PlatformSpecificFPuts = (FPutsFunc)fputs_fake;
-        PlatformSpecificFClose = (FCloseFunc)fclose_fake;
-        PlatformSpecificPutchar = (PutcharFunc)putchar_fake;
-    }
-
-    void restoreOriginals()
-    {
-        PlatformSpecificPutchar = SavePutchar;
-        PlatformSpecificFOpen = SaveFOpen;
-        PlatformSpecificFPuts = SaveFPuts;
-        PlatformSpecificFClose = SaveFClose;
-    }
-
-    static PlatformSpecificFile fopen_fake(const char*, const char*)
-    {
-        return (PlatformSpecificFile) nullptr;
-    }
-
-    static void fputs_fake(const char* str, PlatformSpecificFile)
-    {
-        currentFake->file += str;
-    }
-
-    static void fclose_fake(PlatformSpecificFile)
-    {
-    }
-
-    static int putchar_fake(int c)
-    {
-        currentFake->console += StringFrom((char)c);
-        return c;
-    }
-
-    std::string file;
-    std::string console;
-
-    static FakeOutput* currentFake;
-
-private:
-    FOpenFunc SaveFOpen;
-    FPutsFunc SaveFPuts;
-    FCloseFunc SaveFClose;
-    PutcharFunc SavePutchar;
-};
-
-FakeOutput* FakeOutput::currentFake = nullptr;
-
 TEST(CommandLineTestRunner, realJunitOutputShouldBeCreatedAndWorkProperly)
 {
     const char* argv[] = {
@@ -384,15 +344,11 @@ TEST(CommandLineTestRunner, realJunitOutputShouldBeCreatedAndWorkProperly)
         "-kpackage",
     };
 
-    FakeOutput fakeOutput; /* UT_PTR_SET() is not reentrant */
-
     CommandLineTestRunner commandLineTestRunner(4, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    fakeOutput.restoreOriginals();
-
-    STRCMP_CONTAINS("<testcase classname=\"package.group1\" name=\"test1\"", fakeOutput.file.c_str());
-    STRCMP_CONTAINS("TEST(group1, test1)", fakeOutput.console.c_str());
+    STRCMP_CONTAINS("<testcase classname=\"package.group1\" name=\"test1\"", file.c_str());
+    STRCMP_CONTAINS("TEST(group1, test1)", console.c_str());
 }
 
 TEST(CommandLineTestRunner, realTeamCityOutputShouldBeCreatedAndWorkProperly)
@@ -404,17 +360,13 @@ TEST(CommandLineTestRunner, realTeamCityOutputShouldBeCreatedAndWorkProperly)
         "-kpackage",
     };
 
-    FakeOutput fakeOutput; /* UT_PTR_SET() is not reentrant */
-
     CommandLineTestRunner commandLineTestRunner(4, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    fakeOutput.restoreOriginals();
-
-    STRCMP_CONTAINS("##teamcity[testSuiteStarted name='group1'", fakeOutput.console.c_str());
-    STRCMP_CONTAINS("##teamcity[testStarted name='test1'", fakeOutput.console.c_str());
-    STRCMP_CONTAINS("##teamcity[testFinished name='test1'", fakeOutput.console.c_str());
-    STRCMP_CONTAINS("##teamcity[testSuiteFinished name='group1'", fakeOutput.console.c_str());
+    STRCMP_CONTAINS("##teamcity[testSuiteStarted name='group1'", console.c_str());
+    STRCMP_CONTAINS("##teamcity[testStarted name='test1'", console.c_str());
+    STRCMP_CONTAINS("##teamcity[testFinished name='test1'", console.c_str());
+    STRCMP_CONTAINS("##teamcity[testSuiteFinished name='group1'", console.c_str());
 }
 
 class RunIgnoredUtest : public Utest {

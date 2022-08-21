@@ -320,19 +320,21 @@ public:
 
 static FileSystemForJUnitTestOutputTests fileSystem;
 
-static PlatformSpecificFile mockFOpen(const char* filename, const char*)
+static std::FILE* mockFOpen(const char* filename, const char*)
 {
-    return fileSystem.openFile(filename);
+    return (std::FILE*)fileSystem.openFile(filename);
 }
 
-static void mockFPuts(const char* str, PlatformSpecificFile file)
+static int mockFPuts(const char* str, std::FILE* file)
 {
     ((FileForJUnitOutputTests*)file)->write(str);
+    return 0;
 }
 
-static void mockFClose(PlatformSpecificFile file)
+static int mockFClose(std::FILE* file)
 {
     ((FileForJUnitOutputTests*)file)->close();
+    return 0;
 }
 
 TEST_GROUP(JUnitOutputTest)
@@ -344,9 +346,9 @@ TEST_GROUP(JUnitOutputTest)
 
     void setup() override
     {
-        UT_PTR_SET(PlatformSpecificFOpen, mockFOpen);
-        UT_PTR_SET(PlatformSpecificFPuts, mockFPuts);
-        UT_PTR_SET(PlatformSpecificFClose, mockFClose);
+        UT_PTR_SET(TestOutput::fopen, mockFOpen);
+        UT_PTR_SET(TestOutput::fputs, mockFPuts);
+        UT_PTR_SET(TestOutput::fclose, mockFClose);
         junitOutput = new JUnitTestOutput();
         result = new TestResult(*junitOutput);
         testCaseRunner = new JUnitTestOutputTestRunner(*result);

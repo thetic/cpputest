@@ -35,6 +35,12 @@
 
 WorkingEnvironment TestOutput::workingEnvironment_ = WorkingEnvironment::detectEnvironment;
 
+std::FILE* (*TestOutput::fopen)(const char* filename, const char* mode) = std::fopen;
+int (*TestOutput::fputs)(const char* str, std::FILE* stream) = std::fputs;
+int (*TestOutput::fclose)(std::FILE* stream) = std::fclose;
+int (*TestOutput::putchar)(int c) = std::putchar;
+int (*TestOutput::fflush)(std::FILE* stream) = std::fflush;
+
 void TestOutput::setWorkingEnvironment(WorkingEnvironment workEnvironment)
 {
     workingEnvironment_ = workEnvironment;
@@ -279,7 +285,7 @@ void TestOutput::printVeryVerbose(const char* str)
 void ConsoleTestOutput::printBuffer(const char* s)
 {
     while (*s) {
-        PlatformSpecificPutchar(*s);
+        putchar(*s);
         s++;
     }
     flush();
@@ -287,7 +293,7 @@ void ConsoleTestOutput::printBuffer(const char* s)
 
 void ConsoleTestOutput::flush()
 {
-    PlatformSpecificFlush();
+    fflush(stdout);
 }
 
 StringBufferTestOutput::~StringBufferTestOutput()

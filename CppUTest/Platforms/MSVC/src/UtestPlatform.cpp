@@ -68,32 +68,3 @@ static const char* VisualCppTimeString()
 }
 
 const char* (*GetPlatformSpecificTimeString)() = VisualCppTimeString;
-
-static PlatformSpecificFile VisualCppFOpen(const char* filename, const char* flag)
-{
-    return fopen(filename, flag);
-}
-
-static void VisualCppFPuts(const char* str, PlatformSpecificFile file)
-{
-    fputs(str, (FILE*)file);
-}
-
-static void VisualCppFClose(PlatformSpecificFile file)
-{
-    fclose((FILE*)file);
-}
-
-PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = VisualCppFOpen;
-void (*PlatformSpecificFPuts)(const char* str, PlatformSpecificFile file) = VisualCppFPuts;
-void (*PlatformSpecificFClose)(PlatformSpecificFile file) = VisualCppFClose;
-
-static void VisualCppFlush()
-{
-    fflush(stdout);
-}
-
-int (*PlatformSpecificPutchar)(int c) = putchar;
-void (*PlatformSpecificFlush)(void) = VisualCppFlush;
-
-int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit;
