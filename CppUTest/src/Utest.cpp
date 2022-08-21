@@ -33,6 +33,7 @@
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestResult.hpp"
 
+#include <cmath>
 #include <csetjmp>
 #include <csignal>
 #include <cstring>
@@ -80,7 +81,7 @@ bool doubles_equal(double d1, double d2, double threshold)
         return true;
     }
 
-    return PlatformSpecificFabs(d1 - d2) <= threshold;
+    return std::fabs(d1 - d2) <= threshold;
 }
 
 /* Sometimes stubs use the CppUTest assertions.

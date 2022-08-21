@@ -242,7 +242,6 @@ static int IsInfImplementation(double d)
     return isinf(d);
 }
 
-double (*PlatformSpecificFabs)(double) = fabs;
 void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
