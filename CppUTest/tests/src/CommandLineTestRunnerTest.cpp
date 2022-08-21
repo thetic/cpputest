@@ -28,6 +28,7 @@
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
@@ -229,9 +230,9 @@ TEST(CommandLineTestRunner, defaultTestsAreRunInOrderTheyAreInRepository)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection(
+    StringCollection stringCollection(
         commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
-        "\n");
+        '\n');
     STRCMP_CONTAINS("test2", stringCollection[0].c_str());
     STRCMP_CONTAINS("test1", stringCollection[1].c_str());
 }
@@ -244,9 +245,9 @@ TEST(CommandLineTestRunner, testsCanBeRunInReverseOrder)
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(3, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
-    SimpleStringCollection stringCollection(
+    StringCollection stringCollection(
         commandLineTestRunner.fakeConsoleOutputWhichIsReallyABuffer->getOutput(),
-        "\n");
+        '\n');
     STRCMP_CONTAINS("test1", stringCollection[0].c_str());
     STRCMP_CONTAINS("test2", stringCollection[1].c_str());
 }

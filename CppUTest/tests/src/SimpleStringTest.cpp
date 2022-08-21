@@ -179,33 +179,6 @@ TEST(SimpleString, startsWith)
     CHECK(!strings::starts_with(diff, hi));
 }
 
-TEST(SimpleString, split)
-{
-    SimpleString hi("hello\nworld\nhow\ndo\nyou\ndo\n\n");
-
-    SimpleStringCollection collection(hi, "\n");
-
-    LONGS_EQUAL(7, collection.size());
-    STRCMP_EQUAL("hello\n", collection[0].c_str());
-    STRCMP_EQUAL("world\n", collection[1].c_str());
-    STRCMP_EQUAL("how\n", collection[2].c_str());
-    STRCMP_EQUAL("do\n", collection[3].c_str());
-    STRCMP_EQUAL("you\n", collection[4].c_str());
-    STRCMP_EQUAL("do\n", collection[5].c_str());
-    STRCMP_EQUAL("\n", collection[6].c_str());
-}
-
-TEST(SimpleString, splitNoTokenOnTheEnd)
-{
-    SimpleString string("Bah Yah oops");
-    SimpleStringCollection collection(string, " ");
-
-    LONGS_EQUAL(3, collection.size());
-    STRCMP_EQUAL("Bah ", collection[0].c_str());
-    STRCMP_EQUAL("Yah ", collection[1].c_str());
-    STRCMP_EQUAL("oops", collection[2].c_str());
-}
-
 TEST(SimpleString, count)
 {
     std::string str("ha ha ha ha");
@@ -580,29 +553,6 @@ TEST(SimpleString, NullParameters2)
 {
     SimpleString* arr = new SimpleString[100];
     delete[] arr;
-}
-
-TEST(SimpleString, CollectionMultipleAllocateNoLeaksMemory)
-{
-    SimpleStringCollection col;
-    col.allocate(5);
-    col.allocate(5);
-    // CHECK no memory leak
-}
-
-TEST(SimpleString, CollectionReadOutOfBoundsReturnsEmptyString)
-{
-    SimpleStringCollection col;
-    col.allocate(3);
-    STRCMP_EQUAL("", col[3].c_str());
-}
-
-TEST(SimpleString, CollectionWritingToEmptyString)
-{
-    SimpleStringCollection col;
-    col.allocate(3);
-    col[3] = SimpleString("HAH");
-    STRCMP_EQUAL("", col[3].c_str());
 }
 
 #ifdef CPPUTEST_64BIT

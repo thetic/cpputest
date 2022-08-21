@@ -102,28 +102,6 @@ private:
     std::string string_;
 };
 
-class SimpleStringCollection {
-public:
-    SimpleStringCollection() = default;
-    SimpleStringCollection(const SimpleString& string, const SimpleString& delimiter);
-    ~SimpleStringCollection();
-
-    SimpleStringCollection& operator=(SimpleStringCollection&&);
-
-    void allocate(size_t size);
-
-    size_t size() const;
-    SimpleString& operator[](size_t index);
-
-private:
-    SimpleString* collection_ = nullptr;
-    SimpleString empty_;
-    size_t size_ = 0;
-
-    void operator=(SimpleStringCollection&);
-    SimpleStringCollection(SimpleStringCollection&);
-};
-
 SimpleString StringFrom(bool value);
 SimpleString StringFrom(const void* value);
 SimpleString StringFrom(void (*value)());

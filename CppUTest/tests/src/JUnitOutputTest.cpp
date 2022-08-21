@@ -27,7 +27,7 @@
 
 #include "CppUTest/JUnitTestOutput.hpp"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
 
@@ -37,7 +37,7 @@ class FileForJUnitOutputTests {
     std::string buffer_;
     FileForJUnitOutputTests* next_;
 
-    SimpleStringCollection linesOfFile_;
+    StringCollection linesOfFile_;
 
 public:
     FileForJUnitOutputTests(const std::string& filename, FileForJUnitOutputTests* next)
@@ -69,7 +69,7 @@ public:
 
     const char* line(size_t lineNumber)
     {
-        linesOfFile_ = SimpleStringCollection(buffer_, "\n");
+        linesOfFile_ = StringCollection(buffer_, '\n');
         return linesOfFile_[lineNumber - 1].c_str();
     }
 
@@ -80,7 +80,7 @@ public:
 
     size_t amountOfLines()
     {
-        linesOfFile_ = SimpleStringCollection(buffer_, "\n");
+        linesOfFile_ = StringCollection(buffer_, '\n');
         return linesOfFile_.size();
     }
 

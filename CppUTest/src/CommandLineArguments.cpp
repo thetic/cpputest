@@ -28,6 +28,7 @@
 #include "CppUTest/CommandLineArguments.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 CommandLineArguments::CommandLineArguments(int ac, const char* const* av)
@@ -354,7 +355,7 @@ bool CommandLineArguments::addGroupDotNameFilter(int ac, const char* const* av, 
     bool strict, bool exclude)
 {
     std::string groupDotName = getParameterField(ac, av, i, parameterName);
-    SimpleStringCollection collection(groupDotName, ".");
+    StringCollection collection(groupDotName, '.');
 
     if (collection.size() != 2)
         return false;
