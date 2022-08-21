@@ -31,6 +31,7 @@
 
 #include <cctype>
 #include <climits>
+#include <cmath>
 #include <cstring>
 #include <string>
 
@@ -350,9 +351,9 @@ std::string BracketsFormattedHexStringFrom(unsigned long long value)
 
 std::string StringFrom(double value, int precision)
 {
-    if (PlatformSpecificIsNan(value))
+    if (std::isnan(value))
         return "Nan - Not a number";
-    else if (PlatformSpecificIsInf(value))
+    else if (std::isinf(value))
         return "Inf - Infinity";
     else
         return StringFromFormat("%.*g", precision, value);

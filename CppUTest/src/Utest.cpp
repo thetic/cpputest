@@ -74,10 +74,10 @@ void restore_jump_buffer()
 
 bool doubles_equal(double d1, double d2, double threshold)
 {
-    if (PlatformSpecificIsNan(d1) || PlatformSpecificIsNan(d2) || PlatformSpecificIsNan(threshold))
+    if (std::isnan(d1) || std::isnan(d2) || std::isnan(threshold))
         return false;
 
-    if (PlatformSpecificIsInf(d1) && PlatformSpecificIsInf(d2)) {
+    if (std::isinf(d1) && std::isinf(d2)) {
         return true;
     }
 

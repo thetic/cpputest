@@ -48,8 +48,6 @@ extern long (*GetPlatformSpecificTimeInMillis)(void);
 extern const char* (*GetPlatformSpecificTimeString)(void);
 
 /* Misc */
-extern int (*PlatformSpecificIsNan)(double d);
-extern int (*PlatformSpecificIsInf)(double d);
 extern int (*PlatformSpecificAtExit)(void (*func)(void));
 
 /* IO operations */

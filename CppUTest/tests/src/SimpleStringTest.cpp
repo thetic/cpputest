@@ -29,6 +29,7 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
+#include <cmath>
 
 #if defined(__LP64__) || defined(_LP64) || (defined(__WORDSIZE) && (__WORDSIZE == 64)) || defined(__x86_64) || defined(_WIN64)
 #define CPPUTEST_64BIT
@@ -264,19 +265,15 @@ TEST(SimpleString, Doubles)
     STRCMP_EQUAL("1.2", s.c_str());
 }
 
-static int alwaysTrue(double) { return true; }
-
 TEST(SimpleString, NaN)
 {
-    UT_PTR_SET(PlatformSpecificIsNan, alwaysTrue);
-    std::string s(StringFrom(0.0));
+    std::string s(StringFrom(NAN));
     STRCMP_EQUAL("Nan - Not a number", s.c_str());
 }
 
 TEST(SimpleString, Inf)
 {
-    UT_PTR_SET(PlatformSpecificIsInf, alwaysTrue);
-    std::string s(StringFrom(0.0));
+    std::string s(StringFrom(INFINITY));
     STRCMP_EQUAL("Inf - Infinity", s.c_str());
 }
 

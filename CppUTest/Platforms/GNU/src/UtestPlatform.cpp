@@ -232,20 +232,8 @@ void (*PlatformSpecificFree)(void* memory) = free;
 void* (*PlatformSpecificMemCpy)(void*, const void*, size_t) = memcpy;
 void* (*PlatformSpecificMemset)(void*, int, size_t) = memset;
 
-static int IsNanImplementation(double d)
-{
-    return isnan(d);
-}
-
-static int IsInfImplementation(double d)
-{
-    return isinf(d);
-}
-
 void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
-int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
-int (*PlatformSpecificIsInf)(double) = IsInfImplementation;
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit; /// this was undefined before
 
 static PlatformSpecificMutex PThreadMutexCreate(void)
