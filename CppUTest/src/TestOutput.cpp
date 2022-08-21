@@ -27,7 +27,10 @@
 #include "CppUTest/TestOutput.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/Utest.hpp"
 
 TestOutput::WorkingEnvironment TestOutput::workingEnvironment_ = TestOutput::detectEnvironment;
 

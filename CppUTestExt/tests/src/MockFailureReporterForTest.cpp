@@ -27,6 +27,8 @@
 
 #include "MockFailureReporterForTest.hpp"
 
+#include "CppUTest/TestHarness.hpp"
+
 void MockFailureReporterForTest::failTest(const MockFailure& failure)
 {
     mockFailureString = failure.getMessage();

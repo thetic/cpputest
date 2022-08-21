@@ -27,12 +27,12 @@
 
 #include "CppUTestExt/MockSupport.hpp"
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/UtestMacros.hpp"
 #include "CppUTestExt/MockActualCall.hpp"
 #include "CppUTestExt/MockExpectedCall.hpp"
 #include "CppUTestExt/MockFailure.hpp"
 
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/SimpleString.hpp"
 
 #define MOCK_SUPPORT_SCOPE_PREFIX "!!!$$$MockingSupportScope$$$!!!"
 

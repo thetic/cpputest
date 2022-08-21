@@ -26,8 +26,10 @@
  */
 
 #include "CppUTestExt/IEEE754ExceptionsPlugin.hpp"
-
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/Utest.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 #if CPPUTEST_HAVE_FENV
 

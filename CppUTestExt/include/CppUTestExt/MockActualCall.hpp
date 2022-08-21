@@ -31,8 +31,6 @@
 #include "CppUTestExt/MockExpectedCallsList.hpp"
 #include "CppUTestExt/MockNamedValue.hpp"
 
-#include "CppUTest/TestHarness.hpp"
-
 class MockFailureReporter;
 class MockFailure;
 

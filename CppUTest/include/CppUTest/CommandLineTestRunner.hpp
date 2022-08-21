@@ -30,12 +30,10 @@
 
 #include "CppUTest/CommandLineArguments.hpp"
 #include "CppUTest/TestFilter.hpp"
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
 class TestRegistry;
 
-#define DEF_PLUGIN_MEM_LEAK "MemoryLeakPlugin"
 #define DEF_PLUGIN_SET_POINTER "SetPointerPlugin"
 
 class CommandLineTestRunner {

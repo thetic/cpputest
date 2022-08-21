@@ -29,8 +29,6 @@
 
 #include "CppUTestExt/MockCheckedExpectedCall.hpp"
 
-#include "CppUTest/TestHarness.h"
-
 MockExpectedCallsList::MockExpectedCallsList()
     : head_(nullptr)
 {

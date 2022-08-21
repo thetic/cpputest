@@ -25,12 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.h"
-#include "CppUTest/TestHarness.hpp"
+
+#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 TEST_GROUP_C_WRAPPER(TestGroupInC) {
     TEST_GROUP_C_SETUP_WRAPPER(TestGroupInC)

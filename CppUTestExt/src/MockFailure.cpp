@@ -27,11 +27,11 @@
 
 #include "CppUTestExt/MockFailure.hpp"
 
+#include "CppUTest/Utest.hpp"
+#include "CppUTest/UtestMacros.hpp"
 #include "CppUTestExt/MockExpectedCall.hpp"
 #include "CppUTestExt/MockExpectedCallsList.hpp"
 #include "CppUTestExt/MockNamedValue.hpp"
-
-#include "CppUTest/TestHarness.hpp"
 
 class MockFailureReporterTestTerminator : public TestTerminator {
 public:

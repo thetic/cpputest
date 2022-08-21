@@ -26,6 +26,7 @@
  */
 
 #include "CppUTest/CommandLineTestRunner.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 int main(int ac, char** av)
 {

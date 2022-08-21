@@ -27,8 +27,9 @@
 
 #include "CppUTestExt/MockSupportPlugin.hpp"
 
-#include "CppUTest/TestHarness.hpp"
 #include "CppUTestExt/MockSupport.hpp"
+
+#include "CppUTest/TestResult.hpp"
 
 class MockSupportPluginReporter : public MockFailureReporter {
     UtestShell& test_;

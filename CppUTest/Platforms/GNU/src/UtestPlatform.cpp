@@ -26,8 +26,10 @@
  */
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/Utest.hpp"
 
 #include <ctype.h>
 #include <math.h>

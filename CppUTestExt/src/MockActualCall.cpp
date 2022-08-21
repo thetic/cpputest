@@ -30,7 +30,7 @@
 #include "CppUTestExt/MockFailure.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 MockActualCall::MockActualCall()
 {

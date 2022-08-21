@@ -27,8 +27,6 @@
 
 #include "CppUTestExt/MockCheckedExpectedCall.hpp"
 
-#include "CppUTest/TestHarness.hpp"
-
 MockExpectedCall::MockExpectedCall()
 {
 }

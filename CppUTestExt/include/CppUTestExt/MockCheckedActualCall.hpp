@@ -31,6 +31,8 @@
 #include "CppUTestExt/MockActualCall.hpp"
 #include "CppUTestExt/MockExpectedCallsList.hpp"
 
+#include "CppUTest/Utest.hpp"
+
 class MockCheckedActualCall : public MockActualCall {
 public:
     MockCheckedActualCall(unsigned int callOrder, MockFailureReporter* reporter, const MockExpectedCallsList& expectations);

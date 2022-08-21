@@ -27,9 +27,11 @@
 #include "CppUTest/Utest.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/TestHarness.hpp"
+#include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
+#include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
+#include "CppUTest/TestResult.hpp"
 
 #include <csignal>
 #include <cstring>

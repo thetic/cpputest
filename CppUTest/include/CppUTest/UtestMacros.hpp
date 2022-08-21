@@ -28,6 +28,7 @@
 #ifndef D_UTestMacros_h
 #define D_UTestMacros_h
 
+#include "CppUTest/Utest.hpp"
 #include <climits>
 #include <string>
 
