@@ -59,7 +59,7 @@ TEST_GROUP(TestOutput)
         result = new TestResult(*mock);
         result->setTotalExecutionTime(10);
         millisTime = 0;
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
         TestOutput::setWorkingEnvironment(WorkingEnvironment::eclipse);
     }
     void teardown() override

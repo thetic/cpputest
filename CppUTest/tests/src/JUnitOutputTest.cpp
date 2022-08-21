@@ -175,8 +175,8 @@ public:
         millisTime = 0;
         theTime = "1978-10-03T00:00:00";
 
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-        UT_PTR_SET(GetPlatformSpecificTimeString, MockGetPlatformSpecificTimeString);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(JUnitTestOutput::timestring, MockGetPlatformSpecificTimeString);
     }
 
     JUnitTestOutputTestRunner& start()

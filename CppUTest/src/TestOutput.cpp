@@ -24,6 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#ifdef _MSC_VER
+#include <windows.h>
+
+#include <mmsystem.h>
+#endif
+
 #include "CppUTest/TestOutput.hpp"
 
 #include "CppUTest/PlatformSpecificFunctions.h"
@@ -33,6 +39,40 @@
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
+#ifdef CPPUTEST_HAVE_GETTIMEOFDAY
+#include <sys/time.h>
+#endif
+
+namespace {
+long time_in_millis_impl()
+{
+#ifdef _MSC_VER
+    static LARGE_INTEGER s_frequency;
+    static const BOOL s_use_qpc = QueryPerformanceFrequency(&s_frequency);
+    if (s_use_qpc) {
+        LARGE_INTEGER now;
+        QueryPerformanceCounter(&now);
+        return (long)((now.QuadPart * 1000) / s_frequency.QuadPart);
+    } else {
+#ifdef TIMERR_NOERROR
+        return (long)timeGetTime();
+#elif !defined(_WIN32_WINNT) || !defined(_WIN32_WINNT_VISTA) || (_WIN32_WINNT < _WIN32_WINNT_VISTA)
+        return (long)GetTickCount();
+#else
+        return (long)GetTickCount64();
+#endif
+    }
+#elif defined(CPPUTEST_HAVE_GETTIMEOFDAY)
+    struct timeval tv;
+    struct timezone tz;
+    gettimeofday(&tv, &tz);
+    return (tv.tv_sec * 1000) + (long)((double)tv.tv_usec * 0.001);
+#else
+    return 0;
+#endif
+}
+}
+
 WorkingEnvironment TestOutput::workingEnvironment_ = WorkingEnvironment::detectEnvironment;
 
 std::FILE* (*TestOutput::fopen)(const char* filename, const char* mode) = std::fopen;
@@ -40,6 +80,7 @@ int (*TestOutput::fputs)(const char* str, std::FILE* stream) = std::fputs;
 int (*TestOutput::fclose)(std::FILE* stream) = std::fclose;
 int (*TestOutput::putchar)(int c) = std::putchar;
 int (*TestOutput::fflush)(std::FILE* stream) = std::fflush;
+long (*TestOutput::time_in_millis)(void) = time_in_millis_impl;
 
 void TestOutput::setWorkingEnvironment(WorkingEnvironment workEnvironment)
 {

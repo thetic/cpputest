@@ -43,10 +43,6 @@
 #include <string.h>
 #include <time.h>
 
-#ifdef CPPUTEST_HAVE_GETTIMEOFDAY
-#include <sys/time.h>
-#endif
-
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
 #include <errno.h>
 #include <sys/wait.h>
@@ -149,35 +145,3 @@ WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = GccPlatformSpecificRunTestInASeperateProcess;
 int (*PlatformSpecificFork)(void) = PlatformSpecificForkImplementation;
 int (*PlatformSpecificWaitPid)(int, int*, int) = PlatformSpecificWaitPidImplementation;
-
-///////////// Time in millis
-
-static long TimeInMillisImplementation()
-{
-#ifdef CPPUTEST_HAVE_GETTIMEOFDAY
-    struct timeval tv;
-    struct timezone tz;
-    gettimeofday(&tv, &tz);
-    return (tv.tv_sec * 1000) + (long)((double)tv.tv_usec * 0.001);
-#else
-    return 0;
-#endif
-}
-
-static const char* TimeStringImplementation()
-{
-    time_t theTime = time(nullptr);
-    static char dateTime[80];
-#if defined(_WIN32) && defined(MINGW_HAS_SECURE_API)
-    static struct tm lastlocaltime;
-    localtime_s(&lastlocaltime, &theTime);
-    struct tm* tmp = &lastlocaltime;
-#else
-    struct tm* tmp = localtime(&theTime);
-#endif
-    strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
-    return dateTime;
-}
-
-long (*GetPlatformSpecificTimeInMillis)() = TimeInMillisImplementation;
-const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;

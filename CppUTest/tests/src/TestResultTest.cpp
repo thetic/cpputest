@@ -48,7 +48,7 @@ TEST_GROUP(TestResult)
         mock = new StringBufferTestOutput();
         printer = mock;
         res = new TestResult(*printer);
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
     }
     void teardown() override
     {

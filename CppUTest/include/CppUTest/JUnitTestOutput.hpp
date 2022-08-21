@@ -57,6 +57,8 @@ public:
     virtual std::string createFileName(const std::string& group);
     void setPackageName(const std::string& package);
 
+    static const char* (*timestring)(void);
+
 protected:
     JUnitTestOutputImpl* impl_;
     void resetTestGroupResult();

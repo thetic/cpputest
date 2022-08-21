@@ -86,6 +86,7 @@ public:
     static int (*fclose)(std::FILE* stream);
     static int (*putchar)(int);
     static int (*fflush)(std::FILE* stream);
+    static long (*time_in_millis)(void);
 
 protected:
     virtual void printEclipseErrorInFileOnLine(std::string file, size_t lineNumber);

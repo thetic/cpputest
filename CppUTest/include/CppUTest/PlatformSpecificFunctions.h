@@ -43,10 +43,6 @@
 extern "C" {
 #endif
 
-/* Time operations */
-extern long (*GetPlatformSpecificTimeInMillis)(void);
-extern const char* (*GetPlatformSpecificTimeString)(void);
-
 #ifdef __cplusplus
 }
 #endif
