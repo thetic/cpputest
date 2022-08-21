@@ -28,8 +28,6 @@
 #ifndef PLATFORMSPECIFICFUNCTIONS_H_
 #define PLATFORMSPECIFICFUNCTIONS_H_
 
-#include "CppUTest/PlatformSpecificFunctions.h"
-
 enum class WorkingEnvironment;
 class UtestShell;
 class TestPlugin;

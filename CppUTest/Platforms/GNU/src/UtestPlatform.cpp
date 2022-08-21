@@ -25,7 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
@@ -49,10 +51,6 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#endif
-
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-#include <pthread.h>
 #endif
 
 // There is a possibility that a compiler provides fork but not waitpid.
@@ -229,49 +227,3 @@ void (*PlatformSpecificFlush)() = PlatformSpecificFlushImplementation;
 void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit; /// this was undefined before
-
-static PlatformSpecificMutex PThreadMutexCreate(void)
-{
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_t* mutex = new pthread_mutex_t;
-
-    pthread_mutex_init(mutex, nullptr);
-    return (PlatformSpecificMutex)mutex;
-#else
-    return nullptr;
-#endif
-}
-
-static void PThreadMutexLock(PlatformSpecificMutex mtx)
-{
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_lock((pthread_mutex_t*)mtx);
-#else
-    (void)mtx;
-#endif
-}
-
-static void PThreadMutexUnlock(PlatformSpecificMutex mtx)
-{
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_unlock((pthread_mutex_t*)mtx);
-#else
-    (void)mtx;
-#endif
-}
-
-static void PThreadMutexDestroy(PlatformSpecificMutex mtx)
-{
-#ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
-    pthread_mutex_t* mutex = (pthread_mutex_t*)mtx;
-    pthread_mutex_destroy(mutex);
-    delete mutex;
-#else
-    (void)mtx;
-#endif
-}
-
-PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = PThreadMutexCreate;
-void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = PThreadMutexLock;
-void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = PThreadMutexUnlock;
-void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = PThreadMutexDestroy;

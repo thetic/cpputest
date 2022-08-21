@@ -1,5 +1,6 @@
 #include <windows.h>
 
+#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
 #include "CppUTest/TestFailure.hpp"
@@ -99,32 +100,3 @@ void (*PlatformSpecificSrand)(unsigned int) = srand;
 int (*PlatformSpecificRand)(void) = rand;
 
 int (*PlatformSpecificAtExit)(void (*func)(void)) = atexit;
-
-static PlatformSpecificMutex VisualCppMutexCreate(void)
-{
-    CRITICAL_SECTION* critical_section = new CRITICAL_SECTION;
-    InitializeCriticalSection(critical_section);
-    return (PlatformSpecificMutex)critical_section;
-}
-
-static void VisualCppMutexLock(PlatformSpecificMutex mutex)
-{
-    EnterCriticalSection((CRITICAL_SECTION*)mutex);
-}
-
-static void VisualCppMutexUnlock(PlatformSpecificMutex mutex)
-{
-    LeaveCriticalSection((CRITICAL_SECTION*)mutex);
-}
-
-static void VisualCppMutexDestroy(PlatformSpecificMutex mutex)
-{
-    CRITICAL_SECTION* critical_section = (CRITICAL_SECTION*)mutex;
-    DeleteCriticalSection(critical_section);
-    delete critical_section;
-}
-
-PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = VisualCppMutexCreate;
-void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = VisualCppMutexLock;
-void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = VisualCppMutexUnlock;
-void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = VisualCppMutexDestroy;

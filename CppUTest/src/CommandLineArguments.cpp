@@ -27,6 +27,7 @@
 
 #include "CppUTest/CommandLineArguments.hpp"
 
+#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"

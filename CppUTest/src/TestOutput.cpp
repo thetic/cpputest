@@ -26,6 +26,7 @@
  */
 #include "CppUTest/TestOutput.hpp"
 
+#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"

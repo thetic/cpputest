@@ -64,13 +64,8 @@ extern void (*PlatformSpecificFlush)(void);
 extern void (*PlatformSpecificSrand)(unsigned int);
 extern int (*PlatformSpecificRand)(void);
 
-typedef void* PlatformSpecificMutex;
-extern PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void);
 extern void (*PlatformSpecificSrand)(unsigned int);
 extern int (*PlatformSpecificRand)(void);
-extern void (*PlatformSpecificMutexLock)(PlatformSpecificMutex mtx);
-extern void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex mtx);
-extern void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex mtx);
 
 #ifdef __cplusplus
 }
