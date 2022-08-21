@@ -1,6 +1,5 @@
 #include <windows.h>
 
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
 #include "CppUTest/TestFailure.hpp"

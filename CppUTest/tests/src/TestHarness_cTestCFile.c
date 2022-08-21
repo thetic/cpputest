@@ -1,5 +1,3 @@
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestHarness.h"
 
 void functionWithUnusedParameter(void* PUNUSED(unlessParamater));

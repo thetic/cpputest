@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
 #include "CppUTest/SimpleString.hpp"

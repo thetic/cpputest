@@ -27,7 +27,6 @@
 
 #include "CppUTest/JUnitTestOutput.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.hpp"

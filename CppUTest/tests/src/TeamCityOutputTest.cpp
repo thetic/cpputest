@@ -1,6 +1,5 @@
 #include "CppUTest/TeamCityTestOutput.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 

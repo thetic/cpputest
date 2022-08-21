@@ -27,7 +27,6 @@
 
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/JUnitTestOutput.hpp"
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
