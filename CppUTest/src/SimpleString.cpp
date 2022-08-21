@@ -45,176 +45,13 @@ const char* StrStr(const char* s1, const char* s2)
             return s1;
     return nullptr;
 }
-}
 
-const size_t SimpleString::npos = std::string::npos;
-
-// does not support + or - prefixes
-unsigned SimpleString::AtoU(const char* str)
+bool isControlWithShortEscapeSequence(char ch)
 {
-    while (std::isspace(*str))
-        str++;
-
-    unsigned result = 0;
-    for (; std::isdigit(*str) && *str >= '0'; str++) {
-        result *= 10;
-        result += static_cast< unsigned >(*str - '0');
-    }
-    return result;
+    return '\a' <= ch && '\r' >= ch;
 }
 
-const char* SimpleString::data() const
-{
-    return string_.data();
-}
-
-SimpleString::SimpleString(const char* otherBuffer)
-    : string_(otherBuffer ? otherBuffer : "")
-{
-}
-
-SimpleString::SimpleString(const char* other, size_t repeatCount)
-{
-    string_ = "";
-    for (size_t i = 0; i < repeatCount; ++i)
-        string_ += other;
-}
-
-SimpleString::SimpleString(const SimpleString& other)
-    : string_(other.string_)
-{
-}
-
-SimpleString& SimpleString::operator=(const SimpleString& other)
-{
-    string_ = other.string_;
-    return *this;
-}
-
-bool SimpleString::contains(const SimpleString& other) const
-{
-    return StrStr(data(), other.data()) != nullptr;
-}
-
-bool SimpleString::starts_with(const SimpleString& other) const
-{
-    if (other.size() == 0)
-        return true;
-    else if (size() == 0)
-        return false;
-    else
-        return StrStr(data(), other.data()) == data();
-}
-
-bool SimpleString::ends_with(const SimpleString& other) const
-{
-    size_t length = size();
-    size_t other_length = other.size();
-
-    if (other_length == 0)
-        return true;
-    if (length == 0)
-        return false;
-    if (length < other_length)
-        return false;
-
-    return std::strcmp(data() + length - other_length, other.data()) == 0;
-}
-
-size_t SimpleString::count(const SimpleString& substr) const
-{
-    size_t num = 0;
-    const char* str = data();
-    const char* strpart = nullptr;
-    if (*str) {
-        strpart = StrStr(str, substr.data());
-    }
-    while (*str && strpart) {
-        str = strpart;
-        str++;
-        num++;
-        strpart = StrStr(str, substr.data());
-    }
-    return num;
-}
-
-void SimpleString::replaceAll(SimpleString& string, char to, char with)
-{
-    for (auto& c : string.string_) {
-        if (c == to) {
-            c = with;
-        }
-    }
-}
-
-void SimpleString::replaceAll(SimpleString& string, const char* to, const char* with)
-{
-    size_t c = string.count(to);
-    if (c == 0) {
-        return;
-    }
-    size_t len = string.size();
-    size_t tolen = std::strlen(to);
-    size_t withlen = std::strlen(with);
-
-    size_t newsize = len + (withlen * c) - (tolen * c) + 1;
-
-    if (newsize > 1) {
-        char* newbuf = (char*)PlatformSpecificMalloc(newsize);
-        for (size_t i = 0, j = 0; i < len;) {
-            if (std::strncmp(&string.data()[i], to, tolen) == 0) {
-                std::strncpy(&newbuf[j], with, withlen + 1);
-                j += withlen;
-                i += tolen;
-            } else {
-                newbuf[j] = string.data()[i];
-                j++;
-                i++;
-            }
-        }
-        newbuf[newsize - 1] = '\0';
-        string.string_ = newbuf;
-        PlatformSpecificFree(newbuf);
-    } else
-        string.string_.clear();
-}
-
-SimpleString SimpleString::printable(const SimpleString& string)
-{
-    static const char* shortEscapeCodes[] = {
-        "\\a",
-        "\\b",
-        "\\t",
-        "\\n",
-        "\\v",
-        "\\f",
-        "\\r"
-    };
-
-    SimpleString result(" ", getPrintableSize(string));
-
-    size_t str_size = string.size();
-    size_t j = 0;
-    for (size_t i = 0; i < str_size; i++) {
-        char c = string[i];
-        if (isControlWithShortEscapeSequence(c)) {
-            std::strncpy(&result.string_[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
-            j += 2;
-        } else if (std::iscntrl(c)) {
-            SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
-            std::strncpy(&result.string_[j], hexEscapeCode.c_str(), 4);
-            j += 4;
-        } else {
-            result.string_[j] = c;
-            j++;
-        }
-    }
-    result.string_[j] = 0;
-
-    return result;
-}
-
-size_t SimpleString::getPrintableSize(const SimpleString& string)
+size_t printable_size(const std::string& string)
 {
     size_t str_size = string.size();
     size_t printable_str_size = str_size;
@@ -231,112 +68,139 @@ size_t SimpleString::getPrintableSize(const SimpleString& string)
     return printable_str_size;
 }
 
-SimpleString SimpleString::lowerCase(const SimpleString& original)
+}
+
+// does not support + or - prefixes
+unsigned strings::atou(const char* str)
 {
-    SimpleString str(original);
+    while (std::isspace(*str))
+        str++;
 
-    for (auto& c : str.string_)
-        c = std::tolower(c);
+    unsigned result = 0;
+    for (; std::isdigit(*str) && *str >= '0'; str++) {
+        result *= 10;
+        result += static_cast< unsigned >(*str - '0');
+    }
+    return result;
+}
 
+bool strings::contains(const std::string& string, const std::string& substring)
+{
+    return string.find(substring) != std::string::npos;
+}
+
+bool strings::starts_with(const std::string& string, const std::string& prefix)
+{
+    return (string.find(prefix) == 0);
+}
+
+bool strings::ends_with(const std::string& string, const std::string& suffix)
+{
+    std::string::size_type pos = string.rfind(suffix);
+    return (pos != std::string::npos) && (pos == (string.length() - suffix.length()));
+}
+
+size_t strings::count(const std::string& string, const std::string& substring)
+{
+    size_t num = 0;
+    const char* str = string.data();
+    const char* strpart = nullptr;
+    if (*str) {
+        strpart = StrStr(str, substring.data());
+    }
+    while (*str && strpart) {
+        str = strpart;
+        str++;
+        num++;
+        strpart = StrStr(str, substring.data());
+    }
+    return num;
+}
+
+std::string& strings::replaceAll(std::string& str, const std::string& to, const std::string& with)
+{
+    size_t pos = str.find(to);
+    while ((pos != std::string::npos) && (pos < str.length())) {
+        str.replace(pos, to.length(), with);
+        pos = str.find(to, pos + with.length());
+    }
     return str;
 }
 
-const char* SimpleString::c_str() const
+std::string& strings::replaceAll(std::string& str, char to, char with)
 {
-    return string_.c_str();
+    for (auto& c : str) {
+        if (c == to) {
+            c = with;
+        }
+    }
+    return str;
 }
 
-size_t SimpleString::size() const
+std::string strings::printable(const std::string& string)
 {
-    return string_.size();
+    static const char* shortEscapeCodes[] = {
+        "\\a",
+        "\\b",
+        "\\t",
+        "\\n",
+        "\\v",
+        "\\f",
+        "\\r"
+    };
+
+    std::string result(printable_size(string), ' ');
+
+    size_t str_size = string.size();
+    size_t j = 0;
+    for (size_t i = 0; i < str_size; i++) {
+        char c = string[i];
+        if (isControlWithShortEscapeSequence(c)) {
+            std::strncpy(&result[j], shortEscapeCodes[(unsigned char)(c - '\a')], 2);
+            j += 2;
+        } else if (std::iscntrl(c)) {
+            SimpleString hexEscapeCode = StringFromFormat("\\x%02X ", c);
+            std::strncpy(&result[j], hexEscapeCode.c_str(), 4);
+            j += 4;
+        } else {
+            result[j] = c;
+            j++;
+        }
+    }
+    result[j] = 0;
+
+    return result;
 }
 
-bool SimpleString::empty() const
+std::string strings::lowercase(const std::string& string)
 {
-    return string_.empty();
+    std::string result = string;
+    for (auto& c : result)
+        c = std::tolower(c);
+    return result;
 }
 
-bool operator==(const SimpleString& left, const SimpleString& right)
-{
-    return 0 == std::strcmp(left.c_str(), right.c_str());
-}
-
-bool operator!=(const SimpleString& left, const SimpleString& right)
-{
-    return !(left == right);
-}
-
-SimpleString SimpleString::operator+(const SimpleString& rhs) const
-{
-    SimpleString t(data());
-    t += rhs.data();
-    return t;
-}
-
-SimpleString& SimpleString::operator+=(const SimpleString& rhs)
-{
-    string_ += rhs.string_;
-    return *this;
-}
-
-SimpleString& SimpleString::operator+=(const char* rhs)
-{
-    string_ += rhs;
-    return *this;
-}
-
-void SimpleString::padStringsToSameLength(SimpleString& str1, SimpleString& str2, char padCharacter)
+void strings::padStringsToSameLength(std::string& str1, std::string& str2, char padCharacter)
 {
     if (str1.size() > str2.size()) {
         padStringsToSameLength(str2, str1, padCharacter);
         return;
     }
 
-    char pad[2];
-    pad[0] = padCharacter;
-    pad[1] = 0;
-    str1 = SimpleString(pad, str2.size() - str1.size()) + str1;
+    str1 = std::string(str2.size() - str1.size(), padCharacter) + str1;
 }
 
-SimpleString SimpleString::substr(size_t beginPos, size_t amount) const
+std::string strings::subStringFromTill(const std::string& string, char startChar, char lastExcludedChar)
 {
-    return SimpleString(string_.substr(beginPos, amount).c_str());
-}
-
-char SimpleString::operator[](size_t pos) const
-{
-    return data()[pos];
-}
-
-size_t SimpleString::find(char ch, size_t starting_position) const
-{
-    return string_.find(ch, starting_position);
-}
-
-SimpleString SimpleString::subStringFromTill(const SimpleString& original, char startChar, char lastExcludedChar)
-{
-    size_t beginPos = original.find(startChar);
-    if (beginPos == npos)
+    size_t beginPos = string.find(startChar);
+    if (beginPos == std::string::npos)
         return "";
 
-    size_t endPos = original.find(lastExcludedChar, beginPos);
-    if (endPos == npos)
-        return original.substr(beginPos);
+    size_t endPos = string.find(lastExcludedChar, beginPos);
+    if (endPos == std::string::npos)
+        return string.substr(beginPos);
 
-    return original.substr(beginPos, endPos - beginPos);
-}
-
-char* SimpleString::copyToNewBuffer(const char* bufferToCopy, size_t bufferSize)
-{
-    char* newBuffer = (char*)PlatformSpecificMalloc(bufferSize);
-    std::strncpy(newBuffer, bufferToCopy, bufferSize);
-    newBuffer[bufferSize - 1] = '\0';
-    return newBuffer;
-}
-
-bool SimpleString::isControlWithShortEscapeSequence(char ch)
-{
-    return '\a' <= ch && '\r' >= ch;
+    return string.substr(beginPos, endPos - beginPos);
 }
 
 SimpleString StringFrom(bool value)
@@ -356,7 +220,7 @@ SimpleString StringFromOrNull(const char* expected)
 
 SimpleString PrintableStringFromOrNull(const char* expected)
 {
-    return (expected) ? SimpleString::printable(expected) : StringFrom("(null)");
+    return (expected) ? strings::printable(expected) : "(null)";
 }
 
 SimpleString StringFrom(int value)
@@ -637,8 +501,8 @@ SimpleStringCollection::SimpleStringCollection(
     const SimpleString& string,
     const SimpleString& delimiter)
 {
-    size_t num = string.count(delimiter);
-    size_t extraEndToken = (string.ends_with(delimiter)) ? 0 : 1U;
+    size_t num = strings::count(string.c_str(), delimiter.c_str());
+    size_t extraEndToken = (strings::ends_with(string, delimiter)) ? 0 : 1U;
     allocate(num + extraEndToken);
 
     const char* str = string.c_str();

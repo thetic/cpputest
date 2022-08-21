@@ -84,60 +84,62 @@ void TestRegistry::runAllTests(TestResult& result)
 
 void TestRegistry::listTestGroupNames(TestResult& result)
 {
-    SimpleString groupList;
+    std::string groupList;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
-        SimpleString gname;
+        std::string gname;
         gname += "#";
         gname += test->getGroup();
         gname += "#";
 
-        if (!groupList.contains(gname)) {
+        if (!strings::contains(groupList, gname)) {
             groupList += gname;
             groupList += " ";
         }
     }
 
-    SimpleString::replaceAll(groupList, "#", "");
+    strings::replaceAll(groupList, "#", "");
 
-    if (groupList.ends_with(" "))
+    if (strings::ends_with(groupList, " ")) {
         groupList = groupList.substr(0, groupList.size() - 1);
+    }
     result.print(groupList.c_str());
 }
 
 void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
 {
-    SimpleString groupAndNameList;
+    std::string groupAndNameList;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
         if (testShouldRun(test, result)) {
-            SimpleString groupAndName;
+            std::string groupAndName;
             groupAndName += "#";
             groupAndName += test->getGroup();
             groupAndName += ".";
             groupAndName += test->getName();
             groupAndName += "#";
 
-            if (!groupAndNameList.contains(groupAndName)) {
+            if (!strings::contains(groupAndNameList, groupAndName)) {
                 groupAndNameList += groupAndName;
                 groupAndNameList += " ";
             }
         }
     }
 
-    SimpleString::replaceAll(groupAndNameList, "#", "");
+    strings::replaceAll(groupAndNameList, "#", "");
 
-    if (groupAndNameList.ends_with(" "))
+    if (strings::ends_with(groupAndNameList, " ")) {
         groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);
+    }
     result.print(groupAndNameList.c_str());
 }
 
 void TestRegistry::listTestLocations(TestResult& result)
 {
-    SimpleString testLocations;
+    std::string testLocations;
 
     for (UtestShell* test = tests_; test != nullptr; test = test->getNext()) {
-        SimpleString testLocation;
+        std::string testLocation;
         testLocation += test->getGroup();
         testLocation += ".";
         testLocation += test->getName();
@@ -230,12 +232,12 @@ TestPlugin* TestRegistry::getFirstPlugin()
     return firstPlugin_;
 }
 
-TestPlugin* TestRegistry::getPluginByName(const SimpleString& name)
+TestPlugin* TestRegistry::getPluginByName(const std::string& name)
 {
     return firstPlugin_->getPluginByName(name);
 }
 
-void TestRegistry::removePluginByName(const SimpleString& name)
+void TestRegistry::removePluginByName(const std::string& name)
 {
     if (firstPlugin_->removePluginByName(name) == firstPlugin_)
         firstPlugin_ = firstPlugin_->getNext();
@@ -279,7 +281,7 @@ UtestShell* TestRegistry::getTestWithNext(UtestShell* test)
     return current;
 }
 
-UtestShell* TestRegistry::findTestWithName(const SimpleString& name)
+UtestShell* TestRegistry::findTestWithName(const std::string& name)
 {
     UtestShell* current = tests_;
     while (current) {
@@ -290,7 +292,7 @@ UtestShell* TestRegistry::findTestWithName(const SimpleString& name)
     return nullptr;
 }
 
-UtestShell* TestRegistry::findTestWithGroup(const SimpleString& group)
+UtestShell* TestRegistry::findTestWithGroup(const std::string& group)
 {
     UtestShell* current = tests_;
     while (current) {

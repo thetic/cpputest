@@ -57,12 +57,12 @@ public:
     size_t getIgnoreCount();
     size_t getRunCount();
     size_t getTestCount();
-    const SimpleString& getOutput();
+    const std::string& getOutput();
     TestRegistry* getRegistry();
 
     bool hasTestFailed();
-    void assertPrintContains(const SimpleString& contains);
-    void assertPrintContainsNot(const SimpleString& contains);
+    void assertPrintContains(const std::string& contains);
+    void assertPrintContainsNot(const std::string& contains);
     void checkTestFailsWithProperTestLocation(const char* text, const char* file, size_t line);
 
     static void lineExecutedAfterCheck();

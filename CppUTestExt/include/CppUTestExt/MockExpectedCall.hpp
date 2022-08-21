@@ -29,6 +29,7 @@
 #define D_MockExpectedCall_h
 
 #include <cstddef>
+#include <string>
 
 class MockNamedValue;
 class SimpleString;
@@ -40,43 +41,43 @@ public:
     MockExpectedCall();
     virtual ~MockExpectedCall();
 
-    virtual MockExpectedCall& withName(const SimpleString& name) = 0;
+    virtual MockExpectedCall& withName(const std::string& name) = 0;
     virtual MockExpectedCall& withCallOrder(unsigned int) = 0;
     virtual MockExpectedCall& withCallOrder(unsigned int, unsigned int) = 0;
-    MockExpectedCall& withParameter(const SimpleString& name, bool value) { return withBoolParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, int value) { return withIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, unsigned int value) { return withUnsignedIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, long int value) { return withLongIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, unsigned long int value) { return withUnsignedLongIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, long long value) { return withLongLongIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, unsigned long long value) { return withUnsignedLongLongIntParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, double value) { return withDoubleParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, double value, double tolerance) { return withDoubleParameter(name, value, tolerance); }
-    MockExpectedCall& withParameter(const SimpleString& name, const char* value) { return withStringParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, void* value) { return withPointerParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, const void* value) { return withConstPointerParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, void (*value)()) { return withFunctionPointerParameter(name, value); }
-    MockExpectedCall& withParameter(const SimpleString& name, const unsigned char* value, size_t size) { return withMemoryBufferParameter(name, value, size); }
-    virtual MockExpectedCall& withParameterOfType(const SimpleString& typeName, const SimpleString& name, const void* value) = 0;
-    virtual MockExpectedCall& withOutputParameterReturning(const SimpleString& name, const void* value, size_t size) = 0;
-    virtual MockExpectedCall& withOutputParameterOfTypeReturning(const SimpleString& typeName, const SimpleString& name, const void* value) = 0;
-    virtual MockExpectedCall& withUnmodifiedOutputParameter(const SimpleString& name) = 0;
+    MockExpectedCall& withParameter(const std::string& name, bool value) { return withBoolParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, int value) { return withIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, unsigned int value) { return withUnsignedIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, long int value) { return withLongIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, unsigned long int value) { return withUnsignedLongIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, long long value) { return withLongLongIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, unsigned long long value) { return withUnsignedLongLongIntParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, double value) { return withDoubleParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, double value, double tolerance) { return withDoubleParameter(name, value, tolerance); }
+    MockExpectedCall& withParameter(const std::string& name, const char* value) { return withStringParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, void* value) { return withPointerParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, const void* value) { return withConstPointerParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, void (*value)()) { return withFunctionPointerParameter(name, value); }
+    MockExpectedCall& withParameter(const std::string& name, const unsigned char* value, size_t size) { return withMemoryBufferParameter(name, value, size); }
+    virtual MockExpectedCall& withParameterOfType(const std::string& typeName, const std::string& name, const void* value) = 0;
+    virtual MockExpectedCall& withOutputParameterReturning(const std::string& name, const void* value, size_t size) = 0;
+    virtual MockExpectedCall& withOutputParameterOfTypeReturning(const std::string& typeName, const std::string& name, const void* value) = 0;
+    virtual MockExpectedCall& withUnmodifiedOutputParameter(const std::string& name) = 0;
     virtual MockExpectedCall& ignoreOtherParameters() = 0;
 
-    virtual MockExpectedCall& withBoolParameter(const SimpleString& name, bool value) = 0;
-    virtual MockExpectedCall& withIntParameter(const SimpleString& name, int value) = 0;
-    virtual MockExpectedCall& withUnsignedIntParameter(const SimpleString& name, unsigned int value) = 0;
-    virtual MockExpectedCall& withLongIntParameter(const SimpleString& name, long int value) = 0;
-    virtual MockExpectedCall& withUnsignedLongIntParameter(const SimpleString& name, unsigned long int value) = 0;
-    virtual MockExpectedCall& withLongLongIntParameter(const SimpleString& name, long long value) = 0;
-    virtual MockExpectedCall& withUnsignedLongLongIntParameter(const SimpleString& name, unsigned long long value) = 0;
-    virtual MockExpectedCall& withDoubleParameter(const SimpleString& name, double value) = 0;
-    virtual MockExpectedCall& withDoubleParameter(const SimpleString& name, double value, double tolerance) = 0;
-    virtual MockExpectedCall& withStringParameter(const SimpleString& name, const char* value) = 0;
-    virtual MockExpectedCall& withPointerParameter(const SimpleString& name, void* value) = 0;
-    virtual MockExpectedCall& withFunctionPointerParameter(const SimpleString& name, void (*value)()) = 0;
-    virtual MockExpectedCall& withConstPointerParameter(const SimpleString& name, const void* value) = 0;
-    virtual MockExpectedCall& withMemoryBufferParameter(const SimpleString& name, const unsigned char* value, size_t size) = 0;
+    virtual MockExpectedCall& withBoolParameter(const std::string& name, bool value) = 0;
+    virtual MockExpectedCall& withIntParameter(const std::string& name, int value) = 0;
+    virtual MockExpectedCall& withUnsignedIntParameter(const std::string& name, unsigned int value) = 0;
+    virtual MockExpectedCall& withLongIntParameter(const std::string& name, long int value) = 0;
+    virtual MockExpectedCall& withUnsignedLongIntParameter(const std::string& name, unsigned long int value) = 0;
+    virtual MockExpectedCall& withLongLongIntParameter(const std::string& name, long long value) = 0;
+    virtual MockExpectedCall& withUnsignedLongLongIntParameter(const std::string& name, unsigned long long value) = 0;
+    virtual MockExpectedCall& withDoubleParameter(const std::string& name, double value) = 0;
+    virtual MockExpectedCall& withDoubleParameter(const std::string& name, double value, double tolerance) = 0;
+    virtual MockExpectedCall& withStringParameter(const std::string& name, const char* value) = 0;
+    virtual MockExpectedCall& withPointerParameter(const std::string& name, void* value) = 0;
+    virtual MockExpectedCall& withFunctionPointerParameter(const std::string& name, void (*value)()) = 0;
+    virtual MockExpectedCall& withConstPointerParameter(const std::string& name, const void* value) = 0;
+    virtual MockExpectedCall& withMemoryBufferParameter(const std::string& name, const unsigned char* value, size_t size) = 0;
     virtual MockExpectedCall& andReturnValue(bool value) = 0;
     virtual MockExpectedCall& andReturnValue(int value) = 0;
     virtual MockExpectedCall& andReturnValue(unsigned int value) = 0;

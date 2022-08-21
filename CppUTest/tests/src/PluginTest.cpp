@@ -38,7 +38,7 @@ static int sequenceNumber;
 
 class DummyPlugin : public TestPlugin {
 public:
-    DummyPlugin(const SimpleString& name)
+    DummyPlugin(const std::string& name)
         : TestPlugin(name)
         , preAction(0)
         , preActionSequence(0)
@@ -67,14 +67,14 @@ public:
 
 class DummyPluginWhichAcceptsParameters : public DummyPlugin {
 public:
-    DummyPluginWhichAcceptsParameters(const SimpleString& name)
+    DummyPluginWhichAcceptsParameters(const std::string& name)
         : DummyPlugin(name)
     {
     }
 
     bool parseArguments(int ac, const char* const* av, int index) override
     {
-        SimpleString argument(av[index]);
+        std::string argument(av[index]);
         if (argument == "-paccept")
             return true;
         return TestPlugin::parseArguments(ac, av, index);

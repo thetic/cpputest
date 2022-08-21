@@ -26,6 +26,7 @@
  */
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
@@ -58,7 +59,7 @@ TEST_GROUP(TestResult)
 TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
 {
     res->testsEnded();
-    CHECK(mock->getOutput().contains("10 ms"));
+    CHECK(strings::contains(mock->getOutput(), "10 ms"));
 }
 
 TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)

@@ -37,9 +37,9 @@
 #endif
 
 // This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized
-static const SimpleString str1("abc");
-static const SimpleString str2("def");
-static const SimpleString str3(str1 + str2);
+static const std::string str1("abc");
+static const std::string str2("def");
+static const std::string str3(str1 + str2);
 
 TEST_GROUP(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess)
 {

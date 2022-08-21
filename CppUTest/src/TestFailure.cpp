@@ -141,14 +141,14 @@ SimpleString TestFailure::createDifferenceAtPosString(const SimpleString& actual
     const size_t extraCharactersWindow = 20;
     const size_t halfOfExtraCharactersWindow = extraCharactersWindow / 2;
 
-    SimpleString paddingForPreventingOutOfBounds(" ", halfOfExtraCharactersWindow);
+    SimpleString paddingForPreventingOutOfBounds(halfOfExtraCharactersWindow, ' ');
     SimpleString actualString = paddingForPreventingOutOfBounds + actual + paddingForPreventingOutOfBounds;
     SimpleString differentString = StringFromFormat("difference starts at position %lu at: <", (unsigned long)reportedPosition);
 
     result += "\n";
     result += StringFromFormat("\t%s%s>\n", differentString.c_str(), actualString.substr(offset, extraCharactersWindow).c_str());
 
-    result += StringFromFormat("\t%s^", SimpleString(" ", (differentString.size() + halfOfExtraCharactersWindow)).c_str());
+    result += StringFromFormat("\t%s^", SimpleString((differentString.size() + halfOfExtraCharactersWindow), ' ').c_str());
     return result;
 }
 
@@ -159,7 +159,7 @@ SimpleString TestFailure::createUserText(const SimpleString& text)
         // This is a kludge to turn off "Message: " for this case.
         // I don't think "Message: " adds anything, as you get to see the
         // message. I propose we remove "Message: " lead in
-        if (!text.starts_with("LONGS_EQUAL"))
+        if (!strings::starts_with(text, "LONGS_EQUAL"))
             userMessage += "Message: ";
         userMessage += text;
         userMessage += "\n\t";
@@ -256,13 +256,13 @@ LongsEqualFailure::LongsEqualFailure(UtestShell* test, const char* fileName, siz
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
-    SimpleString::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
+    std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
     message_ += createButWasString(expectedReported, actualReported);
 }
 
@@ -271,13 +271,13 @@ UnsignedLongsEqualFailure::UnsignedLongsEqualFailure(UtestShell* test, const cha
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
-    SimpleString::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
+    std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
 
     message_ += createButWasString(expectedReported, actualReported);
 }
@@ -287,13 +287,13 @@ LongLongsEqualFailure::LongLongsEqualFailure(UtestShell* test, const char* fileN
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
-    SimpleString::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
+    std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
     message_ += createButWasString(expectedReported, actualReported);
 }
 
@@ -302,13 +302,13 @@ UnsignedLongLongsEqualFailure::UnsignedLongLongsEqualFailure(UtestShell* test, c
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom(actual);
-    SimpleString eDecimal = StringFrom(expected);
+    std::string aDecimal = StringFrom(actual);
+    std::string eDecimal = StringFrom(expected);
 
-    SimpleString::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
+    std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
     message_ += createButWasString(expectedReported, actualReported);
 }
 
@@ -317,13 +317,13 @@ SignedBytesEqualFailure::SignedBytesEqualFailure(UtestShell* test, const char* f
 {
     message_ = createUserText(text);
 
-    SimpleString aDecimal = StringFrom((int)actual);
-    SimpleString eDecimal = StringFrom((int)expected);
+    std::string aDecimal = StringFrom((int)actual);
+    std::string eDecimal = StringFrom((int)expected);
 
-    SimpleString::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
 
-    SimpleString actualReported = aDecimal + " " + BracketsFormattedHexStringFrom(actual);
-    SimpleString expectedReported = eDecimal + " " + BracketsFormattedHexStringFrom(expected);
+    std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
+    std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
     message_ += createButWasString(expectedReported, actualReported);
 }
 

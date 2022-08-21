@@ -37,7 +37,7 @@
 
 bool IEEE754ExceptionsPlugin::inexactDisabled_ = true;
 
-IEEE754ExceptionsPlugin::IEEE754ExceptionsPlugin(const SimpleString& name)
+IEEE754ExceptionsPlugin::IEEE754ExceptionsPlugin(const std::string& name)
     : TestPlugin(name)
 {
 }
@@ -104,7 +104,7 @@ void IEEE754ExceptionsPlugin::ieee754Check(UtestShell& test, TestResult& result,
 
 bool IEEE754ExceptionsPlugin::inexactDisabled_ = true;
 
-IEEE754ExceptionsPlugin::IEEE754ExceptionsPlugin(const SimpleString& name)
+IEEE754ExceptionsPlugin::IEEE754ExceptionsPlugin(const std::string& name)
     : TestPlugin(name)
 {
 }

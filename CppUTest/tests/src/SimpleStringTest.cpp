@@ -41,8 +41,8 @@ TEST_GROUP(SimpleString) {};
 
 TEST(SimpleString, CreateSequence)
 {
-    SimpleString expected("hellohello");
-    SimpleString actual("hello", 2);
+    SimpleString expected("xxxx");
+    SimpleString actual(4, 'x');
 
     CHECK_EQUAL(expected, actual);
 }
@@ -50,7 +50,7 @@ TEST(SimpleString, CreateSequence)
 TEST(SimpleString, CreateSequenceOfZero)
 {
     SimpleString expected("");
-    SimpleString actual("hello", 0);
+    SimpleString actual(0, 'x');
 
     CHECK_EQUAL(expected, actual);
 }
@@ -105,17 +105,17 @@ TEST(SimpleString, Size)
 
 TEST(SimpleString, lowerCase)
 {
-    SimpleString s1("AbCdEfG1234");
-    SimpleString s2 = SimpleString::lowerCase(s1);
+    std::string s1("AbCdEfG1234");
+    std::string s2 = strings::lowercase(s1);
     STRCMP_EQUAL("abcdefg1234", s2.c_str());
     STRCMP_EQUAL("AbCdEfG1234", s1.c_str());
 }
 
 TEST(SimpleString, printable)
 {
-    SimpleString s1("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
-                    "abc");
-    SimpleString s2 = SimpleString::printable(s1);
+    std::string s1("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
+                   "abc");
+    std::string s2 = strings::printable(s1);
     STRCMP_EQUAL("ABC\\x01\\x06\\a\\n\\r\\b\\t\\v\\f\\x0E\\x1F\\x7Fabc", s2.c_str());
     STRCMP_EQUAL("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
                  "abc",
@@ -159,14 +159,14 @@ TEST(SimpleString, Contains)
     SimpleString mid("l");
     SimpleString notPartOfString("xxxx");
 
-    CHECK(s.contains(empty));
-    CHECK(s.contains(beginning));
-    CHECK(s.contains(end));
-    CHECK(s.contains(mid));
-    CHECK(!s.contains(notPartOfString));
+    CHECK(strings::contains(s, empty));
+    CHECK(strings::contains(s, beginning));
+    CHECK(strings::contains(s, end));
+    CHECK(strings::contains(s, mid));
+    CHECK(!strings::contains(s, notPartOfString));
 
-    CHECK(empty.contains(empty));
-    CHECK(!empty.contains(s));
+    CHECK(strings::contains(empty, empty));
+    CHECK(!strings::contains(empty, s));
 }
 
 TEST(SimpleString, startsWith)
@@ -174,9 +174,9 @@ TEST(SimpleString, startsWith)
     SimpleString hi("Hi you!");
     SimpleString part("Hi");
     SimpleString diff("Hrrm Hi you! ffdsfd");
-    CHECK(hi.starts_with(part));
-    CHECK(!part.starts_with(hi));
-    CHECK(!diff.starts_with(hi));
+    CHECK(strings::starts_with(hi, part));
+    CHECK(!strings::starts_with(part, hi));
+    CHECK(!strings::starts_with(diff, hi));
 }
 
 TEST(SimpleString, split)
@@ -208,70 +208,77 @@ TEST(SimpleString, splitNoTokenOnTheEnd)
 
 TEST(SimpleString, count)
 {
-    SimpleString str("ha ha ha ha");
-    LONGS_EQUAL(4, str.count("ha"));
+    std::string str("ha ha ha ha");
+    LONGS_EQUAL(4, strings::count(str, "ha"));
 }
 
 TEST(SimpleString, countTogether)
 {
     SimpleString str("hahahaha");
-    LONGS_EQUAL(4, str.count("ha"));
+    LONGS_EQUAL(4, strings::count(str, "ha"));
 }
 
 TEST(SimpleString, countEmptyString)
 {
     SimpleString str("hahahaha");
-    LONGS_EQUAL(8, str.count(""));
+    LONGS_EQUAL(8, strings::count(str, ""));
 }
 
 TEST(SimpleString, countEmptyStringInEmptyString)
 {
     SimpleString str;
-    LONGS_EQUAL(0, str.count(""));
+    LONGS_EQUAL(0, strings::count(str, ""));
 }
 
 TEST(SimpleString, endsWith)
 {
     SimpleString str("Hello World");
-    CHECK(str.ends_with("World"));
-    CHECK(!str.ends_with("Worl"));
-    CHECK(!str.ends_with("Hello"));
+    CHECK(strings::ends_with(str, "World"));
+    CHECK(!strings::ends_with(str, "Worl"));
+    CHECK(!strings::ends_with(str, "Hello"));
     SimpleString str2("ah");
-    CHECK(str2.ends_with("ah"));
-    CHECK(!str2.ends_with("baah"));
+    CHECK(strings::ends_with(str2, "ah"));
+    CHECK(!strings::ends_with(str2, "baah"));
     SimpleString str3("");
-    CHECK(!str3.ends_with("baah"));
+    CHECK(!strings::ends_with(str3, "baah"));
 
     SimpleString str4("ha ha ha ha");
-    CHECK(str4.ends_with("ha"));
+    CHECK(strings::ends_with(str4, "ha"));
 }
 
 TEST(SimpleString, replaceCharWithChar)
 {
-    SimpleString str("abcabcabca");
-    SimpleString::replaceAll(str, 'a', 'b');
+    std::string str("abcabcabca");
+    strings::replaceAll(str, 'a', 'b');
     STRCMP_EQUAL("bbcbbcbbcb", str.c_str());
 }
 
 TEST(SimpleString, replaceEmptyStringWithEmptyString)
 {
-    SimpleString str;
-    SimpleString::replaceAll(str, "", "");
+    std::string str;
+    strings::replaceAll(str, "", "");
     STRCMP_EQUAL("", str.c_str());
 }
 
 TEST(SimpleString, replaceWholeString)
 {
-    SimpleString str("boo");
-    SimpleString::replaceAll(str, "boo", "");
+    std::string str("boo");
+    strings::replaceAll(str, "boo", "");
     STRCMP_EQUAL("", str.c_str());
 }
 
 TEST(SimpleString, replaceStringWithString)
 {
-    SimpleString str("boo baa boo baa boo");
-    SimpleString::replaceAll(str, "boo", "boohoo");
+    std::string str("boo baa boo baa boo");
+    strings::replaceAll(str, "boo", "boohoo");
     STRCMP_EQUAL("boohoo baa boohoo baa boohoo", str.c_str());
+}
+
+TEST(SimpleString, replaceStringWithSubstring)
+{
+    std::string str = "..";
+    strings::replaceAll(str, ".", "..");
+    STRCMP_EQUAL("....", str.c_str());
 }
 
 TEST(SimpleString, subStringFromEmptyString)
@@ -312,34 +319,26 @@ TEST(SimpleString, subStringFromPos6ToEndOfString)
 
 TEST(SimpleString, subStringFromTillNormal)
 {
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("Hello", SimpleString::subStringFromTill(str, 'H', ' ').c_str());
+    std::string str("Hello World");
+    STRCMP_EQUAL("Hello", strings::subStringFromTill(str, 'H', ' ').c_str());
 }
 
 TEST(SimpleString, subStringFromTillOutOfBounds)
 {
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("World", SimpleString::subStringFromTill(str, 'W', '!').c_str());
+    std::string str("Hello World");
+    STRCMP_EQUAL("World", strings::subStringFromTill(str, 'W', '!').c_str());
 }
 
 TEST(SimpleString, subStringFromTillStartDoesntExist)
 {
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("", SimpleString::subStringFromTill(str, '!', ' ').c_str());
+    std::string str("Hello World");
+    STRCMP_EQUAL("", strings::subStringFromTill(str, '!', ' ').c_str());
 }
 
 TEST(SimpleString, subStringFromTillWhenTheEndAppearsBeforeTheStart)
 {
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("World", SimpleString::subStringFromTill(str, 'W', 'H').c_str());
-}
-
-TEST(SimpleString, findNormal)
-{
-    SimpleString str("Hello World");
-    LONGS_EQUAL(0, str.find('H'));
-    LONGS_EQUAL(1, str.find('e'));
-    LONGS_EQUAL(SimpleString::npos, str.find('!'));
+    std::string str("Hello World");
+    STRCMP_EQUAL("World", strings::subStringFromTill(str, 'W', 'H').c_str());
 }
 
 TEST(SimpleString, at)
@@ -511,7 +510,7 @@ TEST(SimpleString, StringFromFormatLarge)
 {
     const char* s = "ThisIsAPrettyLargeStringAndIfWeAddThisManyTimesToABufferItWillbeFull";
     SimpleString h1 = StringFromFormat("%s%s%s%s%s%s%s%s%s%s", s, s, s, s, s, s, s, s, s, s);
-    LONGS_EQUAL(10, h1.count(s));
+    LONGS_EQUAL(10, strings::count(h1, s));
 }
 
 TEST(SimpleString, StringFromConstSimpleString)
@@ -549,30 +548,30 @@ TEST(SimpleString, PlatformSpecificSprintf_doesNotFit)
 
 TEST(SimpleString, PadStringsToSameLengthString1Larger)
 {
-    SimpleString str1("1");
-    SimpleString str2("222");
+    std::string str1("1");
+    std::string str2("222");
 
-    SimpleString::padStringsToSameLength(str1, str2, '4');
+    strings::padStringsToSameLength(str1, str2, '4');
     STRCMP_EQUAL("441", str1.c_str());
     STRCMP_EQUAL("222", str2.c_str());
 }
 
 TEST(SimpleString, PadStringsToSameLengthString2Larger)
 {
-    SimpleString str1("    ");
-    SimpleString str2("");
+    std::string str1("    ");
+    std::string str2("");
 
-    SimpleString::padStringsToSameLength(str1, str2, ' ');
+    strings::padStringsToSameLength(str1, str2, ' ');
     STRCMP_EQUAL("    ", str1.c_str());
     STRCMP_EQUAL("    ", str2.c_str());
 }
 
 TEST(SimpleString, PadStringsToSameLengthWithSameLengthStrings)
 {
-    SimpleString str1("123");
-    SimpleString str2("123");
+    std::string str1("123");
+    std::string str2("123");
 
-    SimpleString::padStringsToSameLength(str1, str2, ' ');
+    strings::padStringsToSameLength(str1, str2, ' ');
     STRCMP_EQUAL("123", str1.c_str());
     STRCMP_EQUAL("123", str2.c_str());
 }
@@ -695,18 +694,18 @@ TEST(SimpleString, unsigned_long)
 TEST(SimpleString, AtoU)
 {
     char max_short_str[] = "65535";
-    CHECK(12345 == SimpleString::AtoU("012345"));
-    CHECK(6789 == SimpleString::AtoU("6789"));
-    CHECK(12345 == SimpleString::AtoU("12345/"));
-    CHECK(12345 == SimpleString::AtoU("12345:"));
-    CHECK(123 == SimpleString::AtoU("\t \r\n123"));
-    CHECK(123 == SimpleString::AtoU("123-foo"));
-    CHECK(65535 == SimpleString::AtoU(max_short_str));
-    CHECK(0 == SimpleString::AtoU("foo"));
-    CHECK(0 == SimpleString::AtoU("-foo"));
-    CHECK(0 == SimpleString::AtoU("+1"));
-    CHECK(0 == SimpleString::AtoU("-1"));
-    CHECK(0 == SimpleString::AtoU("0"));
+    CHECK(12345 == strings::atou("012345"));
+    CHECK(6789 == strings::atou("6789"));
+    CHECK(12345 == strings::atou("12345/"));
+    CHECK(12345 == strings::atou("12345:"));
+    CHECK(123 == strings::atou("\t \r\n123"));
+    CHECK(123 == strings::atou("123-foo"));
+    CHECK(65535 == strings::atou(max_short_str));
+    CHECK(0 == strings::atou("foo"));
+    CHECK(0 == strings::atou("-foo"));
+    CHECK(0 == strings::atou("+1"));
+    CHECK(0 == strings::atou("-1"));
+    CHECK(0 == strings::atou("0"));
 }
 
 TEST(SimpleString, Binary)

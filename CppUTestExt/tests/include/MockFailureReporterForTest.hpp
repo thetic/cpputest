@@ -35,7 +35,7 @@
 
 class MockFailureReporterForTest : public MockFailureReporter {
 public:
-    SimpleString mockFailureString;
+    std::string mockFailureString;
 
     void failTest(const MockFailure& failure) override;
     static MockFailureReporterForTest* getReporter();
@@ -52,7 +52,7 @@ public:
 };
 
 UtestShell* mockFailureTest();
-SimpleString mockFailureString();
+std::string mockFailureString();
 void CLEAR_MOCK_FAILURE();
 void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const MockFailure& expectedFailure, const char* file, size_t line);
 void CHECK_NO_MOCK_FAILURE_LOCATION(const char* file, size_t line);
@@ -60,9 +60,9 @@ void CHECK_NO_MOCK_FAILURE_LOCATION(const char* file, size_t line);
 class MockExpectedCallsListForTest : public MockExpectedCallsList {
 public:
     ~MockExpectedCallsListForTest() override;
-    MockCheckedExpectedCall* addFunction(const SimpleString& name);
-    MockCheckedExpectedCall* addFunction(unsigned int numCalls, const SimpleString& name);
-    MockCheckedExpectedCall* addFunctionOrdered(const SimpleString& name, unsigned int order);
+    MockCheckedExpectedCall* addFunction(const std::string& name);
+    MockCheckedExpectedCall* addFunction(unsigned int numCalls, const std::string& name);
+    MockCheckedExpectedCall* addFunctionOrdered(const std::string& name, unsigned int order);
 };
 
 #endif

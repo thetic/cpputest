@@ -42,11 +42,11 @@ struct JUnitTestCaseResultNode {
     {
     }
 
-    SimpleString name_;
+    std::string name_;
     size_t execTime_;
     TestFailure* failure_;
     bool ignored_;
-    SimpleString file_;
+    std::string file_;
     size_t lineNumber_;
     size_t checkCount_;
     JUnitTestCaseResultNode* next_;
@@ -69,7 +69,7 @@ struct JUnitTestGroupResult {
     size_t totalCheckCount_;
     size_t startTime_;
     size_t groupExecTime_;
-    SimpleString group_;
+    std::string group_;
     JUnitTestCaseResultNode* head_;
     JUnitTestCaseResultNode* tail_;
 };
@@ -77,8 +77,8 @@ struct JUnitTestGroupResult {
 struct JUnitTestOutputImpl {
     JUnitTestGroupResult results_;
     PlatformSpecificFile file_;
-    SimpleString package_;
-    SimpleString stdOutput_;
+    std::string package_;
+    std::string stdOutput_;
 };
 
 JUnitTestOutput::JUnitTestOutput()
@@ -154,9 +154,9 @@ void JUnitTestOutput::printCurrentTestStarted(const UtestShell& test)
     }
 }
 
-SimpleString JUnitTestOutput::createFileName(const SimpleString& group)
+std::string JUnitTestOutput::createFileName(const std::string& group)
 {
-    SimpleString fileName = "cpputest_";
+    std::string fileName = "cpputest_";
     if (!impl_->package_.empty()) {
         fileName += impl_->package_;
         fileName += "_";
@@ -165,19 +165,19 @@ SimpleString JUnitTestOutput::createFileName(const SimpleString& group)
     return encodeFileName(fileName) + ".xml";
 }
 
-SimpleString JUnitTestOutput::encodeFileName(const SimpleString& fileName)
+std::string JUnitTestOutput::encodeFileName(const std::string& fileName)
 {
     // special character list based on: https://en.wikipedia.org/wiki/Filename
     static const char* const forbiddenCharacters = "/\\?%*:|\"<>";
 
-    SimpleString result = fileName;
+    std::string result = fileName;
     for (const char* sym = forbiddenCharacters; *sym; ++sym) {
-        SimpleString::replaceAll(result, *sym, '_');
+        strings::replaceAll(result, *sym, '_');
     }
     return result;
 }
 
-void JUnitTestOutput::setPackageName(const SimpleString& package)
+void JUnitTestOutput::setPackageName(const std::string& package)
 {
     if (impl_ != nullptr) {
         impl_->package_ = package;
@@ -191,7 +191,7 @@ void JUnitTestOutput::writeXmlHeader()
 
 void JUnitTestOutput::writeTestSuiteSummary()
 {
-    SimpleString
+    std::string
         buf
         = StringFromFormat(
             "<testsuite errors=\"0\" failures=\"%d\" hostname=\"localhost\" name=\"%s\" tests=\"%d\" time=\"%d.%03d\" timestamp=\"%s\">\n",
@@ -209,14 +209,14 @@ void JUnitTestOutput::writeProperties()
     writeToFile("</properties>\n");
 }
 
-SimpleString JUnitTestOutput::encodeXmlText(const SimpleString& textbody)
+std::string JUnitTestOutput::encodeXmlText(const std::string& textbody)
 {
-    SimpleString buf = textbody.c_str();
-    SimpleString::replaceAll(buf, "&", "&amp;");
-    SimpleString::replaceAll(buf, "\"", "&quot;");
-    SimpleString::replaceAll(buf, "<", "&lt;");
-    SimpleString::replaceAll(buf, ">", "&gt;");
-    SimpleString::replaceAll(buf, "\n", "{newline}");
+    std::string buf = textbody.c_str();
+    strings::replaceAll(buf, "&", "&amp;");
+    strings::replaceAll(buf, "\"", "&quot;");
+    strings::replaceAll(buf, "<", "&lt;");
+    strings::replaceAll(buf, ">", "&gt;");
+    strings::replaceAll(buf, "\n", "{newline}");
     return buf;
 }
 
@@ -225,7 +225,7 @@ void JUnitTestOutput::writeTestCases()
     JUnitTestCaseResultNode* cur = impl_->results_.head_;
 
     while (cur) {
-        SimpleString buf = StringFromFormat(
+        std::string buf = StringFromFormat(
             "<testcase classname=\"%s%s%s\" name=\"%s\" assertions=\"%d\" time=\"%d.%03d\" file=\"%s\" line=\"%d\">\n",
             impl_->package_.c_str(),
             impl_->package_.empty() ? "" : ".",
@@ -251,7 +251,7 @@ void JUnitTestOutput::writeTestCases()
 
 void JUnitTestOutput::writeFailure(JUnitTestCaseResultNode* node)
 {
-    SimpleString buf = StringFromFormat(
+    std::string buf = StringFromFormat(
         "<failure message=\"%s:%d: %s\" type=\"AssertionFailedError\">\n",
         node->failure_->getFileName().c_str(),
         (int)node->failure_->getFailureLineNumber(),
@@ -313,12 +313,12 @@ void JUnitTestOutput::printFailure(const TestFailure& failure)
     }
 }
 
-void JUnitTestOutput::openFileForWrite(const SimpleString& fileName)
+void JUnitTestOutput::openFileForWrite(const std::string& fileName)
 {
     impl_->file_ = PlatformSpecificFOpen(fileName.c_str(), "w");
 }
 
-void JUnitTestOutput::writeToFile(const SimpleString& buffer)
+void JUnitTestOutput::writeToFile(const std::string& buffer)
 {
     PlatformSpecificFPuts(buffer.c_str(), impl_->file_);
 }

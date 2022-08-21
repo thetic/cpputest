@@ -64,7 +64,7 @@ UtestShell* mockFailureTest()
     return MockFailureReporterForTest::getReporter()->getTestToFail();
 }
 
-SimpleString mockFailureString()
+std::string mockFailureString()
 {
     return MockFailureReporterForTest::getReporter()->mockFailureString;
 }
@@ -76,11 +76,11 @@ void CLEAR_MOCK_FAILURE()
 
 void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const MockFailure& expectedFailure, const char* file, size_t line)
 {
-    SimpleString expectedFailureString = expectedFailure.getMessage();
-    SimpleString actualFailureString = mockFailureString();
+    std::string expectedFailureString = expectedFailure.getMessage();
+    std::string actualFailureString = mockFailureString();
     CLEAR_MOCK_FAILURE();
     if (expectedFailureString != actualFailureString) {
-        SimpleString error = "MockFailures are different.\n";
+        std::string error = "MockFailures are different.\n";
         error += "Expected MockFailure:\n\t";
         error += expectedFailureString;
         error += "\nActual MockFailure:\n\t";
@@ -92,7 +92,7 @@ void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const MockFailure& expectedFailure, co
 void CHECK_NO_MOCK_FAILURE_LOCATION(const char* file, size_t line)
 {
     if (mockFailureString() != "") {
-        SimpleString error = "Unexpected mock failure:\n";
+        std::string error = "Unexpected mock failure:\n";
         error += mockFailureString();
         CLEAR_MOCK_FAILURE();
         FAIL_LOCATION(error.c_str(), file, line);
@@ -105,7 +105,7 @@ MockExpectedCallsListForTest::~MockExpectedCallsListForTest()
     deleteAllExpectationsAndClearList();
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(const SimpleString& name)
+MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(const std::string& name)
 {
     MockCheckedExpectedCall* newCall = new MockCheckedExpectedCall;
     newCall->withName(name);
@@ -113,7 +113,7 @@ MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(const SimpleS
     return newCall;
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(unsigned int numCalls, const SimpleString& name)
+MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(unsigned int numCalls, const std::string& name)
 {
     MockCheckedExpectedCall* newCall = new MockCheckedExpectedCall(numCalls);
     newCall->withName(name);
@@ -121,7 +121,7 @@ MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(unsigned int 
     return newCall;
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunctionOrdered(const SimpleString& name, unsigned int order)
+MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunctionOrdered(const std::string& name, unsigned int order)
 {
     MockCheckedExpectedCall* newCall = addFunction(name);
     newCall->withCallOrder(order);

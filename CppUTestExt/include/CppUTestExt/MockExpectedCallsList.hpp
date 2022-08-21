@@ -41,27 +41,27 @@ public:
     virtual void deleteAllExpectationsAndClearList();
 
     virtual unsigned int size() const;
-    virtual unsigned int amountOfActualCallsFulfilledFor(const SimpleString& name) const;
+    virtual unsigned int amountOfActualCallsFulfilledFor(const std::string& name) const;
     virtual unsigned int amountOfUnfulfilledExpectations() const;
     virtual bool hasUnfulfilledExpectations() const;
     virtual bool hasFinalizedMatchingExpectations() const;
     virtual bool hasUnmatchingExpectationsBecauseOfMissingParameters() const;
-    virtual bool hasExpectationWithName(const SimpleString& name) const;
+    virtual bool hasExpectationWithName(const std::string& name) const;
     virtual bool hasCallsOutOfOrder() const;
     virtual bool isEmpty() const;
 
     virtual void addExpectedCall(MockCheckedExpectedCall* call);
     virtual void addExpectations(const MockExpectedCallsList& list);
-    virtual void addExpectationsRelatedTo(const SimpleString& name, const MockExpectedCallsList& list);
+    virtual void addExpectationsRelatedTo(const std::string& name, const MockExpectedCallsList& list);
 
     virtual void onlyKeepOutOfOrderExpectations();
     virtual void addPotentiallyMatchingExpectations(const MockExpectedCallsList& list);
 
-    virtual void onlyKeepExpectationsRelatedTo(const SimpleString& name);
+    virtual void onlyKeepExpectationsRelatedTo(const std::string& name);
     virtual void onlyKeepExpectationsWithInputParameter(const MockNamedValue& parameter);
-    virtual void onlyKeepExpectationsWithInputParameterName(const SimpleString& name);
+    virtual void onlyKeepExpectationsWithInputParameterName(const std::string& name);
     virtual void onlyKeepExpectationsWithOutputParameter(const MockNamedValue& parameter);
-    virtual void onlyKeepExpectationsWithOutputParameterName(const SimpleString& name);
+    virtual void onlyKeepExpectationsWithOutputParameterName(const std::string& name);
     virtual void onlyKeepExpectationsOnObject(const void* objectPtr);
     virtual void onlyKeepUnmatchingExpectations();
 
@@ -71,13 +71,13 @@ public:
 
     virtual void resetActualCallMatchingState();
     virtual void wasPassedToObject();
-    virtual void parameterWasPassed(const SimpleString& parameterName);
-    virtual void outputParameterWasPassed(const SimpleString& parameterName);
+    virtual void parameterWasPassed(const std::string& parameterName);
+    virtual void outputParameterWasPassed(const std::string& parameterName);
 
-    virtual SimpleString unfulfilledCallsToString(const SimpleString& linePrefix = "") const;
-    virtual SimpleString fulfilledCallsToString(const SimpleString& linePrefix = "") const;
-    virtual SimpleString callsWithMissingParametersToString(const SimpleString& linePrefix,
-        const SimpleString& missingParametersPrefix) const;
+    virtual std::string unfulfilledCallsToString(const std::string& linePrefix = "") const;
+    virtual std::string fulfilledCallsToString(const std::string& linePrefix = "") const;
+    virtual std::string callsWithMissingParametersToString(const std::string& linePrefix,
+        const std::string& missingParametersPrefix) const;
 
 protected:
     virtual void pruneEmptyNodeFromList();

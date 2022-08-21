@@ -32,7 +32,7 @@
 
 class IEEE754ExceptionsPlugin : public TestPlugin {
 public:
-    IEEE754ExceptionsPlugin(const SimpleString& name = "IEEE754ExceptionsPlugin");
+    IEEE754ExceptionsPlugin(const std::string& name = "IEEE754ExceptionsPlugin");
 
     void preTestAction(UtestShell& test, TestResult& result) override;
     void postTestAction(UtestShell& test, TestResult& result) override;

@@ -45,7 +45,7 @@ MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::getDefaultCompara
     return defaultRepository_;
 }
 
-MockNamedValue::MockNamedValue(const SimpleString& name)
+MockNamedValue::MockNamedValue(const std::string& name)
     : name_(name)
     , type_("int")
     , size_(0)
@@ -144,7 +144,7 @@ void MockNamedValue::setMemoryBuffer(const unsigned char* value, size_t size)
     size_ = size;
 }
 
-void MockNamedValue::setConstObjectPointer(const SimpleString& type, const void* objectPtr)
+void MockNamedValue::setConstObjectPointer(const std::string& type, const void* objectPtr)
 {
     type_ = type;
     value_.constObjectPointerValue_ = objectPtr;
@@ -154,7 +154,7 @@ void MockNamedValue::setConstObjectPointer(const SimpleString& type, const void*
     }
 }
 
-void MockNamedValue::setObjectPointer(const SimpleString& type, void* objectPtr)
+void MockNamedValue::setObjectPointer(const std::string& type, void* objectPtr)
 {
     type_ = type;
     value_.objectPointerValue_ = objectPtr;
@@ -174,12 +174,12 @@ void MockNamedValue::setName(const char* name)
     name_ = name;
 }
 
-SimpleString MockNamedValue::getName() const
+std::string MockNamedValue::getName() const
 {
     return name_;
 }
 
-SimpleString MockNamedValue::getType() const
+std::string MockNamedValue::getType() const
 {
     return type_;
 }
@@ -414,7 +414,7 @@ bool MockNamedValue::equals(const MockNamedValue& p) const
     else if (type_ == "unsigned long long int")
         return value_.unsignedLongLongIntValue_ == p.value_.unsignedLongLongIntValue_;
     else if (type_ == "const char*")
-        return SimpleString(value_.stringValue_) == SimpleString(p.value_.stringValue_);
+        return std::string(value_.stringValue_) == std::string(p.value_.stringValue_);
     else if (type_ == "void*")
         return value_.pointerValue_ == p.value_.pointerValue_;
     else if (type_ == "const void*")
@@ -447,7 +447,7 @@ bool MockNamedValue::compatibleForCopying(const MockNamedValue& p) const
     return false;
 }
 
-SimpleString MockNamedValue::toString() const
+std::string MockNamedValue::toString() const
 {
     if (type_ == "bool")
         return StringFrom(value_.boolValue_);
@@ -508,12 +508,12 @@ MockNamedValueListNode::MockNamedValueListNode(MockNamedValue* newValue)
 {
 }
 
-SimpleString MockNamedValueListNode::getName() const
+std::string MockNamedValueListNode::getName() const
 {
     return data_->getName();
 }
 
-SimpleString MockNamedValueListNode::getType() const
+std::string MockNamedValueListNode::getType() const
 {
     return data_->getType();
 }
@@ -546,7 +546,7 @@ void MockNamedValueList::add(MockNamedValue* newValue)
     }
 }
 
-MockNamedValue* MockNamedValueList::getValueByName(const SimpleString& name)
+MockNamedValue* MockNamedValueList::getValueByName(const std::string& name)
 {
     for (MockNamedValueListNode* p = head_; p; p = p->next())
         if (p->getName() == name)
@@ -560,28 +560,28 @@ MockNamedValueListNode* MockNamedValueList::begin()
 }
 
 struct MockNamedValueComparatorsAndCopiersRepositoryNode {
-    MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueComparator* comparator, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
+    MockNamedValueComparatorsAndCopiersRepositoryNode(const std::string& name, MockNamedValueComparator* comparator, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
         : name_(name)
         , comparator_(comparator)
         , copier_(nullptr)
         , next_(next)
     {
     }
-    MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
+    MockNamedValueComparatorsAndCopiersRepositoryNode(const std::string& name, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
         : name_(name)
         , comparator_(nullptr)
         , copier_(copier)
         , next_(next)
     {
     }
-    MockNamedValueComparatorsAndCopiersRepositoryNode(const SimpleString& name, MockNamedValueComparator* comparator, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
+    MockNamedValueComparatorsAndCopiersRepositoryNode(const std::string& name, MockNamedValueComparator* comparator, MockNamedValueCopier* copier, MockNamedValueComparatorsAndCopiersRepositoryNode* next)
         : name_(name)
         , comparator_(comparator)
         , copier_(copier)
         , next_(next)
     {
     }
-    SimpleString name_;
+    std::string name_;
     MockNamedValueComparator* comparator_;
     MockNamedValueCopier* copier_;
     MockNamedValueComparatorsAndCopiersRepositoryNode* next_;
@@ -606,17 +606,17 @@ void MockNamedValueComparatorsAndCopiersRepository::clear()
     }
 }
 
-void MockNamedValueComparatorsAndCopiersRepository::installComparator(const SimpleString& name, MockNamedValueComparator& comparator)
+void MockNamedValueComparatorsAndCopiersRepository::installComparator(const std::string& name, MockNamedValueComparator& comparator)
 {
     head_ = new MockNamedValueComparatorsAndCopiersRepositoryNode(name, &comparator, head_);
 }
 
-void MockNamedValueComparatorsAndCopiersRepository::installCopier(const SimpleString& name, MockNamedValueCopier& copier)
+void MockNamedValueComparatorsAndCopiersRepository::installCopier(const std::string& name, MockNamedValueCopier& copier)
 {
     head_ = new MockNamedValueComparatorsAndCopiersRepositoryNode(name, &copier, head_);
 }
 
-MockNamedValueComparator* MockNamedValueComparatorsAndCopiersRepository::getComparatorForType(const SimpleString& name)
+MockNamedValueComparator* MockNamedValueComparatorsAndCopiersRepository::getComparatorForType(const std::string& name)
 {
     for (MockNamedValueComparatorsAndCopiersRepositoryNode* p = head_; p; p = p->next_)
         if (p->name_ == name && p->comparator_)
@@ -624,7 +624,7 @@ MockNamedValueComparator* MockNamedValueComparatorsAndCopiersRepository::getComp
     return nullptr;
 }
 
-MockNamedValueCopier* MockNamedValueComparatorsAndCopiersRepository::getCopierForType(const SimpleString& name)
+MockNamedValueCopier* MockNamedValueComparatorsAndCopiersRepository::getCopierForType(const std::string& name)
 {
     for (MockNamedValueComparatorsAndCopiersRepositoryNode* p = head_; p; p = p->next_)
         if (p->name_ == name && p->copier_)

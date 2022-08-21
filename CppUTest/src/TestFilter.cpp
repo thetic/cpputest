@@ -34,7 +34,7 @@ TestFilter::TestFilter()
 {
 }
 
-TestFilter::TestFilter(const SimpleString& filter)
+TestFilter::TestFilter(const std::string& filter)
     : strictMatching_(false)
     , invertMatching_(false)
     , next_(nullptr)
@@ -71,14 +71,15 @@ void TestFilter::invertMatching()
     invertMatching_ = true;
 }
 
-bool TestFilter::match(const SimpleString& name) const
+bool TestFilter::match(const std::string& name) const
 {
     bool matches = false;
 
-    if (strictMatching_)
+    if (strictMatching_) {
         matches = name == filter_;
-    else
-        matches = name.contains(filter_);
+    } else {
+        matches = (name.find(filter_) != std::string::npos);
+    }
 
     return invertMatching_ ? !matches : matches;
 }
@@ -93,9 +94,9 @@ bool TestFilter::operator!=(const TestFilter& filter) const
     return !(filter == *this);
 }
 
-SimpleString TestFilter::asString() const
+std::string TestFilter::asString() const
 {
-    SimpleString textFilter = StringFromFormat("TestFilter: \"%s\"", filter_.c_str());
+    std::string textFilter = StringFromFormat("TestFilter: \"%s\"", filter_.c_str());
     if (strictMatching_ && invertMatching_)
         textFilter += " with strict, invert matching";
     else if (strictMatching_)

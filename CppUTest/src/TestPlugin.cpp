@@ -29,7 +29,7 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TestPlugin::TestPlugin(const SimpleString& name)
+TestPlugin::TestPlugin(const std::string& name)
     : next_(NullTestPlugin::instance())
     , name_(name)
     , enabled_(true)
@@ -81,12 +81,12 @@ bool TestPlugin::parseAllArguments(int ac, const char* const* av, int index)
     return false;
 }
 
-const SimpleString& TestPlugin::getName()
+const std::string& TestPlugin::getName()
 {
     return name_;
 }
 
-TestPlugin* TestPlugin::getPluginByName(const SimpleString& name)
+TestPlugin* TestPlugin::getPluginByName(const std::string& name)
 {
     if (name == name_)
         return this;
@@ -99,7 +99,7 @@ TestPlugin* TestPlugin::getNext()
 {
     return next_;
 }
-TestPlugin* TestPlugin::removePluginByName(const SimpleString& name)
+TestPlugin* TestPlugin::removePluginByName(const std::string& name)
 {
     TestPlugin* removed = nullptr;
     if (next_ && next_->getName() == name) {
@@ -134,7 +134,7 @@ struct cpputest_pair {
 static int pointerTableIndex;
 static cpputest_pair setlist[SetPointerPlugin::MAX_SET];
 
-SetPointerPlugin::SetPointerPlugin(const SimpleString& name)
+SetPointerPlugin::SetPointerPlugin(const std::string& name)
     : TestPlugin(name)
 {
     pointerTableIndex = 0;

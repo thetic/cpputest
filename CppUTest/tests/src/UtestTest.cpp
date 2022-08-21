@@ -26,6 +26,7 @@
  */
 
 #include "CppUTest/PlatformSpecificFunctions.hpp"
+#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
@@ -267,7 +268,7 @@ TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
     fixture.assertPrintContains("Failed in separate process - killed by signal");
 
     /* Signal 11 usually happens, but with clang3.7 on Linux, it produced signal 4 */
-    CHECK(fixture.getOutput().contains("signal 11") || fixture.getOutput().contains("signal 4"));
+    CHECK(strings::contains(fixture.getOutput(), "signal 11") || strings::contains(fixture.getOutput(), "signal 4"));
 }
 
 #endif

@@ -25,16 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// SIMPLESTRING.H
-//
-// One of the design goals of CppUnitLite is to compilation with very old C++
-// compilers.  For that reason, the simple string class that provides
-// only the operations needed in CppUnitLite.
-//
-///////////////////////////////////////////////////////////////////////////////
-
 #ifndef D_SimpleString_h
 #define D_SimpleString_h
 
@@ -42,53 +32,74 @@
 #include <cstddef>
 #include <string>
 
+namespace strings {
+std::string& replaceAll(std::string& str, const std::string& to, const std::string& with);
+std::string& replaceAll(std::string& str, char to, char with);
+size_t count(const std::string& string, const std::string& substring);
+std::string subStringFromTill(const std::string&, char startChar, char lastExcludedChar);
+std::string printable(const std::string&);
+void padStringsToSameLength(std::string& str1, std::string& str2, char ch);
+std::string lowercase(const std::string&);
+unsigned atou(const char* str);
+bool contains(const std::string& string, const std::string& substring);
+bool ends_with(const std::string& string, const std::string& suffix);
+bool starts_with(const std::string& string, const std::string& prefix);
+}
+
 class SimpleString {
-    friend bool operator==(const SimpleString& left, const SimpleString& right);
-    friend bool operator!=(const SimpleString& left, const SimpleString& right);
+    friend bool operator==(const SimpleString& left, const SimpleString& right)
+    {
+        return left.string_ == right.string_;
+    }
+    friend bool operator!=(const SimpleString& left, const SimpleString& right)
+    {
+        return left.string_ != right.string_;
+    }
 
 public:
-    SimpleString(const char* value = "");
-    SimpleString(const char* value, size_t repeatCount);
-    SimpleString(const SimpleString& other);
+    SimpleString(const char* value = "")
+        : string_(value ? value : "") {};
+    SimpleString(size_t repeatCount, char c)
+        : string_(repeatCount, c) {};
+    SimpleString(const SimpleString& other)
+        : string_(other.string_) {};
     ~SimpleString() = default;
+    SimpleString(const std::string& other)
+        : string_(other)
+    {
+    }
 
-    SimpleString& operator=(const SimpleString& other);
-    SimpleString operator+(const SimpleString&) const;
-    SimpleString& operator+=(const SimpleString&);
-    SimpleString& operator+=(const char*);
+    operator std::string() const { return std::string(string_); }
 
-    static const size_t npos;
+    SimpleString& operator=(const SimpleString& other)
+    {
+        string_ = other.string_;
+        return *this;
+    }
+    SimpleString operator+(const SimpleString& rhs) const { return string_ + rhs.string_; }
+    SimpleString& operator+=(const SimpleString& rhs)
+    {
+        string_ += rhs.string_;
+        return *this;
+    }
+    SimpleString& operator+=(const char* rhs)
+    {
+        string_ += rhs;
+        return *this;
+    }
 
-    char operator[](size_t pos) const;
-    size_t find(char ch, size_t pos = 0) const;
-    bool contains(const SimpleString& other) const;
-    bool starts_with(const SimpleString& other) const;
-    bool ends_with(const SimpleString& other) const;
+    char operator[](size_t pos) const { return string_[pos]; }
 
-    size_t count(const SimpleString& str) const;
+    SimpleString substr(size_t beginPos, size_t amount = std::string::npos) const { return string_.substr(beginPos, amount); }
+    size_t find(char ch, size_t pos = 0) const { return string_.find(ch, pos); }
 
-    SimpleString substr(size_t beginPos, size_t amount = npos) const;
-
-    const char* c_str() const;
-    const char* data() const;
-    size_t size() const;
-    bool empty() const;
-
-    static void replaceAll(SimpleString&, char to, char with);
-    static void replaceAll(SimpleString&, const char* to, const char* with);
-    static SimpleString subStringFromTill(const SimpleString&, char startChar, char lastExcludedChar);
-    static SimpleString printable(const SimpleString&);
-    static void padStringsToSameLength(SimpleString& str1, SimpleString& str2, char ch);
-
-    static SimpleString lowerCase(const SimpleString&);
-    static unsigned AtoU(const char* str);
+    const char* c_str() const { return string_.c_str(); }
+    const char* data() const { return string_.data(); };
+    size_t size() const { return string_.size(); }
+    bool empty() const { return string_.empty(); }
 
 private:
     std::string string_;
-
-    static char* copyToNewBuffer(const char* bufferToCopy, size_t bufferSize);
-    static bool isControlWithShortEscapeSequence(char ch);
-    static size_t getPrintableSize(const SimpleString&);
 };
 
 class SimpleStringCollection {

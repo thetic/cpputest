@@ -35,7 +35,7 @@ class TestResult;
 
 class TestPlugin {
 public:
-    TestPlugin(const SimpleString& name);
+    TestPlugin(const std::string& name);
     virtual ~TestPlugin();
 
     virtual void preTestAction(UtestShell&, TestResult&)
@@ -57,22 +57,22 @@ public:
     virtual bool parseAllArguments(int ac, char** av, int index);
 
     virtual TestPlugin* addPlugin(TestPlugin*);
-    virtual TestPlugin* removePluginByName(const SimpleString& name);
+    virtual TestPlugin* removePluginByName(const std::string& name);
     virtual TestPlugin* getNext();
 
     virtual void disable();
     virtual void enable();
     virtual bool isEnabled();
 
-    const SimpleString& getName();
-    TestPlugin* getPluginByName(const SimpleString& name);
+    const std::string& getName();
+    TestPlugin* getPluginByName(const std::string& name);
 
 protected:
     TestPlugin(TestPlugin* next_);
 
 private:
     TestPlugin* next_;
-    SimpleString name_;
+    std::string name_;
     bool enabled_;
 };
 
@@ -88,7 +88,7 @@ extern void CppUTestStore(void** location);
 
 class SetPointerPlugin : public TestPlugin {
 public:
-    SetPointerPlugin(const SimpleString& name);
+    SetPointerPlugin(const std::string& name);
     void postTestAction(UtestShell&, TestResult&) override;
 
     enum {

@@ -54,24 +54,24 @@ public:
 
     void flush() override;
 
-    virtual SimpleString createFileName(const SimpleString& group);
-    void setPackageName(const SimpleString& package);
+    virtual std::string createFileName(const std::string& group);
+    void setPackageName(const std::string& package);
 
 protected:
     JUnitTestOutputImpl* impl_;
     void resetTestGroupResult();
 
-    virtual void openFileForWrite(const SimpleString& fileName);
+    virtual void openFileForWrite(const std::string& fileName);
     virtual void writeTestGroupToFile();
-    virtual void writeToFile(const SimpleString& buffer);
+    virtual void writeToFile(const std::string& buffer);
     virtual void closeFile();
 
     virtual void writeXmlHeader();
     virtual void writeTestSuiteSummary();
     virtual void writeProperties();
     virtual void writeTestCases();
-    virtual SimpleString encodeXmlText(const SimpleString& textbody);
-    virtual SimpleString encodeFileName(const SimpleString& fileName);
+    virtual std::string encodeXmlText(const std::string& textbody);
+    virtual std::string encodeFileName(const std::string& fileName);
     virtual void writeFailure(JUnitTestCaseResultNode* node);
     virtual void writeFileEnding();
 };

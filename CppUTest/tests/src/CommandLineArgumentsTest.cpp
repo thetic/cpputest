@@ -31,7 +31,7 @@
 
 class OptionsPlugin : public TestPlugin {
 public:
-    OptionsPlugin(const SimpleString& name)
+    OptionsPlugin(const std::string& name)
         : TestPlugin(name)
     {
     }
@@ -561,7 +561,7 @@ TEST(CommandLineArguments, checkDefaultArguments)
     CHECK(nullptr == args->getGroupFilters());
     CHECK(nullptr == args->getNameFilters());
     CHECK(args->isEclipseOutput());
-    CHECK(SimpleString("") == args->getPackageName());
+    CHECK(std::string("") == args->getPackageName());
     CHECK(!args->isCrashingOnFail());
     CHECK(args->isRethrowingExceptions());
 }
@@ -576,7 +576,7 @@ TEST(CommandLineArguments, checkContinuousIntegrationMode)
     CHECK(nullptr == args->getGroupFilters());
     CHECK(nullptr == args->getNameFilters());
     CHECK(args->isEclipseOutput());
-    CHECK(SimpleString("") == args->getPackageName());
+    CHECK(std::string("") == args->getPackageName());
     CHECK(!args->isCrashingOnFail());
     CHECK_FALSE(args->isRethrowingExceptions());
 }
@@ -586,7 +586,7 @@ TEST(CommandLineArguments, setPackageName)
     int argc = 3;
     const char* argv[] = { "tests.exe", "-k", "package" };
     CHECK(newArgumentParser(argc, argv));
-    CHECK_EQUAL(SimpleString("package"), args->getPackageName());
+    CHECK_EQUAL(std::string("package"), args->getPackageName());
 }
 
 TEST(CommandLineArguments, lotsOfGroupsAndTests)
@@ -607,7 +607,7 @@ TEST(CommandLineArguments, lastParameterFieldMissing)
     int argc = 2;
     const char* argv[] = { "tests.exe", "-k" };
     CHECK(newArgumentParser(argc, argv));
-    CHECK_EQUAL(SimpleString(""), args->getPackageName());
+    CHECK_EQUAL(std::string(""), args->getPackageName());
 }
 
 TEST(CommandLineArguments, setOptRun)
