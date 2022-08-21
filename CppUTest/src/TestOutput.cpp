@@ -32,16 +32,16 @@
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
-TestOutput::WorkingEnvironment TestOutput::workingEnvironment_ = TestOutput::detectEnvironment;
+WorkingEnvironment TestOutput::workingEnvironment_ = WorkingEnvironment::detectEnvironment;
 
-void TestOutput::setWorkingEnvironment(TestOutput::WorkingEnvironment workEnvironment)
+void TestOutput::setWorkingEnvironment(WorkingEnvironment workEnvironment)
 {
     workingEnvironment_ = workEnvironment;
 }
 
-TestOutput::WorkingEnvironment TestOutput::getWorkingEnvironment()
+WorkingEnvironment TestOutput::getWorkingEnvironment()
 {
-    if (workingEnvironment_ == TestOutput::detectEnvironment)
+    if (workingEnvironment_ == WorkingEnvironment::detectEnvironment)
         return PlatformSpecificGetWorkingEnvironment();
     return workingEnvironment_;
 }
@@ -243,7 +243,7 @@ void TestOutput::printFailureMessage(std::string reason)
 
 void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(std::string file, size_t lineNumber)
 {
-    if (TestOutput::getWorkingEnvironment() == TestOutput::visualStudio)
+    if (TestOutput::getWorkingEnvironment() == WorkingEnvironment::visualStudio)
         printVisualStudioErrorInFileOnLine(file, lineNumber);
     else
         printEclipseErrorInFileOnLine(file, lineNumber);

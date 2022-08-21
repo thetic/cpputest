@@ -43,11 +43,6 @@
 extern "C" {
 #endif
 
-/* Jumping operations. They manage their own jump buffers */
-extern int (*PlatformSpecificSetJmp)(void (*function)(void*), void* data);
-extern void (*PlatformSpecificLongJmp)(void);
-extern void (*PlatformSpecificRestoreJumpBuffer)(void);
-
 /* Time operations */
 extern long (*GetPlatformSpecificTimeInMillis)(void);
 extern const char* (*GetPlatformSpecificTimeString)(void);

@@ -43,11 +43,12 @@ class UtestShell;
 class TestFailure;
 class TestResult;
 
+enum class WorkingEnvironment { visualStudio,
+    eclipse,
+    detectEnvironment };
+
 class TestOutput {
 public:
-    enum WorkingEnvironment { visualStudio,
-        eclipse,
-        detectEnvironment };
     enum VerbosityLevel { level_quiet,
         level_verbose,
         level_veryVerbose };

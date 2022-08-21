@@ -28,12 +28,12 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
 #include <ctype.h>
 #include <math.h>
-#include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -54,9 +54,6 @@
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
 #include <pthread.h>
 #endif
-
-static jmp_buf test_exit_jmp_buf[10];
-static int jmp_buf_index = 0;
 
 // There is a possibility that a compiler provides fork but not waitpid.
 #if !defined(CPPUTEST_HAVE_FORK) || !defined(CPPUTEST_HAVE_WAITPID)
@@ -146,40 +143,14 @@ static pid_t PlatformSpecificWaitPidImplementation(int pid, int* status, int opt
 
 #endif
 
-TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
+WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
 {
-    return TestOutput::eclipse;
+    return WorkingEnvironment::eclipse;
 }
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = GccPlatformSpecificRunTestInASeperateProcess;
 int (*PlatformSpecificFork)(void) = PlatformSpecificForkImplementation;
 int (*PlatformSpecificWaitPid)(int, int*, int) = PlatformSpecificWaitPidImplementation;
-
-static int PlatformSpecificSetJmpImplementation(void (*function)(void* data), void* data)
-{
-    if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
-        jmp_buf_index++;
-        function(data);
-        jmp_buf_index--;
-        return 1;
-    }
-    return 0;
-}
-
-[[noreturn]] static void PlatformSpecificLongJmpImplementation()
-{
-    jmp_buf_index--;
-    longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
-}
-
-static void PlatformSpecificRestoreJumpBufferImplementation()
-{
-    jmp_buf_index--;
-}
-
-void (*PlatformSpecificLongJmp)() = PlatformSpecificLongJmpImplementation;
-int (*PlatformSpecificSetJmp)(void (*)(void*), void*) = PlatformSpecificSetJmpImplementation;
-void (*PlatformSpecificRestoreJumpBuffer)() = PlatformSpecificRestoreJumpBufferImplementation;
 
 ///////////// Time in millis
 

@@ -3,6 +3,7 @@
 #include "CppUTest/PlatformSpecificFunctions.hpp"
 
 #include "CppUTest/TestFailure.hpp"
+#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestResult.hpp"
 
 #include <mmsystem.h>
@@ -16,35 +17,6 @@
 #include <cstring>
 #include <ctime>
 
-static jmp_buf test_exit_jmp_buf[10];
-static int jmp_buf_index = 0;
-
-static int VisualCppSetJmp(void (*function)(void* data), void* data)
-{
-    if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
-        jmp_buf_index++;
-        function(data);
-        jmp_buf_index--;
-        return 1;
-    }
-    return 0;
-}
-
-static void VisualCppLongJmp()
-{
-    jmp_buf_index--;
-    longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
-}
-
-static void VisualCppRestoreJumpBuffer()
-{
-    jmp_buf_index--;
-}
-
-int (*PlatformSpecificSetJmp)(void (*function)(void*), void* data) = VisualCppSetJmp;
-void (*PlatformSpecificLongJmp)(void) = VisualCppLongJmp;
-void (*PlatformSpecificRestoreJumpBuffer)(void) = VisualCppRestoreJumpBuffer;
-
 static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
 {
     result->addFailure(TestFailure(shell, "-p doesn't work on this platform, as it is lacking fork.\b"));
@@ -52,9 +24,9 @@ static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* pl
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = VisualCppRunTestInASeperateProcess;
 
-TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
+WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
 {
-    return TestOutput::visualStudio;
+    return WorkingEnvironment::visualStudio;
 }
 
 ///////////// Time in millis

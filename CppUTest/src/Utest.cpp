@@ -33,12 +33,43 @@
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestResult.hpp"
 
+#include <csetjmp>
 #include <csignal>
 #include <cstring>
 
 #if defined(__GNUC__) && __GNUC__ >= 11
 #define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
+
+namespace {
+std::jmp_buf test_exit_jmp_buf[10];
+int jmp_buf_index = 0;
+
+int do_set_jump(void (*function)(void* data), void* data)
+{
+    if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
+        jmp_buf_index++;
+        function(data);
+        jmp_buf_index--;
+        return 1;
+    }
+    return 0;
+}
+
+[[noreturn]] void do_long_jump()
+{
+    jmp_buf_index--;
+    std::longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
+}
+
+#if !CPPUTEST_NO_EXCEPTIONS
+void restore_jump_buffer()
+{
+    jmp_buf_index--;
+}
+#endif
+
+}
 
 bool doubles_equal(double d1, double d2, double threshold)
 {
@@ -84,7 +115,7 @@ OutsideTestRunnerUTest& OutsideTestRunnerUTest::instance()
 }
 
 /*
- * Below helpers are used for the PlatformSpecificSetJmp and LongJmp. They pass a method for what needs to happen after
+ * Below helpers are used for the do_set_jump and do_long_jump. They pass a method for what needs to happen after
  * the jump, so that the stack stays right.
  *
  */
@@ -225,9 +256,9 @@ void UtestShell::runOneTest(TestPlugin* plugin, TestResult& result)
     result.countRun();
     HelperTestRunInfo runInfo(this, plugin, &result);
     if (isRunInSeperateProcess())
-        PlatformSpecificSetJmp(helperDoRunOneTestSeperateProcess, &runInfo);
+        do_set_jump(helperDoRunOneTestSeperateProcess, &runInfo);
     else
-        PlatformSpecificSetJmp(helperDoRunOneTestInCurrentProcess, &runInfo);
+        do_set_jump(helperDoRunOneTestInCurrentProcess, &runInfo);
 }
 
 Utest* UtestShell::createTest()
@@ -683,10 +714,10 @@ Utest::~Utest()
 #if CPPUTEST_NO_EXCEPTIONS
 void Utest::run()
 {
-    if (PlatformSpecificSetJmp(helperDoTestSetup, this)) {
-        PlatformSpecificSetJmp(helperDoTestBody, this);
+    if (do_set_jump(helperDoTestSetup, this)) {
+        do_set_jump(helperDoTestBody, this);
     }
-    PlatformSpecificSetJmp(helperDoTestTeardown, this);
+    do_set_jump(helperDoTestTeardown, this);
 }
 #else
 void Utest::run()
@@ -695,25 +726,25 @@ void Utest::run()
     int jumpResult = 0;
     try {
         current->printVeryVerbose("\n-------- before setup: ");
-        jumpResult = PlatformSpecificSetJmp(helperDoTestSetup, this);
+        jumpResult = do_set_jump(helperDoTestSetup, this);
         current->printVeryVerbose("\n-------- after  setup: ");
 
         if (jumpResult) {
             current->printVeryVerbose("\n----------  before body: ");
-            PlatformSpecificSetJmp(helperDoTestBody, this);
+            do_set_jump(helperDoTestBody, this);
             current->printVeryVerbose("\n----------  after body: ");
         }
     } catch (CppUTestFailedException&) {
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
     } catch (const std::exception& e) {
         current->addFailure(UnexpectedExceptionFailure(current, e));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
     } catch (...) {
         current->addFailure(UnexpectedExceptionFailure(current));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
@@ -721,19 +752,19 @@ void Utest::run()
 
     try {
         current->printVeryVerbose("\n--------  before teardown: ");
-        PlatformSpecificSetJmp(helperDoTestTeardown, this);
+        do_set_jump(helperDoTestTeardown, this);
         current->printVeryVerbose("\n--------  after teardown: ");
     } catch (CppUTestFailedException&) {
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
     } catch (const std::exception& e) {
         current->addFailure(UnexpectedExceptionFailure(current, e));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
     } catch (...) {
         current->addFailure(UnexpectedExceptionFailure(current));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
@@ -774,7 +805,7 @@ NormalTestTerminator::~NormalTestTerminator()
 
 void TestTerminatorWithoutExceptions::exitCurrentTest() const
 {
-    PlatformSpecificLongJmp();
+    do_long_jump();
 } // LCOV_EXCL_LINE
 
 TestTerminatorWithoutExceptions::~TestTerminatorWithoutExceptions()

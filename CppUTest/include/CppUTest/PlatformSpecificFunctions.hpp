@@ -29,9 +29,13 @@
 #define PLATFORMSPECIFICFUNCTIONS_H_
 
 #include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestOutput.hpp"
 
-TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment();
+enum class WorkingEnvironment;
+class UtestShell;
+class TestPlugin;
+class TestResult;
+
+WorkingEnvironment PlatformSpecificGetWorkingEnvironment();
 
 class TestPlugin;
 extern void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result);
