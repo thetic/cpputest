@@ -103,7 +103,7 @@ TEST_GROUP(MockFailureTest)
 
         MockUnexpectedCallHappenedFailure failure(UtestShell::getCurrent(), "bar", callList);
 
-        SimpleString expectedMessage = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: bar\n\tEXPECTED", expectedOrdinal);
+        std::string expectedMessage = StringFromFormat("Mock Failure: Unexpected additional (%s) call to function: bar\n\tEXPECTED", expectedOrdinal);
         STRCMP_CONTAINS(expectedMessage.c_str(), failure.getMessage().c_str());
     }
 };

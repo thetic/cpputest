@@ -37,7 +37,7 @@ MockExpectedCall::~MockExpectedCall()
 {
 }
 
-SimpleString StringFrom(const MockNamedValue& parameter)
+std::string StringFrom(const MockNamedValue& parameter)
 {
     return parameter.toString();
 }

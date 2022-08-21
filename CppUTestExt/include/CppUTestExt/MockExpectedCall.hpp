@@ -32,9 +32,8 @@
 #include <string>
 
 class MockNamedValue;
-class SimpleString;
 
-extern SimpleString StringFrom(const MockNamedValue& parameter);
+extern std::string StringFrom(const MockNamedValue& parameter);
 
 class MockExpectedCall {
 public:

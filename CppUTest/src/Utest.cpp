@@ -469,7 +469,12 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
-void UtestShell::assertCstrContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber)
+void UtestShell::assertCstrContains(
+    const char* expected,
+    const char* actual,
+    const char* text,
+    const char* fileName,
+    size_t lineNumber)
 {
     getTestResult()->countCheck();
     if (actual == nullptr && expected == nullptr)
@@ -480,7 +485,12 @@ void UtestShell::assertCstrContains(const char* expected, const char* actual, co
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
-void UtestShell::assertCstrNoCaseContains(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber)
+void UtestShell::assertCstrNoCaseContains(
+    const char* expected,
+    const char* actual,
+    const char* text,
+    const char* fileName,
+    size_t lineNumber)
 {
     getTestResult()->countCheck();
     if (actual == nullptr && expected == nullptr)

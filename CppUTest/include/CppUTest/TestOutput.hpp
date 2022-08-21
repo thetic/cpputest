@@ -37,7 +37,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 class UtestShell;
 class TestFailure;

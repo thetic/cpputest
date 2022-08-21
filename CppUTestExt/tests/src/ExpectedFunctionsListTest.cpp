@@ -249,7 +249,7 @@ TEST(MockExpectedCallsList, callToStringForUnfulfilledFunctions)
     list->addExpectedCall(call2);
     list->addExpectedCall(call3);
 
-    SimpleString expectedString;
+    std::string expectedString;
     expectedString = StringFromFormat("%s\n%s", call1->callToString().c_str(), call2->callToString().c_str());
     STRCMP_EQUAL(expectedString.c_str(), list->unfulfilledCallsToString().c_str());
 }
@@ -263,7 +263,7 @@ TEST(MockExpectedCallsList, callsWithMissingParametersToString)
     list->addExpectedCall(call1);
     list->addExpectedCall(call2);
 
-    SimpleString expectedString;
+    std::string expectedString;
     expectedString = StringFromFormat("-%s\n-#%s\n-%s\n-#%s",
         call1->callToString().c_str(),
         call1->missingParametersToString().c_str(),
@@ -283,7 +283,7 @@ TEST(MockExpectedCallsList, callToStringForFulfilledFunctions)
     list->addExpectedCall(call1);
     list->addExpectedCall(call2);
 
-    SimpleString expectedString;
+    std::string expectedString;
     expectedString = StringFromFormat("%s\n%s", call1->callToString().c_str(), call2->callToString().c_str());
     STRCMP_EQUAL(expectedString.c_str(), list->fulfilledCallsToString().c_str());
 }

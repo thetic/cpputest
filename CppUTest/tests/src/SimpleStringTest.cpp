@@ -39,70 +39,6 @@
 
 TEST_GROUP(SimpleString) {};
 
-TEST(SimpleString, CreateSequence)
-{
-    SimpleString expected("xxxx");
-    SimpleString actual(4, 'x');
-
-    CHECK_EQUAL(expected, actual);
-}
-
-TEST(SimpleString, CreateSequenceOfZero)
-{
-    SimpleString expected("");
-    SimpleString actual(0, 'x');
-
-    CHECK_EQUAL(expected, actual);
-}
-
-TEST(SimpleString, Copy)
-{
-    SimpleString s1("hello");
-    SimpleString s2(s1);
-
-    CHECK_EQUAL(s1, s2);
-}
-
-TEST(SimpleString, Assignment)
-{
-    SimpleString s1("hello");
-    SimpleString s2("goodbye");
-
-    s2 = s1;
-
-    CHECK_EQUAL(s1, s2);
-}
-
-TEST(SimpleString, Equality)
-{
-    SimpleString s1("hello");
-    SimpleString s2("hello");
-
-    CHECK(s1 == s2);
-}
-
-TEST(SimpleString, InEquality)
-{
-    SimpleString s1("hello");
-    SimpleString s2("goodbye");
-
-    CHECK(s1 != s2);
-}
-
-TEST(SimpleString, c_str)
-{
-    SimpleString s1("hello");
-
-    STRCMP_EQUAL("hello", s1.c_str());
-}
-
-TEST(SimpleString, Size)
-{
-    SimpleString s1("hello!");
-
-    LONGS_EQUAL(6, s1.size());
-}
-
 TEST(SimpleString, lowerCase)
 {
     std::string s1("AbCdEfG1234");
@@ -122,42 +58,14 @@ TEST(SimpleString, printable)
         s1.c_str());
 }
 
-TEST(SimpleString, Addition)
-{
-    SimpleString s1("hello!");
-    SimpleString s2("goodbye!");
-    SimpleString s3("hello!goodbye!");
-    SimpleString s4;
-    s4 = s1 + s2;
-
-    CHECK_EQUAL(s3, s4);
-}
-
-TEST(SimpleString, Concatenation)
-{
-    SimpleString s1("hello!");
-    SimpleString s2("goodbye!");
-    SimpleString s3("hello!goodbye!");
-    SimpleString s4;
-    s4 += s1;
-    s4 += s2;
-
-    CHECK_EQUAL(s3, s4);
-
-    SimpleString s5("hello!goodbye!hello!goodbye!");
-    s4 += s4;
-
-    CHECK_EQUAL(s5, s4);
-}
-
 TEST(SimpleString, Contains)
 {
-    SimpleString s("hello!");
-    SimpleString empty("");
-    SimpleString beginning("hello");
-    SimpleString end("lo!");
-    SimpleString mid("l");
-    SimpleString notPartOfString("xxxx");
+    std::string s("hello!");
+    std::string empty("");
+    std::string beginning("hello");
+    std::string end("lo!");
+    std::string mid("l");
+    std::string notPartOfString("xxxx");
 
     CHECK(strings::contains(s, empty));
     CHECK(strings::contains(s, beginning));
@@ -171,9 +79,9 @@ TEST(SimpleString, Contains)
 
 TEST(SimpleString, startsWith)
 {
-    SimpleString hi("Hi you!");
-    SimpleString part("Hi");
-    SimpleString diff("Hrrm Hi you! ffdsfd");
+    std::string hi("Hi you!");
+    std::string part("Hi");
+    std::string diff("Hrrm Hi you! ffdsfd");
     CHECK(strings::starts_with(hi, part));
     CHECK(!strings::starts_with(part, hi));
     CHECK(!strings::starts_with(diff, hi));
@@ -187,35 +95,35 @@ TEST(SimpleString, count)
 
 TEST(SimpleString, countTogether)
 {
-    SimpleString str("hahahaha");
+    std::string str("hahahaha");
     LONGS_EQUAL(4, strings::count(str, "ha"));
 }
 
 TEST(SimpleString, countEmptyString)
 {
-    SimpleString str("hahahaha");
+    std::string str("hahahaha");
     LONGS_EQUAL(8, strings::count(str, ""));
 }
 
 TEST(SimpleString, countEmptyStringInEmptyString)
 {
-    SimpleString str;
+    std::string str;
     LONGS_EQUAL(0, strings::count(str, ""));
 }
 
 TEST(SimpleString, endsWith)
 {
-    SimpleString str("Hello World");
+    std::string str("Hello World");
     CHECK(strings::ends_with(str, "World"));
     CHECK(!strings::ends_with(str, "Worl"));
     CHECK(!strings::ends_with(str, "Hello"));
-    SimpleString str2("ah");
+    std::string str2("ah");
     CHECK(strings::ends_with(str2, "ah"));
     CHECK(!strings::ends_with(str2, "baah"));
-    SimpleString str3("");
+    std::string str3("");
     CHECK(!strings::ends_with(str3, "baah"));
 
-    SimpleString str4("ha ha ha ha");
+    std::string str4("ha ha ha ha");
     CHECK(strings::ends_with(str4, "ha"));
 }
 
@@ -254,42 +162,6 @@ TEST(SimpleString, replaceStringWithSubstring)
     STRCMP_EQUAL("....", str.c_str());
 }
 
-TEST(SimpleString, subStringFromEmptyString)
-{
-    SimpleString str("");
-    STRCMP_EQUAL("", str.substr(0, 1).c_str());
-}
-
-TEST(SimpleString, subStringFromSmallString)
-{
-    SimpleString str("H");
-    STRCMP_EQUAL("H", str.substr(0, 1).c_str());
-}
-
-TEST(SimpleString, subStringFromPos0)
-{
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("Hello", str.substr(0, 5).c_str());
-}
-
-TEST(SimpleString, subStringFromPos1)
-{
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("ello ", str.substr(1, 5).c_str());
-}
-
-TEST(SimpleString, subStringFromPos5WithAmountLargerThanString)
-{
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.substr(6, 10).c_str());
-}
-
-TEST(SimpleString, subStringFromPos6ToEndOfString)
-{
-    SimpleString str("Hello World");
-    STRCMP_EQUAL("World", str.substr(6).c_str());
-}
-
 TEST(SimpleString, subStringFromTillNormal)
 {
     std::string str("Hello World");
@@ -314,18 +186,6 @@ TEST(SimpleString, subStringFromTillWhenTheEndAppearsBeforeTheStart)
     STRCMP_EQUAL("World", strings::subStringFromTill(str, 'W', 'H').c_str());
 }
 
-TEST(SimpleString, at)
-{
-    SimpleString str("Hello World");
-    BYTES_EQUAL('H', str[0]);
-}
-
-TEST(SimpleString, ContainsNull)
-{
-    SimpleString s(nullptr);
-    STRCMP_EQUAL("", s.c_str());
-}
-
 TEST(SimpleString, NULLReportsNullString)
 {
     STRCMP_EQUAL("(null)", StringFromOrNull((char*)nullptr).c_str());
@@ -338,27 +198,27 @@ TEST(SimpleString, NULLReportsNullStringPrintable)
 
 TEST(SimpleString, Booleans)
 {
-    SimpleString s1(StringFrom(true));
-    SimpleString s2(StringFrom(false));
+    std::string s1(StringFrom(true));
+    std::string s2(StringFrom(false));
     CHECK(s1 == "true");
     CHECK(s2 == "false");
 }
 
 TEST(SimpleString, Pointers)
 {
-    SimpleString s(StringFrom((void*)0x1234));
+    std::string s(StringFrom((void*)0x1234));
     STRCMP_EQUAL("0x1234", s.c_str());
 }
 
 TEST(SimpleString, FunctionPointers)
 {
-    SimpleString s(StringFrom((void (*)())0x1234));
+    std::string s(StringFrom((void (*)())0x1234));
     STRCMP_EQUAL("0x1234", s.c_str());
 }
 
 TEST(SimpleString, Characters)
 {
-    SimpleString s(StringFrom('a'));
+    std::string s(StringFrom('a'));
     STRCMP_EQUAL("a", s.c_str());
 }
 
@@ -374,33 +234,33 @@ TEST(SimpleString, PositiveSignedBytes)
 
 TEST(SimpleString, LongInts)
 {
-    SimpleString s(StringFrom((long)1));
+    std::string s(StringFrom((long)1));
     CHECK(s == "1");
 }
 
 TEST(SimpleString, UnsignedLongInts)
 {
-    SimpleString s(StringFrom((unsigned long)1));
-    SimpleString s2(StringFrom((unsigned long)1));
+    std::string s(StringFrom((unsigned long)1));
+    std::string s2(StringFrom((unsigned long)1));
     CHECK(s == s2);
 }
 
 TEST(SimpleString, LongLongInts)
 {
-    SimpleString s(StringFrom((long long)1));
+    std::string s(StringFrom((long long)1));
     CHECK(s == "1");
 }
 
 TEST(SimpleString, UnsignedLongLongInts)
 {
-    SimpleString s(StringFrom((unsigned long long)1));
-    SimpleString s2(StringFrom((unsigned long long)1));
+    std::string s(StringFrom((unsigned long long)1));
+    std::string s2(StringFrom((unsigned long long)1));
     CHECK(s == s2);
 }
 
 TEST(SimpleString, Doubles)
 {
-    SimpleString s(StringFrom(1.2));
+    std::string s(StringFrom(1.2));
     STRCMP_EQUAL("1.2", s.c_str());
 }
 
@@ -409,20 +269,20 @@ static int alwaysTrue(double) { return true; }
 TEST(SimpleString, NaN)
 {
     UT_PTR_SET(PlatformSpecificIsNan, alwaysTrue);
-    SimpleString s(StringFrom(0.0));
+    std::string s(StringFrom(0.0));
     STRCMP_EQUAL("Nan - Not a number", s.c_str());
 }
 
 TEST(SimpleString, Inf)
 {
     UT_PTR_SET(PlatformSpecificIsInf, alwaysTrue);
-    SimpleString s(StringFrom(0.0));
+    std::string s(StringFrom(0.0));
     STRCMP_EQUAL("Inf - Infinity", s.c_str());
 }
 
 TEST(SimpleString, SmallDoubles)
 {
-    SimpleString s(StringFrom(1.2e-10));
+    std::string s(StringFrom(1.2e-10));
     STRCMP_CONTAINS("1.2e", s.c_str());
 }
 
@@ -434,7 +294,7 @@ TEST(SimpleString, Sizes)
 
 TEST(SimpleString, nullptr_type)
 {
-    SimpleString s(StringFrom(nullptr));
+    std::string s(StringFrom(nullptr));
     STRCMP_EQUAL("(null)", s.c_str());
 }
 
@@ -442,29 +302,29 @@ TEST(SimpleString, HexStrings)
 {
     STRCMP_EQUAL("f3", HexStringFrom((signed char)-13).c_str());
 
-    SimpleString h1 = HexStringFrom(0xffffL);
+    std::string h1 = HexStringFrom(0xffffL);
     STRCMP_EQUAL("ffff", h1.c_str());
 
-    SimpleString h15 = HexStringFrom(0xffffLL);
+    std::string h15 = HexStringFrom(0xffffLL);
     STRCMP_EQUAL("ffff", h15.c_str());
 
-    SimpleString h2 = HexStringFrom((void*)0xfffeL);
+    std::string h2 = HexStringFrom((void*)0xfffeL);
     STRCMP_EQUAL("fffe", h2.c_str());
 
-    SimpleString h3 = HexStringFrom((void (*)())0xfffdL);
+    std::string h3 = HexStringFrom((void (*)())0xfffdL);
     STRCMP_EQUAL("fffd", h3.c_str());
 }
 
 TEST(SimpleString, StringFromFormat)
 {
-    SimpleString h1 = StringFromFormat("%s %s! %d", "Hello", "World", 2009);
+    std::string h1 = StringFromFormat("%s %s! %d", "Hello", "World", 2009);
     STRCMP_EQUAL("Hello World! 2009", h1.c_str());
 }
 
 TEST(SimpleString, StringFromFormatpointer)
 {
     // this is not a great test. but %p is odd on mingw and even more odd on Solaris.
-    SimpleString h1 = StringFromFormat("%p", (void*)1);
+    std::string h1 = StringFromFormat("%p", (void*)1);
     if (h1.size() == 3)
         STRCMP_EQUAL("0x1", h1.c_str());
     else if (h1.size() == 8)
@@ -482,13 +342,13 @@ TEST(SimpleString, StringFromFormatpointer)
 TEST(SimpleString, StringFromFormatLarge)
 {
     const char* s = "ThisIsAPrettyLargeStringAndIfWeAddThisManyTimesToABufferItWillbeFull";
-    SimpleString h1 = StringFromFormat("%s%s%s%s%s%s%s%s%s%s", s, s, s, s, s, s, s, s, s, s);
+    std::string h1 = StringFromFormat("%s%s%s%s%s%s%s%s%s%s", s, s, s, s, s, s, s, s, s, s);
     LONGS_EQUAL(10, strings::count(h1, s));
 }
 
 TEST(SimpleString, StringFromConstSimpleString)
 {
-    STRCMP_EQUAL("bla", StringFrom(SimpleString("bla")).c_str());
+    STRCMP_EQUAL("bla", StringFrom(std::string("bla")).c_str());
 }
 
 static int WrappedUpVSNPrintf(char* buf, size_t n, const char* format, ...)
@@ -549,19 +409,13 @@ TEST(SimpleString, PadStringsToSameLengthWithSameLengthStrings)
     STRCMP_EQUAL("123", str2.c_str());
 }
 
-TEST(SimpleString, NullParameters2)
-{
-    SimpleString* arr = new SimpleString[100];
-    delete[] arr;
-}
-
 #ifdef CPPUTEST_64BIT
 
 TEST(SimpleString, 64BitAddressPrintsCorrectly)
 {
     char* p = (char*)0x0012345678901234;
-    SimpleString expected("0x12345678901234");
-    SimpleString actual = StringFrom((void*)p);
+    std::string expected("0x12345678901234");
+    std::string actual = StringFrom((void*)p);
     STRCMP_EQUAL(expected.c_str(), actual.c_str());
 }
 
@@ -604,7 +458,7 @@ TEST(SimpleString, BuildStringFromUnsignedLongInteger)
 {
     unsigned long int i = 0xffffffff;
 
-    SimpleString result = StringFrom(i);
+    std::string result = StringFrom(i);
     const char* expected_string = "4294967295";
     CHECK_EQUAL(expected_string, result);
 }
@@ -613,7 +467,7 @@ TEST(SimpleString, BuildStringFromUnsignedInteger)
 {
     unsigned int i = 0xff;
 
-    SimpleString result = StringFrom(i);
+    std::string result = StringFrom(i);
     const char* expected_string = "255";
     CHECK_EQUAL(expected_string, result);
 }
@@ -621,7 +475,7 @@ TEST(SimpleString, BuildStringFromUnsignedInteger)
 TEST(SimpleString, fromStdString)
 {
     std::string s("hello");
-    SimpleString s1(StringFrom(s));
+    std::string s1(StringFrom(s));
 
     STRCMP_EQUAL("hello", s1.c_str());
 }
@@ -636,7 +490,7 @@ TEST(SimpleString, unsigned_long)
 {
     unsigned long i = 0xffffffffUL;
 
-    SimpleString result = StringFrom(i);
+    std::string result = StringFrom(i);
     const char* expected_string = "4294967295";
     CHECK_EQUAL(expected_string, result);
 }

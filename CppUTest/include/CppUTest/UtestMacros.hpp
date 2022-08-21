@@ -29,6 +29,7 @@
 #define D_UTestMacros_h
 
 #include <climits>
+#include <string>
 
 /*! \brief Define a group of tests
  *
@@ -170,7 +171,7 @@
 
 #define CHECK_COMPARE_LOCATION(first, relop, second, text, file, line)                                                                     \
     do {                                                                                                                                   \
-        SimpleString conditionString;                                                                                                      \
+        std::string conditionString;                                                                                                       \
         conditionString += StringFrom(first);                                                                                              \
         conditionString += " ";                                                                                                            \
         conditionString += #relop;                                                                                                         \
@@ -418,7 +419,7 @@
 #if !CPPUTEST_NO_EXCEPTIONS
 #define CHECK_THROWS(expected, expression)                                               \
     do {                                                                                 \
-        SimpleString failure_msg("expected to throw " #expected "\nbut threw nothing");  \
+        std::string failure_msg("expected to throw " #expected "\nbut threw nothing");   \
         bool caught_expected = false;                                                    \
         try {                                                                            \
             (expression);                                                                \

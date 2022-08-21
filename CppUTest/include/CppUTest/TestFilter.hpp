@@ -28,7 +28,7 @@
 #ifndef TESTFILTER_H_
 #define TESTFILTER_H_
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 class TestFilter {
 public:
@@ -56,6 +56,6 @@ private:
     TestFilter* next_;
 };
 
-SimpleString StringFrom(const TestFilter& filter);
+std::string StringFrom(const TestFilter& filter);
 
 #endif
