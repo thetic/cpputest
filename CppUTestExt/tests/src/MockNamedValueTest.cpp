@@ -29,9 +29,11 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-TEST_GROUP(ComparatorsAndCopiersRepository) {};
+using cpputest::extensions::MockNamedValue;
+using cpputest::extensions::MockNamedValueComparatorsAndCopiersRepository;
 
-class MyComparator : public MockNamedValueComparator {
+namespace {
+class MyComparator : public cpputest::extensions::MockNamedValueComparator {
 public:
     MyComparator() { }
     ~MyComparator() override { }
@@ -40,13 +42,16 @@ public:
     std::string valueToString(const void*) override { return ""; }
 };
 
-class MyCopier : public MockNamedValueCopier {
+class MyCopier : public cpputest::extensions::MockNamedValueCopier {
 public:
     MyCopier() { }
     ~MyCopier() override { }
 
     void copy(void*, const void*) override { }
 };
+}
+
+TEST_GROUP(ComparatorsAndCopiersRepository) {};
 
 TEST(ComparatorsAndCopiersRepository, InstallCopierAndRetrieveIt)
 {

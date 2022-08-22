@@ -31,6 +31,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::mock;
+
+namespace {
 class ObserverMock : public EventObserver {
 public:
     void notify(const Event& event, int timeOutInSeconds) override
@@ -43,7 +46,7 @@ public:
     }
 };
 
-class EventComparator : public MockNamedValueComparator {
+class EventComparator : public cpputest::extensions::MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -54,6 +57,7 @@ public:
         return StringFrom(((const Event*)object)->type);
     }
 };
+}
 
 TEST_GROUP(EventDispatcher)
 {

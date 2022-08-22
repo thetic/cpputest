@@ -25,25 +25,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_SimpleString_h
-#define D_SimpleString_h
+#ifndef INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
+#define INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
 
-#include <cstdarg>
 #include <cstddef>
 #include <string>
 
+namespace cpputest {
 namespace strings {
-std::string& replaceAll(std::string& str, const std::string& to, const std::string& with);
-std::string& replaceAll(std::string& str, char to, char with);
-size_t count(const std::string& string, const std::string& substring);
-std::string subStringFromTill(const std::string&, char startChar, char lastExcludedChar);
-std::string printable(const std::string&);
-void padStringsToSameLength(std::string& str1, std::string& str2, char ch);
-std::string lowercase(const std::string&);
-unsigned atou(const char* str);
-bool contains(const std::string& string, const std::string& substring);
-bool ends_with(const std::string& string, const std::string& suffix);
-bool starts_with(const std::string& string, const std::string& prefix);
+    std::string& replaceAll(std::string& str, const std::string& to, const std::string& with);
+    std::string& replaceAll(std::string& str, char to, char with);
+    size_t count(const std::string& string, const std::string& substring);
+    std::string subStringFromTill(const std::string&, char startChar, char lastExcludedChar);
+    std::string printable(const std::string&);
+    void padStringsToSameLength(std::string& str1, std::string& str2, char ch);
+    std::string lowercase(const std::string&);
+    unsigned atou(const char* str);
+    bool contains(const std::string& string, const std::string& substring);
+    bool ends_with(const std::string& string, const std::string& suffix);
+    bool starts_with(const std::string& string, const std::string& prefix);
+}
 }
 
 std::string StringFrom(bool value);
@@ -84,7 +85,6 @@ __attribute__((format(printf, 1, 2)))
 std::string
 StringFromFormat(const char* format, ...);
 
-std::string VStringFromFormat(const char* format, va_list args);
 std::string StringFromBinary(const unsigned char* value, size_t size);
 std::string StringFromBinaryOrNull(const unsigned char* value, size_t size);
 std::string StringFromBinaryWithSize(const unsigned char* value, size_t size);
@@ -101,4 +101,4 @@ std::string BracketsFormattedHexStringFrom(signed char value);
 std::string BracketsFormattedHexString(std::string hexString);
 std::string PrintableStringFromOrNull(const char* expected);
 
-#endif
+#endif // INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP

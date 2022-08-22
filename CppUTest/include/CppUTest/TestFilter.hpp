@@ -25,10 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TESTFILTER_H_
-#define TESTFILTER_H_
+#ifndef INCLUDED_CPPUTEST_TESTFILTER_HPP
+#define INCLUDED_CPPUTEST_TESTFILTER_HPP
 
 #include <string>
+
+namespace cpputest {
 
 class TestFilter {
 public:
@@ -56,6 +58,8 @@ private:
     TestFilter* next_;
 };
 
-std::string StringFrom(const TestFilter& filter);
+}
 
-#endif
+std::string StringFrom(const cpputest::TestFilter& filter);
+
+#endif // INCLUDED_CPPUTEST_TESTFILTER_HPP

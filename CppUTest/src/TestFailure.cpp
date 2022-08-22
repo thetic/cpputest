@@ -37,6 +37,8 @@
 #include <memory>
 #endif
 
+namespace cpputest {
+
 TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& theMessage)
     : testName_(test->getFormattedName())
     , testNameOnly_(test->getName())
@@ -449,3 +451,5 @@ UnexpectedExceptionFailure::UnexpectedExceptionFailure(UtestShell* test, const s
 {
 }
 #endif
+
+}

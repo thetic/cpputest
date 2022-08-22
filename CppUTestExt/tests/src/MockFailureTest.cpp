@@ -32,6 +32,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using namespace cpputest::extensions;
+using cpputest::UtestShell;
+
 TEST_GROUP(MockFailureTest)
 {
     MockFailureReporter reporter;

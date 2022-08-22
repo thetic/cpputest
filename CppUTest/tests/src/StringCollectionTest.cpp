@@ -8,7 +8,7 @@ TEST(StringCollection, split)
 {
     std::string hi("hello\nworld\nhow\ndo\nyou\ndo\n\n");
 
-    StringCollection collection(hi, '\n');
+    cpputest::StringCollection collection(hi, '\n');
 
     LONGS_EQUAL(7, collection.size());
     STRCMP_EQUAL("hello\n", collection[0].c_str());
@@ -23,7 +23,7 @@ TEST(StringCollection, split)
 TEST(StringCollection, splitNoTokenOnTheEnd)
 {
     std::string string("Bah Yah oops");
-    StringCollection collection(string, ' ');
+    cpputest::StringCollection collection(string, ' ');
 
     LONGS_EQUAL(3, collection.size());
     STRCMP_EQUAL("Bah ", collection[0].c_str());
@@ -33,7 +33,7 @@ TEST(StringCollection, splitNoTokenOnTheEnd)
 
 TEST(StringCollection, CollectionMultipleAllocateNoLeaksMemory)
 {
-    StringCollection col;
+    cpputest::StringCollection col;
     col.allocate(5);
     col.allocate(5);
     // CHECK no memory leak
@@ -41,14 +41,14 @@ TEST(StringCollection, CollectionMultipleAllocateNoLeaksMemory)
 
 TEST(StringCollection, CollectionReadOutOfBoundsReturnsEmptyString)
 {
-    StringCollection col;
+    cpputest::StringCollection col;
     col.allocate(3);
     STRCMP_EQUAL("", col[3].c_str());
 }
 
 TEST(StringCollection, CollectionWritingToEmptyString)
 {
-    StringCollection col;
+    cpputest::StringCollection col;
     col.allocate(3);
     col[3] = std::string("HAH");
     STRCMP_EQUAL("", col[3].c_str());

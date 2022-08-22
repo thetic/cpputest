@@ -34,6 +34,9 @@
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
+using cpputest::UtestShell;
+using cpputest::extensions::mock;
+
 TEST_GROUP(MockSupportTest)
 {
     MockExpectedCallsListForTest expectations;
@@ -173,7 +176,7 @@ TEST(MockSupportTest, tracingWorksHierarchically)
 
 TEST_GROUP(MockSupportTestWithFixture)
 {
-    TestTestingFixture fixture;
+    cpputest::TestTestingFixture fixture;
 
     void teardown() override
     {
@@ -184,8 +187,8 @@ TEST_GROUP(MockSupportTestWithFixture)
 
 static void CHECK_EXPECTED_MOCK_FAILURE_LOCATION_failedTestMethod_()
 {
-    MockExpectedCallsList list;
-    MockUnexpectedCallHappenedFailure expectedFailure(UtestShell::getCurrent(), "unexpected", list);
+    MockExpectedCallsListForTest::MockExpectedCallsList list;
+    cpputest::extensions::MockUnexpectedCallHappenedFailure expectedFailure(UtestShell::getCurrent(), "unexpected", list);
     mock().actualCall("boo");
     CHECK_EXPECTED_MOCK_FAILURE_LOCATION(expectedFailure, "file", 1);
 }

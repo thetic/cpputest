@@ -26,6 +26,7 @@
  */
 #include "CppUTest/Utest.hpp"
 
+#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestPlugin.hpp"
@@ -47,100 +48,102 @@
 #define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
 
+namespace cpputest {
+
 namespace {
-std::jmp_buf test_exit_jmp_buf[10];
-int jmp_buf_index = 0;
+    std::jmp_buf test_exit_jmp_buf[10];
+    int jmp_buf_index = 0;
 
-int do_set_jump(void (*function)(void* data), void* data)
-{
-    if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
-        jmp_buf_index++;
-        function(data);
-        jmp_buf_index--;
-        return 1;
+    int do_set_jump(void (*function)(void* data), void* data)
+    {
+        if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
+            jmp_buf_index++;
+            function(data);
+            jmp_buf_index--;
+            return 1;
+        }
+        return 0;
     }
-    return 0;
-}
 
-[[noreturn]] void do_long_jump()
-{
-    jmp_buf_index--;
-    std::longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
-}
+    [[noreturn]] void do_long_jump()
+    {
+        jmp_buf_index--;
+        std::longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
+    }
 
 #if !CPPUTEST_NO_EXCEPTIONS
-void restore_jump_buffer()
-{
-    jmp_buf_index--;
-}
+    void restore_jump_buffer()
+    {
+        jmp_buf_index--;
+    }
 #endif
 
 #if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
-void SetTestFailureByStatusCode(UtestShell* shell, TestResult* result, int status)
-{
-    if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
-        result->addFailure(TestFailure(shell, "Failed in separate process"));
-    } else if (WIFSIGNALED(status)) {
-        std::string message("Failed in separate process - killed by signal ");
-        message += StringFrom(WTERMSIG(status));
-        result->addFailure(TestFailure(shell, message));
-    } else if (WIFSTOPPED(status)) {
-        result->addFailure(TestFailure(shell, "Stopped in separate process - continuing"));
-    }
-}
-
-void run_test_process_impl(
-    UtestShell* shell,
-    TestPlugin* plugin,
-    TestResult* result)
-{
-    const pid_t syscallError = -1;
-    pid_t cpid;
-    pid_t w;
-    int status = 0;
-
-    cpid = fork();
-
-    if (cpid == syscallError) {
-        result->addFailure(TestFailure(shell, "Call to fork() failed"));
-        return;
+    void SetTestFailureByStatusCode(UtestShell* shell, TestResult* result, int status)
+    {
+        if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+            result->addFailure(TestFailure(shell, "Failed in separate process"));
+        } else if (WIFSIGNALED(status)) {
+            std::string message("Failed in separate process - killed by signal ");
+            message += StringFrom(WTERMSIG(status));
+            result->addFailure(TestFailure(shell, message));
+        } else if (WIFSTOPPED(status)) {
+            result->addFailure(TestFailure(shell, "Stopped in separate process - continuing"));
+        }
     }
 
-    if (cpid == 0) { /* Code executed by child */
-        const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
-        shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
-        _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
-    } else { /* Code executed by parent */
-        size_t amountOfRetries = 0;
-        do {
-            w = waitpid(cpid, &status, WUNTRACED);
-            if (w == syscallError) {
-                // OS X debugger causes EINTR
-                if (EINTR == errno) {
-                    if (amountOfRetries > 30) {
-                        result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
+    void run_test_process_impl(
+        UtestShell* shell,
+        TestPlugin* plugin,
+        TestResult* result)
+    {
+        const pid_t syscallError = -1;
+        pid_t cpid;
+        pid_t w;
+        int status = 0;
+
+        cpid = fork();
+
+        if (cpid == syscallError) {
+            result->addFailure(TestFailure(shell, "Call to fork() failed"));
+            return;
+        }
+
+        if (cpid == 0) { /* Code executed by child */
+            const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
+            shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
+            _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+        } else { /* Code executed by parent */
+            size_t amountOfRetries = 0;
+            do {
+                w = waitpid(cpid, &status, WUNTRACED);
+                if (w == syscallError) {
+                    // OS X debugger causes EINTR
+                    if (EINTR == errno) {
+                        if (amountOfRetries > 30) {
+                            result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
+                            return;
+                        }
+                        amountOfRetries++;
+                    } else {
+                        result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
                         return;
                     }
-                    amountOfRetries++;
                 } else {
-                    result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
-                    return;
+                    SetTestFailureByStatusCode(shell, result, status);
+                    if (WIFSTOPPED(status))
+                        kill(w, SIGCONT);
                 }
-            } else {
-                SetTestFailureByStatusCode(shell, result, status);
-                if (WIFSTOPPED(status))
-                    kill(w, SIGCONT);
-            }
-        } while ((w == syscallError) || (!WIFEXITED(status) && !WIFSIGNALED(status)));
+            } while ((w == syscallError) || (!WIFEXITED(status) && !WIFSIGNALED(status)));
+        }
     }
-}
 #else
-void run_test_process_impl(UtestShell* shell, TestPlugin*, TestResult* result)
-{
-    result->addFailure(TestFailure(
-        shell,
-        "-p doesn't work on this platform, as it is lacking fork.\b"));
-}
+    void run_test_process_impl(UtestShell* shell, TestPlugin*, TestResult* result)
+    {
+        result->addFailure(TestFailure(
+            shell,
+            "-p doesn't work on this platform, as it is lacking fork.\b"));
+    }
 #endif
 }
 
@@ -1095,4 +1098,6 @@ TestInstaller::~TestInstaller()
 void TestInstaller::unDo()
 {
     TestRegistry::getCurrentRegistry()->unDoLastAddTest();
+}
+
 }

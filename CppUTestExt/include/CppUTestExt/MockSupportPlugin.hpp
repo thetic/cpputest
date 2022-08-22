@@ -25,28 +25,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MockSupportPlugin_h
-#define D_MockSupportPlugin_h
+#ifndef INCLUDED_CPPUTESTEXT_MOCKSUPPORTPLUGIN_HPP
+#define INCLUDED_CPPUTESTEXT_MOCKSUPPORTPLUGIN_HPP
 
 #include "CppUTestExt/MockNamedValue.hpp"
 
 #include "CppUTest/TestPlugin.hpp"
 
-class MockSupportPlugin : public TestPlugin {
-public:
-    MockSupportPlugin(const std::string& name = "MockSupportPLugin");
-    ~MockSupportPlugin() override;
+namespace cpputest {
+namespace extensions {
 
-    void preTestAction(UtestShell&, TestResult&) override;
-    void postTestAction(UtestShell&, TestResult&) override;
+    class MockSupportPlugin : public TestPlugin {
+    public:
+        MockSupportPlugin(const std::string& name = "MockSupportPLugin");
+        ~MockSupportPlugin() override;
 
-    virtual void installComparator(const std::string& name, MockNamedValueComparator& comparator);
-    virtual void installCopier(const std::string& name, MockNamedValueCopier& copier);
+        void preTestAction(UtestShell&, TestResult&) override;
+        void postTestAction(UtestShell&, TestResult&) override;
 
-    void clear();
+        virtual void installComparator(const std::string& name, MockNamedValueComparator& comparator);
+        virtual void installCopier(const std::string& name, MockNamedValueCopier& copier);
 
-private:
-    MockNamedValueComparatorsAndCopiersRepository repository_;
-};
+        void clear();
 
-#endif
+    private:
+        MockNamedValueComparatorsAndCopiersRepository repository_;
+    };
+
+}
+}
+
+#endif // INCLUDED_CPPUTESTEXT_MOCKSUPPORTPLUGIN_HPP

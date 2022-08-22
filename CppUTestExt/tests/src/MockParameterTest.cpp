@@ -29,6 +29,14 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::mock;
+using cpputest::extensions::MockCheckedExpectedCall;
+using cpputest::extensions::MockExpectedCallsDidntHappenFailure;
+using cpputest::extensions::MockExpectedParameterDidntHappenFailure;
+using cpputest::extensions::MockNamedValue;
+using cpputest::extensions::MockUnexpectedInputParameterFailure;
+using cpputest::extensions::MockUnexpectedOutputParameterFailure;
+
 TEST_GROUP(MockParameterTest) {
     void teardown() override {
         mock().checkExpectations();

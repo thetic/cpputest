@@ -34,7 +34,7 @@
 
 TEST_GROUP(UtestShell)
 {
-    TestTestingFixture fixture;
+    cpputest::TestTestingFixture fixture;
 };
 
 static void failMethod_()
@@ -60,29 +60,29 @@ static void exitTestMethod_()
 
 TEST(UtestShell, compareDoubles)
 {
-    CHECK(doubles_equal(1.0, 1.001, 0.01));
-    CHECK(!doubles_equal(1.0, 1.1, 0.05));
+    CHECK(cpputest::doubles_equal(1.0, 1.001, 0.01));
+    CHECK(!cpputest::doubles_equal(1.0, 1.1, 0.05));
     double a = 1.2345678;
-    CHECK(doubles_equal(a, a, 0.000000001));
+    CHECK(cpputest::doubles_equal(a, a, 0.000000001));
 }
 
 #if CPPUTEST_HAS_NAN == 1
 TEST(UtestShell, compareDoublesNaN)
 {
-    CHECK(!doubles_equal(NAN, 1.001, 0.01));
-    CHECK(!doubles_equal(1.0, NAN, 0.01));
-    CHECK(!doubles_equal(1.0, 1.001, NAN));
+    CHECK(!cpputest::doubles_equal(NAN, 1.001, 0.01));
+    CHECK(!cpputest::doubles_equal(1.0, NAN, 0.01));
+    CHECK(!cpputest::doubles_equal(1.0, 1.001, NAN));
 }
 #endif
 
 #if CPPUTEST_HAS_INF == 1
 TEST(UtestShell, compareDoublesInf)
 {
-    CHECK(!doubles_equal(INFINITY, 1.0, 0.01));
-    CHECK(!doubles_equal(1.0, INFINITY, 0.01));
-    CHECK(doubles_equal(1.0, -1.0, INFINITY));
-    CHECK(doubles_equal(INFINITY, INFINITY, 0.01));
-    CHECK(doubles_equal(INFINITY, INFINITY, INFINITY));
+    CHECK(!cpputest::doubles_equal(INFINITY, 1.0, 0.01));
+    CHECK(!cpputest::doubles_equal(1.0, INFINITY, 0.01));
+    CHECK(cpputest::doubles_equal(1.0, -1.0, INFINITY));
+    CHECK(cpputest::doubles_equal(INFINITY, INFINITY, 0.01));
+    CHECK(cpputest::doubles_equal(INFINITY, INFINITY, INFINITY));
 }
 #endif
 
@@ -133,7 +133,7 @@ static void crashMethod()
 TEST(UtestShell, FailWillNotCrashIfNotEnabled)
 {
     cpputestHasCrashed = false;
-    UtestShell::setCrashMethod(crashMethod);
+    cpputest::UtestShell::setCrashMethod(crashMethod);
 
     fixture.setTestFunction(failMethod_);
     fixture.runAllTests();
@@ -141,22 +141,22 @@ TEST(UtestShell, FailWillNotCrashIfNotEnabled)
     CHECK_FALSE(cpputestHasCrashed);
     LONGS_EQUAL(1, fixture.getFailureCount());
 
-    UtestShell::resetCrashMethod();
+    cpputest::UtestShell::resetCrashMethod();
 }
 
 TEST(UtestShell, FailWillCrashIfEnabled)
 {
     cpputestHasCrashed = false;
-    UtestShell::setCrashOnFail();
-    UtestShell::setCrashMethod(crashMethod);
+    cpputest::UtestShell::setCrashOnFail();
+    cpputest::UtestShell::setCrashMethod(crashMethod);
 
     fixture.setTestFunction(failMethod_);
     fixture.runAllTests();
 
     CHECK(cpputestHasCrashed);
 
-    UtestShell::restoreDefaultTestTerminator();
-    UtestShell::resetCrashMethod();
+    cpputest::UtestShell::restoreDefaultTestTerminator();
+    cpputest::UtestShell::resetCrashMethod();
 }
 
 static int teardownCalled = 0;
@@ -206,17 +206,17 @@ TEST(UtestShell, TestStopsAfterSetupFailure)
 
 TEST(UtestShell, veryVebose)
 {
-    UtestShell shell("Group", "name", __FILE__, __LINE__);
-    StringBufferTestOutput normalOutput;
-    normalOutput.verbose(TestOutput::level_veryVerbose);
-    NullTestPlugin plugin;
+    cpputest::UtestShell shell("Group", "name", __FILE__, __LINE__);
+    cpputest::StringBufferTestOutput normalOutput;
+    normalOutput.verbose(cpputest::TestOutput::level_veryVerbose);
+    cpputest::NullTestPlugin plugin;
 
-    TestResult result(normalOutput);
+    cpputest::TestResult result(normalOutput);
     shell.runOneTestInCurrentProcess(&plugin, result);
     STRCMP_CONTAINS("\n------ before runTest", normalOutput.getOutput().c_str());
 }
 
-class defaultUtestShell : public UtestShell {
+class defaultUtestShell : public cpputest::UtestShell {
 };
 
 TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_methods)
@@ -227,14 +227,14 @@ TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_m
     LONGS_EQUAL(2, fixture.getTestCount());
 }
 
-static void StubPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, TestPlugin*, TestResult* result)
+static void StubPlatformSpecificRunTestInASeperateProcess(cpputest::UtestShell* shell, cpputest::TestPlugin*, cpputest::TestResult* result)
 {
-    result->addFailure(TestFailure(shell, "Failed in separate process"));
+    result->addFailure(cpputest::TestFailure(shell, "Failed in separate process"));
 }
 
 TEST(UtestShell, RunInSeparateProcessTest)
 {
-    UT_PTR_SET(UtestShell::run_test_process, StubPlatformSpecificRunTestInASeperateProcess);
+    UT_PTR_SET(cpputest::UtestShell::run_test_process, StubPlatformSpecificRunTestInASeperateProcess);
     fixture.getRegistry()->setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process");
@@ -259,13 +259,13 @@ IGNORE_TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
 
 TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
 {
-    fixture.setTestFunction(UtestShell::crash);
+    fixture.setTestFunction(cpputest::UtestShell::crash);
     fixture.setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process - killed by signal");
 
     /* Signal 11 usually happens, but with clang3.7 on Linux, it produced signal 4 */
-    CHECK(strings::contains(fixture.getOutput(), "signal 11") || strings::contains(fixture.getOutput(), "signal 4"));
+    CHECK(cpputest::strings::contains(fixture.getOutput(), "signal 11") || cpputest::strings::contains(fixture.getOutput(), "signal 4"));
 }
 
 #endif
@@ -278,7 +278,7 @@ static bool destructorWasCalledOnFailedTest = false;
 
 static void destructorCalledForLocalObjects_()
 {
-    SetBooleanOnDestructorCall pleaseCallTheDestructor(destructorWasCalledOnFailedTest);
+    cpputest::SetBooleanOnDestructorCall pleaseCallTheDestructor(destructorWasCalledOnFailedTest);
     destructorWasCalledOnFailedTest = false;
     FAIL("fail");
 }
@@ -294,9 +294,9 @@ TEST(UtestShell, DestructorIsCalledForLocalObjectsWhenTheTestFails)
 
 TEST_GROUP(IgnoredUtestShell)
 {
-    TestTestingFixture fixture;
-    IgnoredUtestShell ignoredTest;
-    ExecFunctionTestShell normalUtestShell;
+    cpputest::TestTestingFixture fixture;
+    cpputest::IgnoredUtestShell ignoredTest;
+    cpputest::ExecFunctionTestShell normalUtestShell;
 
     void setup() override
     {
@@ -396,13 +396,13 @@ TEST(UtestMyOwn, test)
     CHECK(inTest);
 }
 
-class NullParameterTest : public UtestShell {
+class NullParameterTest : public cpputest::UtestShell {
 };
 
 TEST(UtestMyOwn, NullParameters)
 {
     NullParameterTest nullTest; /* Bug fix tests for creating a test without a name, fix in SimpleString */
-    TestFilter emptyFilter;
+    cpputest::TestFilter emptyFilter;
     CHECK(nullTest.shouldRun(&emptyFilter, &emptyFilter));
 }
 
@@ -450,15 +450,15 @@ static int getOne()
 
 TEST_GROUP(UtestShellPointerArrayTest)
 {
-    UtestShell* test0;
-    UtestShell* test1;
-    UtestShell* test2;
+    cpputest::UtestShell* test0;
+    cpputest::UtestShell* test1;
+    cpputest::UtestShell* test2;
 
     void setup() override
     {
-        test0 = new IgnoredUtestShell();
-        test1 = new IgnoredUtestShell();
-        test2 = new IgnoredUtestShell();
+        test0 = new cpputest::IgnoredUtestShell();
+        test1 = new cpputest::IgnoredUtestShell();
+        test2 = new cpputest::IgnoredUtestShell();
 
         test0->addTest(test1);
         test1->addTest(test2);
@@ -474,14 +474,14 @@ TEST_GROUP(UtestShellPointerArrayTest)
 
 TEST(UtestShellPointerArrayTest, empty)
 {
-    UtestShellPointerArray tests(nullptr);
+    cpputest::UtestShellPointerArray tests(nullptr);
     tests.shuffle(0);
     CHECK(nullptr == tests.getFirstTest());
 }
 
 TEST(UtestShellPointerArrayTest, testsAreInOrder)
 {
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     CHECK(tests.get(0) == test0);
     CHECK(tests.get(1) == test1);
     CHECK(tests.get(2) == test2);
@@ -489,7 +489,7 @@ TEST(UtestShellPointerArrayTest, testsAreInOrder)
 
 TEST(UtestShellPointerArrayTest, relinkingTestsWillKeepThemTheSameWhenNothingWasDone)
 {
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     tests.relinkTestsInOrder();
     CHECK(tests.get(0) == test0);
     CHECK(tests.get(1) == test1);
@@ -498,16 +498,16 @@ TEST(UtestShellPointerArrayTest, relinkingTestsWillKeepThemTheSameWhenNothingWas
 
 TEST(UtestShellPointerArrayTest, firstTestisNotTheFirstTestWithSeed1234)
 {
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     tests.shuffle(1234);
     CHECK(tests.getFirstTest() != test0);
 }
 
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 {
-    UT_PTR_SET(UtestShellPointerArray::rand_, getZero);
+    UT_PTR_SET(cpputest::UtestShellPointerArray::rand_, getZero);
 
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     tests.shuffle(3);
     CHECK(tests.get(0) == test1);
     CHECK(tests.get(1) == test2);
@@ -517,9 +517,9 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 // swaps with 4 mod 3 (1) then 4 mod 2 (0): 1, [2], [0] --> [1], [0], 2 --> 0, 1, 2
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 {
-    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
+    UT_PTR_SET(cpputest::UtestShellPointerArray::rand_, getOne);
 
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     tests.shuffle(3);
     CHECK(tests.get(0) == test0);
     CHECK(tests.get(1) == test2);
@@ -528,9 +528,9 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 
 TEST(UtestShellPointerArrayTest, reverse)
 {
-    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
+    UT_PTR_SET(cpputest::UtestShellPointerArray::rand_, getOne);
 
-    UtestShellPointerArray tests(test0);
+    cpputest::UtestShellPointerArray tests(test0);
     tests.reverse();
     CHECK(tests.get(0) == test2);
     CHECK(tests.get(1) == test1);

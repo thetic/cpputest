@@ -31,65 +31,71 @@
 
 #include "CppUTest/TestResult.hpp"
 
-class MockSupportPluginReporter : public MockFailureReporter {
-    UtestShell& test_;
-    TestResult& result_;
+namespace cpputest {
+namespace extensions {
 
-public:
-    MockSupportPluginReporter(UtestShell& test, TestResult& result)
-        : test_(test)
-        , result_(result)
+    class MockSupportPluginReporter : public MockFailureReporter {
+        UtestShell& test_;
+        TestResult& result_;
+
+    public:
+        MockSupportPluginReporter(UtestShell& test, TestResult& result)
+            : test_(test)
+            , result_(result)
+        {
+        }
+
+        void failTest(const MockFailure& failure) override
+        {
+            result_.addFailure(failure);
+        }
+
+        UtestShell* getTestToFail() override
+        {
+            return &test_;
+        }
+    };
+
+    MockSupportPlugin::MockSupportPlugin(const std::string& name)
+        : TestPlugin(name)
     {
     }
 
-    void failTest(const MockFailure& failure) override
+    MockSupportPlugin::~MockSupportPlugin()
     {
-        result_.addFailure(failure);
+        clear();
     }
 
-    UtestShell* getTestToFail() override
+    void MockSupportPlugin::clear()
     {
-        return &test_;
+        repository_.clear();
     }
-};
 
-MockSupportPlugin::MockSupportPlugin(const std::string& name)
-    : TestPlugin(name)
-{
+    void MockSupportPlugin::preTestAction(UtestShell&, TestResult&)
+    {
+        mock().installComparatorsAndCopiers(repository_);
+    }
+
+    void MockSupportPlugin::postTestAction(UtestShell& test, TestResult& result)
+    {
+        MockSupportPluginReporter reporter(test, result);
+        mock().setMockFailureStandardReporter(&reporter);
+        if (!test.hasFailed())
+            mock().checkExpectations();
+        mock().clear();
+        mock().setMockFailureStandardReporter(nullptr);
+        mock().removeAllComparatorsAndCopiers();
+    }
+
+    void MockSupportPlugin::installComparator(const std::string& name, MockNamedValueComparator& comparator)
+    {
+        repository_.installComparator(name, comparator);
+    }
+
+    void MockSupportPlugin::installCopier(const std::string& name, MockNamedValueCopier& copier)
+    {
+        repository_.installCopier(name, copier);
+    }
+
 }
-
-MockSupportPlugin::~MockSupportPlugin()
-{
-    clear();
-}
-
-void MockSupportPlugin::clear()
-{
-    repository_.clear();
-}
-
-void MockSupportPlugin::preTestAction(UtestShell&, TestResult&)
-{
-    mock().installComparatorsAndCopiers(repository_);
-}
-
-void MockSupportPlugin::postTestAction(UtestShell& test, TestResult& result)
-{
-    MockSupportPluginReporter reporter(test, result);
-    mock().setMockFailureStandardReporter(&reporter);
-    if (!test.hasFailed())
-        mock().checkExpectations();
-    mock().clear();
-    mock().setMockFailureStandardReporter(nullptr);
-    mock().removeAllComparatorsAndCopiers();
-}
-
-void MockSupportPlugin::installComparator(const std::string& name, MockNamedValueComparator& comparator)
-{
-    repository_.installComparator(name, comparator);
-}
-
-void MockSupportPlugin::installCopier(const std::string& name, MockNamedValueCopier& copier)
-{
-    repository_.installCopier(name, copier);
 }

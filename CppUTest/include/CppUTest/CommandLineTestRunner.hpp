@@ -25,16 +25,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_CommandLineTestRunner_H
-#define D_CommandLineTestRunner_H
+#ifndef INCLUDED_CPPUTEST_COMMANDLINETESTRUNNER_HPP
+#define INCLUDED_CPPUTEST_COMMANDLINETESTRUNNER_HPP
 
 #include "CppUTest/CommandLineArguments.hpp"
 #include "CppUTest/TestFilter.hpp"
 #include "CppUTest/TestOutput.hpp"
 
-class TestRegistry;
-
 #define DEF_PLUGIN_SET_POINTER "SetPointerPlugin"
+
+namespace cpputest {
+
+class TestRegistry;
 
 class CommandLineTestRunner {
 public:
@@ -63,4 +65,6 @@ private:
     void initializeTestRun();
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_COMMANDLINETESTRUNNER_HPP

@@ -25,28 +25,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_IEEE754ExceptionsPlugin_h
-#define D_IEEE754ExceptionsPlugin_h
+#ifndef INCLUDED_CPPUTESTEXT_IEEE754EXCEPTIONSPLUGIN_HPP
+#define INCLUDED_CPPUTESTEXT_IEEE754EXCEPTIONSPLUGIN_HPP
 
 #include "CppUTest/TestPlugin.hpp"
 
-class IEEE754ExceptionsPlugin : public TestPlugin {
-public:
-    IEEE754ExceptionsPlugin(const std::string& name = "IEEE754ExceptionsPlugin");
+namespace cpputest {
+namespace extensions {
 
-    void preTestAction(UtestShell& test, TestResult& result) override;
-    void postTestAction(UtestShell& test, TestResult& result) override;
+    class IEEE754ExceptionsPlugin : public TestPlugin {
+    public:
+        IEEE754ExceptionsPlugin(const std::string& name = "IEEE754ExceptionsPlugin");
 
-    static void disableInexact(void);
-    static void enableInexact(void);
-    static bool checkIeee754OverflowExceptionFlag();
-    static bool checkIeee754UnderflowExceptionFlag();
-    static bool checkIeee754InexactExceptionFlag();
-    static bool checkIeee754DivByZeroExceptionFlag();
+        void preTestAction(UtestShell& test, TestResult& result) override;
+        void postTestAction(UtestShell& test, TestResult& result) override;
 
-private:
-    void ieee754Check(UtestShell& test, TestResult& result, int flag, const char* text);
-    static bool inexactDisabled_;
-};
+        static void disableInexact(void);
+        static void enableInexact(void);
+        static bool checkIeee754OverflowExceptionFlag();
+        static bool checkIeee754UnderflowExceptionFlag();
+        static bool checkIeee754InexactExceptionFlag();
+        static bool checkIeee754DivByZeroExceptionFlag();
 
-#endif
+    private:
+        void ieee754Check(UtestShell& test, TestResult& result, int flag, const char* text);
+        static bool inexactDisabled_;
+    };
+
+}
+}
+
+#endif // INCLUDED_CPPUTESTEXT_IEEE754EXCEPTIONSPLUGIN_HPP

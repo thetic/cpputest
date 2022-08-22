@@ -31,6 +31,8 @@
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
+namespace cpputest {
+
 TestRegistry::TestRegistry()
     : tests_(nullptr)
     , nameFilters_(nullptr)
@@ -302,4 +304,6 @@ UtestShell* TestRegistry::findTestWithGroup(const std::string& group)
         current = current->getNext();
     }
     return nullptr;
+}
+
 }

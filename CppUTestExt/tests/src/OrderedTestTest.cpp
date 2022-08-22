@@ -34,16 +34,20 @@
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
+using cpputest::UtestShell;
+using cpputest::extensions::OrderedTestInstaller;
+using cpputest::extensions::OrderedTestShell;
+
 TEST_GROUP(TestOrderedTest)
 {
-    TestTestingFixture* fixture;
+    cpputest::TestTestingFixture* fixture;
 
     OrderedTestShell orderedTest;
     OrderedTestShell orderedTest2;
     OrderedTestShell orderedTest3;
-    ExecFunctionTestShell normalTest;
-    ExecFunctionTestShell normalTest2;
-    ExecFunctionTestShell normalTest3;
+    cpputest::ExecFunctionTestShell normalTest;
+    cpputest::ExecFunctionTestShell normalTest2;
+    cpputest::ExecFunctionTestShell normalTest3;
 
     OrderedTestShell* orderedTestCache;
     void setup() override
@@ -51,7 +55,7 @@ TEST_GROUP(TestOrderedTest)
         orderedTestCache = OrderedTestShell::getOrderedTestHead();
         OrderedTestShell::setOrderedTestHead(nullptr);
 
-        fixture = new TestTestingFixture();
+        fixture = new cpputest::TestTestingFixture();
         fixture->getRegistry()->unDoLastAddTest();
     }
 
@@ -68,7 +72,7 @@ TEST_GROUP(TestOrderedTest)
 
     void InstallNormalTest(UtestShell & test)
     {
-        TestInstaller(test, "testgroup", "testname", __FILE__, __LINE__);
+        cpputest::TestInstaller(test, "testgroup", "testname", __FILE__, __LINE__);
     }
 
     UtestShell* firstTest()
@@ -172,7 +176,7 @@ int OrderedTestTestingFixture::count_ = 0;
 
 TEST_GROUP(TestOrderedTestMacros) {
     void setup() override {
-        OrderedTestTestingFixture::checkRun(TestRegistry::getCurrentRegistry()->getCurrentRepetition());
+        OrderedTestTestingFixture::checkRun(cpputest::TestRegistry::getCurrentRegistry()->getCurrentRepetition());
 }
 }
 ;

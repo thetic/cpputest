@@ -38,13 +38,13 @@
 
 TEST_GROUP(UnitTestMacros)
 {
-    TestTestingFixture fixture;
+    cpputest::TestTestingFixture fixture;
 };
 
 static void failingTestMethodWithFAIL_()
 {
     FAIL("This test fails");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FAILMakesTheTestFailPrintsTheRightResultAndStopsExecuting)
@@ -236,7 +236,7 @@ IGNORE_TEST(UnitTestMacros, UNSIGNED_LONGLONGS_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_()
 {
     CHECK(false);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK)
@@ -261,7 +261,7 @@ IGNORE_TEST(UnitTestMacros, CHECKWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_TEXT_()
 {
     CHECK_TEXT(false, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_TEXT)
@@ -287,7 +287,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_TRUE_()
 {
     CHECK_TRUE(false);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_TRUE)
@@ -312,7 +312,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_TRUEWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_TRUE_TEXT_()
 {
     CHECK_TRUE_TEXT(false, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_TRUE_TEXT)
@@ -338,7 +338,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_TRUE_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_FALSE_()
 {
     CHECK_FALSE(true);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_FALSE)
@@ -363,7 +363,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_FALSEWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_FALSE_TEXT_()
 {
     CHECK_FALSE_TEXT(true, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_FALSE_TEXT)
@@ -389,7 +389,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_FALSE_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_EQUAL_()
 {
     CHECK_EQUAL(1, 2);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_EQUAL)
@@ -403,7 +403,7 @@ static void failingTestMethodWithCHECK_COMPARE_()
 {
     double small = 0.5, big = 0.8;
     CHECK_COMPARE(small, >=, big);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_COMPARE)
@@ -429,7 +429,7 @@ static void failingTestMethodWithCHECK_COMPARE_TEXT_()
 {
     double small = 0.5, big = 0.8;
     CHECK_COMPARE_TEXT(small, >=, big, "small bigger than big");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_COMPARE_TEXT)
@@ -526,7 +526,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_EQUAL_TEXT_()
 {
     CHECK_EQUAL_TEXT(1, 2, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_EQUAL_TEXT)
@@ -553,7 +553,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithCHECK_EQUAL_ZERO_()
 {
     CHECK_EQUAL_ZERO(1);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_EQUAL_ZERO)
@@ -605,7 +605,7 @@ TEST(UnitTestMacros, CHECK_EQUAL_ZERO_BehavesAsProperMacro)
 static void failingTestMethodWithCHECK_EQUAL_ZERO_TEXT_()
 {
     CHECK_EQUAL_ZERO_TEXT(1, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_EQUAL_ZERO_TEXT)
@@ -632,7 +632,7 @@ IGNORE_TEST(UnitTestMacros, CHECK_EQUAL_ZERO_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithLONGS_EQUAL_()
 {
     LONGS_EQUAL(1, 0xff);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithLONGS_EQUALS)
@@ -647,7 +647,7 @@ static void failingTestMethodWithLONGS_EQUALWithSymbolicParameters_()
 {
     int day_of_the_week = MONDAY + 1;
     LONGS_EQUAL(MONDAY, day_of_the_week);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithLONGS_EQUALShowsSymbolicParameters)
@@ -656,7 +656,7 @@ TEST(UnitTestMacros, FailureWithLONGS_EQUALShowsSymbolicParameters)
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("LONGS_EQUAL(MONDAY, day_of_the_week) failed");
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("expected <1 (0x1)>");
     CHECK_TEST_FAILS_PROPER_WITH_TEXT("but was  <2 (0x2)>");
-    CHECK_FALSE(strings::contains(fixture.getOutput(), "Message: "));
+    CHECK_FALSE(cpputest::strings::contains(fixture.getOutput(), "Message: "));
 }
 
 TEST(UnitTestMacros, LONGS_EQUALBehavesAsProperMacro)
@@ -675,7 +675,7 @@ IGNORE_TEST(UnitTestMacros, LONGS_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithLONGS_EQUAL_TEXT_()
 {
     LONGS_EQUAL_TEXT(1, 0xff, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithLONGS_EQUALS_TEXT)
@@ -702,7 +702,7 @@ IGNORE_TEST(UnitTestMacros, LONGS_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithBYTES_EQUAL_()
 {
     BYTES_EQUAL('a', 'b');
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 }
 
 TEST(UnitTestMacros, FailureWithBYTES_EQUAL)
@@ -728,7 +728,7 @@ IGNORE_TEST(UnitTestMacros, BYTES_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithBYTES_EQUAL_TEXT_()
 {
     BYTES_EQUAL_TEXT('a', 'b', "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 }
 
 TEST(UnitTestMacros, FailureWithBYTES_EQUAL_TEXT)
@@ -755,7 +755,7 @@ IGNORE_TEST(UnitTestMacros, BYTES_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithSIGNED_BYTES_EQUAL_()
 {
     SIGNED_BYTES_EQUAL(-1, -2);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 }
 
 TEST(UnitTestMacros, FailureWithSIGNED_BYTES_EQUAL)
@@ -786,7 +786,7 @@ IGNORE_TEST(UnitTestMacros, CHARS_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithSIGNED_BYTES_EQUAL_TEXT_()
 {
     SIGNED_BYTES_EQUAL_TEXT(-127, -126, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 }
 
 TEST(UnitTestMacros, FailureWithSIGNED_BYTES_EQUAL_TEXT)
@@ -813,7 +813,7 @@ IGNORE_TEST(UnitTestMacros, SIGNED_BYTES_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithPOINTERS_EQUAL_()
 {
     POINTERS_EQUAL((void*)0xa5a5, (void*)0xf0f0);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithPOINTERS_EQUAL)
@@ -839,7 +839,7 @@ IGNORE_TEST(UnitTestMacros, POINTERS_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithPOINTERS_EQUAL_TEXT_()
 {
     POINTERS_EQUAL_TEXT((void*)0xa5a5, (void*)0xf0f0, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithPOINTERS_EQUAL_TEXT)
@@ -866,7 +866,7 @@ IGNORE_TEST(UnitTestMacros, POINTERS_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithFUNCTIONPOINTERS_EQUAL_()
 {
     FUNCTIONPOINTERS_EQUAL((void (*)())0xa5a5, (void (*)())0xf0f0);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithFUNCTIONPOINTERS_EQUAL)
@@ -892,7 +892,7 @@ IGNORE_TEST(UnitTestMacros, FUNCTIONPOINTERS_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithFUNCTIONPOINTERS_EQUAL_TEXT_()
 {
     FUNCTIONPOINTERS_EQUAL_TEXT((void (*)())0xa5a5, (void (*)())0xf0f0, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithFUNCTIONPOINTERS_EQUAL_TEXT)
@@ -919,7 +919,7 @@ IGNORE_TEST(UnitTestMacros, FUNCTIONPOINTERS_EQUAL_TEXTWorksInAnIgnoredTest)
 static void failingTestMethodWithDOUBLES_EQUAL_()
 {
     DOUBLES_EQUAL(0.12, 44.1, 0.3);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithDOUBLES_EQUAL)
@@ -946,7 +946,7 @@ IGNORE_TEST(UnitTestMacros, DOUBLES_EQUALWorksInAnIgnoredTest)
 static void failingTestMethodWithDOUBLES_EQUAL_TEXT_()
 {
     DOUBLES_EQUAL_TEXT(0.12, 44.1, 0.3, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithDOUBLES_EQUAL_TEXT)
@@ -1068,7 +1068,7 @@ static void MEMCMP_EQUALFailingTestMethodWithUnequalInput_()
     unsigned char actualData[] = { 0x00, 0x01, 0x03, 0x03 };
 
     MEMCMP_EQUAL(expectedData, actualData, sizeof(expectedData));
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, MEMCMP_EQUALFailureWithUnequalInput)
@@ -1084,7 +1084,7 @@ static void MEMCMP_EQUALFailingTestMethodWithNullExpected_()
     unsigned char actualData[] = { 0x00, 0x01, 0x02, 0x03 };
 
     MEMCMP_EQUAL(nullptr, actualData, sizeof(actualData));
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, MEMCMP_EQUALFailureWithNullExpected)
@@ -1099,7 +1099,7 @@ static void MEMCMP_EQUALFailingTestMethodWithNullActual_()
     unsigned char expectedData[] = { 0x00, 0x01, 0x02, 0x03 };
 
     MEMCMP_EQUAL(expectedData, nullptr, sizeof(expectedData));
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, MEMCMP_EQUALFailureWithNullActual)
@@ -1133,7 +1133,7 @@ static void failingTestMethodWithMEMCMP_EQUAL_TEXT_()
     unsigned char actualData[] = { 0x00, 0x01, 0x03, 0x03 };
 
     MEMCMP_EQUAL_TEXT(expectedData, actualData, sizeof(expectedData), "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithMEMCMP_EQUAL_TEXT)
@@ -1174,7 +1174,7 @@ IGNORE_TEST(UnitTestMacros, BITS_EQUALWorksInAnIgnoredTest)
 static void BITS_EQUALFailingTestMethodWithUnequalInput_()
 {
     BITS_EQUAL(0x00, 0xFF, 0xFF);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, BITS_EQUALFailureWithUnequalInput)
@@ -1192,7 +1192,7 @@ TEST(UnitTestMacros, BITS_EQUALZeroMaskEqual)
 static void failingTestMethodWithBITS_EQUAL_TEXT_()
 {
     BITS_EQUAL_TEXT(0x00, 0xFFFFFFFF, 0xFF, "Failed because it failed");
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithBITS_EQUAL_TEXT)
@@ -1394,7 +1394,7 @@ IGNORE_TEST(UnitTestMacros, ENUMS_EQUAL_EQUAL_INT_TEXTWithUnscopedEnumWorksInAnI
 static void failingTestMethod_NoThrowWithCHECK_THROWS_()
 {
     CHECK_THROWS(int, (void)(1 + 2));
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_THROWS_whenDoesntThrow)
@@ -1408,7 +1408,7 @@ TEST(UnitTestMacros, FailureWithCHECK_THROWS_whenDoesntThrow)
 static void succeedingTestMethod_CorrectThrowWithCHECK_THROWS_()
 {
     CHECK_THROWS(int, throw 4);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 }
 
 TEST(UnitTestMacros, SuccessWithCHECK_THROWS)
@@ -1420,7 +1420,7 @@ TEST(UnitTestMacros, SuccessWithCHECK_THROWS)
 static void failingTestMethod_WrongThrowWithCHECK_THROWS_()
 {
     CHECK_THROWS(int, throw 4.3);
-    TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
+    cpputest::TestTestingFixture::lineExecutedAfterCheck(); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
 
 TEST(UnitTestMacros, FailureWithCHECK_THROWS_whenWrongThrow)

@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace cpputest {
+
 class StringCollection {
 public:
     StringCollection() = default;
@@ -24,5 +26,7 @@ private:
     void operator=(StringCollection&);
     StringCollection(StringCollection&);
 };
+
+}
 
 #endif // INCLUDED_STRINGCOLLECTION_HPP

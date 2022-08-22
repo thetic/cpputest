@@ -33,9 +33,11 @@
 
 #include <cstring>
 
+namespace {
+
 typedef void (*cpputest_cpp_function_pointer)(); /* Cl2000 requires cast to C++ function */
 
-class MockFailureReporterTestTerminatorForInCOnlyCode : public TestTerminatorWithoutExceptions {
+class MockFailureReporterTestTerminatorForInCOnlyCode : public cpputest::TestTerminatorWithoutExceptions {
 public:
     MockFailureReporterTestTerminatorForInCOnlyCode(bool crashOnFailure)
         : crashOnFailure_(crashOnFailure)
@@ -58,21 +60,21 @@ private:
     bool crashOnFailure_;
 };
 
-class MockFailureReporterForInCOnlyCode : public MockFailureReporter {
+class MockFailureReporterForInCOnlyCode : public cpputest::extensions::MockFailureReporter {
 public:
-    void failTest(const MockFailure& failure) override
+    void failTest(const cpputest::extensions::MockFailure& failure) override
     {
         if (!getTestToFail()->hasFailed())
             getTestToFail()->failWith(failure, MockFailureReporterTestTerminatorForInCOnlyCode(crashOnFailure_));
     } // LCOV_EXCL_LINE
 };
 
-static MockSupport* currentMockSupport = nullptr;
-static MockExpectedCall* expectedCall = nullptr;
-static MockActualCall* actualCall = nullptr;
-static MockFailureReporterForInCOnlyCode failureReporterForC;
+cpputest::extensions::MockSupport* currentMockSupport = nullptr;
+cpputest::extensions::MockExpectedCall* expectedCall = nullptr;
+cpputest::extensions::MockActualCall* actualCall = nullptr;
+MockFailureReporterForInCOnlyCode failureReporterForC;
 
-class MockCFunctionComparatorNode : public MockNamedValueComparator {
+class MockCFunctionComparatorNode : public cpputest::extensions::MockNamedValueComparator {
 public:
     MockCFunctionComparatorNode(MockCFunctionComparatorNode* next, MockTypeEqualFunction_c equal, MockTypeValueToStringFunction_c toString)
         : next_(next)
@@ -98,7 +100,7 @@ public:
 
 static MockCFunctionComparatorNode* comparatorList_ = nullptr;
 
-class MockCFunctionCopierNode : public MockNamedValueCopier {
+class MockCFunctionCopierNode : public cpputest::extensions::MockNamedValueCopier {
 public:
     MockCFunctionCopierNode(MockCFunctionCopierNode* next, MockTypeCopyFunction_c copier)
         : next_(next)
@@ -565,7 +567,7 @@ MockExpectedCall_c* andReturnFunctionPointerValue_c(void (*value)())
     return &gExpectedCall;
 }
 
-static MockValue_c getMockValueCFromNamedValue(const MockNamedValue& namedValue)
+static MockValue_c getMockValueCFromNamedValue(const cpputest::extensions::MockNamedValue& namedValue)
 {
     MockValue_c returnValue;
     if (std::strcmp(namedValue.getType().c_str(), "bool") == 0) {
@@ -992,6 +994,8 @@ void clear_c()
 void crashOnFailure_c(unsigned shouldCrash)
 {
     currentMockSupport->crashOnFailure(0 != shouldCrash);
+}
+
 }
 
 MockSupport_c* mock_c()

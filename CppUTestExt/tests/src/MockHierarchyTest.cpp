@@ -29,6 +29,8 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::mock;
+
 TEST_GROUP(MockHierarchyTest) {
     void teardown() override {
         mock().clear();
@@ -38,8 +40,8 @@ TEST_GROUP(MockHierarchyTest) {
 
 TEST(MockHierarchyTest, getMockSupportScope)
 {
-    MockSupport* mock1 = mock().getMockSupportScope("name");
-    MockSupport* mock2 = mock().getMockSupportScope("differentName");
+    cpputest::extensions::MockSupport* mock1 = mock().getMockSupportScope("name");
+    cpputest::extensions::MockSupport* mock2 = mock().getMockSupportScope("differentName");
 
     CHECK(!mock().hasData("name"));
     CHECK(mock1 != mock2);
@@ -100,7 +102,7 @@ TEST(MockHierarchyTest, checkExpectationsWorksHierarchically)
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("first::foobar");
     expectations.addFunction("second::helloworld");
-    MockExpectedCallsDidntHappenFailure expectedFailure(mockFailureTest(), expectations);
+    cpputest::extensions::MockExpectedCallsDidntHappenFailure expectedFailure(mockFailureTest(), expectations);
 
     mock("first").expectOneCall("foobar");
     mock("second").expectOneCall("helloworld");
@@ -132,7 +134,7 @@ TEST(MockHierarchyTest, checkExpectationsWorksHierarchicallyForLastCallNotFinish
 
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("first::foobar")->withParameter("boo", 1);
-    MockExpectedParameterDidntHappenFailure expectedFailure(mockFailureTest(), "first::foobar", expectations, expectations);
+    cpputest::extensions::MockExpectedParameterDidntHappenFailure expectedFailure(mockFailureTest(), "first::foobar", expectations, expectations);
 
     mock("first").expectOneCall("foobar").withParameter("boo", 1);
     mock("first").actualCall("foobar");
@@ -148,6 +150,6 @@ TEST(MockHierarchyTest, reporterIsInheritedInHierarchicalMocks)
 
     mock("differentScope").actualCall("foobar");
 
-    MockUnexpectedCallHappenedFailure expectedFailure(mockFailureTest(), "differentScope::foobar", expectations);
+    cpputest::extensions::MockUnexpectedCallHappenedFailure expectedFailure(mockFailureTest(), "differentScope::foobar", expectations);
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }

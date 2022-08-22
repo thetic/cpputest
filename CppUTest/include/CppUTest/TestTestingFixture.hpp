@@ -25,12 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_TestTestingFixture_H
-#define D_TestTestingFixture_H
+#ifndef INCLUDED_CPPUTEST_TESTTESTINGFIXTURE_HPP
+#define INCLUDED_CPPUTEST_TESTTESTINGFIXTURE_HPP
 
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/Utest.hpp"
+
+namespace cpputest {
 
 class TestTestingFixture {
 public:
@@ -94,4 +96,6 @@ public:
     }
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TESTTESTINGFIXTURE_HPP

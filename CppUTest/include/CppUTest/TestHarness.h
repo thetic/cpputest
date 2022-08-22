@@ -31,8 +31,8 @@
  *
  *******************************************************************************/
 
-#ifndef D_TestHarness_c_h
-#define D_TestHarness_c_h
+#ifndef INCLUDED_CPPUTEST_TESTHARNESS_H
+#define INCLUDED_CPPUTEST_TESTHARNESS_H
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -252,4 +252,4 @@ int cpputest_malloc_get_count(void);
 #endif
 #endif
 
-#endif
+#endif // INCLUDED_CPPUTEST_TESTHARNESS_H

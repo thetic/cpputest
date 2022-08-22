@@ -29,6 +29,8 @@
 
 #include "CppUTest/SimpleString.hpp"
 
+namespace cpputest {
+
 TestFilter::TestFilter()
     : strictMatching_(false)
     , invertMatching_(false)
@@ -109,7 +111,9 @@ std::string TestFilter::asString() const
     return textFilter;
 }
 
-std::string StringFrom(const TestFilter& filter)
+}
+
+std::string StringFrom(const cpputest::TestFilter& filter)
 {
     return filter.asString();
 }

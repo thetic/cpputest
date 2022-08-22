@@ -30,12 +30,14 @@
 // TestRegistry is a collection of tests that can be run
 //
 
-#ifndef D_TestRegistry_h
-#define D_TestRegistry_h
+#ifndef INCLUDED_CPPUTEST_TESTREGISTRY_HPP
+#define INCLUDED_CPPUTEST_TESTREGISTRY_HPP
 
 #include "CppUTest/TestFilter.hpp"
 
 #include <string>
+
+namespace cpputest {
 
 class UtestShell;
 class TestResult;
@@ -91,4 +93,6 @@ private:
     bool runIgnored_;
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TESTREGISTRY_HPP

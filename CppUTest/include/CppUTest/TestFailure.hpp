@@ -32,14 +32,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef D_TestFailure_H
-#define D_TestFailure_H
+#ifndef INCLUDED_CPPUTEST_TESTFAILURE_HPP
+#define INCLUDED_CPPUTEST_TESTFAILURE_HPP
 
 #include <string>
 
 #if !CPPUTEST_NO_EXCEPTIONS
 #include <stdexcept>
 #endif
+
+namespace cpputest {
 
 class UtestShell;
 class TestOutput;
@@ -173,4 +175,6 @@ public:
 };
 #endif
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TESTFAILURE_HPP

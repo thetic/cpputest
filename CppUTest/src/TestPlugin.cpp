@@ -30,6 +30,8 @@
 #include "CppUTest/Utest.hpp"
 #include "CppUTest/UtestMacros.hpp"
 
+namespace cpputest {
+
 TestPlugin::TestPlugin(const std::string& name)
     : next_(NullTestPlugin::instance())
     , name_(name)
@@ -177,4 +179,6 @@ void NullTestPlugin::runAllPreTestAction(UtestShell&, TestResult&)
 
 void NullTestPlugin::runAllPostTestAction(UtestShell&, TestResult&)
 {
+}
+
 }

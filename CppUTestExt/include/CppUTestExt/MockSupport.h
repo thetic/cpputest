@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MockSupport_c_h
-#define D_MockSupport_c_h
+#ifndef INCLUDED_CPPUTESTEXT_MOCKSUPPORT_H
+#define INCLUDED_CPPUTESTEXT_MOCKSUPPORT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -226,4 +226,4 @@ MockSupport_c* mock_scope_c(const char* scope);
 }
 #endif
 
-#endif
+#endif // INCLUDED_CPPUTESTEXT_MOCKSUPPORT_H

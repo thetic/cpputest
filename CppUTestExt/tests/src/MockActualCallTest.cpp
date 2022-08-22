@@ -33,6 +33,13 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::MockActualCallTrace;
+using cpputest::extensions::MockCheckedActualCall;
+using cpputest::extensions::MockCheckedExpectedCall;
+using cpputest::extensions::MockExpectedCallsList;
+using cpputest::extensions::MockFailureReporter;
+using cpputest::extensions::MockUnexpectedCallHappenedFailure;
+
 TEST_GROUP(MockCheckedActualCall)
 {
     MockExpectedCallsList* emptyList;
@@ -115,10 +122,10 @@ TEST(MockCheckedActualCall, unExpectedParameterName)
     MockCheckedActualCall actualCall(1, reporter, *list);
     actualCall.withName("func").withParameter("integer", 1);
 
-    MockNamedValue parameter("integer");
+    cpputest::extensions::MockNamedValue parameter("integer");
     parameter.setValue(1);
 
-    MockUnexpectedInputParameterFailure expectedFailure(mockFailureTest(), "func", parameter, *list);
+    cpputest::extensions::MockUnexpectedInputParameterFailure expectedFailure(mockFailureTest(), "func", parameter, *list);
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
 
@@ -150,7 +157,7 @@ TEST(MockCheckedActualCall, multipleSameFunctionsExpectingAndHappenGradually)
 
 TEST(MockCheckedActualCall, MockIgnoredActualCallWorksAsItShould)
 {
-    MockIgnoredActualCall actual;
+    cpputest::extensions::MockIgnoredActualCall actual;
     actual.withName("func");
     actual.withCallOrder(1);
 
@@ -180,7 +187,7 @@ TEST(MockCheckedActualCall, MockIgnoredActualCallWorksAsItShould)
     CHECK(nullptr == actual.returnFunctionPointerValue());
     CHECK((void (*)())1 == actual.returnFunctionPointerValueOrDefault((void (*)())0x1));
     CHECK_FALSE(actual.hasReturnValue());
-    CHECK(actual.returnValue().equals(MockNamedValue("")));
+    CHECK(actual.returnValue().equals(cpputest::extensions::MockNamedValue("")));
 }
 
 TEST(MockCheckedActualCall, remainderOfMockActualCallTraceWorksAsItShould)
@@ -228,7 +235,7 @@ TEST(MockCheckedActualCall, remainderOfMockActualCallTraceWorksAsItShould)
     STRCMP_EQUAL(expectedString.c_str(), actual.getTraceOutput());
 
     CHECK_FALSE(actual.hasReturnValue());
-    CHECK(actual.returnValue().equals(MockNamedValue("")));
+    CHECK(actual.returnValue().equals(cpputest::extensions::MockNamedValue("")));
     CHECK(false == actual.returnBoolValue());
     CHECK(false == actual.returnBoolValueOrDefault(true));
     CHECK(0 == actual.returnLongIntValue());

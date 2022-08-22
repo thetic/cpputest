@@ -30,6 +30,7 @@
 #include <cctype>
 #include <climits>
 #include <cmath>
+#include <cstdarg>
 #include <cstring>
 #include <string>
 
@@ -66,7 +67,33 @@ size_t printable_size(const std::string& string)
     return printable_str_size;
 }
 
+std::string VStringFromFormat(const char* format, va_list args)
+{
+    va_list argsCopy;
+    va_copy(argsCopy, args);
+    enum {
+        sizeOfdefaultBuffer = 100
+    };
+    char defaultBuffer[sizeOfdefaultBuffer];
+    std::string resultString;
+
+    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
+    if (size < sizeOfdefaultBuffer) {
+        resultString = std::string(defaultBuffer);
+    } else {
+        size_t newBufferSize = size + 1;
+        char* newBuffer = (char*)std::malloc(newBufferSize);
+        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
+        resultString = std::string(newBuffer);
+
+        std::free(newBuffer);
+    }
+    va_end(argsCopy);
+    return resultString;
 }
+}
+
+namespace cpputest {
 
 // does not support + or - prefixes
 unsigned strings::atou(const char* str)
@@ -201,6 +228,8 @@ std::string strings::subStringFromTill(const std::string& string, char startChar
     return string.substr(beginPos, endPos - beginPos);
 }
 
+}
+
 std::string StringFrom(bool value)
 {
     return std::string(StringFromFormat("%s", value ? "true" : "false"));
@@ -218,7 +247,7 @@ std::string StringFromOrNull(const char* expected)
 
 std::string PrintableStringFromOrNull(const char* expected)
 {
-    return (expected) ? strings::printable(expected) : "(null)";
+    return (expected) ? cpputest::strings::printable(expected) : "(null)";
 }
 
 std::string StringFrom(int value)
@@ -386,31 +415,6 @@ std::string StringFrom(const std::string& value)
 std::string StringFrom(unsigned long i)
 {
     return StringFromFormat("%lu", i);
-}
-
-std::string VStringFromFormat(const char* format, va_list args)
-{
-    va_list argsCopy;
-    va_copy(argsCopy, args);
-    enum {
-        sizeOfdefaultBuffer = 100
-    };
-    char defaultBuffer[sizeOfdefaultBuffer];
-    std::string resultString;
-
-    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
-    if (size < sizeOfdefaultBuffer) {
-        resultString = std::string(defaultBuffer);
-    } else {
-        size_t newBufferSize = size + 1;
-        char* newBuffer = (char*)std::malloc(newBufferSize);
-        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
-        resultString = std::string(newBuffer);
-
-        std::free(newBuffer);
-    }
-    va_end(argsCopy);
-    return resultString;
 }
 
 std::string StringFromBinary(const unsigned char* value, size_t size)

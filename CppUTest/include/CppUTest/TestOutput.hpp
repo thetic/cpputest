@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_TestOutput_h
-#define D_TestOutput_h
+#ifndef INCLUDED_CPPUTEST_TESTOUTPUT_HPP
+#define INCLUDED_CPPUTEST_TESTOUTPUT_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -38,6 +38,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <string>
+
+namespace cpputest {
 
 class UtestShell;
 class TestFailure;
@@ -214,4 +216,6 @@ private:
     TestOutput* outputTwo_;
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TESTOUTPUT_HPP

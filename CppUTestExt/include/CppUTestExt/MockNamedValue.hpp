@@ -25,223 +25,228 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MockNamedValue_h
-#define D_MockNamedValue_h
+#ifndef INCLUDED_CPPUTESTEXT_MOCKNAMEDVALUE_HPP
+#define INCLUDED_CPPUTESTEXT_MOCKNAMEDVALUE_HPP
 
 #include "CppUTest/SimpleString.hpp"
 
-/*
- * MockNamedValueComparator is an interface that needs to be used when creating Comparators.
- * This is needed when comparing values of non-native type.
- */
+namespace cpputest {
+namespace extensions {
 
-class MockNamedValueComparator {
-public:
-    MockNamedValueComparator() { }
-    virtual ~MockNamedValueComparator() { }
+    /*
+     * MockNamedValueComparator is an interface that needs to be used when creating Comparators.
+     * This is needed when comparing values of non-native type.
+     */
 
-    virtual bool isEqual(const void* object1, const void* object2) = 0;
-    virtual std::string valueToString(const void* object) = 0;
-};
+    class MockNamedValueComparator {
+    public:
+        MockNamedValueComparator() { }
+        virtual ~MockNamedValueComparator() { }
 
-/*
- * MockNamedValueCopier is an interface that needs to be used when creating Copiers.
- * This is needed when copying values of non-native type.
- */
+        virtual bool isEqual(const void* object1, const void* object2) = 0;
+        virtual std::string valueToString(const void* object) = 0;
+    };
 
-class MockNamedValueCopier {
-public:
-    MockNamedValueCopier() { }
-    virtual ~MockNamedValueCopier() { }
+    /*
+     * MockNamedValueCopier is an interface that needs to be used when creating Copiers.
+     * This is needed when copying values of non-native type.
+     */
 
-    virtual void copy(void* out, const void* in) = 0;
-};
+    class MockNamedValueCopier {
+    public:
+        MockNamedValueCopier() { }
+        virtual ~MockNamedValueCopier() { }
 
-class MockFunctionComparator : public MockNamedValueComparator {
-public:
-    typedef bool (*isEqualFunction)(const void*, const void*);
-    typedef std::string (*valueToStringFunction)(const void*);
+        virtual void copy(void* out, const void* in) = 0;
+    };
 
-    MockFunctionComparator(isEqualFunction equal, valueToStringFunction valToString)
-        : equal_(equal)
-        , valueToString_(valToString)
-    {
-    }
+    class MockFunctionComparator : public MockNamedValueComparator {
+    public:
+        typedef bool (*isEqualFunction)(const void*, const void*);
+        typedef std::string (*valueToStringFunction)(const void*);
 
-    bool isEqual(const void* object1, const void* object2) override { return equal_(object1, object2); }
-    std::string valueToString(const void* object) override { return valueToString_(object); }
+        MockFunctionComparator(isEqualFunction equal, valueToStringFunction valToString)
+            : equal_(equal)
+            , valueToString_(valToString)
+        {
+        }
 
-private:
-    isEqualFunction equal_;
-    valueToStringFunction valueToString_;
-};
+        bool isEqual(const void* object1, const void* object2) override { return equal_(object1, object2); }
+        std::string valueToString(const void* object) override { return valueToString_(object); }
 
-class MockFunctionCopier : public MockNamedValueCopier {
-public:
-    typedef void (*copyFunction)(void*, const void*);
+    private:
+        isEqualFunction equal_;
+        valueToStringFunction valueToString_;
+    };
 
-    MockFunctionCopier(copyFunction copier)
-        : copier_(copier)
-    {
-    }
+    class MockFunctionCopier : public MockNamedValueCopier {
+    public:
+        typedef void (*copyFunction)(void*, const void*);
 
-    void copy(void* dst, const void* src) override { copier_(dst, src); }
+        MockFunctionCopier(copyFunction copier)
+            : copier_(copier)
+        {
+        }
 
-private:
-    copyFunction copier_;
-};
+        void copy(void* dst, const void* src) override { copier_(dst, src); }
 
-/*
- * MockNamedValue is the generic value class used. It encapsulates basic types and can use them "as if one"
- * Also it enables other types by putting object pointers. They can be compared with comparators.
- *
- * Basically this class ties together a Name, a Value, a Type, and a Comparator
- */
+    private:
+        copyFunction copier_;
+    };
 
-class MockNamedValueComparatorsAndCopiersRepository;
-class MockNamedValue {
-public:
-    MockNamedValue(const std::string& name);
-    MockNamedValue(MockNamedValue const&) = default;
-    virtual ~MockNamedValue();
+    /*
+     * MockNamedValue is the generic value class used. It encapsulates basic types and can use them "as if one"
+     * Also it enables other types by putting object pointers. They can be compared with comparators.
+     *
+     * Basically this class ties together a Name, a Value, a Type, and a Comparator
+     */
 
-    virtual void setValue(bool value);
-    virtual void setValue(int value);
-    virtual void setValue(unsigned int value);
-    virtual void setValue(long int value);
-    virtual void setValue(unsigned long int value);
-    virtual void setValue(long long value);
-    virtual void setValue(unsigned long long value);
-    virtual void setValue(double value);
-    virtual void setValue(double value, double tolerance);
-    virtual void setValue(void* value);
-    virtual void setValue(const void* value);
-    virtual void setValue(void (*value)());
-    virtual void setValue(const char* value);
-    virtual void setMemoryBuffer(const unsigned char* value, size_t size);
-    virtual void setConstObjectPointer(const std::string& type, const void* objectPtr);
-    virtual void setObjectPointer(const std::string& type, void* objectPtr);
-    virtual void setSize(size_t size);
+    class MockNamedValueComparatorsAndCopiersRepository;
+    class MockNamedValue {
+    public:
+        MockNamedValue(const std::string& name);
+        MockNamedValue(MockNamedValue const&) = default;
+        virtual ~MockNamedValue();
 
-    virtual void setName(const char* name);
+        virtual void setValue(bool value);
+        virtual void setValue(int value);
+        virtual void setValue(unsigned int value);
+        virtual void setValue(long int value);
+        virtual void setValue(unsigned long int value);
+        virtual void setValue(long long value);
+        virtual void setValue(unsigned long long value);
+        virtual void setValue(double value);
+        virtual void setValue(double value, double tolerance);
+        virtual void setValue(void* value);
+        virtual void setValue(const void* value);
+        virtual void setValue(void (*value)());
+        virtual void setValue(const char* value);
+        virtual void setMemoryBuffer(const unsigned char* value, size_t size);
+        virtual void setConstObjectPointer(const std::string& type, const void* objectPtr);
+        virtual void setObjectPointer(const std::string& type, void* objectPtr);
+        virtual void setSize(size_t size);
 
-    virtual bool equals(const MockNamedValue& p) const;
-    virtual bool compatibleForCopying(const MockNamedValue& p) const;
+        virtual void setName(const char* name);
 
-    virtual std::string toString() const;
+        virtual bool equals(const MockNamedValue& p) const;
+        virtual bool compatibleForCopying(const MockNamedValue& p) const;
 
-    virtual std::string getName() const;
-    virtual std::string getType() const;
+        virtual std::string toString() const;
 
-    virtual bool getBoolValue() const;
-    virtual int getIntValue() const;
-    virtual unsigned int getUnsignedIntValue() const;
-    virtual long int getLongIntValue() const;
-    virtual unsigned long int getUnsignedLongIntValue() const;
-    virtual long long getLongLongIntValue() const;
-    virtual unsigned long long getUnsignedLongLongIntValue() const;
-    virtual double getDoubleValue() const;
-    virtual double getDoubleTolerance() const;
-    virtual const char* getStringValue() const;
-    virtual void* getPointerValue() const;
-    virtual const void* getConstPointerValue() const;
-    virtual void (*getFunctionPointerValue() const)();
-    virtual const unsigned char* getMemoryBuffer() const;
-    virtual const void* getConstObjectPointer() const;
-    virtual void* getObjectPointer() const;
-    virtual size_t getSize() const;
+        virtual std::string getName() const;
+        virtual std::string getType() const;
 
-    virtual MockNamedValueComparator* getComparator() const;
-    virtual MockNamedValueCopier* getCopier() const;
+        virtual bool getBoolValue() const;
+        virtual int getIntValue() const;
+        virtual unsigned int getUnsignedIntValue() const;
+        virtual long int getLongIntValue() const;
+        virtual unsigned long int getUnsignedLongIntValue() const;
+        virtual long long getLongLongIntValue() const;
+        virtual unsigned long long getUnsignedLongLongIntValue() const;
+        virtual double getDoubleValue() const;
+        virtual double getDoubleTolerance() const;
+        virtual const char* getStringValue() const;
+        virtual void* getPointerValue() const;
+        virtual const void* getConstPointerValue() const;
+        virtual void (*getFunctionPointerValue() const)();
+        virtual const unsigned char* getMemoryBuffer() const;
+        virtual const void* getConstObjectPointer() const;
+        virtual void* getObjectPointer() const;
+        virtual size_t getSize() const;
 
-    static void setDefaultComparatorsAndCopiersRepository(MockNamedValueComparatorsAndCopiersRepository* repository);
-    static MockNamedValueComparatorsAndCopiersRepository* getDefaultComparatorsAndCopiersRepository();
+        virtual MockNamedValueComparator* getComparator() const;
+        virtual MockNamedValueCopier* getCopier() const;
 
-    static const double defaultDoubleTolerance;
+        static void setDefaultComparatorsAndCopiersRepository(MockNamedValueComparatorsAndCopiersRepository* repository);
+        static MockNamedValueComparatorsAndCopiersRepository* getDefaultComparatorsAndCopiersRepository();
 
-private:
-    std::string name_;
-    std::string type_;
-    union {
-        bool boolValue_;
-        int intValue_;
-        unsigned int unsignedIntValue_;
-        long int longIntValue_;
-        unsigned long int unsignedLongIntValue_;
-        long long longLongIntValue_;
-        unsigned long long unsignedLongLongIntValue_;
-        struct {
-            double value;
-            double tolerance;
-        } doubleValue_;
-        const char* stringValue_;
-        void* pointerValue_;
-        const void* constPointerValue_;
-        void (*functionPointerValue_)();
-        const unsigned char* memoryBufferValue_;
-        const void* constObjectPointerValue_;
-        void* objectPointerValue_;
-        const void* outputPointerValue_;
-    } value_;
-    size_t size_;
-    MockNamedValueComparator* comparator_;
-    MockNamedValueCopier* copier_;
-    static MockNamedValueComparatorsAndCopiersRepository* defaultRepository_;
-};
+        static const double defaultDoubleTolerance;
 
-class MockNamedValueListNode {
-public:
-    MockNamedValueListNode(MockNamedValue* newValue);
+    private:
+        std::string name_;
+        std::string type_;
+        union {
+            bool boolValue_;
+            int intValue_;
+            unsigned int unsignedIntValue_;
+            long int longIntValue_;
+            unsigned long int unsignedLongIntValue_;
+            long long longLongIntValue_;
+            unsigned long long unsignedLongLongIntValue_;
+            struct {
+                double value;
+                double tolerance;
+            } doubleValue_;
+            const char* stringValue_;
+            void* pointerValue_;
+            const void* constPointerValue_;
+            void (*functionPointerValue_)();
+            const unsigned char* memoryBufferValue_;
+            const void* constObjectPointerValue_;
+            void* objectPointerValue_;
+            const void* outputPointerValue_;
+        } value_;
+        size_t size_;
+        MockNamedValueComparator* comparator_;
+        MockNamedValueCopier* copier_;
+        static MockNamedValueComparatorsAndCopiersRepository* defaultRepository_;
+    };
 
-    std::string getName() const;
-    std::string getType() const;
+    class MockNamedValueListNode {
+    public:
+        MockNamedValueListNode(MockNamedValue* newValue);
 
-    MockNamedValueListNode* next();
-    MockNamedValue* item();
+        std::string getName() const;
+        std::string getType() const;
 
-    void destroy();
-    void setNext(MockNamedValueListNode* node);
+        MockNamedValueListNode* next();
+        MockNamedValue* item();
 
-private:
-    MockNamedValue* data_;
-    MockNamedValueListNode* next_;
-};
+        void destroy();
+        void setNext(MockNamedValueListNode* node);
 
-class MockNamedValueList {
-public:
-    MockNamedValueList();
+    private:
+        MockNamedValue* data_;
+        MockNamedValueListNode* next_;
+    };
 
-    MockNamedValueListNode* begin();
+    class MockNamedValueList {
+    public:
+        MockNamedValueList();
 
-    void add(MockNamedValue* newValue);
-    void clear();
+        MockNamedValueListNode* begin();
 
-    MockNamedValue* getValueByName(const std::string& name);
+        void add(MockNamedValue* newValue);
+        void clear();
 
-private:
-    MockNamedValueListNode* head_;
-};
+        MockNamedValue* getValueByName(const std::string& name);
 
-/*
- * MockParameterComparatorRepository is a class which stores comparators and copiers which can be used for comparing non-native types
- *
- */
+    private:
+        MockNamedValueListNode* head_;
+    };
 
-struct MockNamedValueComparatorsAndCopiersRepositoryNode;
-class MockNamedValueComparatorsAndCopiersRepository {
-    MockNamedValueComparatorsAndCopiersRepositoryNode* head_;
+    /*
+     * MockParameterComparatorRepository is a class which stores comparators and copiers which can be used for comparing non-native types
+     *
+     */
 
-public:
-    MockNamedValueComparatorsAndCopiersRepository();
-    virtual ~MockNamedValueComparatorsAndCopiersRepository();
+    struct MockNamedValueComparatorsAndCopiersRepositoryNode;
+    class MockNamedValueComparatorsAndCopiersRepository {
+        MockNamedValueComparatorsAndCopiersRepositoryNode* head_;
 
-    virtual void installComparator(const std::string& name, MockNamedValueComparator& comparator);
-    virtual void installCopier(const std::string& name, MockNamedValueCopier& copier);
-    virtual void installComparatorsAndCopiers(const MockNamedValueComparatorsAndCopiersRepository& repository);
-    virtual MockNamedValueComparator* getComparatorForType(const std::string& name);
-    virtual MockNamedValueCopier* getCopierForType(const std::string& name);
+    public:
+        MockNamedValueComparatorsAndCopiersRepository();
+        virtual ~MockNamedValueComparatorsAndCopiersRepository();
 
-    void clear();
-};
+        virtual void installComparator(const std::string& name, MockNamedValueComparator& comparator);
+        virtual void installCopier(const std::string& name, MockNamedValueCopier& copier);
+        virtual void installComparatorsAndCopiers(const MockNamedValueComparatorsAndCopiersRepository& repository);
+        virtual MockNamedValueComparator* getComparatorForType(const std::string& name);
+        virtual MockNamedValueCopier* getCopierForType(const std::string& name);
 
-#endif
+        void clear();
+    };
+}
+}
+
+#endif // INCLUDED_CPPUTESTEXT_MOCKNAMEDVALUE_HPP

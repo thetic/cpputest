@@ -38,31 +38,31 @@ static long MockGetPlatformSpecificTimeInMillis()
 
 TEST_GROUP(TestOutput)
 {
-    TestOutput* printer;
-    StringBufferTestOutput* mock;
-    UtestShell* tst;
-    TestFailure* f;
-    TestFailure* f2;
-    TestFailure* f3;
-    TestResult* result;
+    cpputest::TestOutput* printer;
+    cpputest::StringBufferTestOutput* mock;
+    cpputest::UtestShell* tst;
+    cpputest::TestFailure* f;
+    cpputest::TestFailure* f2;
+    cpputest::TestFailure* f3;
+    cpputest::TestResult* result;
 
     void setup() override
     {
-        mock = new StringBufferTestOutput();
+        mock = new cpputest::StringBufferTestOutput();
         printer = mock;
-        tst = new UtestShell("group", "test", "file", 10);
-        f = new TestFailure(tst, "failfile", 20, "message");
-        f2 = new TestFailure(tst, "file", 20, "message");
-        f3 = new TestFailure(tst, "file", 2, "message");
-        result = new TestResult(*mock);
+        tst = new cpputest::UtestShell("group", "test", "file", 10);
+        f = new cpputest::TestFailure(tst, "failfile", 20, "message");
+        f2 = new cpputest::TestFailure(tst, "file", 20, "message");
+        f3 = new cpputest::TestFailure(tst, "file", 2, "message");
+        result = new cpputest::TestResult(*mock);
         result->setTotalExecutionTime(10);
         millisTime = 0;
-        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
-        TestOutput::setWorkingEnvironment(WorkingEnvironment::eclipse);
+        UT_PTR_SET(cpputest::TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        cpputest::TestOutput::setWorkingEnvironment(cpputest::WorkingEnvironment::eclipse);
     }
     void teardown() override
     {
-        TestOutput::setWorkingEnvironment(WorkingEnvironment::detectEnvironment);
+        cpputest::TestOutput::setWorkingEnvironment(cpputest::WorkingEnvironment::detectEnvironment);
         delete printer;
         delete tst;
         delete f;
@@ -158,14 +158,14 @@ TEST(TestOutput, SetProgressIndicator)
 
 TEST(TestOutput, PrintTestVerboseStarted)
 {
-    mock->verbose(TestOutput::level_verbose);
+    mock->verbose(cpputest::TestOutput::level_verbose);
     printer->printCurrentTestStarted(*tst);
     STRCMP_EQUAL("TEST(group, test)", mock->getOutput().c_str());
 }
 
 TEST(TestOutput, PrintTestVerboseEnded)
 {
-    mock->verbose(TestOutput::level_verbose);
+    mock->verbose(cpputest::TestOutput::level_verbose);
     result->currentTestStarted(tst);
     millisTime = 5;
     result->currentTestEnded(tst);
@@ -229,7 +229,7 @@ TEST(TestOutput, PrintFailureWithFailInHelper)
 
 TEST(TestOutput, PrintInVisualStudioFormat)
 {
-    TestOutput::setWorkingEnvironment(WorkingEnvironment::visualStudio);
+    cpputest::TestOutput::setWorkingEnvironment(cpputest::WorkingEnvironment::visualStudio);
     printer->printFailure(*f3);
     const char* expected = "\nfile(10): error: Failure in TEST(group, test)"
                            "\nfile(2): error:\n\tmessage\n\n";
@@ -274,29 +274,29 @@ TEST(TestOutput, printTestsEndedWithNoTestsRunOrIgnored)
         mock->getOutput().c_str());
 }
 
-class CompositeTestOutputTestStringBufferTestOutput : public StringBufferTestOutput {
+class CompositeTestOutputTestStringBufferTestOutput : public cpputest::StringBufferTestOutput {
 public:
     void printTestsStarted() override
     {
         output += "Test Start\n";
     }
 
-    void printTestsEnded(const TestResult& result) override
+    void printTestsEnded(const cpputest::TestResult& result) override
     {
         output += StringFromFormat("Test End %d\n", (int)result.getTestCount());
     }
 
-    void printCurrentGroupStarted(const UtestShell& test) override
+    void printCurrentGroupStarted(const cpputest::UtestShell& test) override
     {
         output += StringFromFormat("Group %s Start\n", test.getGroup().c_str());
     }
 
-    void printCurrentGroupEnded(const TestResult& res) override
+    void printCurrentGroupEnded(const cpputest::TestResult& res) override
     {
         output += StringFromFormat("Group End %d\n", (int)res.getTestCount());
     }
 
-    void printCurrentTestStarted(const UtestShell&) override
+    void printCurrentTestStarted(const cpputest::UtestShell&) override
     {
         output += "s";
     }
@@ -326,9 +326,9 @@ TEST_GROUP(CompositeTestOutput)
 {
     CompositeTestOutputTestStringBufferTestOutput* output1;
     CompositeTestOutputTestStringBufferTestOutput* output2;
-    CompositeTestOutput compositeOutput;
-    TestResult* result;
-    UtestShell* test;
+    cpputest::CompositeTestOutput compositeOutput;
+    cpputest::TestResult* result;
+    cpputest::UtestShell* test;
 
     void setup() override
     {
@@ -336,8 +336,8 @@ TEST_GROUP(CompositeTestOutput)
         output2 = new CompositeTestOutputTestStringBufferTestOutput;
         compositeOutput.setOutputOne(output1);
         compositeOutput.setOutputTwo(output2);
-        result = new TestResult(compositeOutput);
-        test = new UtestShell("Group", "Name", "file", 10);
+        result = new cpputest::TestResult(compositeOutput);
+        test = new cpputest::UtestShell("Group", "Name", "file", 10);
     }
 
     void teardown() override
@@ -410,7 +410,7 @@ TEST(CompositeTestOutput, printDouble)
 
 TEST(CompositeTestOutput, verbose)
 {
-    compositeOutput.verbose(TestOutput::level_verbose);
+    compositeOutput.verbose(cpputest::TestOutput::level_verbose);
     CHECK(output1->isVerbose());
     CHECK(output2->isVerbose());
 }
@@ -424,13 +424,13 @@ TEST(CompositeTestOutput, color)
 
 TEST(CompositeTestOutput, PrintTestFailure)
 {
-    WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
-    TestOutput::setWorkingEnvironment(WorkingEnvironment::eclipse);
-    TestFailure failure(test, "file", 10, "failed");
+    cpputest::WorkingEnvironment previousEnvironment = cpputest::TestOutput::getWorkingEnvironment();
+    cpputest::TestOutput::setWorkingEnvironment(cpputest::WorkingEnvironment::eclipse);
+    cpputest::TestFailure failure(test, "file", 10, "failed");
     compositeOutput.printFailure(failure);
     STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output1->getOutput().c_str());
     STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output2->getOutput().c_str());
-    TestOutput::setWorkingEnvironment(previousEnvironment);
+    cpputest::TestOutput::setWorkingEnvironment(previousEnvironment);
 }
 
 TEST(CompositeTestOutput, PrintTestRun)
@@ -456,8 +456,8 @@ TEST(CompositeTestOutput, flush)
 
 TEST(CompositeTestOutput, deletePreviousInstanceWhenSettingNew)
 {
-    compositeOutput.setOutputOne(new CompositeTestOutput);
-    compositeOutput.setOutputTwo(new CompositeTestOutput);
+    compositeOutput.setOutputOne(new cpputest::CompositeTestOutput);
+    compositeOutput.setOutputTwo(new cpputest::CompositeTestOutput);
 
     // CHECK NO MEMORY LEAKS
 }

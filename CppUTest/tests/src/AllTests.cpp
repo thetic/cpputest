@@ -34,5 +34,5 @@ int main(int ac, char** av)
     CHECK(true);
     LONGS_EQUAL(1, 1);
 
-    return CommandLineTestRunner::RunAllTests(ac, av); /* cover alternate method */
+    return cpputest::CommandLineTestRunner::RunAllTests(ac, av); /* cover alternate method */
 }

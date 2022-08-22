@@ -32,6 +32,8 @@
 #include "CppUTest/TestResult.hpp"
 #include <ctime>
 
+namespace cpputest {
+
 struct JUnitTestCaseResultNode {
     JUnitTestCaseResultNode()
         : execTime_(0)
@@ -83,14 +85,14 @@ struct JUnitTestOutputImpl {
 };
 
 namespace {
-const char* time_string_impl()
-{
-    std::time_t theTime = time(nullptr);
-    static char dateTime[80];
-    struct tm* tmp = localtime(&theTime);
-    strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
-    return dateTime;
-}
+    const char* time_string_impl()
+    {
+        std::time_t theTime = time(nullptr);
+        static char dateTime[80];
+        struct tm* tmp = localtime(&theTime);
+        strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
+        return dateTime;
+    }
 }
 
 const char* (*JUnitTestOutput::timestring)(void) = time_string_impl;
@@ -340,4 +342,6 @@ void JUnitTestOutput::writeToFile(const std::string& buffer)
 void JUnitTestOutput::closeFile()
 {
     fclose(impl_->file_);
+}
+
 }

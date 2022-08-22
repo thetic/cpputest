@@ -41,7 +41,7 @@ static const std::string str3(str1 + str2);
 
 TEST_GROUP(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess)
 {
-    TestTestingFixture fixture;
+    cpputest::TestTestingFixture fixture;
 };
 
 // There is a possibility that a compiler provides fork but not waitpid.
