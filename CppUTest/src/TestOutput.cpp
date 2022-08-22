@@ -88,8 +88,13 @@ void TestOutput::setWorkingEnvironment(WorkingEnvironment workEnvironment)
 
 WorkingEnvironment TestOutput::getWorkingEnvironment()
 {
-    if (workingEnvironment_ == WorkingEnvironment::detectEnvironment)
-        return PlatformSpecificGetWorkingEnvironment();
+    if (workingEnvironment_ == WorkingEnvironment::detectEnvironment) {
+#ifdef _MSC_VER
+        return WorkingEnvironment::visualStudio;
+#else
+        return WorkingEnvironment::eclipse;
+#endif
+    }
     return workingEnvironment_;
 }
 

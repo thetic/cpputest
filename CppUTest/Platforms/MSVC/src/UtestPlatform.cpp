@@ -23,8 +23,3 @@ static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* pl
 }
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = VisualCppRunTestInASeperateProcess;
-
-WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
-{
-    return WorkingEnvironment::visualStudio;
-}

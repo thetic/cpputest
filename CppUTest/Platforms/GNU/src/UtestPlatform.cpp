@@ -136,11 +136,6 @@ static pid_t PlatformSpecificWaitPidImplementation(int pid, int* status, int opt
 
 #endif
 
-WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
-{
-    return WorkingEnvironment::eclipse;
-}
-
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = GccPlatformSpecificRunTestInASeperateProcess;
 int (*PlatformSpecificFork)(void) = PlatformSpecificForkImplementation;
 int (*PlatformSpecificWaitPid)(int, int*, int) = PlatformSpecificWaitPidImplementation;

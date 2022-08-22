@@ -28,12 +28,9 @@
 #ifndef PLATFORMSPECIFICFUNCTIONS_H_
 #define PLATFORMSPECIFICFUNCTIONS_H_
 
-enum class WorkingEnvironment;
 class UtestShell;
 class TestPlugin;
 class TestResult;
-
-WorkingEnvironment PlatformSpecificGetWorkingEnvironment();
 
 class TestPlugin;
 extern void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result);
