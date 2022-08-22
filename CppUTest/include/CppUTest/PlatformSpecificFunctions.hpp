@@ -28,13 +28,4 @@
 #ifndef PLATFORMSPECIFICFUNCTIONS_H_
 #define PLATFORMSPECIFICFUNCTIONS_H_
 
-class UtestShell;
-class TestPlugin;
-class TestResult;
-
-class TestPlugin;
-extern void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result);
-extern int (*PlatformSpecificFork)(void);
-extern int (*PlatformSpecificWaitPid)(int pid, int* status, int options);
-
 #endif

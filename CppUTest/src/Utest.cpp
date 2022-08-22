@@ -38,6 +38,12 @@
 #include <csignal>
 #include <cstring>
 
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+#include <errno.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
+
 #if defined(__GNUC__) && __GNUC__ >= 11
 #define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
@@ -70,7 +76,76 @@ void restore_jump_buffer()
 }
 #endif
 
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+void SetTestFailureByStatusCode(UtestShell* shell, TestResult* result, int status)
+{
+    if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+        result->addFailure(TestFailure(shell, "Failed in separate process"));
+    } else if (WIFSIGNALED(status)) {
+        std::string message("Failed in separate process - killed by signal ");
+        message += StringFrom(WTERMSIG(status));
+        result->addFailure(TestFailure(shell, message));
+    } else if (WIFSTOPPED(status)) {
+        result->addFailure(TestFailure(shell, "Stopped in separate process - continuing"));
+    }
 }
+
+void run_test_process_impl(
+    UtestShell* shell,
+    TestPlugin* plugin,
+    TestResult* result)
+{
+    const pid_t syscallError = -1;
+    pid_t cpid;
+    pid_t w;
+    int status = 0;
+
+    cpid = fork();
+
+    if (cpid == syscallError) {
+        result->addFailure(TestFailure(shell, "Call to fork() failed"));
+        return;
+    }
+
+    if (cpid == 0) { /* Code executed by child */
+        const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
+        shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
+        _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+    } else { /* Code executed by parent */
+        size_t amountOfRetries = 0;
+        do {
+            w = waitpid(cpid, &status, WUNTRACED);
+            if (w == syscallError) {
+                // OS X debugger causes EINTR
+                if (EINTR == errno) {
+                    if (amountOfRetries > 30) {
+                        result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
+                        return;
+                    }
+                    amountOfRetries++;
+                } else {
+                    result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
+                    return;
+                }
+            } else {
+                SetTestFailureByStatusCode(shell, result, status);
+                if (WIFSTOPPED(status))
+                    kill(w, SIGCONT);
+            }
+        } while ((w == syscallError) || (!WIFEXITED(status) && !WIFSIGNALED(status)));
+    }
+}
+#else
+void run_test_process_impl(UtestShell* shell, TestPlugin*, TestResult* result)
+{
+    result->addFailure(TestFailure(
+        shell,
+        "-p doesn't work on this platform, as it is lacking fork.\b"));
+}
+#endif
+}
+
+void (*UtestShell::run_test_process)(UtestShell*, TestPlugin*, TestResult*) = run_test_process_impl;
 
 bool doubles_equal(double d1, double d2, double threshold)
 {
@@ -167,7 +242,7 @@ static void helperDoRunOneTestSeperateProcess(void* data)
     UtestShell* shell = runInfo->shell_;
     TestPlugin* plugin = runInfo->plugin_;
     TestResult* result = runInfo->result_;
-    PlatformSpecificRunTestInASeperateProcess(shell, plugin, result);
+    UtestShell::run_test_process(shell, plugin, result);
 }
 
 /******************************** */

@@ -16,10 +16,3 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-
-static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
-{
-    result->addFailure(TestFailure(shell, "-p doesn't work on this platform, as it is lacking fork.\b"));
-}
-
-void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell* shell, TestPlugin* plugin, TestResult* result) = VisualCppRunTestInASeperateProcess;

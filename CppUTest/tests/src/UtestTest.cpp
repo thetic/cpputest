@@ -237,7 +237,7 @@ static void StubPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, Tes
 
 TEST(UtestShell, RunInSeparateProcessTest)
 {
-    UT_PTR_SET(PlatformSpecificRunTestInASeperateProcess, StubPlatformSpecificRunTestInASeperateProcess);
+    UT_PTR_SET(UtestShell::run_test_process, StubPlatformSpecificRunTestInASeperateProcess);
     fixture.getRegistry()->setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process");
