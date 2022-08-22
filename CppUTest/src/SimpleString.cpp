@@ -27,8 +27,6 @@
 
 #include "CppUTest/SimpleString.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
-
 #include <cctype>
 #include <climits>
 #include <cmath>

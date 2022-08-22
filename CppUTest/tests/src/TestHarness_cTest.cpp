@@ -28,7 +28,6 @@
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.h"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestTestingFixture.hpp"

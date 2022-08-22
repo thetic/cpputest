@@ -29,7 +29,6 @@
 #include "CppUTestExt/MockCheckedExpectedCall.hpp"
 #include "CppUTestExt/MockFailure.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/UtestMacros.hpp"
 #include <cstring>
 

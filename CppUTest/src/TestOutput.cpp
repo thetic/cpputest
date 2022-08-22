@@ -32,7 +32,6 @@
 
 #include "CppUTest/TestOutput.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestResult.hpp"

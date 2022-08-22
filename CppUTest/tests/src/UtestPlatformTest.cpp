@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/CommandLineTestRunner.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 

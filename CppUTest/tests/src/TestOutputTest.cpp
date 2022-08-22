@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestOutput.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 
 static long millisTime;

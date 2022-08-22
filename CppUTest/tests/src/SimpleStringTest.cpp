@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/SimpleString.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 #include <cmath>
