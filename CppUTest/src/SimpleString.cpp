@@ -27,10 +27,9 @@
 
 #include "CppUTest/SimpleString.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
-
 #include <cctype>
 #include <climits>
+#include <cmath>
 #include <cstring>
 #include <string>
 
@@ -350,9 +349,9 @@ std::string BracketsFormattedHexStringFrom(unsigned long long value)
 
 std::string StringFrom(double value, int precision)
 {
-    if (PlatformSpecificIsNan(value))
+    if (std::isnan(value))
         return "Nan - Not a number";
-    else if (PlatformSpecificIsInf(value))
+    else if (std::isinf(value))
         return "Inf - Infinity";
     else
         return StringFromFormat("%.*g", precision, value);
@@ -399,16 +398,16 @@ std::string VStringFromFormat(const char* format, va_list args)
     char defaultBuffer[sizeOfdefaultBuffer];
     std::string resultString;
 
-    size_t size = (size_t)PlatformSpecificVSNprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
+    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
     if (size < sizeOfdefaultBuffer) {
         resultString = std::string(defaultBuffer);
     } else {
         size_t newBufferSize = size + 1;
-        char* newBuffer = (char*)PlatformSpecificMalloc(newBufferSize);
-        PlatformSpecificVSNprintf(newBuffer, newBufferSize, format, argsCopy);
+        char* newBuffer = (char*)std::malloc(newBufferSize);
+        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
         resultString = std::string(newBuffer);
 
-        PlatformSpecificFree(newBuffer);
+        std::free(newBuffer);
     }
     va_end(argsCopy);
     return resultString;

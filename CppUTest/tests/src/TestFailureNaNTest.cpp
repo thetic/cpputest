@@ -25,9 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
+#include <cmath>
 
 namespace {
 const int failLineNumber = 2;
@@ -41,9 +41,6 @@ static double one = 1.0;
 static double not_a_number = zero / zero;
 static double infinity = one / zero;
 
-static int IsNanForSystemsWithoutNan(double d) { return ((long)not_a_number == (long)d); }
-static int IsInfForSystemsWithoutInf(double d) { return ((long)infinity == (long)d); }
-
 TEST_GROUP(TestFailureNanAndInf)
 {
     UtestShell* test;
@@ -51,13 +48,11 @@ TEST_GROUP(TestFailureNanAndInf)
     void setup() override
     {
         test = new UtestShell("groupname", "testname", failFileName, failLineNumber - 1);
-        if (PlatformSpecificIsNan(not_a_number) == false) {
+        if (std::isnan(not_a_number) == false) {
             not_a_number = -1.0;
-            UT_PTR_SET(PlatformSpecificIsNan, IsNanForSystemsWithoutNan);
         }
-        if (PlatformSpecificIsInf(infinity) == false) {
+        if (std::isinf(infinity) == false) {
             infinity = -2.0;
-            UT_PTR_SET(PlatformSpecificIsInf, IsInfForSystemsWithoutInf);
         }
     }
     void teardown() override

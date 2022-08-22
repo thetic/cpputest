@@ -26,9 +26,8 @@
  */
 
 #include "CppUTest/TestOutput.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
+
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestResult.hpp"
 
 static long millisTime;
 
@@ -58,12 +57,12 @@ TEST_GROUP(TestOutput)
         result = new TestResult(*mock);
         result->setTotalExecutionTime(10);
         millisTime = 0;
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-        TestOutput::setWorkingEnvironment(TestOutput::eclipse);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        TestOutput::setWorkingEnvironment(WorkingEnvironment::eclipse);
     }
     void teardown() override
     {
-        TestOutput::setWorkingEnvironment(TestOutput::detectEnvironment);
+        TestOutput::setWorkingEnvironment(WorkingEnvironment::detectEnvironment);
         delete printer;
         delete tst;
         delete f;
@@ -230,7 +229,7 @@ TEST(TestOutput, PrintFailureWithFailInHelper)
 
 TEST(TestOutput, PrintInVisualStudioFormat)
 {
-    TestOutput::setWorkingEnvironment(TestOutput::visualStudio);
+    TestOutput::setWorkingEnvironment(WorkingEnvironment::visualStudio);
     printer->printFailure(*f3);
     const char* expected = "\nfile(10): error: Failure in TEST(group, test)"
                            "\nfile(2): error:\n\tmessage\n\n";
@@ -425,8 +424,8 @@ TEST(CompositeTestOutput, color)
 
 TEST(CompositeTestOutput, PrintTestFailure)
 {
-    TestOutput::WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
-    TestOutput::setWorkingEnvironment(TestOutput::eclipse);
+    WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
+    TestOutput::setWorkingEnvironment(WorkingEnvironment::eclipse);
     TestFailure failure(test, "file", 10, "failed");
     compositeOutput.printFailure(failure);
     STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output1->getOutput().c_str());

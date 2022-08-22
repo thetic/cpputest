@@ -26,10 +26,11 @@
  */
 
 #include "CppUTest/JUnitTestOutput.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
+
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
+#include <ctime>
 
 struct JUnitTestCaseResultNode {
     JUnitTestCaseResultNode()
@@ -76,10 +77,23 @@ struct JUnitTestGroupResult {
 
 struct JUnitTestOutputImpl {
     JUnitTestGroupResult results_;
-    PlatformSpecificFile file_;
+    std::FILE* file_;
     std::string package_;
     std::string stdOutput_;
 };
+
+namespace {
+const char* time_string_impl()
+{
+    std::time_t theTime = time(nullptr);
+    static char dateTime[80];
+    struct tm* tmp = localtime(&theTime);
+    strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
+    return dateTime;
+}
+}
+
+const char* (*JUnitTestOutput::timestring)(void) = time_string_impl;
 
 JUnitTestOutput::JUnitTestOutput()
     : impl_(new JUnitTestOutputImpl)
@@ -137,7 +151,7 @@ void JUnitTestOutput::printCurrentTestStarted(const UtestShell& test)
 {
     impl_->results_.testCount_++;
     impl_->results_.group_ = test.getGroup();
-    impl_->results_.startTime_ = (size_t)GetPlatformSpecificTimeInMillis();
+    impl_->results_.startTime_ = (size_t)time_in_millis();
 
     if (impl_->results_.tail_ == nullptr) {
         impl_->results_.head_ = impl_->results_.tail_
@@ -199,7 +213,7 @@ void JUnitTestOutput::writeTestSuiteSummary()
             impl_->results_.group_.c_str(),
             (int)impl_->results_.testCount_,
             (int)(impl_->results_.groupExecTime_ / 1000), (int)(impl_->results_.groupExecTime_ % 1000),
-            GetPlatformSpecificTimeString());
+            timestring());
     writeToFile(buf.c_str());
 }
 
@@ -315,15 +329,15 @@ void JUnitTestOutput::printFailure(const TestFailure& failure)
 
 void JUnitTestOutput::openFileForWrite(const std::string& fileName)
 {
-    impl_->file_ = PlatformSpecificFOpen(fileName.c_str(), "w");
+    impl_->file_ = fopen(fileName.c_str(), "w");
 }
 
 void JUnitTestOutput::writeToFile(const std::string& buffer)
 {
-    PlatformSpecificFPuts(buffer.c_str(), impl_->file_);
+    fputs(buffer.c_str(), impl_->file_);
 }
 
 void JUnitTestOutput::closeFile()
 {
-    PlatformSpecificFClose(impl_->file_);
+    fclose(impl_->file_);
 }

@@ -96,6 +96,11 @@ public:
     static void setRethrowExceptions(bool rethrowExceptions);
     static bool isRethrowingExceptions();
 
+    static void (*run_test_process)(
+        UtestShell* shell,
+        TestPlugin* plugin,
+        TestResult* result);
+
 public:
     UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber);
     virtual ~UtestShell();
@@ -288,6 +293,8 @@ public:
     void relinkTestsInOrder();
     UtestShell* getFirstTest() const;
     UtestShell* get(size_t index) const;
+
+    static int (*rand_)(void);
 
 private:
     void swap(size_t index1, size_t index2);

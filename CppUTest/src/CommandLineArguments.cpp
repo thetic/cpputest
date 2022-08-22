@@ -27,7 +27,6 @@
 
 #include "CppUTest/CommandLineArguments.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 
@@ -315,7 +314,7 @@ void CommandLineArguments::setRepeatCount(int ac, const char* const* av, int& i)
 bool CommandLineArguments::setShuffle(int ac, const char* const* av, int& i)
 {
     shuffling_ = true;
-    shuffleSeed_ = (unsigned int)GetPlatformSpecificTimeInMillis();
+    shuffleSeed_ = (unsigned int)TestOutput::time_in_millis();
     if (shuffleSeed_ == 0)
         shuffleSeed_++;
 

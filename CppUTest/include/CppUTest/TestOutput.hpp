@@ -43,11 +43,12 @@ class UtestShell;
 class TestFailure;
 class TestResult;
 
+enum class WorkingEnvironment { visualStudio,
+    eclipse,
+    detectEnvironment };
+
 class TestOutput {
 public:
-    enum WorkingEnvironment { visualStudio,
-        eclipse,
-        detectEnvironment };
     enum VerbosityLevel { level_quiet,
         level_verbose,
         level_veryVerbose };
@@ -79,6 +80,13 @@ public:
 
     static void setWorkingEnvironment(WorkingEnvironment workEnvironment);
     static WorkingEnvironment getWorkingEnvironment();
+
+    static std::FILE* (*fopen)(const char* filename, const char* mode);
+    static int (*fputs)(const char* str, std::FILE* stream);
+    static int (*fclose)(std::FILE* stream);
+    static int (*putchar)(int);
+    static int (*fflush)(std::FILE* stream);
+    static long (*time_in_millis)(void);
 
 protected:
     virtual void printEclipseErrorInFileOnLine(std::string file, size_t lineNumber);

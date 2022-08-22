@@ -1,5 +1,5 @@
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TeamCityTestOutput.hpp"
+
 #include "CppUTest/TestHarness.hpp"
 
 class TeamCityOutputToBuffer : public TeamCityTestOutput {
@@ -57,7 +57,7 @@ TEST_GROUP(TeamCityOutputTest)
         result = new TestResult(*mock);
         result->setTotalExecutionTime(10);
         millisTime = 0;
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
     }
     void teardown() override
     {

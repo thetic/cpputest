@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/CommandLineTestRunner.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
@@ -36,7 +35,6 @@
 #include <unistd.h>
 #endif
 
-// This will cause a crash in VS2010 due to PlatformSpecificFree being uninitialized
 static const std::string str1("abc");
 static const std::string str2("def");
 static const std::string str3(str1 + str2);
@@ -68,29 +66,6 @@ static void failFunction_()
     exit(1);
 }
 
-static int waitpid_while_debugging_stub_number_called = 0;
-static int waitpid_while_debugging_stub_forced_failures = 0;
-
-static int (*original_waitpid)(int, int*, int) = nullptr;
-
-static int fork_failed_stub(void) { return -1; }
-
-static int waitpid_while_debugging_stub(int pid, int* status, int options)
-{
-    static int saved_status;
-
-    if (waitpid_while_debugging_stub_number_called++ < waitpid_while_debugging_stub_forced_failures) {
-        saved_status = *status;
-        errno = EINTR;
-        return -1;
-    } else {
-        *status = saved_status;
-        return original_waitpid(pid, status, options);
-    }
-}
-
-static int waitpid_failed_stub(int, int*, int) { return -1; }
-
 static void stoppedTestFunction_()
 {
     kill(getpid(), SIGSTOP);
@@ -118,50 +93,6 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, StoppedInSepa
     fixture.setTestFunction(stoppedTestFunction_);
     fixture.runAllTests();
     fixture.assertPrintContains("Stopped in separate process - continuing");
-    fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran");
-}
-
-TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToForkFailedInSeparateProcessWorks)
-{
-    UT_PTR_SET(PlatformSpecificFork, fork_failed_stub);
-    fixture.setRunTestsInSeperateProcess();
-    fixture.runAllTests();
-    fixture.assertPrintContains("Call to fork() failed");
-    fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran");
-}
-
-TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPidWhileDebuggingInSeparateProcessWorks)
-{
-    UT_PTR_SET(original_waitpid, PlatformSpecificWaitPid);
-    UT_PTR_SET(PlatformSpecificWaitPid, waitpid_while_debugging_stub);
-    waitpid_while_debugging_stub_number_called = 0;
-    waitpid_while_debugging_stub_forced_failures = 10;
-    fixture.setRunTestsInSeperateProcess();
-    fixture.runAllTests();
-    fixture.assertPrintContains("OK (1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out");
-    // extra check to confirm that waitpid() was polled until it passed (and passed call adds one)
-    CHECK(waitpid_while_debugging_stub_number_called > waitpid_while_debugging_stub_forced_failures);
-}
-
-TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPidStopsAndReportsAnErrorAfter20TimesRetry)
-{
-    UT_PTR_SET(original_waitpid, PlatformSpecificWaitPid);
-    UT_PTR_SET(PlatformSpecificWaitPid, waitpid_while_debugging_stub);
-    waitpid_while_debugging_stub_number_called = 0;
-    waitpid_while_debugging_stub_forced_failures = 40;
-    fixture.setRunTestsInSeperateProcess();
-    fixture.runAllTests();
-    fixture.assertPrintContains("Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger");
-    // extra check to confirm that waitpid() was polled until it passed (and passed call adds one)
-    CHECK(waitpid_while_debugging_stub_number_called > 30);
-}
-
-TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPidFailedInSeparateProcessWorks)
-{
-    UT_PTR_SET(PlatformSpecificWaitPid, waitpid_failed_stub);
-    fixture.setRunTestsInSeperateProcess();
-    fixture.runAllTests();
-    fixture.assertPrintContains("Call to waitpid() failed");
     fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran");
 }
 

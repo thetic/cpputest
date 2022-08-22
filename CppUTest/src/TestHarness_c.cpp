@@ -28,8 +28,6 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestHarness.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
-
 void CHECK_EQUAL_C_BOOL_LOCATION(int expected, int actual, const char* text, const char* fileName, size_t lineNumber)
 {
     UtestShell::getCurrent()->assertEquals(!!expected != !!actual, expected ? "true" : "false", actual ? "true" : "false", text, fileName, lineNumber, TestTerminatorWithoutExceptions());

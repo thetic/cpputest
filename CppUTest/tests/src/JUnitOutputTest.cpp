@@ -26,10 +26,9 @@
  */
 
 #include "CppUTest/JUnitTestOutput.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
+
 #include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestResult.hpp"
 
 class FileForJUnitOutputTests {
     std::string name_;
@@ -174,8 +173,8 @@ public:
         millisTime = 0;
         theTime = "1978-10-03T00:00:00";
 
-        UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-        UT_PTR_SET(GetPlatformSpecificTimeString, MockGetPlatformSpecificTimeString);
+        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(JUnitTestOutput::timestring, MockGetPlatformSpecificTimeString);
     }
 
     JUnitTestOutputTestRunner& start()
@@ -319,19 +318,21 @@ public:
 
 static FileSystemForJUnitTestOutputTests fileSystem;
 
-static PlatformSpecificFile mockFOpen(const char* filename, const char*)
+static std::FILE* mockFOpen(const char* filename, const char*)
 {
-    return fileSystem.openFile(filename);
+    return (std::FILE*)fileSystem.openFile(filename);
 }
 
-static void mockFPuts(const char* str, PlatformSpecificFile file)
+static int mockFPuts(const char* str, std::FILE* file)
 {
     ((FileForJUnitOutputTests*)file)->write(str);
+    return 0;
 }
 
-static void mockFClose(PlatformSpecificFile file)
+static int mockFClose(std::FILE* file)
 {
     ((FileForJUnitOutputTests*)file)->close();
+    return 0;
 }
 
 TEST_GROUP(JUnitOutputTest)
@@ -343,9 +344,9 @@ TEST_GROUP(JUnitOutputTest)
 
     void setup() override
     {
-        UT_PTR_SET(PlatformSpecificFOpen, mockFOpen);
-        UT_PTR_SET(PlatformSpecificFPuts, mockFPuts);
-        UT_PTR_SET(PlatformSpecificFClose, mockFClose);
+        UT_PTR_SET(TestOutput::fopen, mockFOpen);
+        UT_PTR_SET(TestOutput::fputs, mockFPuts);
+        UT_PTR_SET(TestOutput::fclose, mockFClose);
         junitOutput = new JUnitTestOutput();
         result = new TestResult(*junitOutput);
         testCaseRunner = new JUnitTestOutputTestRunner(*result);

@@ -25,10 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/Utest.hpp"
+
 #include "CppUTest/TestHarness.hpp"
-#include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
 
 TEST_GROUP(UtestShell)
@@ -237,7 +236,7 @@ static void StubPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, Tes
 
 TEST(UtestShell, RunInSeparateProcessTest)
 {
-    UT_PTR_SET(PlatformSpecificRunTestInASeperateProcess, StubPlatformSpecificRunTestInASeperateProcess);
+    UT_PTR_SET(UtestShell::run_test_process, StubPlatformSpecificRunTestInASeperateProcess);
     fixture.getRegistry()->setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process");
@@ -508,7 +507,7 @@ TEST(UtestShellPointerArrayTest, firstTestisNotTheFirstTestWithSeed1234)
 
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 {
-    UT_PTR_SET(PlatformSpecificRand, getZero);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getZero);
 
     UtestShellPointerArray tests(test0);
     tests.shuffle(3);
@@ -520,7 +519,7 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 // swaps with 4 mod 3 (1) then 4 mod 2 (0): 1, [2], [0] --> [1], [0], 2 --> 0, 1, 2
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 {
-    UT_PTR_SET(PlatformSpecificRand, getOne);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
 
     UtestShellPointerArray tests(test0);
     tests.shuffle(3);
@@ -531,7 +530,7 @@ TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningOne)
 
 TEST(UtestShellPointerArrayTest, reverse)
 {
-    UT_PTR_SET(PlatformSpecificRand, getOne);
+    UT_PTR_SET(UtestShellPointerArray::rand_, getOne);
 
     UtestShellPointerArray tests(test0);
     tests.reverse();

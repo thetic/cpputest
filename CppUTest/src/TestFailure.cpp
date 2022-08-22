@@ -26,11 +26,11 @@
  */
 
 #include "CppUTest/TestFailure.hpp"
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
+#include <cmath>
 #include <typeinfo>
 #if defined(__GNUC__)
 #include <cxxabi.h>
@@ -196,7 +196,7 @@ DoublesEqualFailure::DoublesEqualFailure(UtestShell* test, const char* fileName,
     message_ += StringFrom(threshold, 7);
     message_ += ">";
 
-    if (PlatformSpecificIsNan(expected) || PlatformSpecificIsNan(actual) || PlatformSpecificIsNan(threshold))
+    if (std::isnan(expected) || std::isnan(actual) || std::isnan(threshold))
         message_ += "\n\tCannot make comparisons with Nan";
 }
 

@@ -26,30 +26,136 @@
  */
 #include "CppUTest/Utest.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
 #include "CppUTest/TestResult.hpp"
 
+#include <cmath>
+#include <csetjmp>
 #include <csignal>
 #include <cstring>
+
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+#include <errno.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 #if defined(__GNUC__) && __GNUC__ >= 11
 #define NEEDS_DISABLE_NULL_WARNING
 #endif /* GCC >= 11 */
 
+namespace {
+std::jmp_buf test_exit_jmp_buf[10];
+int jmp_buf_index = 0;
+
+int do_set_jump(void (*function)(void* data), void* data)
+{
+    if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
+        jmp_buf_index++;
+        function(data);
+        jmp_buf_index--;
+        return 1;
+    }
+    return 0;
+}
+
+[[noreturn]] void do_long_jump()
+{
+    jmp_buf_index--;
+    std::longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
+}
+
+#if !CPPUTEST_NO_EXCEPTIONS
+void restore_jump_buffer()
+{
+    jmp_buf_index--;
+}
+#endif
+
+#if defined(CPPUTEST_HAVE_FORK) && defined(CPPUTEST_HAVE_WAITPID)
+void SetTestFailureByStatusCode(UtestShell* shell, TestResult* result, int status)
+{
+    if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+        result->addFailure(TestFailure(shell, "Failed in separate process"));
+    } else if (WIFSIGNALED(status)) {
+        std::string message("Failed in separate process - killed by signal ");
+        message += StringFrom(WTERMSIG(status));
+        result->addFailure(TestFailure(shell, message));
+    } else if (WIFSTOPPED(status)) {
+        result->addFailure(TestFailure(shell, "Stopped in separate process - continuing"));
+    }
+}
+
+void run_test_process_impl(
+    UtestShell* shell,
+    TestPlugin* plugin,
+    TestResult* result)
+{
+    const pid_t syscallError = -1;
+    pid_t cpid;
+    pid_t w;
+    int status = 0;
+
+    cpid = fork();
+
+    if (cpid == syscallError) {
+        result->addFailure(TestFailure(shell, "Call to fork() failed"));
+        return;
+    }
+
+    if (cpid == 0) { /* Code executed by child */
+        const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
+        shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
+        _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+    } else { /* Code executed by parent */
+        size_t amountOfRetries = 0;
+        do {
+            w = waitpid(cpid, &status, WUNTRACED);
+            if (w == syscallError) {
+                // OS X debugger causes EINTR
+                if (EINTR == errno) {
+                    if (amountOfRetries > 30) {
+                        result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
+                        return;
+                    }
+                    amountOfRetries++;
+                } else {
+                    result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
+                    return;
+                }
+            } else {
+                SetTestFailureByStatusCode(shell, result, status);
+                if (WIFSTOPPED(status))
+                    kill(w, SIGCONT);
+            }
+        } while ((w == syscallError) || (!WIFEXITED(status) && !WIFSIGNALED(status)));
+    }
+}
+#else
+void run_test_process_impl(UtestShell* shell, TestPlugin*, TestResult* result)
+{
+    result->addFailure(TestFailure(
+        shell,
+        "-p doesn't work on this platform, as it is lacking fork.\b"));
+}
+#endif
+}
+
+void (*UtestShell::run_test_process)(UtestShell*, TestPlugin*, TestResult*) = run_test_process_impl;
+
 bool doubles_equal(double d1, double d2, double threshold)
 {
-    if (PlatformSpecificIsNan(d1) || PlatformSpecificIsNan(d2) || PlatformSpecificIsNan(threshold))
+    if (std::isnan(d1) || std::isnan(d2) || std::isnan(threshold))
         return false;
 
-    if (PlatformSpecificIsInf(d1) && PlatformSpecificIsInf(d2)) {
+    if (std::isinf(d1) && std::isinf(d2)) {
         return true;
     }
 
-    return PlatformSpecificFabs(d1 - d2) <= threshold;
+    return std::fabs(d1 - d2) <= threshold;
 }
 
 /* Sometimes stubs use the CppUTest assertions.
@@ -84,7 +190,7 @@ OutsideTestRunnerUTest& OutsideTestRunnerUTest::instance()
 }
 
 /*
- * Below helpers are used for the PlatformSpecificSetJmp and LongJmp. They pass a method for what needs to happen after
+ * Below helpers are used for the do_set_jump and do_long_jump. They pass a method for what needs to happen after
  * the jump, so that the stack stays right.
  *
  */
@@ -135,7 +241,7 @@ static void helperDoRunOneTestSeperateProcess(void* data)
     UtestShell* shell = runInfo->shell_;
     TestPlugin* plugin = runInfo->plugin_;
     TestResult* result = runInfo->result_;
-    PlatformSpecificRunTestInASeperateProcess(shell, plugin, result);
+    UtestShell::run_test_process(shell, plugin, result);
 }
 
 /******************************** */
@@ -225,9 +331,9 @@ void UtestShell::runOneTest(TestPlugin* plugin, TestResult& result)
     result.countRun();
     HelperTestRunInfo runInfo(this, plugin, &result);
     if (isRunInSeperateProcess())
-        PlatformSpecificSetJmp(helperDoRunOneTestSeperateProcess, &runInfo);
+        do_set_jump(helperDoRunOneTestSeperateProcess, &runInfo);
     else
-        PlatformSpecificSetJmp(helperDoRunOneTestInCurrentProcess, &runInfo);
+        do_set_jump(helperDoRunOneTestInCurrentProcess, &runInfo);
 }
 
 Utest* UtestShell::createTest()
@@ -683,10 +789,10 @@ Utest::~Utest()
 #if CPPUTEST_NO_EXCEPTIONS
 void Utest::run()
 {
-    if (PlatformSpecificSetJmp(helperDoTestSetup, this)) {
-        PlatformSpecificSetJmp(helperDoTestBody, this);
+    if (do_set_jump(helperDoTestSetup, this)) {
+        do_set_jump(helperDoTestBody, this);
     }
-    PlatformSpecificSetJmp(helperDoTestTeardown, this);
+    do_set_jump(helperDoTestTeardown, this);
 }
 #else
 void Utest::run()
@@ -695,25 +801,25 @@ void Utest::run()
     int jumpResult = 0;
     try {
         current->printVeryVerbose("\n-------- before setup: ");
-        jumpResult = PlatformSpecificSetJmp(helperDoTestSetup, this);
+        jumpResult = do_set_jump(helperDoTestSetup, this);
         current->printVeryVerbose("\n-------- after  setup: ");
 
         if (jumpResult) {
             current->printVeryVerbose("\n----------  before body: ");
-            PlatformSpecificSetJmp(helperDoTestBody, this);
+            do_set_jump(helperDoTestBody, this);
             current->printVeryVerbose("\n----------  after body: ");
         }
     } catch (CppUTestFailedException&) {
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
     } catch (const std::exception& e) {
         current->addFailure(UnexpectedExceptionFailure(current, e));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
     } catch (...) {
         current->addFailure(UnexpectedExceptionFailure(current));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
@@ -721,19 +827,19 @@ void Utest::run()
 
     try {
         current->printVeryVerbose("\n--------  before teardown: ");
-        PlatformSpecificSetJmp(helperDoTestTeardown, this);
+        do_set_jump(helperDoTestTeardown, this);
         current->printVeryVerbose("\n--------  after teardown: ");
     } catch (CppUTestFailedException&) {
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
     } catch (const std::exception& e) {
         current->addFailure(UnexpectedExceptionFailure(current, e));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
     } catch (...) {
         current->addFailure(UnexpectedExceptionFailure(current));
-        PlatformSpecificRestoreJumpBuffer();
+        restore_jump_buffer();
         if (current->isRethrowingExceptions()) {
             throw;
         }
@@ -774,7 +880,7 @@ NormalTestTerminator::~NormalTestTerminator()
 
 void TestTerminatorWithoutExceptions::exitCurrentTest() const
 {
-    PlatformSpecificLongJmp();
+    do_long_jump();
 } // LCOV_EXCL_LINE
 
 TestTerminatorWithoutExceptions::~TestTerminatorWithoutExceptions()
@@ -890,6 +996,8 @@ void IgnoredUtestShell::setRunIgnored()
 
 //////////////////// UtestShellPointerArray
 
+int (*UtestShellPointerArray::rand_)(void) = std::rand;
+
 UtestShellPointerArray::UtestShellPointerArray(UtestShell* firstTest)
     : arrayOfTests_(nullptr)
     , count_(0)
@@ -925,13 +1033,13 @@ void UtestShellPointerArray::shuffle(size_t seed)
     if (count_ == 0)
         return;
 
-    PlatformSpecificSrand((unsigned int)seed);
+    std::srand((unsigned int)seed);
 
     for (size_t i = count_ - 1; i >= 1; --i) {
         if (count_ == 0)
             return;
 
-        const size_t j = ((size_t)PlatformSpecificRand()) % (i + 1); // distribution biased by modulo, but good enough for shuffling
+        const size_t j = ((size_t)rand_()) % (i + 1); // distribution biased by modulo, but good enough for shuffling
         swap(i, j);
     }
     relinkTestsInOrder();

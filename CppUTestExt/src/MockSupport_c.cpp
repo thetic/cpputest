@@ -28,7 +28,6 @@
 #include "CppUTestExt/MockSupport.h"
 #include "CppUTestExt/MockSupport.hpp"
 
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/Utest.hpp"
 #include "CppUTest/UtestMacros.hpp"
 
