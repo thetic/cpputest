@@ -15,7 +15,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.21)
 endif()
 
 if(PROJECT_IS_TOP_LEVEL)
-    find_package(CppUTest REQUIRED)
+    find_package(CppUTest 5.0 REQUIRED)
 endif()
 
 add_subdirectory(ApplicationLib)

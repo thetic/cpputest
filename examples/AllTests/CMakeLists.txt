@@ -21,7 +21,7 @@ target_link_options(AllTests
         $<$<BOOL:${MINGW}>:-static>
 )
 
-if(CPPUTEST_DISCOVER)
+if(PROJECT_IS_TOP_LEVEL OR CPPUTEST_DISCOVER)
     include(CppUTest)
     CppUTest_discover_tests(AllTests
         TEST_PREFIX Example::

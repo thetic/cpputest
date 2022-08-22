@@ -1,3 +1,5 @@
+include(GNUInstallDirs)
+
 add_library(CppUTestExt
     include/CppUTestExt/IEEE754ExceptionsPlugin.hpp
     include/CppUTestExt/MockActualCall.hpp
@@ -26,7 +28,7 @@ add_library(CppUTestExt
 target_include_directories(CppUTestExt
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:CppUTestExt/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(CppUTestExt PUBLIC CppUTest::CppUTest)
@@ -38,16 +40,15 @@ if(CPPUTEST_BUILD_TESTING)
 endif()
 
 if(PROJECT_IS_TOP_LEVEL)
-    include(GNUInstallDirs)
     install(
         TARGETS CppUTestExt
-        EXPORT CppUTestConfig
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        EXPORT CppUTestTargets
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
     )
     install(
-        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        DESTINATION CppUTestExt
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/CppUTestExt"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     )
 endif()

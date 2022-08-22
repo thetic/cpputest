@@ -44,15 +44,35 @@ if(CPPUTEST_EXAMPLES)
 endif()
 
 if(PROJECT_IS_TOP_LEVEL)
-    install(
-        EXPORT CppUTestConfig
-        NAMESPACE CppUTest::
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/CppUTest
+    include(GNUInstallDirs)
+    include(CMakePackageConfigHelpers)
+
+    set(CPPUTEST_CONFIG_DEST "${CMAKE_INSTALL_LIBDIR}/cmake/CppUTest")
+
+    # Package configuration
+    configure_package_config_file(
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/CppUTestConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfig.cmake"
+        INSTALL_DESTINATION ${CPPUTEST_CONFIG_DEST}
     )
 
-    include(CMakePackageConfigHelpers)
+    # Package version
     write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake"
         COMPATIBILITY SameMajorVersion
+    )
+
+    install(
+        FILES
+            "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfig.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake"
+            "cmake/CppUTest.cmake"
+            "cmake/CppUTestAddTests.cmake"
+        DESTINATION ${CPPUTEST_CONFIG_DEST}
+    )
+    install(
+        EXPORT CppUTestTargets
+        NAMESPACE CppUTest::
+        DESTINATION ${CPPUTEST_CONFIG_DEST}
     )
 endif()
