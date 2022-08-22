@@ -54,7 +54,8 @@
       "name": "coverage",
       "inherits": ["gcc"],
       "cacheVariables": {
-        "CPPUTEST_DISCOVER": false
+        "CPPUTEST_DISCOVER": false,
+        "CPPUTEST_EXAMPLES": false
       },
       "environment": {
         "CFLAGS": "--coverage",
