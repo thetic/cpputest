@@ -35,16 +35,6 @@
 #include <string>
 
 namespace {
-const char* StrStr(const char* s1, const char* s2)
-{
-    if (!*s2)
-        return s1;
-    for (; *s1; s1++)
-        if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
-            return s1;
-    return nullptr;
-}
-
 bool isControlWithShortEscapeSequence(char ch)
 {
     return '\a' <= ch && '\r' >= ch;
@@ -67,102 +57,7 @@ size_t printable_size(const std::string& string)
     return printable_str_size;
 }
 
-std::string VStringFromFormat(const char* format, va_list args)
-{
-    va_list argsCopy;
-    va_copy(argsCopy, args);
-    enum {
-        sizeOfdefaultBuffer = 100
-    };
-    char defaultBuffer[sizeOfdefaultBuffer];
-    std::string resultString;
-
-    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
-    if (size < sizeOfdefaultBuffer) {
-        resultString = std::string(defaultBuffer);
-    } else {
-        size_t newBufferSize = size + 1;
-        char* newBuffer = (char*)std::malloc(newBufferSize);
-        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
-        resultString = std::string(newBuffer);
-
-        std::free(newBuffer);
-    }
-    va_end(argsCopy);
-    return resultString;
-}
-}
-
-namespace cpputest {
-
-// does not support + or - prefixes
-unsigned strings::atou(const char* str)
-{
-    while (std::isspace(*str))
-        str++;
-
-    unsigned result = 0;
-    for (; std::isdigit(*str) && *str >= '0'; str++) {
-        result *= 10;
-        result += static_cast< unsigned >(*str - '0');
-    }
-    return result;
-}
-
-bool strings::contains(const std::string& string, const std::string& substring)
-{
-    return string.find(substring) != std::string::npos;
-}
-
-bool strings::starts_with(const std::string& string, const std::string& prefix)
-{
-    return (string.find(prefix) == 0);
-}
-
-bool strings::ends_with(const std::string& string, const std::string& suffix)
-{
-    std::string::size_type pos = string.rfind(suffix);
-    return (pos != std::string::npos) && (pos == (string.length() - suffix.length()));
-}
-
-size_t strings::count(const std::string& string, const std::string& substring)
-{
-    size_t num = 0;
-    const char* str = string.data();
-    const char* strpart = nullptr;
-    if (*str) {
-        strpart = StrStr(str, substring.data());
-    }
-    while (*str && strpart) {
-        str = strpart;
-        str++;
-        num++;
-        strpart = StrStr(str, substring.data());
-    }
-    return num;
-}
-
-std::string& strings::replaceAll(std::string& str, const std::string& to, const std::string& with)
-{
-    size_t pos = str.find(to);
-    while ((pos != std::string::npos) && (pos < str.length())) {
-        str.replace(pos, to.length(), with);
-        pos = str.find(to, pos + with.length());
-    }
-    return str;
-}
-
-std::string& strings::replaceAll(std::string& str, char to, char with)
-{
-    for (auto& c : str) {
-        if (c == to) {
-            c = with;
-        }
-    }
-    return str;
-}
-
-std::string strings::printable(const std::string& string)
+std::string printable(const std::string& string)
 {
     static const char* shortEscapeCodes[] = {
         "\\a",
@@ -196,38 +91,30 @@ std::string strings::printable(const std::string& string)
 
     return result;
 }
-
-std::string strings::lowercase(const std::string& string)
+std::string VStringFromFormat(const char* format, va_list args)
 {
-    std::string result = string;
-    for (auto& c : result)
-        c = std::tolower(c);
-    return result;
-}
+    va_list argsCopy;
+    va_copy(argsCopy, args);
+    enum {
+        sizeOfdefaultBuffer = 100
+    };
+    char defaultBuffer[sizeOfdefaultBuffer];
+    std::string resultString;
 
-void strings::padStringsToSameLength(std::string& str1, std::string& str2, char padCharacter)
-{
-    if (str1.size() > str2.size()) {
-        padStringsToSameLength(str2, str1, padCharacter);
-        return;
+    size_t size = (size_t)std::vsnprintf(defaultBuffer, sizeOfdefaultBuffer, format, args);
+    if (size < sizeOfdefaultBuffer) {
+        resultString = std::string(defaultBuffer);
+    } else {
+        size_t newBufferSize = size + 1;
+        char* newBuffer = (char*)std::malloc(newBufferSize);
+        std::vsnprintf(newBuffer, newBufferSize, format, argsCopy);
+        resultString = std::string(newBuffer);
+
+        std::free(newBuffer);
     }
-
-    str1 = std::string(str2.size() - str1.size(), padCharacter) + str1;
+    va_end(argsCopy);
+    return resultString;
 }
-
-std::string strings::subStringFromTill(const std::string& string, char startChar, char lastExcludedChar)
-{
-    size_t beginPos = string.find(startChar);
-    if (beginPos == std::string::npos)
-        return "";
-
-    size_t endPos = string.find(lastExcludedChar, beginPos);
-    if (endPos == std::string::npos)
-        return string.substr(beginPos);
-
-    return string.substr(beginPos, endPos - beginPos);
-}
-
 }
 
 std::string StringFrom(bool value)
@@ -247,7 +134,7 @@ std::string StringFromOrNull(const char* expected)
 
 std::string PrintableStringFromOrNull(const char* expected)
 {
-    return (expected) ? cpputest::strings::printable(expected) : "(null)";
+    return (expected) ? printable(expected) : "(null)";
 }
 
 std::string StringFrom(int value)

@@ -32,6 +32,41 @@
 
 namespace cpputest {
 
+namespace {
+
+    std::string subStringFromTill(const std::string& string, char startChar, char lastExcludedChar)
+    {
+        size_t beginPos = string.find(startChar);
+        if (beginPos == std::string::npos)
+            return "";
+
+        size_t endPos = string.find(lastExcludedChar, beginPos);
+        if (endPos == std::string::npos)
+            return string.substr(beginPos);
+
+        return string.substr(beginPos, endPos - beginPos);
+    }
+
+    // does not support + or - prefixes
+    unsigned atou(const char* str)
+    {
+        while (std::isspace(*str))
+            str++;
+
+        unsigned result = 0;
+        for (; std::isdigit(*str) && *str >= '0'; str++) {
+            result *= 10;
+            result += static_cast< unsigned >(*str - '0');
+        }
+        return result;
+    }
+
+    bool starts_with(const std::string& string, const std::string& prefix)
+    {
+        return (string.find(prefix) == 0);
+    }
+}
+
 CommandLineArguments::CommandLineArguments(int ac, const char* const* av)
     : ac_(ac)
     , av_(av)
@@ -104,43 +139,43 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
             rethrowExceptions_ = false;
         else if (argument == "-ci")
             rethrowExceptions_ = false;
-        else if (strings::starts_with(argument, "-r"))
+        else if (starts_with(argument, "-r"))
             setRepeatCount(ac_, av_, i);
-        else if (strings::starts_with(argument, "-g"))
+        else if (starts_with(argument, "-g"))
             addGroupFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-t"))
+        else if (starts_with(argument, "-t"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-t", false, false);
-        else if (strings::starts_with(argument, "-st"))
+        else if (starts_with(argument, "-st"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-st", true, false);
-        else if (strings::starts_with(argument, "-xt"))
+        else if (starts_with(argument, "-xt"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xt", false, true);
-        else if (strings::starts_with(argument, "-xst"))
+        else if (starts_with(argument, "-xst"))
             correctParameters = addGroupDotNameFilter(ac_, av_, i, "-xst", true, true);
-        else if (strings::starts_with(argument, "-sg"))
+        else if (starts_with(argument, "-sg"))
             addStrictGroupFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-xg"))
+        else if (starts_with(argument, "-xg"))
             addExcludeGroupFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-xsg"))
+        else if (starts_with(argument, "-xsg"))
             addExcludeStrictGroupFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-n"))
+        else if (starts_with(argument, "-n"))
             addNameFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-sn"))
+        else if (starts_with(argument, "-sn"))
             addStrictNameFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-xn"))
+        else if (starts_with(argument, "-xn"))
             addExcludeNameFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-xsn"))
+        else if (starts_with(argument, "-xsn"))
             addExcludeStrictNameFilter(ac_, av_, i);
-        else if (strings::starts_with(argument, "-s"))
+        else if (starts_with(argument, "-s"))
             correctParameters = setShuffle(ac_, av_, i);
-        else if (strings::starts_with(argument, "TEST("))
+        else if (starts_with(argument, "TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "TEST(");
-        else if (strings::starts_with(argument, "IGNORE_TEST("))
+        else if (starts_with(argument, "IGNORE_TEST("))
             addTestToRunBasedOnVerboseOutput(ac_, av_, i, "IGNORE_TEST(");
-        else if (strings::starts_with(argument, "-o"))
+        else if (starts_with(argument, "-o"))
             correctParameters = setOutputType(ac_, av_, i);
-        else if (strings::starts_with(argument, "-p"))
+        else if (starts_with(argument, "-p"))
             correctParameters = plugin->parseAllArguments(ac_, av_, i);
-        else if (strings::starts_with(argument, "-k"))
+        else if (starts_with(argument, "-k"))
             setPackageName(ac_, av_, i);
         else
             correctParameters = false;
@@ -323,9 +358,9 @@ bool CommandLineArguments::setShuffle(int ac, const char* const* av, int& i)
     std::string shuffleParameter = av[i];
     if (shuffleParameter.size() > 2) {
         shufflingPreSeeded_ = true;
-        shuffleSeed_ = strings::atou(av[i] + 2);
+        shuffleSeed_ = atou(av[i] + 2);
     } else if (i + 1 < ac) {
-        unsigned int parsedParameter = strings::atou(av[i + 1]);
+        unsigned int parsedParameter = atou(av[i + 1]);
         if (parsedParameter != 0) {
             shufflingPreSeeded_ = true;
             shuffleSeed_ = parsedParameter;
@@ -429,11 +464,11 @@ void CommandLineArguments::addExcludeStrictNameFilter(int ac, const char* const*
 void CommandLineArguments::addTestToRunBasedOnVerboseOutput(int ac, const char* const* av, int& index, const char* parameterName)
 {
     std::string wholename = getParameterField(ac, av, index, parameterName);
-    std::string testname = strings::subStringFromTill(wholename, ',', ')');
+    std::string testname = subStringFromTill(wholename, ',', ')');
     testname = testname.substr(2);
     TestFilter* namefilter = new TestFilter(testname);
     TestFilter* groupfilter = new TestFilter(
-        strings::subStringFromTill(wholename, wholename[0], ','));
+        subStringFromTill(wholename, wholename[0], ','));
     namefilter->strictMatching();
     groupfilter->strictMatching();
     groupFilters_ = groupfilter->add(groupFilters_);

@@ -32,8 +32,6 @@
 #include "CppUTestExt/MockExpectedCall.hpp"
 #include "CppUTestExt/MockFailure.hpp"
 
-#include "CppUTest/SimpleString.hpp"
-
 #define MOCK_SUPPORT_SCOPE_PREFIX "!!!$$$MockingSupportScope$$$!!!"
 
 namespace cpputest {
@@ -483,7 +481,7 @@ namespace extensions {
 
     MockSupport* MockSupport::getMockSupport(MockNamedValueListNode* node)
     {
-        if ((node->getType() == "MockSupport") && strings::contains(node->getName(), MOCK_SUPPORT_SCOPE_PREFIX))
+        if ((node->getType() == "MockSupport") && (node->getName().find(MOCK_SUPPORT_SCOPE_PREFIX) != std::string::npos))
             return (MockSupport*)node->item()->getObjectPointer();
 
         return nullptr;

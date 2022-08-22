@@ -42,153 +42,6 @@
 
 TEST_GROUP(SimpleString) {};
 
-TEST(SimpleString, lowerCase)
-{
-    std::string s1("AbCdEfG1234");
-    std::string s2 = cpputest::strings::lowercase(s1);
-    STRCMP_EQUAL("abcdefg1234", s2.c_str());
-    STRCMP_EQUAL("AbCdEfG1234", s1.c_str());
-}
-
-TEST(SimpleString, printable)
-{
-    std::string s1("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
-                   "abc");
-    std::string s2 = cpputest::strings::printable(s1);
-    STRCMP_EQUAL("ABC\\x01\\x06\\a\\n\\r\\b\\t\\v\\f\\x0E\\x1F\\x7Fabc", s2.c_str());
-    STRCMP_EQUAL("ABC\01\06\a\n\r\b\t\v\f\x0E\x1F\x7F"
-                 "abc",
-        s1.c_str());
-}
-
-TEST(SimpleString, Contains)
-{
-    std::string s("hello!");
-    std::string empty("");
-    std::string beginning("hello");
-    std::string end("lo!");
-    std::string mid("l");
-    std::string notPartOfString("xxxx");
-
-    CHECK(cpputest::strings::contains(s, empty));
-    CHECK(cpputest::strings::contains(s, beginning));
-    CHECK(cpputest::strings::contains(s, end));
-    CHECK(cpputest::strings::contains(s, mid));
-    CHECK(!cpputest::strings::contains(s, notPartOfString));
-
-    CHECK(cpputest::strings::contains(empty, empty));
-    CHECK(!cpputest::strings::contains(empty, s));
-}
-
-TEST(SimpleString, startsWith)
-{
-    std::string hi("Hi you!");
-    std::string part("Hi");
-    std::string diff("Hrrm Hi you! ffdsfd");
-    CHECK(cpputest::strings::starts_with(hi, part));
-    CHECK(!cpputest::strings::starts_with(part, hi));
-    CHECK(!cpputest::strings::starts_with(diff, hi));
-}
-
-TEST(SimpleString, count)
-{
-    std::string str("ha ha ha ha");
-    LONGS_EQUAL(4, cpputest::strings::count(str, "ha"));
-}
-
-TEST(SimpleString, countTogether)
-{
-    std::string str("hahahaha");
-    LONGS_EQUAL(4, cpputest::strings::count(str, "ha"));
-}
-
-TEST(SimpleString, countEmptyString)
-{
-    std::string str("hahahaha");
-    LONGS_EQUAL(8, cpputest::strings::count(str, ""));
-}
-
-TEST(SimpleString, countEmptyStringInEmptyString)
-{
-    std::string str;
-    LONGS_EQUAL(0, cpputest::strings::count(str, ""));
-}
-
-TEST(SimpleString, endsWith)
-{
-    std::string str("Hello World");
-    CHECK(cpputest::strings::ends_with(str, "World"));
-    CHECK(!cpputest::strings::ends_with(str, "Worl"));
-    CHECK(!cpputest::strings::ends_with(str, "Hello"));
-    std::string str2("ah");
-    CHECK(cpputest::strings::ends_with(str2, "ah"));
-    CHECK(!cpputest::strings::ends_with(str2, "baah"));
-    std::string str3("");
-    CHECK(!cpputest::strings::ends_with(str3, "baah"));
-
-    std::string str4("ha ha ha ha");
-    CHECK(cpputest::strings::ends_with(str4, "ha"));
-}
-
-TEST(SimpleString, replaceCharWithChar)
-{
-    std::string str("abcabcabca");
-    cpputest::strings::replaceAll(str, 'a', 'b');
-    STRCMP_EQUAL("bbcbbcbbcb", str.c_str());
-}
-
-TEST(SimpleString, replaceEmptyStringWithEmptyString)
-{
-    std::string str;
-    cpputest::strings::replaceAll(str, "", "");
-    STRCMP_EQUAL("", str.c_str());
-}
-
-TEST(SimpleString, replaceWholeString)
-{
-    std::string str("boo");
-    cpputest::strings::replaceAll(str, "boo", "");
-    STRCMP_EQUAL("", str.c_str());
-}
-
-TEST(SimpleString, replaceStringWithString)
-{
-    std::string str("boo baa boo baa boo");
-    cpputest::strings::replaceAll(str, "boo", "boohoo");
-    STRCMP_EQUAL("boohoo baa boohoo baa boohoo", str.c_str());
-}
-
-TEST(SimpleString, replaceStringWithSubstring)
-{
-    std::string str = "..";
-    cpputest::strings::replaceAll(str, ".", "..");
-    STRCMP_EQUAL("....", str.c_str());
-}
-
-TEST(SimpleString, subStringFromTillNormal)
-{
-    std::string str("Hello World");
-    STRCMP_EQUAL("Hello", cpputest::strings::subStringFromTill(str, 'H', ' ').c_str());
-}
-
-TEST(SimpleString, subStringFromTillOutOfBounds)
-{
-    std::string str("Hello World");
-    STRCMP_EQUAL("World", cpputest::strings::subStringFromTill(str, 'W', '!').c_str());
-}
-
-TEST(SimpleString, subStringFromTillStartDoesntExist)
-{
-    std::string str("Hello World");
-    STRCMP_EQUAL("", cpputest::strings::subStringFromTill(str, '!', ' ').c_str());
-}
-
-TEST(SimpleString, subStringFromTillWhenTheEndAppearsBeforeTheStart)
-{
-    std::string str("Hello World");
-    STRCMP_EQUAL("World", cpputest::strings::subStringFromTill(str, 'W', 'H').c_str());
-}
-
 TEST(SimpleString, NULLReportsNullString)
 {
     STRCMP_EQUAL("(null)", StringFromOrNull((char*)nullptr).c_str());
@@ -338,13 +191,6 @@ TEST(SimpleString, StringFromFormatpointer)
         FAIL("Off %p behavior");
 }
 
-TEST(SimpleString, StringFromFormatLarge)
-{
-    const char* s = "ThisIsAPrettyLargeStringAndIfWeAddThisManyTimesToABufferItWillbeFull";
-    std::string h1 = StringFromFormat("%s%s%s%s%s%s%s%s%s%s", s, s, s, s, s, s, s, s, s, s);
-    LONGS_EQUAL(10, cpputest::strings::count(h1, s));
-}
-
 TEST(SimpleString, StringFromConstSimpleString)
 {
     STRCMP_EQUAL("bla", StringFrom(std::string("bla")).c_str());
@@ -378,36 +224,6 @@ TEST(SimpleString, PlatformSpecificSprintf_doesNotFit)
     int count = WrappedUpVSNPrintf(buf, sizeof(buf), "%s", "12345678901");
     STRCMP_EQUAL("123456789", buf);
     LONGS_EQUAL(11, count);
-}
-
-TEST(SimpleString, PadStringsToSameLengthString1Larger)
-{
-    std::string str1("1");
-    std::string str2("222");
-
-    cpputest::strings::padStringsToSameLength(str1, str2, '4');
-    STRCMP_EQUAL("441", str1.c_str());
-    STRCMP_EQUAL("222", str2.c_str());
-}
-
-TEST(SimpleString, PadStringsToSameLengthString2Larger)
-{
-    std::string str1("    ");
-    std::string str2("");
-
-    cpputest::strings::padStringsToSameLength(str1, str2, ' ');
-    STRCMP_EQUAL("    ", str1.c_str());
-    STRCMP_EQUAL("    ", str2.c_str());
-}
-
-TEST(SimpleString, PadStringsToSameLengthWithSameLengthStrings)
-{
-    std::string str1("123");
-    std::string str2("123");
-
-    cpputest::strings::padStringsToSameLength(str1, str2, ' ');
-    STRCMP_EQUAL("123", str1.c_str());
-    STRCMP_EQUAL("123", str2.c_str());
 }
 
 #ifdef CPPUTEST_64BIT
@@ -494,23 +310,6 @@ TEST(SimpleString, unsigned_long)
     std::string result = StringFrom(i);
     const char* expected_string = "4294967295";
     CHECK_EQUAL(expected_string, result);
-}
-
-TEST(SimpleString, AtoU)
-{
-    char max_short_str[] = "65535";
-    CHECK(12345 == cpputest::strings::atou("012345"));
-    CHECK(6789 == cpputest::strings::atou("6789"));
-    CHECK(12345 == cpputest::strings::atou("12345/"));
-    CHECK(12345 == cpputest::strings::atou("12345:"));
-    CHECK(123 == cpputest::strings::atou("\t \r\n123"));
-    CHECK(123 == cpputest::strings::atou("123-foo"));
-    CHECK(65535 == cpputest::strings::atou(max_short_str));
-    CHECK(0 == cpputest::strings::atou("foo"));
-    CHECK(0 == cpputest::strings::atou("-foo"));
-    CHECK(0 == cpputest::strings::atou("+1"));
-    CHECK(0 == cpputest::strings::atou("-1"));
-    CHECK(0 == cpputest::strings::atou("0"));
 }
 
 TEST(SimpleString, Binary)

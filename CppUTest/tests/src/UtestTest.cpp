@@ -265,7 +265,7 @@ TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest)
     fixture.assertPrintContains("Failed in separate process - killed by signal");
 
     /* Signal 11 usually happens, but with clang3.7 on Linux, it produced signal 4 */
-    CHECK(cpputest::strings::contains(fixture.getOutput(), "signal 11") || cpputest::strings::contains(fixture.getOutput(), "signal 4"));
+    CHECK((fixture.getOutput().find("signal 11") != std::string::npos) || (fixture.getOutput().find("signal 4") != std::string::npos));
 }
 
 #endif

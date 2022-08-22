@@ -26,7 +26,10 @@
  */
 
 #include "CppUTest/TestTestingFixture.hpp"
-#include "CppUTest/TestHarness.hpp"
+
+#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/TestResult.hpp"
+#include "CppUTest/UtestMacros.hpp"
 
 namespace cpputest {
 
@@ -164,7 +167,7 @@ void TestTestingFixture::assertPrintContains(const std::string& contains)
 
 void TestTestingFixture::assertPrintContainsNot(const std::string& contains)
 {
-    CHECK(!strings::contains(getOutput(), contains));
+    CHECK(getOutput().find(contains) == std::string::npos);
 }
 
 const std::string& TestTestingFixture::getOutput()
