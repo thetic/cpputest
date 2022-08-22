@@ -64,6 +64,7 @@ jobs:
         preset:
           - msvc
           - gcc
+          - clang
         cxx_standard:
           - 11
           - 14
