@@ -1,3 +1,28 @@
+if(NOT MSVC)
+    include(CheckCXXSymbolExists)
+    check_cxx_symbol_exists(fork "unistd.h" HAVE_FORK)
+    check_cxx_symbol_exists(waitpid "sys/wait.h" HAVE_WAITPID)
+    check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
+    check_cxx_symbol_exists(localtime_s "time.h" HAVE_LOCALTIME_S)
+    include(CheckStructHasMember)
+    check_struct_has_member("struct timespec" tv_sec time.h CPPUTEST_HAVE_STRUCT_TIMESPEC)
+
+    # The tests need to know these too:
+    set(CPPUTEST_HAVE_FORK ${HAVE_FORK} CACHE INTERNAL "")
+    set(CPPUTEST_HAVE_WAITPID ${HAVE_WAITPID} CACHE INTERNAL "")
+endif()
+
+include(CheckCXXSourceCompiles)
+check_cxx_source_compiles(
+    [[#include <cfenv>
+    int main() { feclearexcept(FE_ALL_EXCEPT); }]]
+    CPPUTEST_HAVE_FENV
+)
+check_cxx_source_compiles(
+    "int main() { throw 42; }"
+    CPPUTEST_HAVE_EXCEPTIONS
+)
+
 add_library(CppUTest
     include/CppUTest/CommandLineArguments.hpp
     include/CppUTest/CommandLineTestRunner.hpp
@@ -35,21 +60,17 @@ add_library(CppUTest
 
 target_include_directories(CppUTest PUBLIC include)
 
-include(CheckCXXSourceCompiles)
-check_cxx_source_compiles(
-    [[#include <cfenv>
-    int main() { feclearexcept(FE_ALL_EXCEPT); }]]
-    CPPUTEST_HAVE_FENV
-)
-check_cxx_source_compiles(
-    "int main() { throw 42; }"
-    CPPUTEST_HAVE_EXCEPTIONS
-)
-
 target_compile_definitions(CppUTest
     PUBLIC
         "CPPUTEST_NO_EXCEPTIONS=$<NOT:$<BOOL:${CPPUTEST_HAVE_EXCEPTIONS}>>"
         "CPPUTEST_HAVE_FENV=$<BOOL:${CPPUTEST_HAVE_FENV}>"
+    PRIVATE
+        $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
+        $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
+        $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
+        $<$<AND:$<BOOL:${MINGW}>,$<BOOL:${CPPUTEST_HAVE_STRUCT_TIMESPEC}>>:_TIMESPEC_DEFINED>
+        $<$<AND:$<BOOL:${WIN32}>,$<BOOL:${HAVE_LOCALTIME_S}>>:MINGW_HAS_SECURE_API>
+        $<$<BOOL:${WIN32}>:_CRT_SECURE_NO_WARNINGS>
 )
 
 target_compile_features(CppUTest
@@ -58,33 +79,11 @@ target_compile_features(CppUTest
         c_std_99
 )
 
+target_link_libraries(CppUTest
+    PRIVATE $<$<BOOL:${WIN32}>:winmm>
+)
+
 add_library(CppUTest::CppUTest ALIAS CppUTest)
-
-if(MSVC)
-    target_compile_definitions(CppUTest PRIVATE _CRT_SECURE_NO_WARNINGS)
-    target_link_libraries(CppUTest PRIVATE winmm)
-else()
-    include(CheckCXXSymbolExists)
-    check_cxx_symbol_exists(fork "unistd.h" HAVE_FORK)
-    check_cxx_symbol_exists(waitpid "sys/wait.h" HAVE_WAITPID)
-    check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
-    check_cxx_symbol_exists(localtime_s "time.h" HAVE_LOCALTIME_S)
-    include(CheckStructHasMember)
-    check_struct_has_member("struct timespec" tv_sec time.h CPPUTEST_HAVE_STRUCT_TIMESPEC)
-
-    # The tests need to know these too:
-    set(CPPUTEST_HAVE_FORK ${HAVE_FORK} CACHE INTERNAL "")
-    set(CPPUTEST_HAVE_WAITPID ${HAVE_WAITPID} CACHE INTERNAL "")
-
-    target_compile_definitions(CppUTest
-        PRIVATE
-            $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
-            $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
-            $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
-            $<$<AND:$<BOOL:${MINGW}>,$<BOOL:${CPPUTEST_HAVE_STRUCT_TIMESPEC}>>:_TIMESPEC_DEFINED>
-            $<$<AND:$<BOOL:${WIN32}>,$<BOOL:${HAVE_LOCALTIME_S}>>:MINGW_HAS_SECURE_API>
-    )
-endif()
 
 if(CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)
