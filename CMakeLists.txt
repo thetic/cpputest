@@ -45,7 +45,7 @@ endif()
 
 if(PROJECT_IS_TOP_LEVEL)
     install(
-        EXPORT CppUTestTargets
+        EXPORT CppUTestConfig
         NAMESPACE CppUTest::
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/CppUTest
     )

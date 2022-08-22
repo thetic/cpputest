@@ -98,9 +98,13 @@ if(PROJECT_IS_TOP_LEVEL)
     include(GNUInstallDirs)
     install(
         TARGETS CppUTest
-        EXPORT CppUTestTargets
+        EXPORT CppUTestConfig
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        DESTINATION .
     )
 endif()

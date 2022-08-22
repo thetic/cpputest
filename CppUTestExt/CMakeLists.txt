@@ -26,7 +26,7 @@ add_library(CppUTestExt
 target_include_directories(CppUTestExt
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:CppUTestExt/include>
 )
 
 target_link_libraries(CppUTestExt PUBLIC CppUTest::CppUTest)
@@ -41,9 +41,13 @@ if(PROJECT_IS_TOP_LEVEL)
     include(GNUInstallDirs)
     install(
         TARGETS CppUTestExt
-        EXPORT CppUTestTargets
+        EXPORT CppUTestConfig
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        DESTINATION CppUTestExt
     )
 endif()
