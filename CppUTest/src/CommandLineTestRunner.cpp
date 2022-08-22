@@ -35,6 +35,8 @@
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
+namespace cpputest {
+
 int CommandLineTestRunner::RunAllTests(int ac, char** av)
 {
     return RunAllTests(ac, (const char* const*)av);
@@ -189,4 +191,6 @@ bool CommandLineTestRunner::parseArguments(TestPlugin* plugin)
     } else
         output_ = createConsoleOutput();
     return true;
+}
+
 }

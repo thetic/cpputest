@@ -31,6 +31,9 @@
 
 #include <limits>
 
+using cpputest::extensions::mock;
+using cpputest::extensions::MockActualCall;
+
 TEST_GROUP(MockReturnValueTest) {
     void teardown() override {
         mock().checkExpectations();

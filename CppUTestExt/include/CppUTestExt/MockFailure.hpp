@@ -30,87 +30,92 @@
 
 #include "CppUTest/TestFailure.hpp"
 
-class MockExpectedCallsList;
-class MockCheckedActualCall;
-class MockNamedValue;
-class MockFailure;
+namespace cpputest {
+namespace extensions {
 
-class MockFailureReporter {
-protected:
-    bool crashOnFailure_;
+    class MockExpectedCallsList;
+    class MockCheckedActualCall;
+    class MockNamedValue;
+    class MockFailure;
 
-public:
-    MockFailureReporter()
-        : crashOnFailure_(false)
-    {
-    }
-    virtual ~MockFailureReporter() { }
+    class MockFailureReporter {
+    protected:
+        bool crashOnFailure_;
 
-    virtual void failTest(const MockFailure& failure);
-    virtual UtestShell* getTestToFail();
+    public:
+        MockFailureReporter()
+            : crashOnFailure_(false)
+        {
+        }
+        virtual ~MockFailureReporter() { }
 
-    virtual void crashOnFailure(bool shouldCrash) { crashOnFailure_ = shouldCrash; }
-};
+        virtual void failTest(const MockFailure& failure);
+        virtual UtestShell* getTestToFail();
 
-class MockFailure : public TestFailure {
-public:
-    MockFailure(UtestShell* test);
-    ~MockFailure() override { }
+        virtual void crashOnFailure(bool shouldCrash) { crashOnFailure_ = shouldCrash; }
+    };
 
-protected:
-    void addExpectationsAndCallHistory(const MockExpectedCallsList& expectations);
-    void addExpectationsAndCallHistoryRelatedTo(const std::string& function, const MockExpectedCallsList& expectations);
-};
+    class MockFailure : public TestFailure {
+    public:
+        MockFailure(UtestShell* test);
+        ~MockFailure() override { }
 
-class MockExpectedCallsDidntHappenFailure : public MockFailure {
-public:
-    MockExpectedCallsDidntHappenFailure(UtestShell* test, const MockExpectedCallsList& expectations);
-};
+    protected:
+        void addExpectationsAndCallHistory(const MockExpectedCallsList& expectations);
+        void addExpectationsAndCallHistoryRelatedTo(const std::string& function, const MockExpectedCallsList& expectations);
+    };
 
-class MockUnexpectedCallHappenedFailure : public MockFailure {
-public:
-    MockUnexpectedCallHappenedFailure(UtestShell* test, const std::string& name, const MockExpectedCallsList& expectations);
-};
+    class MockExpectedCallsDidntHappenFailure : public MockFailure {
+    public:
+        MockExpectedCallsDidntHappenFailure(UtestShell* test, const MockExpectedCallsList& expectations);
+    };
 
-class MockCallOrderFailure : public MockFailure {
-public:
-    MockCallOrderFailure(UtestShell* test, const MockExpectedCallsList& expectations);
-};
+    class MockUnexpectedCallHappenedFailure : public MockFailure {
+    public:
+        MockUnexpectedCallHappenedFailure(UtestShell* test, const std::string& name, const MockExpectedCallsList& expectations);
+    };
 
-class MockUnexpectedInputParameterFailure : public MockFailure {
-public:
-    MockUnexpectedInputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
-};
+    class MockCallOrderFailure : public MockFailure {
+    public:
+        MockCallOrderFailure(UtestShell* test, const MockExpectedCallsList& expectations);
+    };
 
-class MockUnexpectedOutputParameterFailure : public MockFailure {
-public:
-    MockUnexpectedOutputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
-};
+    class MockUnexpectedInputParameterFailure : public MockFailure {
+    public:
+        MockUnexpectedInputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
+    };
 
-class MockExpectedParameterDidntHappenFailure : public MockFailure {
-public:
-    MockExpectedParameterDidntHappenFailure(UtestShell* test, const std::string& functionName, const MockExpectedCallsList& allExpectations,
-        const MockExpectedCallsList& matchingExpectations);
-};
+    class MockUnexpectedOutputParameterFailure : public MockFailure {
+    public:
+        MockUnexpectedOutputParameterFailure(UtestShell* test, const std::string& functionName, const MockNamedValue& parameter, const MockExpectedCallsList& expectations);
+    };
 
-class MockNoWayToCompareCustomTypeFailure : public MockFailure {
-public:
-    MockNoWayToCompareCustomTypeFailure(UtestShell* test, const std::string& typeName);
-};
+    class MockExpectedParameterDidntHappenFailure : public MockFailure {
+    public:
+        MockExpectedParameterDidntHappenFailure(UtestShell* test, const std::string& functionName, const MockExpectedCallsList& allExpectations,
+            const MockExpectedCallsList& matchingExpectations);
+    };
 
-class MockNoWayToCopyCustomTypeFailure : public MockFailure {
-public:
-    MockNoWayToCopyCustomTypeFailure(UtestShell* test, const std::string& typeName);
-};
+    class MockNoWayToCompareCustomTypeFailure : public MockFailure {
+    public:
+        MockNoWayToCompareCustomTypeFailure(UtestShell* test, const std::string& typeName);
+    };
 
-class MockUnexpectedObjectFailure : public MockFailure {
-public:
-    MockUnexpectedObjectFailure(UtestShell* test, const std::string& functionName, const void* expected, const MockExpectedCallsList& expectations);
-};
+    class MockNoWayToCopyCustomTypeFailure : public MockFailure {
+    public:
+        MockNoWayToCopyCustomTypeFailure(UtestShell* test, const std::string& typeName);
+    };
 
-class MockExpectedObjectDidntHappenFailure : public MockFailure {
-public:
-    MockExpectedObjectDidntHappenFailure(UtestShell* test, const std::string& functionName, const MockExpectedCallsList& expectations);
-};
+    class MockUnexpectedObjectFailure : public MockFailure {
+    public:
+        MockUnexpectedObjectFailure(UtestShell* test, const std::string& functionName, const void* expected, const MockExpectedCallsList& expectations);
+    };
+
+    class MockExpectedObjectDidntHappenFailure : public MockFailure {
+    public:
+        MockExpectedObjectDidntHappenFailure(UtestShell* test, const std::string& functionName, const MockExpectedCallsList& expectations);
+    };
+}
+}
 
 #endif

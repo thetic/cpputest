@@ -29,7 +29,7 @@
 
 #include "CppUTest/TestHarness.hpp"
 
-void MockFailureReporterForTest::failTest(const MockFailure& failure)
+void MockFailureReporterForTest::failTest(const cpputest::extensions::MockFailure& failure)
 {
     mockFailureString = failure.getMessage();
 }
@@ -52,16 +52,16 @@ void MockFailureReporterForTest::clearReporter()
 
 MockFailureReporterInstaller::MockFailureReporterInstaller()
 {
-    mock().setMockFailureStandardReporter(MockFailureReporterForTest::getReporter());
+    cpputest::extensions::mock().setMockFailureStandardReporter(MockFailureReporterForTest::getReporter());
 }
 
 MockFailureReporterInstaller::~MockFailureReporterInstaller()
 {
-    mock().setMockFailureStandardReporter(nullptr);
+    cpputest::extensions::mock().setMockFailureStandardReporter(nullptr);
     MockFailureReporterForTest::clearReporter();
 }
 
-UtestShell* mockFailureTest()
+cpputest::UtestShell* mockFailureTest()
 {
     return MockFailureReporterForTest::getReporter()->getTestToFail();
 }
@@ -76,7 +76,7 @@ void CLEAR_MOCK_FAILURE()
     MockFailureReporterForTest::getReporter()->mockFailureString = "";
 }
 
-void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const MockFailure& expectedFailure, const char* file, size_t line)
+void CHECK_EXPECTED_MOCK_FAILURE_LOCATION(const cpputest::extensions::MockFailure& expectedFailure, const char* file, size_t line)
 {
     std::string expectedFailureString = expectedFailure.getMessage();
     std::string actualFailureString = mockFailureString();
@@ -107,25 +107,25 @@ MockExpectedCallsListForTest::~MockExpectedCallsListForTest()
     deleteAllExpectationsAndClearList();
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(const std::string& name)
+cpputest::extensions::MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(const std::string& name)
 {
-    MockCheckedExpectedCall* newCall = new MockCheckedExpectedCall;
+    cpputest::extensions::MockCheckedExpectedCall* newCall = new cpputest::extensions::MockCheckedExpectedCall;
     newCall->withName(name);
     addExpectedCall(newCall);
     return newCall;
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(unsigned int numCalls, const std::string& name)
+cpputest::extensions::MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunction(unsigned int numCalls, const std::string& name)
 {
-    MockCheckedExpectedCall* newCall = new MockCheckedExpectedCall(numCalls);
+    cpputest::extensions::MockCheckedExpectedCall* newCall = new cpputest::extensions::MockCheckedExpectedCall(numCalls);
     newCall->withName(name);
     addExpectedCall(newCall);
     return newCall;
 }
 
-MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunctionOrdered(const std::string& name, unsigned int order)
+cpputest::extensions::MockCheckedExpectedCall* MockExpectedCallsListForTest::addFunctionOrdered(const std::string& name, unsigned int order)
 {
-    MockCheckedExpectedCall* newCall = addFunction(name);
+    cpputest::extensions::MockCheckedExpectedCall* newCall = addFunction(name);
     newCall->withCallOrder(order);
     return newCall;
 }

@@ -31,7 +31,10 @@
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
-class MyDummyComparator : public MockNamedValueComparator {
+using namespace cpputest;
+
+namespace {
+class MyDummyComparator : public extensions::MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -43,12 +46,13 @@ public:
         return StringFrom(object);
     }
 };
+}
 
 int main(int ac, char** av)
 {
     MyDummyComparator dummyComparator;
-    MockSupportPlugin mockPlugin;
-    IEEE754ExceptionsPlugin ieee754Plugin;
+    extensions::MockSupportPlugin mockPlugin;
+    extensions::IEEE754ExceptionsPlugin ieee754Plugin;
 
     mockPlugin.installComparator("MyDummyType", dummyComparator);
     TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);

@@ -2,6 +2,8 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+namespace cpputest {
+
 TeamCityTestOutput::TeamCityTestOutput()
     : currtest_(nullptr)
     , currGroup_()
@@ -100,4 +102,6 @@ void TeamCityTestOutput::printFailure(const TestFailure& failure)
     print("' details='");
     printEscaped(failure.getMessage().c_str());
     print("']\n");
+}
+
 }

@@ -28,10 +28,12 @@
 // This file contains the Test class along with the macros which make effective
 // in the harness.
 
-#ifndef D_UTest_h
-#define D_UTest_h
+#ifndef INCLUDED_CPPUTEST_UTEST_HPP
+#define INCLUDED_CPPUTEST_UTEST_HPP
 
 #include <string>
+
+namespace cpputest {
 
 class TestResult;
 class TestPlugin;
@@ -318,4 +320,6 @@ private:
     TestInstaller& operator=(const TestInstaller&);
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_UTEST_HPP

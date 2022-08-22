@@ -28,6 +28,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::mock;
+using cpputest::extensions::MockCallOrderFailure;
+
 TEST_GROUP(MockStrictOrderTest) {
     void teardown() override {
         mock().clear();

@@ -28,6 +28,8 @@
 #include "CppUTest/TestTestingFixture.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+namespace cpputest {
+
 bool TestTestingFixture::lineOfCodeExecutedAfterCheck = false;
 
 TestTestingFixture::TestTestingFixture()
@@ -189,4 +191,6 @@ void TestTestingFixture::checkTestFailsWithProperTestLocation(const char* text, 
 
     if (lineOfCodeExecutedAfterCheck)
         FAIL_LOCATION("The test should jump/throw on failure and not execute the next line. However, the next line was executed.", file, line);
+}
+
 }

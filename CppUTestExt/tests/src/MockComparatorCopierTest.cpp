@@ -29,6 +29,8 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using namespace cpputest::extensions;
+
 TEST_GROUP(MockComparatorCopierTest) {
     void teardown() override {
         mock().checkExpectations();
@@ -148,7 +150,7 @@ TEST(MockComparatorCopierTest, customObjectWithFunctionComparatorThatFailsCovers
 
     MockExpectedCallsListForTest expectations;
     expectations.addFunction("function")->withParameterOfType("MyTypeForTesting", "parameterName", &object);
-    MockExpectedCallsDidntHappenFailure failure(UtestShell::getCurrent(), expectations);
+    MockExpectedCallsDidntHappenFailure failure(cpputest::UtestShell::getCurrent(), expectations);
 
     mock().expectOneCall("function").withParameterOfType("MyTypeForTesting", "parameterName", &object);
     mock().checkExpectations();

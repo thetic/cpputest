@@ -25,79 +25,85 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_MockExpectedCallsList_h
-#define D_MockExpectedCallsList_h
+#ifndef INCLUDED_CPPUTESTEXT_MOCKEXPECTEDCALLSLIST_HPP
+#define INCLUDED_CPPUTESTEXT_MOCKEXPECTEDCALLSLIST_HPP
 
 #include "CppUTest/SimpleString.hpp"
 
-class MockCheckedExpectedCall;
-class MockNamedValue;
+namespace cpputest {
+namespace extensions {
 
-class MockExpectedCallsList {
+    class MockCheckedExpectedCall;
+    class MockNamedValue;
 
-public:
-    MockExpectedCallsList();
-    virtual ~MockExpectedCallsList();
-    virtual void deleteAllExpectationsAndClearList();
+    class MockExpectedCallsList {
 
-    virtual unsigned int size() const;
-    virtual unsigned int amountOfActualCallsFulfilledFor(const std::string& name) const;
-    virtual unsigned int amountOfUnfulfilledExpectations() const;
-    virtual bool hasUnfulfilledExpectations() const;
-    virtual bool hasFinalizedMatchingExpectations() const;
-    virtual bool hasUnmatchingExpectationsBecauseOfMissingParameters() const;
-    virtual bool hasExpectationWithName(const std::string& name) const;
-    virtual bool hasCallsOutOfOrder() const;
-    virtual bool isEmpty() const;
-
-    virtual void addExpectedCall(MockCheckedExpectedCall* call);
-    virtual void addExpectations(const MockExpectedCallsList& list);
-    virtual void addExpectationsRelatedTo(const std::string& name, const MockExpectedCallsList& list);
-
-    virtual void onlyKeepOutOfOrderExpectations();
-    virtual void addPotentiallyMatchingExpectations(const MockExpectedCallsList& list);
-
-    virtual void onlyKeepExpectationsRelatedTo(const std::string& name);
-    virtual void onlyKeepExpectationsWithInputParameter(const MockNamedValue& parameter);
-    virtual void onlyKeepExpectationsWithInputParameterName(const std::string& name);
-    virtual void onlyKeepExpectationsWithOutputParameter(const MockNamedValue& parameter);
-    virtual void onlyKeepExpectationsWithOutputParameterName(const std::string& name);
-    virtual void onlyKeepExpectationsOnObject(const void* objectPtr);
-    virtual void onlyKeepUnmatchingExpectations();
-
-    virtual MockCheckedExpectedCall* removeFirstFinalizedMatchingExpectation();
-    virtual MockCheckedExpectedCall* removeFirstMatchingExpectation();
-    virtual MockCheckedExpectedCall* getFirstMatchingExpectation();
-
-    virtual void resetActualCallMatchingState();
-    virtual void wasPassedToObject();
-    virtual void parameterWasPassed(const std::string& parameterName);
-    virtual void outputParameterWasPassed(const std::string& parameterName);
-
-    virtual std::string unfulfilledCallsToString(const std::string& linePrefix = "") const;
-    virtual std::string fulfilledCallsToString(const std::string& linePrefix = "") const;
-    virtual std::string callsWithMissingParametersToString(const std::string& linePrefix,
-        const std::string& missingParametersPrefix) const;
-
-protected:
-    virtual void pruneEmptyNodeFromList();
-
-    class MockExpectedCallsListNode {
     public:
-        MockCheckedExpectedCall* expectedCall_;
+        MockExpectedCallsList();
+        virtual ~MockExpectedCallsList();
+        virtual void deleteAllExpectationsAndClearList();
 
-        MockExpectedCallsListNode* next_;
-        MockExpectedCallsListNode(MockCheckedExpectedCall* expectedCall)
-            : expectedCall_(expectedCall)
-            , next_(nullptr)
-        {
-        }
+        virtual unsigned int size() const;
+        virtual unsigned int amountOfActualCallsFulfilledFor(const std::string& name) const;
+        virtual unsigned int amountOfUnfulfilledExpectations() const;
+        virtual bool hasUnfulfilledExpectations() const;
+        virtual bool hasFinalizedMatchingExpectations() const;
+        virtual bool hasUnmatchingExpectationsBecauseOfMissingParameters() const;
+        virtual bool hasExpectationWithName(const std::string& name) const;
+        virtual bool hasCallsOutOfOrder() const;
+        virtual bool isEmpty() const;
+
+        virtual void addExpectedCall(MockCheckedExpectedCall* call);
+        virtual void addExpectations(const MockExpectedCallsList& list);
+        virtual void addExpectationsRelatedTo(const std::string& name, const MockExpectedCallsList& list);
+
+        virtual void onlyKeepOutOfOrderExpectations();
+        virtual void addPotentiallyMatchingExpectations(const MockExpectedCallsList& list);
+
+        virtual void onlyKeepExpectationsRelatedTo(const std::string& name);
+        virtual void onlyKeepExpectationsWithInputParameter(const MockNamedValue& parameter);
+        virtual void onlyKeepExpectationsWithInputParameterName(const std::string& name);
+        virtual void onlyKeepExpectationsWithOutputParameter(const MockNamedValue& parameter);
+        virtual void onlyKeepExpectationsWithOutputParameterName(const std::string& name);
+        virtual void onlyKeepExpectationsOnObject(const void* objectPtr);
+        virtual void onlyKeepUnmatchingExpectations();
+
+        virtual MockCheckedExpectedCall* removeFirstFinalizedMatchingExpectation();
+        virtual MockCheckedExpectedCall* removeFirstMatchingExpectation();
+        virtual MockCheckedExpectedCall* getFirstMatchingExpectation();
+
+        virtual void resetActualCallMatchingState();
+        virtual void wasPassedToObject();
+        virtual void parameterWasPassed(const std::string& parameterName);
+        virtual void outputParameterWasPassed(const std::string& parameterName);
+
+        virtual std::string unfulfilledCallsToString(const std::string& linePrefix = "") const;
+        virtual std::string fulfilledCallsToString(const std::string& linePrefix = "") const;
+        virtual std::string callsWithMissingParametersToString(const std::string& linePrefix,
+            const std::string& missingParametersPrefix) const;
+
+    protected:
+        virtual void pruneEmptyNodeFromList();
+
+        class MockExpectedCallsListNode {
+        public:
+            MockCheckedExpectedCall* expectedCall_;
+
+            MockExpectedCallsListNode* next_;
+            MockExpectedCallsListNode(MockCheckedExpectedCall* expectedCall)
+                : expectedCall_(expectedCall)
+                , next_(nullptr)
+            {
+            }
+        };
+
+    private:
+        MockExpectedCallsListNode* head_;
+
+        MockExpectedCallsList(const MockExpectedCallsList&);
     };
 
-private:
-    MockExpectedCallsListNode* head_;
+}
+}
 
-    MockExpectedCallsList(const MockExpectedCallsList&);
-};
-
-#endif
+#endif // INCLUDED_CPPUTESTEXT_MOCKEXPECTEDCALLSLIST_HPP

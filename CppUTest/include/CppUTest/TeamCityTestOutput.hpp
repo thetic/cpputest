@@ -1,9 +1,11 @@
-#ifndef D_TeamCityTestOutput_h
-#define D_TeamCityTestOutput_h
+#ifndef INCLUDED_CPPUTEST_TEAMCITYTESTOUTPUT_HPP
+#define INCLUDED_CPPUTEST_TEAMCITYTESTOUTPUT_HPP
 
 #include "CppUTest/TestOutput.hpp"
 
 #include <string>
+
+namespace cpputest {
 
 class TeamCityTestOutput : public ConsoleTestOutput {
 public:
@@ -24,4 +26,6 @@ private:
     std::string currGroup_;
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TEAMCITYTESTOUTPUT_HPP

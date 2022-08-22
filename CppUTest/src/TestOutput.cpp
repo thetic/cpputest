@@ -41,34 +41,36 @@
 #include <sys/time.h>
 #endif
 
+namespace cpputest {
+
 namespace {
-long time_in_millis_impl()
-{
+    long time_in_millis_impl()
+    {
 #ifdef _MSC_VER
-    static LARGE_INTEGER s_frequency;
-    static const BOOL s_use_qpc = QueryPerformanceFrequency(&s_frequency);
-    if (s_use_qpc) {
-        LARGE_INTEGER now;
-        QueryPerformanceCounter(&now);
-        return (long)((now.QuadPart * 1000) / s_frequency.QuadPart);
-    } else {
+        static LARGE_INTEGER s_frequency;
+        static const BOOL s_use_qpc = QueryPerformanceFrequency(&s_frequency);
+        if (s_use_qpc) {
+            LARGE_INTEGER now;
+            QueryPerformanceCounter(&now);
+            return (long)((now.QuadPart * 1000) / s_frequency.QuadPart);
+        } else {
 #ifdef TIMERR_NOERROR
-        return (long)timeGetTime();
+            return (long)timeGetTime();
 #elif !defined(_WIN32_WINNT) || !defined(_WIN32_WINNT_VISTA) || (_WIN32_WINNT < _WIN32_WINNT_VISTA)
-        return (long)GetTickCount();
+            return (long)GetTickCount();
 #else
-        return (long)GetTickCount64();
+            return (long)GetTickCount64();
+#endif
+        }
+#elif defined(CPPUTEST_HAVE_GETTIMEOFDAY)
+        struct timeval tv;
+        struct timezone tz;
+        gettimeofday(&tv, &tz);
+        return (tv.tv_sec * 1000) + (long)((double)tv.tv_usec * 0.001);
+#else
+        return 0;
 #endif
     }
-#elif defined(CPPUTEST_HAVE_GETTIMEOFDAY)
-    struct timeval tv;
-    struct timezone tz;
-    gettimeofday(&tv, &tz);
-    return (tv.tv_sec * 1000) + (long)((double)tv.tv_usec * 0.001);
-#else
-    return 0;
-#endif
-}
 }
 
 WorkingEnvironment TestOutput::workingEnvironment_ = WorkingEnvironment::detectEnvironment;
@@ -494,4 +496,6 @@ void CompositeTestOutput::flush()
         outputOne_->flush();
     if (outputTwo_)
         outputTwo_->flush();
+}
+
 }

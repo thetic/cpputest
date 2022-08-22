@@ -25,13 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_CommandLineArguments_H
-#define D_CommandLineArguments_H
+#ifndef INCLUDED_CPPUTEST_COMMANDLINEARGUMENTS_HPP
+#define INCLUDED_CPPUTEST_COMMANDLINEARGUMENTS_HPP
 
 #include "CppUTest/TestFilter.hpp"
 #include "CppUTest/TestOutput.hpp"
 
 #include <string>
+
+namespace cpputest {
 
 class TestPlugin;
 
@@ -116,4 +118,6 @@ private:
     CommandLineArguments& operator=(const CommandLineArguments&);
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_COMMANDLINEARGUMENTS_HPP

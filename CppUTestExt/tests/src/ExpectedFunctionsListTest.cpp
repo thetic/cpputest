@@ -32,6 +32,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::MockCheckedExpectedCall;
+using cpputest::extensions::MockExpectedCallsList;
+
 TEST_GROUP(MockExpectedCallsList)
 {
     MockExpectedCallsList* list;
@@ -184,7 +187,7 @@ TEST(MockExpectedCallsList, onlyKeepExpectationsWithInputParameterName)
 
 TEST(MockExpectedCallsList, onlyKeepExpectationsWithInputParameter)
 {
-    MockNamedValue parameter("diffname");
+    cpputest::extensions::MockNamedValue parameter("diffname");
     parameter.setValue(1);
     call1->withName("func").withParameter("param", 1);
     call2->withName("func").withParameter("diffname", 1);

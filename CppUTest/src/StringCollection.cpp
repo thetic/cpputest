@@ -3,16 +3,18 @@
 #include <algorithm>
 #include <cstring>
 
+namespace cpputest {
+
 namespace {
-const char* StrStr(const char* s1, const char* s2)
-{
-    if (!*s2)
-        return s1;
-    for (; *s1; s1++)
-        if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
+    const char* StrStr(const char* s1, const char* s2)
+    {
+        if (!*s2)
             return s1;
-    return nullptr;
-}
+        for (; *s1; s1++)
+            if (std::strncmp(s1, s2, std::strlen(s2)) == 0)
+                return s1;
+        return nullptr;
+    }
 }
 
 StringCollection::StringCollection(const std::string& string, char delimiter)
@@ -71,4 +73,6 @@ std::string& StringCollection::operator[](size_t index)
     }
 
     return collection_[index];
+}
+
 }

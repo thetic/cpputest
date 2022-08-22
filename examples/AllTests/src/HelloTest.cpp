@@ -38,7 +38,7 @@ TEST_GROUP(HelloWorld) {
     static int output_method(const char* output, ...) {
         va_list arguments;
 va_start(arguments, output);
-*buffer = VStringFromFormat(output, arguments);
+*buffer = StringFromFormat(output, arguments);
 va_end(arguments);
 return 1;
 }

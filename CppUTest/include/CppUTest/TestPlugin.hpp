@@ -25,10 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_TestPlugin_h
-#define D_TestPlugin_h
+#ifndef INCLUDED_CPPUTEST_TESTPLUGIN_HPP
+#define INCLUDED_CPPUTEST_TESTPLUGIN_HPP
 
 #include "CppUTest/SimpleString.hpp"
+
+namespace cpputest {
 
 class UtestShell;
 class TestResult;
@@ -96,10 +98,10 @@ public:
     };
 };
 
-#define UT_PTR_SET(a, b)           \
-    do {                           \
-        CppUTestStore((void**)&a); \
-        a = b;                     \
+#define UT_PTR_SET(a, b)                     \
+    do {                                     \
+        cpputest::CppUTestStore((void**)&a); \
+        a = b;                               \
     } while (0)
 
 ///////////// Null Plugin
@@ -114,4 +116,6 @@ public:
     static NullTestPlugin* instance();
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_TESTPLUGIN_HPP

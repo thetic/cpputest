@@ -30,11 +30,12 @@
 #include "CppUTest/CommandLineTestRunner.hpp"
 #include "CppUTest/TestRegistry.hpp"
 
+using namespace cpputest;
+
 int main(int ac, const char* const* av)
 {
-    MockSupportPlugin mockPlugin;
+    extensions::MockSupportPlugin mockPlugin;
     TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
-    CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
-    return runner.runAllTestsMain();
+    return CommandLineTestRunner(ac, av, TestRegistry::getCurrentRegistry()).runAllTestsMain();
 }

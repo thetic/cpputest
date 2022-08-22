@@ -30,6 +30,8 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using cpputest::extensions::mock;
+
 TEST_GROUP(FirstTestGroup) {};
 
 TEST(FirstTestGroup, FirsTest)
@@ -56,6 +58,7 @@ TEST(MockDocumentation, SimpleScenario)
     mock().checkExpectations();
 }
 
+namespace {
 class ClassFromProductionCode {
 public:
     virtual void importantFunction() { }
@@ -69,6 +72,7 @@ public:
         mock().actualCall("importantFunction").onObject(this);
     }
 };
+}
 
 TEST(MockDocumentation, SimpleScenarioObject)
 {
@@ -94,7 +98,8 @@ TEST(MockDocumentation, parameters)
     parameters_function(2, "hah");
 }
 
-class MyTypeComparator : public MockNamedValueComparator {
+namespace {
+class MyTypeComparator : public cpputest::extensions::MockNamedValueComparator {
 public:
     bool isEqual(const void* object1, const void* object2) override
     {
@@ -105,6 +110,7 @@ public:
         return StringFrom(object);
     }
 };
+}
 
 TEST(MockDocumentation, ObjectParameters)
 {

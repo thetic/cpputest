@@ -36,17 +36,17 @@ static long MockGetPlatformSpecificTimeInMillis()
 
 TEST_GROUP(TestResult)
 {
-    TestOutput* printer;
-    StringBufferTestOutput* mock;
+    cpputest::TestOutput* printer;
+    cpputest::StringBufferTestOutput* mock;
 
-    TestResult* res;
+    cpputest::TestResult* res;
 
     void setup() override
     {
-        mock = new StringBufferTestOutput();
+        mock = new cpputest::StringBufferTestOutput();
         printer = mock;
-        res = new TestResult(*printer);
-        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        res = new cpputest::TestResult(*printer);
+        UT_PTR_SET(cpputest::TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
     }
     void teardown() override
     {
@@ -58,7 +58,7 @@ TEST_GROUP(TestResult)
 TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
 {
     res->testsEnded();
-    CHECK(strings::contains(mock->getOutput(), "10 ms"));
+    CHECK(cpputest::strings::contains(mock->getOutput(), "10 ms"));
 }
 
 TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)
@@ -79,7 +79,7 @@ TEST(TestResult, ResultIsNotOkIfFailures)
 {
     res->countTest();
     res->countRun();
-    res->addFailure(TestFailure(UtestShell::getCurrent(), StringFrom("dummy message")));
+    res->addFailure(cpputest::TestFailure(cpputest::UtestShell::getCurrent(), StringFrom("dummy message")));
     CHECK_TRUE(res->isFailure());
 }
 

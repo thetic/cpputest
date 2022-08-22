@@ -31,6 +31,9 @@
 
 #include "CppUTest/TestHarness.hpp"
 
+using namespace cpputest::extensions;
+
+namespace {
 class TypeForTestingExpectedFunctionCall {
 public:
     TypeForTestingExpectedFunctionCall(int val)
@@ -69,6 +72,7 @@ public:
     }
 };
 
+}
 TEST_GROUP(MockNamedValueHandlerRepository) {
     void teardown() override {
         CHECK_NO_MOCK_FAILURE();

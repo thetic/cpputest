@@ -30,6 +30,8 @@
 #include "CppUTest/StringCollection.hpp"
 #include "CppUTest/TestHarness.hpp"
 
+namespace cpputest {
+
 CommandLineArguments::CommandLineArguments(int ac, const char* const* av)
     : ac_(ac)
     , av_(av)
@@ -487,4 +489,6 @@ bool CommandLineArguments::isTeamCityOutput() const
 const std::string& CommandLineArguments::getPackageName() const
 {
     return packageName_;
+}
+
 }

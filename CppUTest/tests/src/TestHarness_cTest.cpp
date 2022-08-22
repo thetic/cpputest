@@ -64,11 +64,11 @@ public:
 
 TEST_GROUP(TestHarness_c)
 {
-    TestTestingFixture* fixture;
+    cpputest::TestTestingFixture* fixture;
     TEST_SETUP()
     {
         hasDestructorOfTheDestructorCheckedBeenCalled = false;
-        fixture = new TestTestingFixture();
+        fixture = new cpputest::TestTestingFixture();
     }
     TEST_TEARDOWN()
     {
@@ -453,7 +453,7 @@ TEST(TestHarness_c, checkString)
     fixture->setTestFunction(failStringMethod_);
     fixture->runAllTests();
 
-    StringEqualFailure failure(UtestShell::getCurrent(), "file", 1, "Hello", "Hello World", "");
+    cpputest::StringEqualFailure failure(cpputest::UtestShell::getCurrent(), "file", 1, "Hello", "Hello World", "");
     fixture->assertPrintContains(failure.getMessage());
     fixture->assertPrintContains("arness_c");
     CHECK(!hasDestructorOfTheDestructorCheckedBeenCalled);
@@ -471,7 +471,7 @@ TEST(TestHarness_c, checkStringText)
     fixture->setTestFunction(failStringTextMethod_);
     fixture->runAllTests();
 
-    StringEqualFailure failure(UtestShell::getCurrent(), "file", 1, "Hello", "Hello World", "");
+    cpputest::StringEqualFailure failure(cpputest::UtestShell::getCurrent(), "file", 1, "Hello", "Hello World", "");
     fixture->assertPrintContains(failure.getMessage());
     fixture->assertPrintContains("arness_c");
     fixture->assertPrintContains("Message: StringTestText");

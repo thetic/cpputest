@@ -30,6 +30,8 @@
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
 
+namespace cpputest {
+
 TestResult::TestResult(TestOutput& p)
     : output_(p)
     , testCount_(0)
@@ -147,4 +149,6 @@ size_t TestResult::getCurrentTestTotalExecutionTime() const
 size_t TestResult::getCurrentGroupTotalExecutionTime() const
 {
     return currentGroupTotalExecutionTime_;
+}
+
 }

@@ -25,11 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef D_JUnitTestOutput_h
-#define D_JUnitTestOutput_h
+#ifndef INCLUDED_CPPUTEST_JUNITTESTOUTPUT_HPP
+#define INCLUDED_CPPUTEST_JUNITTESTOUTPUT_HPP
 
 #include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestOutput.hpp"
+
+namespace cpputest {
 
 struct JUnitTestOutputImpl;
 struct JUnitTestCaseResultNode;
@@ -78,4 +80,6 @@ protected:
     virtual void writeFileEnding();
 };
 
-#endif
+}
+
+#endif // INCLUDED_CPPUTEST_JUNITTESTOUTPUT_HPP

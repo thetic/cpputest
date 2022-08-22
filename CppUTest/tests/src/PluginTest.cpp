@@ -34,7 +34,11 @@
 #define GENERIC_PLUGIN2 "GenericPlugin2"
 #define GENERIC_PLUGIN3 "GenericPlugin3"
 
-static int sequenceNumber;
+namespace cpputest {
+
+namespace {
+    int sequenceNumber;
+}
 
 class DummyPlugin : public TestPlugin {
 public:
@@ -198,4 +202,6 @@ TEST(PluginTest, ParseArgumentsContinuesAndSucceedsWhenAPluginCanParse)
     registry->installPlugin(secondPlugin);
     const char* cmd_line[] = { "-paccept", "andmorenonsense" };
     CHECK(registry->getFirstPlugin()->parseAllArguments(2, const_cast< char** >(cmd_line), 0)); /* cover non-const wrapper, too */
+}
+
 }

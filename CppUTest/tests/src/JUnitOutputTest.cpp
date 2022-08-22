@@ -36,7 +36,7 @@ class FileForJUnitOutputTests {
     std::string buffer_;
     FileForJUnitOutputTests* next_;
 
-    StringCollection linesOfFile_;
+    cpputest::StringCollection linesOfFile_;
 
 public:
     FileForJUnitOutputTests(const std::string& filename, FileForJUnitOutputTests* next)
@@ -68,7 +68,7 @@ public:
 
     const char* line(size_t lineNumber)
     {
-        linesOfFile_ = StringCollection(buffer_, '\n');
+        linesOfFile_ = cpputest::StringCollection(buffer_, '\n');
         return linesOfFile_[lineNumber - 1].c_str();
     }
 
@@ -79,7 +79,7 @@ public:
 
     size_t amountOfLines()
     {
-        linesOfFile_ = StringCollection(buffer_, '\n');
+        linesOfFile_ = cpputest::StringCollection(buffer_, '\n');
         return linesOfFile_.size();
     }
 
@@ -151,17 +151,17 @@ static const char* MockGetPlatformSpecificTimeString()
 }
 
 class JUnitTestOutputTestRunner {
-    TestResult result_;
+    cpputest::TestResult result_;
 
     const char* currentGroupName_;
-    UtestShell* currentTest_;
+    cpputest::UtestShell* currentTest_;
     bool firstTestInGroup_;
     int timeTheTestTakes_;
     unsigned int numberOfChecksInTest_;
-    TestFailure* testFailure_;
+    cpputest::TestFailure* testFailure_;
 
 public:
-    explicit JUnitTestOutputTestRunner(const TestResult& result)
+    explicit JUnitTestOutputTestRunner(const cpputest::TestResult& result)
         : result_(result)
         , currentGroupName_(nullptr)
         , currentTest_(nullptr)
@@ -173,8 +173,8 @@ public:
         millisTime = 0;
         theTime = "1978-10-03T00:00:00";
 
-        UT_PTR_SET(TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
-        UT_PTR_SET(JUnitTestOutput::timestring, MockGetPlatformSpecificTimeString);
+        UT_PTR_SET(cpputest::TestOutput::time_in_millis, MockGetPlatformSpecificTimeInMillis);
+        UT_PTR_SET(cpputest::JUnitTestOutput::timestring, MockGetPlatformSpecificTimeString);
     }
 
     JUnitTestOutputTestRunner& start()
@@ -224,7 +224,7 @@ public:
         runPreviousTest();
         delete currentTest_;
 
-        currentTest_ = new UtestShell(currentGroupName_, testName, "file", 1);
+        currentTest_ = new cpputest::UtestShell(currentGroupName_, testName, "file", 1);
         return *this;
     }
 
@@ -233,7 +233,7 @@ public:
         runPreviousTest();
         delete currentTest_;
 
-        currentTest_ = new IgnoredUtestShell(currentGroupName_, testName, "file", 1);
+        currentTest_ = new cpputest::IgnoredUtestShell(currentGroupName_, testName, "file", 1);
         return *this;
     }
 
@@ -298,7 +298,7 @@ public:
 
     JUnitTestOutputTestRunner& thatFails(const char* message, const char* file, size_t line)
     {
-        testFailure_ = new TestFailure(currentTest_, file, line, message);
+        testFailure_ = new cpputest::TestFailure(currentTest_, file, line, message);
         return *this;
     }
 
@@ -337,18 +337,18 @@ static int mockFClose(std::FILE* file)
 
 TEST_GROUP(JUnitOutputTest)
 {
-    JUnitTestOutput* junitOutput;
-    TestResult* result;
+    cpputest::JUnitTestOutput* junitOutput;
+    cpputest::TestResult* result;
     JUnitTestOutputTestRunner* testCaseRunner;
     FileForJUnitOutputTests* outputFile;
 
     void setup() override
     {
-        UT_PTR_SET(TestOutput::fopen, mockFOpen);
-        UT_PTR_SET(TestOutput::fputs, mockFPuts);
-        UT_PTR_SET(TestOutput::fclose, mockFClose);
-        junitOutput = new JUnitTestOutput();
-        result = new TestResult(*junitOutput);
+        UT_PTR_SET(cpputest::TestOutput::fopen, mockFOpen);
+        UT_PTR_SET(cpputest::TestOutput::fputs, mockFPuts);
+        UT_PTR_SET(cpputest::TestOutput::fclose, mockFClose);
+        junitOutput = new cpputest::JUnitTestOutput();
+        result = new cpputest::TestResult(*junitOutput);
         testCaseRunner = new JUnitTestOutputTestRunner(*result);
     }
 
