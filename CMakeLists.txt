@@ -42,3 +42,17 @@ add_subdirectory(CppUTestExt)
 if(CPPUTEST_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+if(PROJECT_IS_TOP_LEVEL)
+    install(
+        EXPORT CppUTestTargets
+        NAMESPACE CppUTest::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/CppUTest
+    )
+
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake"
+        COMPATIBILITY SameMajorVersion
+    )
+endif()

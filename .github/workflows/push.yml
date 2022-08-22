@@ -121,4 +121,4 @@ jobs:
       - name: Test
         run: ctest --test-dir build/defaults --output-on-failure -j
       - name: Install
-        run: cmake --install build/defaults
+        run: sudo cmake --install build/defaults
