@@ -1,7 +1,7 @@
 ---
 name: push
 
-on:
+"on":
   push:
 
 jobs:
@@ -108,3 +108,22 @@ jobs:
         with:
           path-to-lcov: lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Configure
+        run: cmake --preset defaults -D CMAKE_BUILD_TYPE=RelWithDebInfo
+      - name: Build
+        run: cmake --build build/defaults -j
+      - name: Test
+        run: ctest --test-dir build/defaults --output-on-failure -j
+      - name: Install
+        run: sudo cmake --install build/defaults
+      - name: Use
+        run: |
+          cmake -B build/example -S examples
+          cmake --build build/example
+          ctest --test-dir build/example

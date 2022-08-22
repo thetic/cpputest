@@ -1,6 +1,12 @@
 # Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
 # file Copyright.txt or https://cmake.org/licensing for details.
 
+if(NOT CMAKE_SCRIPT_MODE_FILE)
+    message(FATAL_ERROR
+        "Do not use this module directly. Use \"include(CppUTest)\" instead."
+    )
+endif()
+
 set(prefix "${TEST_PREFIX}")
 set(suffix "${TEST_SUFFIX}")
 set(extra_args ${TEST_EXTRA_ARGS})

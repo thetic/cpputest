@@ -42,3 +42,37 @@ add_subdirectory(CppUTestExt)
 if(CPPUTEST_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+if(PROJECT_IS_TOP_LEVEL)
+    include(GNUInstallDirs)
+    include(CMakePackageConfigHelpers)
+
+    set(CPPUTEST_CONFIG_DEST "${CMAKE_INSTALL_LIBDIR}/cmake/CppUTest")
+
+    # Package configuration
+    configure_package_config_file(
+        "${CMAKE_CURRENT_LIST_DIR}/cmake/CppUTestConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfig.cmake"
+        INSTALL_DESTINATION ${CPPUTEST_CONFIG_DEST}
+    )
+
+    # Package version
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake"
+        COMPATIBILITY SameMajorVersion
+    )
+
+    install(
+        FILES
+            "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfig.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake"
+            "cmake/CppUTest.cmake"
+            "cmake/CppUTestAddTests.cmake"
+        DESTINATION ${CPPUTEST_CONFIG_DEST}
+    )
+    install(
+        EXPORT CppUTestTargets
+        NAMESPACE CppUTest::
+        DESTINATION ${CPPUTEST_CONFIG_DEST}
+    )
+endif()

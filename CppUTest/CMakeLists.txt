@@ -1,3 +1,5 @@
+include(GNUInstallDirs)
+
 add_library(CppUTest
     include/CppUTest/CommandLineArguments.hpp
     include/CppUTest/CommandLineTestRunner.hpp
@@ -33,7 +35,11 @@ add_library(CppUTest
     src/Utest.cpp
 )
 
-target_include_directories(CppUTest PUBLIC include)
+target_include_directories(CppUTest
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 include(CheckCXXSourceCompiles)
 check_cxx_source_compiles(
@@ -88,4 +94,18 @@ endif()
 
 if(CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)
+endif()
+
+if(PROJECT_IS_TOP_LEVEL)
+    install(
+        TARGETS CppUTest
+        EXPORT CppUTestTargets
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    )
+    install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/CppUTest"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 endif()
