@@ -26,8 +26,10 @@
  */
 
 #include "CppUTest/SimpleString.hpp"
+
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestTestingFixture.hpp"
+
 #include <cmath>
 
 #if defined(__LP64__) || defined(_LP64) || (defined(__WORDSIZE) && (__WORDSIZE == 64)) || defined(__x86_64) || defined(_WIN64)

@@ -27,6 +27,7 @@
 
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
+
 #include <cmath>
 
 namespace {
@@ -36,11 +37,6 @@ const char* failFileName = "fail.cpp";
 
 #if CPPUTEST_HAS_NAN == 1 && CPPUTEST_HAS_INF == 1
 
-static double zero = 0.0;
-static double one = 1.0;
-static double not_a_number = zero / zero;
-static double infinity = one / zero;
-
 TEST_GROUP(TestFailureNanAndInf)
 {
     UtestShell* test;
@@ -48,12 +44,6 @@ TEST_GROUP(TestFailureNanAndInf)
     void setup() override
     {
         test = new UtestShell("groupname", "testname", failFileName, failLineNumber - 1);
-        if (std::isnan(not_a_number) == false) {
-            not_a_number = -1.0;
-        }
-        if (std::isinf(infinity) == false) {
-            infinity = -2.0;
-        }
     }
     void teardown() override
     {
@@ -64,7 +54,7 @@ TEST_GROUP(TestFailureNanAndInf)
 
 TEST(TestFailureNanAndInf, DoublesEqualExpectedIsNaN)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, not_a_number, 2.0, 3.0, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, NAN, 2.0, 3.0, "");
     FAILURE_EQUAL("expected <Nan - Not a number>\n"
                   "\tbut was  <2> threshold used was <3>\n"
                   "\tCannot make comparisons with Nan",
@@ -73,7 +63,7 @@ TEST(TestFailureNanAndInf, DoublesEqualExpectedIsNaN)
 
 TEST(TestFailureNanAndInf, DoublesEqualActualIsNaN)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, not_a_number, 3.0, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, NAN, 3.0, "");
     FAILURE_EQUAL("expected <1>\n"
                   "\tbut was  <Nan - Not a number> threshold used was <3>\n"
                   "\tCannot make comparisons with Nan",
@@ -82,7 +72,7 @@ TEST(TestFailureNanAndInf, DoublesEqualActualIsNaN)
 
 TEST(TestFailureNanAndInf, DoublesEqualThresholdIsNaN)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, 2.0, not_a_number, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, 2.0, NAN, "");
     FAILURE_EQUAL("expected <1>\n"
                   "\tbut was  <2> threshold used was <Nan - Not a number>\n"
                   "\tCannot make comparisons with Nan",
@@ -91,7 +81,7 @@ TEST(TestFailureNanAndInf, DoublesEqualThresholdIsNaN)
 
 TEST(TestFailureNanAndInf, DoublesEqualExpectedIsInf)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, infinity, 2.0, 3.0, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, INFINITY, 2.0, 3.0, "");
     FAILURE_EQUAL("expected <Inf - Infinity>\n"
                   "\tbut was  <2> threshold used was <3>",
         f);
@@ -99,7 +89,7 @@ TEST(TestFailureNanAndInf, DoublesEqualExpectedIsInf)
 
 TEST(TestFailureNanAndInf, DoublesEqualActualIsInf)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, infinity, 3.0, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, INFINITY, 3.0, "");
     FAILURE_EQUAL("expected <1>\n"
                   "\tbut was  <Inf - Infinity> threshold used was <3>",
         f);
@@ -107,7 +97,7 @@ TEST(TestFailureNanAndInf, DoublesEqualActualIsInf)
 
 TEST(TestFailureNanAndInf, DoublesEqualThresholdIsInf)
 {
-    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, not_a_number, infinity, "");
+    DoublesEqualFailure f(test, failFileName, failLineNumber, 1.0, NAN, INFINITY, "");
     FAILURE_EQUAL("expected <1>\n"
                   "\tbut was  <Nan - Not a number> threshold used was <Inf - Infinity>\n"
                   "\tCannot make comparisons with Nan",
