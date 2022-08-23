@@ -28,7 +28,7 @@
 #ifndef INCLUDED_CPPUTESTEXT_MOCKNAMEDVALUE_HPP
 #define INCLUDED_CPPUTESTEXT_MOCKNAMEDVALUE_HPP
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 namespace cpputest {
 namespace extensions {

@@ -58,7 +58,7 @@ TEST_GROUP(TestResult)
 TEST(TestResult, TestEndedWillPrintResultsAndExecutionTime)
 {
     res->testsEnded();
-    CHECK(cpputest::strings::contains(mock->getOutput(), "10 ms"));
+    CHECK(mock->getOutput().find("10 ms") != std::string::npos);
 }
 
 TEST(TestResult, ResultIsOkIfTestIsRunWithNoFailures)

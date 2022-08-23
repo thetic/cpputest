@@ -25,27 +25,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
-#define INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
+#ifndef INCLUDED_CPPUTEST_STRINGFROM_HPP
+#define INCLUDED_CPPUTEST_STRINGFROM_HPP
 
-#include <cstddef>
 #include <string>
-
-namespace cpputest {
-namespace strings {
-    std::string& replaceAll(std::string& str, const std::string& to, const std::string& with);
-    std::string& replaceAll(std::string& str, char to, char with);
-    size_t count(const std::string& string, const std::string& substring);
-    std::string subStringFromTill(const std::string&, char startChar, char lastExcludedChar);
-    std::string printable(const std::string&);
-    void padStringsToSameLength(std::string& str1, std::string& str2, char ch);
-    std::string lowercase(const std::string&);
-    unsigned atou(const char* str);
-    bool contains(const std::string& string, const std::string& substring);
-    bool ends_with(const std::string& string, const std::string& suffix);
-    bool starts_with(const std::string& string, const std::string& prefix);
-}
-}
 
 std::string StringFrom(bool value);
 std::string StringFrom(const void* value);
@@ -101,4 +84,4 @@ std::string BracketsFormattedHexStringFrom(signed char value);
 std::string BracketsFormattedHexString(std::string hexString);
 std::string PrintableStringFromOrNull(const char* expected);
 
-#endif // INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
+#endif // INCLUDED_CPPUTEST_STRINGFROM_HPP

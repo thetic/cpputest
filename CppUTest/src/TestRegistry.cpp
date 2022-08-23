@@ -27,11 +27,23 @@
 
 #include "CppUTest/TestRegistry.hpp"
 
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"
 
+#include <algorithm>
+
 namespace cpputest {
+
+namespace {
+    std::string& strip_hashes(std::string& str)
+    {
+
+        str.erase(remove(str.begin(), str.end(), '#'), str.end());
+        return str;
+    }
+}
 
 TestRegistry::TestRegistry()
     : tests_(nullptr)
@@ -95,15 +107,15 @@ void TestRegistry::listTestGroupNames(TestResult& result)
         gname += test->getGroup();
         gname += "#";
 
-        if (!strings::contains(groupList, gname)) {
+        if (groupList.find(gname) == std::string::npos) {
             groupList += gname;
             groupList += " ";
         }
     }
 
-    strings::replaceAll(groupList, "#", "");
+    strip_hashes(groupList);
 
-    if (strings::ends_with(groupList, " ")) {
+    if (groupList.back() == ' ') {
         groupList = groupList.substr(0, groupList.size() - 1);
     }
     result.print(groupList.c_str());
@@ -122,16 +134,16 @@ void TestRegistry::listTestGroupAndCaseNames(TestResult& result)
             groupAndName += test->getName();
             groupAndName += "#";
 
-            if (!strings::contains(groupAndNameList, groupAndName)) {
+            if (groupAndNameList.find(groupAndName) == std::string::npos) {
                 groupAndNameList += groupAndName;
                 groupAndNameList += " ";
             }
         }
     }
 
-    strings::replaceAll(groupAndNameList, "#", "");
+    strip_hashes(groupAndNameList);
 
-    if (strings::ends_with(groupAndNameList, " ")) {
+    if (groupAndNameList.back() == ' ') {
         groupAndNameList = groupAndNameList.substr(0, groupAndNameList.size() - 1);
     }
     result.print(groupAndNameList.c_str());

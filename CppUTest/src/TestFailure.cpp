@@ -26,7 +26,6 @@
  */
 
 #include "CppUTest/TestFailure.hpp"
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestOutput.hpp"
 
@@ -38,6 +37,18 @@
 #endif
 
 namespace cpputest {
+
+namespace {
+    void padStringsToSameLength(std::string& str1, std::string& str2, char padCharacter)
+    {
+        if (str1.size() > str2.size()) {
+            padStringsToSameLength(str2, str1, padCharacter);
+            return;
+        }
+
+        str1 = std::string(str2.size() - str1.size(), padCharacter) + str1;
+    }
+}
 
 TestFailure::TestFailure(UtestShell* test, const char* fileName, size_t lineNumber, const std::string& theMessage)
     : testName_(test->getFormattedName())
@@ -163,7 +174,7 @@ std::string TestFailure::createUserText(const char* text)
             // This is a kludge to turn off "Message: " for this case.
             // I don't think "Message: " adds anything, as you get to see the
             // message. I propose we remove "Message: " lead in
-            if (!strings::starts_with(text_string, "LONGS_EQUAL"))
+            if (text_string.find("LONGS_EQUAL") != 0)
                 userMessage += "Message: ";
             userMessage += text_string;
             userMessage += "\n\t";
@@ -273,7 +284,7 @@ LongsEqualFailure::LongsEqualFailure(UtestShell* test, const char* fileName, siz
     std::string aDecimal = StringFrom(actual);
     std::string eDecimal = StringFrom(expected);
 
-    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    padStringsToSameLength(aDecimal, eDecimal, ' ');
 
     std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
     std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
@@ -288,7 +299,7 @@ UnsignedLongsEqualFailure::UnsignedLongsEqualFailure(UtestShell* test, const cha
     std::string aDecimal = StringFrom(actual);
     std::string eDecimal = StringFrom(expected);
 
-    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    padStringsToSameLength(aDecimal, eDecimal, ' ');
 
     std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
     std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
@@ -304,7 +315,7 @@ LongLongsEqualFailure::LongLongsEqualFailure(UtestShell* test, const char* fileN
     std::string aDecimal = StringFrom(actual);
     std::string eDecimal = StringFrom(expected);
 
-    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    padStringsToSameLength(aDecimal, eDecimal, ' ');
 
     std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
     std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
@@ -319,7 +330,7 @@ UnsignedLongLongsEqualFailure::UnsignedLongLongsEqualFailure(UtestShell* test, c
     std::string aDecimal = StringFrom(actual);
     std::string eDecimal = StringFrom(expected);
 
-    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    padStringsToSameLength(aDecimal, eDecimal, ' ');
 
     std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
     std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));
@@ -334,7 +345,7 @@ SignedBytesEqualFailure::SignedBytesEqualFailure(UtestShell* test, const char* f
     std::string aDecimal = StringFrom((int)actual);
     std::string eDecimal = StringFrom((int)expected);
 
-    strings::padStringsToSameLength(aDecimal, eDecimal, ' ');
+    padStringsToSameLength(aDecimal, eDecimal, ' ');
 
     std::string actualReported = aDecimal + " " + std::string(BracketsFormattedHexStringFrom(actual));
     std::string expectedReported = eDecimal + " " + std::string(BracketsFormattedHexStringFrom(expected));

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/SimpleString.hpp"
 #include "MockFailureReporterForTest.hpp"
 
 #include "CppUTest/TestHarness.hpp"
@@ -473,8 +472,8 @@ TEST(MockCallTest, shouldntFailTwice)
     mock().actualCall("bar");
     mock().checkExpectations();
 
-    CHECK_FALSE(cpputest::strings::contains(MockFailureReporterForTest::getReporter()->mockFailureString, "bar"));
-    CHECK(cpputest::strings::contains(MockFailureReporterForTest::getReporter()->mockFailureString, "boo"));
+    CHECK(MockFailureReporterForTest::getReporter()->mockFailureString.find("bar") == std::string::npos);
+    CHECK(MockFailureReporterForTest::getReporter()->mockFailureString.find("boo") != std::string::npos);
 }
 
 TEST(MockCallTest, shouldReturnDefaultWhenThereIsntAnythingToReturn)

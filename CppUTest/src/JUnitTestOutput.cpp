@@ -30,6 +30,8 @@
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestHarness.hpp"
 #include "CppUTest/TestResult.hpp"
+
+#include <algorithm>
 #include <ctime>
 
 namespace cpputest {
@@ -92,6 +94,16 @@ namespace {
         struct tm* tmp = localtime(&theTime);
         strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
         return dateTime;
+    }
+
+    std::string& string_replace(std::string& str, const std::string& to, const std::string& with)
+    {
+        size_t pos = str.find(to);
+        while ((pos != std::string::npos) && (pos < str.length())) {
+            str.replace(pos, to.length(), with);
+            pos = str.find(to, pos + with.length());
+        }
+        return str;
     }
 }
 
@@ -188,7 +200,7 @@ std::string JUnitTestOutput::encodeFileName(const std::string& fileName)
 
     std::string result = fileName;
     for (const char* sym = forbiddenCharacters; *sym; ++sym) {
-        strings::replaceAll(result, *sym, '_');
+        std::replace(result.begin(), result.end(), *sym, '_');
     }
     return result;
 }
@@ -228,11 +240,11 @@ void JUnitTestOutput::writeProperties()
 std::string JUnitTestOutput::encodeXmlText(const std::string& textbody)
 {
     std::string buf = textbody.c_str();
-    strings::replaceAll(buf, "&", "&amp;");
-    strings::replaceAll(buf, "\"", "&quot;");
-    strings::replaceAll(buf, "<", "&lt;");
-    strings::replaceAll(buf, ">", "&gt;");
-    strings::replaceAll(buf, "\n", "{newline}");
+    string_replace(buf, "&", "&amp;");
+    string_replace(buf, "\"", "&quot;");
+    string_replace(buf, "<", "&lt;");
+    string_replace(buf, ">", "&gt;");
+    string_replace(buf, "\n", "{newline}");
     return buf;
 }
 

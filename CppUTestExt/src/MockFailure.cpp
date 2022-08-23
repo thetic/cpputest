@@ -27,6 +27,7 @@
 
 #include "CppUTestExt/MockFailure.hpp"
 
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/Utest.hpp"
 #include "CppUTest/UtestMacros.hpp"
 #include "CppUTestExt/MockExpectedCall.hpp"

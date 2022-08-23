@@ -28,7 +28,7 @@
 #ifndef INCLUDED_CPPUTESTEXT_MOCKEXPECTEDCALLSLIST_HPP
 #define INCLUDED_CPPUTESTEXT_MOCKEXPECTEDCALLSLIST_HPP
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 namespace cpputest {
 namespace extensions {

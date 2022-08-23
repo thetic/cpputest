@@ -27,6 +27,8 @@
 
 #include "CppUTestExt/MockCheckedExpectedCall.hpp"
 
+#include "CppUTest/StringFrom.hpp"
+
 namespace cpputest {
 
 std::string StringFrom(const extensions::MockNamedValue& parameter)

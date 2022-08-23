@@ -26,7 +26,7 @@
  */
 #include "CppUTest/Utest.hpp"
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestPlugin.hpp"
@@ -145,6 +145,14 @@ namespace {
             "-p doesn't work on this platform, as it is lacking fork.\b"));
     }
 #endif
+
+    std::string lowercase(const std::string& string)
+    {
+        std::string result = string;
+        for (auto& c : result)
+            c = std::tolower(c);
+        return result;
+    }
 }
 
 void (*UtestShell::run_test_process)(UtestShell*, TestPlugin*, TestResult*) = run_test_process_impl;
@@ -576,7 +584,7 @@ void UtestShell::assertCstrNoCaseEqual(const char* expected, const char* actual,
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
-    if (strings::lowercase(expected) != strings::lowercase(actual))
+    if (lowercase(expected) != lowercase(actual))
         failWith(StringEqualNoCaseFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -592,7 +600,7 @@ void UtestShell::assertCstrContains(
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!strings::contains(actual, expected))
+    if (std::string(actual).find(expected) == std::string::npos)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 
@@ -608,7 +616,7 @@ void UtestShell::assertCstrNoCaseContains(
         return;
     if (actual == nullptr || expected == nullptr)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
-    if (!strings::contains(strings::lowercase(actual), strings::lowercase(expected)))
+    if (lowercase(actual).find(lowercase(expected)) == std::string::npos)
         failWith(ContainsFailure(this, fileName, lineNumber, expected, actual, text));
 }
 

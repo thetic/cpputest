@@ -28,7 +28,7 @@
 #ifndef INCLUDED_CPPUTEST_TESTFILTER_HPP
 #define INCLUDED_CPPUTEST_TESTFILTER_HPP
 
-#include <string>
+#include "CppUTest/StringFrom.hpp"
 
 namespace cpputest {
 
