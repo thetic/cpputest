@@ -25,14 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 
-#include <cctype>
 #include <climits>
 #include <cmath>
 #include <cstdarg>
 #include <cstring>
-#include <string>
 
 namespace {
 bool isControlWithShortEscapeSequence(char ch)

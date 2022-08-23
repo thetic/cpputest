@@ -27,6 +27,7 @@
 
 #include "CppUTest/TestRegistry.hpp"
 
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"

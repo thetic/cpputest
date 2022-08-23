@@ -1002,14 +1002,14 @@ TEST(UnitTestMacros, PrintPrintsWhateverPrintPrints)
     fixture.assertPrintContains(__FILE__);
 }
 
-static void methodThatOnlyPrintsUsingSimpleStringFromFormat_()
+static void methodThatOnlyPrintsUsingStringFromFormat_()
 {
     UT_PRINT(StringFromFormat("Hello %s %d", "World!", 2009));
 }
 
-TEST(UnitTestMacros, PrintPrintsSimpleStringsForExampleThoseReturnedByFromString)
+TEST(UnitTestMacros, PrintPrintsStringsForExampleThoseReturnedByFromString)
 {
-    fixture.runTestWithMethod(methodThatOnlyPrintsUsingSimpleStringFromFormat_);
+    fixture.runTestWithMethod(methodThatOnlyPrintsUsingStringFromFormat_);
     fixture.assertPrintContains("Hello World! 2009");
 }
 

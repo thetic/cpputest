@@ -28,8 +28,9 @@
 #ifndef INCLUDED_CPPUTEST_JUNITTESTOUTPUT_HPP
 #define INCLUDED_CPPUTEST_JUNITTESTOUTPUT_HPP
 
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestOutput.hpp"
+
+#include <string>
 
 namespace cpputest {
 

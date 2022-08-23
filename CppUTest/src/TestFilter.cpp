@@ -27,8 +27,6 @@
 
 #include "CppUTest/TestFilter.hpp"
 
-#include "CppUTest/SimpleString.hpp"
-
 namespace cpputest {
 
 TestFilter::TestFilter()

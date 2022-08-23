@@ -32,7 +32,7 @@
 
 #include "CppUTest/TestOutput.hpp"
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/Utest.hpp"

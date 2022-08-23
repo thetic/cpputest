@@ -37,7 +37,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "ApplicationLib/Printer.hpp"
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 
 #include <cstdlib>
 #include <string>

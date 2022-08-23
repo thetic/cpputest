@@ -28,11 +28,7 @@
 #ifndef INCLUDED_CPPUTEST_TESTHARNESS_HPP
 #define INCLUDED_CPPUTEST_TESTHARNESS_HPP
 
-/* original value was 9973 which works well with large programs. Now set to smaller since it takes
- * a lot of memory in embedded apps. Change it if you experience the memory leak detector to be slow.
- */
-
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestPlugin.hpp"
 #include "CppUTest/TestResult.hpp"

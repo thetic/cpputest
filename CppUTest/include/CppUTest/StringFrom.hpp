@@ -25,8 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
-#define INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
+#ifndef INCLUDED_CPPUTEST_STRINGFROM_HPP
+#define INCLUDED_CPPUTEST_STRINGFROM_HPP
 
 #include <string>
 
@@ -84,4 +84,4 @@ std::string BracketsFormattedHexStringFrom(signed char value);
 std::string BracketsFormattedHexString(std::string hexString);
 std::string PrintableStringFromOrNull(const char* expected);
 
-#endif // INCLUDED_CPPUTEST_SIMPLESTRINGS_HPP
+#endif // INCLUDED_CPPUTEST_STRINGFROM_HPP

@@ -28,7 +28,7 @@
 #ifndef INCLUDED_CPPUTEST_TESTPLUGIN_HPP
 #define INCLUDED_CPPUTEST_TESTPLUGIN_HPP
 
-#include "CppUTest/SimpleString.hpp"
+#include <string>
 
 namespace cpputest {
 

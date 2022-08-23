@@ -26,6 +26,7 @@
  */
 #include "CppUTest/Utest.hpp"
 
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/TestFailure.hpp"
 #include "CppUTest/TestOutput.hpp"
 #include "CppUTest/TestPlugin.hpp"

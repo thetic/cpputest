@@ -26,10 +26,11 @@
  */
 
 #include "CppUTestExt/MockCheckedActualCall.hpp"
+
 #include "CppUTestExt/MockCheckedExpectedCall.hpp"
 #include "CppUTestExt/MockFailure.hpp"
 
-#include "CppUTest/SimpleString.hpp"
+#include "CppUTest/StringFrom.hpp"
 #include "CppUTest/UtestMacros.hpp"
 
 #include <cstring>

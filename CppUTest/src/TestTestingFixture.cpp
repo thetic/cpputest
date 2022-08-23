@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestTestingFixture.hpp"
 
-#include "CppUTest/SimpleString.hpp"
 #include "CppUTest/TestResult.hpp"
 #include "CppUTest/UtestMacros.hpp"
 
