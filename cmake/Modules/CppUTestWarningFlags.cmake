@@ -1,7 +1,15 @@
 if (MSVC)
     set(CPPUTEST_C_WARNING_FLAGS "/WX")
     set(CPPUTEST_CXX_WARNING_FLAGS "/WX /wd4290")
-else (MSVC)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "OpenWatcom")
+    # Disable W303 unreferenced parameter - this cannot be suppressed in C.
+    set(CPPUTEST_C_WARNING_FLAGS "-we -w3 -wcd=303")
+    # Disable W013 unreachable code - it overreacts to CHECK_EQUAL macros
+    # Disable W367 conditional expression in if statement is always true - same
+    # Disable W368 conditional expression in if statement is always false - same
+    # Disable W391 assignment found in boolean expression - we don't care
+    set(CPPUTEST_CXX_WARNING_FLAGS "-we -w3 -wcd=13 -wcd=367 -wcd=368 -wcd391 -wcd=472")
+else()
     include(CheckCCompilerFlag)
     include(CheckCXXCompilerFlag)
 
@@ -77,4 +85,4 @@ else (MSVC)
     check_and_append_c_warning_flags(${WARNING_C_ONLY_FLAGS})
     check_and_append_cxx_warning_flags(${WARNING_CXX_FLAGS})
 
-endif (MSVC)
+endif()
