@@ -96,6 +96,8 @@ jobs:
           -D CMAKE_SYSTEM_PROCESSOR=I86
           -D CMAKE_BUILD_TYPE=MinSizeRel
           -D CMAKE_VERBOSE_MAKEFILE=TRUE
+          -D CMAKE_C_FLAGS="-ml -oc -zm"
+          -D CMAKE_CXX_FLAGS="-ml -oc -zm -xds"
       - name: Build
         run: cmake --build cpputest_build
         # TODO test
