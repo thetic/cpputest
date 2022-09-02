@@ -15,7 +15,7 @@ checkForCppUTestToolsEnvVariable
 
 printf "" > exit  # so dosbox will run 'external' command 'exit' correctly
 printf "" >ALLTESTS.LOG
-for test in `ls *.EXE`; do
+for test in `find -maxdepth 1 -iname '*.exe' -printf '%f\n'`; do
     kb=`ls -lsk ${test} | awk '{print $1}'`
     printf "Running ${test} (${kb}k) inside DOSBox...\n"
     dosbox -conf $CPPUTEST_HOME/platforms/Dos/dosbox-0.74.conf exit \
