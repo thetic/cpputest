@@ -64,6 +64,8 @@ cmake_dependent_option(CPPUTEST_BUILD_TESTING "Compile and make tests for CppUTe
 option(CPPUTEST_TESTS_DETAILED "Run each test separately instead of grouped?" OFF)
 cmake_dependent_option(CPPUTEST_TEST_DISCOVERY "Build time test discover"
   ON "CPPUTEST_BUILD_TESTING;CMAKE_CROSSCOMPILING_EMULATOR OR NOT CMAKE_CROSSCOMPILING" OFF)
+cmake_dependent_option(CPPUTEST_SPLIT_TESTS "Split tests into smaller exectuables"
+  "${DOS}" "CPPUTEST_BUILD_TESTING" OFF)
 cmake_dependent_option(CPPUTEST_EXAMPLES "Compile and make examples?"
   ${PROJECT_IS_TOP_LEVEL} "NOT CPPUTEST_STD_CPP_LIB_DISABLED" OFF)
 option(CPPUTEST_VERBOSE_CONFIG "Print configuration to stdout during generation" ${PROJECT_IS_TOP_LEVEL})
