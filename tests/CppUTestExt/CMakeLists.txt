@@ -1,4 +1,91 @@
 if(CPPUTEST_SPLIT_TESTS)
+    add_executable(CppUTestExtTests1
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        ExpectedFunctionsListTest.cpp
+        GMockTest.cpp
+        GTest1Test.cpp
+        GTest2ConvertorTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests1 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests2
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        MemoryReportAllocatorTest.cpp
+        MemoryReportFormatterTest.cpp
+        MemoryReporterPluginTest.cpp
+        MockActualCallTest.cpp
+        MockCheatSheetTest.cpp
+        MockComparatorCopierTest.cpp
+        MockExpectedCallTest.cpp
+        MockHierarchyTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests2 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests3
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        CodeMemoryReporterTest.cpp
+        OrderedTestTest.cpp
+        OrderedTestTest_c.c
+    )
+    target_link_libraries(CppUTestExtTests3 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests4
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        MockReturnValueTest.cpp
+        MockNamedValueTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests4 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests5
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        MockPluginTest.cpp
+        MockSupport_cTest.cpp
+        MockSupport_cTestCFile.c
+    )
+    target_link_libraries(CppUTestExtTests5 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests6
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        ExpectedFunctionsListTest.cpp
+        MockCallTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests6 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests7
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        MockComparatorCopierTest.cpp
+        MockHierarchyTest.cpp
+        MockParameterTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests7 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests8
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        IEEE754PluginTest.cpp
+        IEEE754PluginTest_c.c
+        MockComparatorCopierTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests8 PRIVATE ${CppUTestExtLibName})
+
+    add_executable(CppUTestExtTests9
+        AllTests.cpp
+        MockFailureReporterForTest.cpp
+        MockFailureTest.cpp
+        MockHierarchyTest.cpp
+        MockPluginTest.cpp
+        MockReturnValueTest.cpp
+        MockStrictOrderTest.cpp
+        MockSupportTest.cpp
+    )
+    target_link_libraries(CppUTestExtTests9 PRIVATE ${CppUTestExtLibName})
 else()
     add_executable(CppUTestExtTests
         AllTests.cpp
