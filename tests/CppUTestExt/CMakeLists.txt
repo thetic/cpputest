@@ -8,6 +8,7 @@ if(CPPUTEST_SPLIT_TESTS)
         GTest2ConvertorTest.cpp
     )
     target_link_libraries(CppUTestExtTests1 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests1 PROPERTIES OUTPUT_NAME CPPUX1)
 
     add_executable(CppUTestExtTests2
         AllTests.cpp
@@ -22,6 +23,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockHierarchyTest.cpp
     )
     target_link_libraries(CppUTestExtTests2 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests2 PROPERTIES OUTPUT_NAME CPPUX2)
 
     add_executable(CppUTestExtTests3
         AllTests.cpp
@@ -31,6 +33,7 @@ if(CPPUTEST_SPLIT_TESTS)
         OrderedTestTest_c.c
     )
     target_link_libraries(CppUTestExtTests3 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests3 PROPERTIES OUTPUT_NAME CPPUX3)
 
     add_executable(CppUTestExtTests4
         AllTests.cpp
@@ -39,6 +42,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockNamedValueTest.cpp
     )
     target_link_libraries(CppUTestExtTests4 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests4 PROPERTIES OUTPUT_NAME CPPUX4)
 
     add_executable(CppUTestExtTests5
         AllTests.cpp
@@ -48,6 +52,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockSupport_cTestCFile.c
     )
     target_link_libraries(CppUTestExtTests5 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests5 PROPERTIES OUTPUT_NAME CPPUX5)
 
     add_executable(CppUTestExtTests6
         AllTests.cpp
@@ -56,6 +61,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockCallTest.cpp
     )
     target_link_libraries(CppUTestExtTests6 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests6 PROPERTIES OUTPUT_NAME CPPUX6)
 
     add_executable(CppUTestExtTests7
         AllTests.cpp
@@ -65,6 +71,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockParameterTest.cpp
     )
     target_link_libraries(CppUTestExtTests7 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests7 PROPERTIES OUTPUT_NAME CPPUX7)
 
     add_executable(CppUTestExtTests8
         AllTests.cpp
@@ -74,6 +81,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockComparatorCopierTest.cpp
     )
     target_link_libraries(CppUTestExtTests8 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests8 PROPERTIES OUTPUT_NAME CPPUX8)
 
     add_executable(CppUTestExtTests9
         AllTests.cpp
@@ -86,6 +94,7 @@ if(CPPUTEST_SPLIT_TESTS)
         MockSupportTest.cpp
     )
     target_link_libraries(CppUTestExtTests9 PRIVATE ${CppUTestExtLibName})
+    set_target_properties(CppUTestExtTests9 PROPERTIES OUTPUT_NAME CPPUX9)
 else()
     add_executable(CppUTestExtTests
         AllTests.cpp

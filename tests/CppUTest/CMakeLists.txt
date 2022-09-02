@@ -10,6 +10,7 @@ if(CPPUTEST_SPLIT_TESTS)
         JUnitOutputTest.cpp
     )
     target_link_libraries(CppUTestTests1 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests1 PROPERTIES OUTPUT_NAME CPPU1)
 
     add_executable(CppUTestTests2
         AllTests.cpp
@@ -25,6 +26,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TestResultTest.cpp
     )
     target_link_libraries(CppUTestTests2 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests2 PROPERTIES OUTPUT_NAME CPPU2)
 
     add_executable(CppUTestTests3
         AllTests.cpp
@@ -33,6 +35,7 @@ if(CPPUTEST_SPLIT_TESTS)
         SimpleStringCacheTest.cpp
     )
     target_link_libraries(CppUTestTests3 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests3 PROPERTIES OUTPUT_NAME CPPU3)
 
     add_executable(CppUTestTests4
         AllTests.cpp
@@ -40,6 +43,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TestRegistryTest.cpp
     )
     target_link_libraries(CppUTestTests4 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests4 PROPERTIES OUTPUT_NAME CPPU4)
 
     add_executable(CppUTestTests5
         AllTests.cpp
@@ -49,6 +53,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TeamCityOutputTest.cpp
     )
     target_link_libraries(CppUTestTests5 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests5 PROPERTIES OUTPUT_NAME CPPU5)
 
     add_executable(CppUTestTests6
         AllTests.cpp
@@ -58,6 +63,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TestInstallerTest.cpp
     )
     target_link_libraries(CppUTestTests6 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests6 PROPERTIES OUTPUT_NAME CPPU6)
 
     add_executable(CppUTestTests7
         AllTests.cpp
@@ -65,6 +71,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TestUTestMacro.cpp
     )
     target_link_libraries(CppUTestTests7 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests7 PROPERTIES OUTPUT_NAME CPPU7)
 
     add_executable(CppUTestTests8
         AllTests.cpp
@@ -73,6 +80,7 @@ if(CPPUTEST_SPLIT_TESTS)
         TestUTestStringMacro.cpp
     )
     target_link_libraries(CppUTestTests8 PRIVATE ${CppUTestLibName})
+    set_target_properties(CppUTestTests8 PROPERTIES OUTPUT_NAME CPPU8)
 else()
     add_executable(CppUTestTests
         AllTests.cpp
