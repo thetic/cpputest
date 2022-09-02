@@ -77,6 +77,29 @@ jobs:
           TERM: linux
         run: $CPPUTEST_HOME/platforms/Dos/alltests.sh
 
+  cmake_dos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Install tools
+        run: |
+          git clone https://github.com/cpputest/watcom-compiler.git watcom
+          echo "WATCOM=$GITHUB_WORKSPACE/watcom" >> $GITHUB_ENV
+          echo "$GITHUB_WORKSPACE/watcom/binl" >> $GITHUB_PATH
+      - name: Configure
+        run: >
+          cmake
+          -B cpputest_build
+          -G "Watcom WMake"
+          -D CMAKE_SYSTEM_NAME=DOS
+          -D CMAKE_SYSTEM_PROCESSOR=I86
+          -D CMAKE_BUILD_TYPE=MinSizeRel
+          -D CMAKE_VERBOSE_MAKEFILE=TRUE
+      - name: Build
+        run: cmake --build cpputest_build
+        # TODO test
+
   cmake_wine:
     runs-on: ubuntu-latest
     env:
