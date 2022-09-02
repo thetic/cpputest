@@ -1,4 +1,78 @@
 if(CPPUTEST_SPLIT_TESTS)
+    add_executable(CppUTestTests1
+        AllTests.cpp
+        AllocLetTestFree.c
+        AllocLetTestFreeTest.cpp
+        CheatSheetTest.cpp
+        CompatabilityTests.cpp
+        CommandLineArgumentsTest.cpp
+        CommandLineTestRunnerTest.cpp
+        JUnitOutputTest.cpp
+    )
+    target_link_libraries(CppUTestTests1 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests2
+        AllTests.cpp
+        DummyMemoryLeakDetector.cpp
+        MemoryLeakWarningTest.cpp
+        PluginTest.cpp
+        PreprocessorTest.cpp
+        SetPluginTest.cpp
+        SimpleMutexTest.cpp
+        TeamCityOutputTest.cpp
+        TestFailureNaNTest.cpp
+        TestFailureTest.cpp
+        TestResultTest.cpp
+    )
+    target_link_libraries(CppUTestTests2 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests3
+        AllTests.cpp
+        MemoryLeakDetectorTest.cpp
+        SimpleStringTest.cpp
+        SimpleStringCacheTest.cpp
+    )
+    target_link_libraries(CppUTestTests3 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests4
+        AllTests.cpp
+        TestOutputTest.cpp
+        TestRegistryTest.cpp
+    )
+    target_link_libraries(CppUTestTests4 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests5
+        AllTests.cpp
+        AllocationInCFile.c
+        AllocationInCppFile.cpp
+        MemoryOperatorOverloadTest.cpp
+        TeamCityOutputTest.cpp
+    )
+    target_link_libraries(CppUTestTests5 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests6
+        AllTests.cpp
+        TestFilterTest.cpp
+        TestHarness_cTest.cpp
+        TestHarness_cTestCFile.c
+        TestInstallerTest.cpp
+    )
+    target_link_libraries(CppUTestTests6 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests7
+        AllTests.cpp
+        TestMemoryAllocatorTest.cpp
+        TestUTestMacro.cpp
+    )
+    target_link_libraries(CppUTestTests7 PRIVATE ${CppUTestLibName})
+
+    add_executable(CppUTestTests8
+        AllTests.cpp
+        UtestPlatformTest.cpp
+        UtestTest.cpp
+        TestUTestStringMacro.cpp
+    )
+    target_link_libraries(CppUTestTests8 PRIVATE ${CppUTestLibName})
 else()
     add_executable(CppUTestTests
         AllTests.cpp
