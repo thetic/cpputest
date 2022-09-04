@@ -139,7 +139,7 @@ public:
     virtual void assertBinaryEqual(const void* expected, const void* actual, size_t length, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertBitsEqual(unsigned long expected, unsigned long actual, unsigned long mask, size_t byteCount, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertCompare(bool comparison, const char* checkString, const char* comparisonString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    [[noreturn]] virtual void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
 
     virtual void print(const char* text, const char* fileName, size_t lineNumber);
