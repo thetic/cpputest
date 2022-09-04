@@ -68,19 +68,19 @@ public:
 
 class NormalTestTerminator : public TestTerminator {
 public:
-    virtual void exitCurrentTest() const override;
+    [[noreturn]] virtual void exitCurrentTest() const override;
     ~NormalTestTerminator() override;
 };
 
 class TestTerminatorWithoutExceptions : public TestTerminator {
 public:
-    virtual void exitCurrentTest() const override;
+    [[noreturn]] virtual void exitCurrentTest() const override;
     ~TestTerminatorWithoutExceptions() override;
 };
 
 class CrashingTestTerminator : public NormalTestTerminator {
 public:
-    virtual void exitCurrentTest() const override;
+    [[noreturn]] virtual void exitCurrentTest() const override;
     ~CrashingTestTerminator() override;
 };
 
@@ -140,7 +140,7 @@ public:
     virtual void assertBitsEqual(unsigned long expected, unsigned long actual, unsigned long mask, size_t byteCount, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertCompare(bool comparison, const char* checkString, const char* comparisonString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     [[noreturn]] virtual void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
+    [[noreturn]] virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
 
     virtual void print(const char* text, const char* fileName, size_t lineNumber);
     virtual void print(const std::string& text, const char* fileName, size_t lineNumber);
