@@ -22,7 +22,9 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install -y --no-install-recommends lcov
       - name: Coverage
-        run: lcov --capture --directory . --no-external --output-file lcov.info
+        run: |
+          lcov --capture --directory . --no-external --output-file lcov.info
+          lcov --remove lcov.info --output-file lcov.info '*/tests/*'
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
