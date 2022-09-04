@@ -39,13 +39,10 @@ class TestResult;
 class TestPlugin;
 class TestFailure;
 class TestFilter;
-class TestTerminator;
 
 extern bool doubles_equal(double d1, double d2, double threshold);
 
 //////////////////// Utest
-
-class UtestShell;
 
 class Utest {
 public:
@@ -62,25 +59,25 @@ public:
 
 class TestTerminator {
 public:
-    [[noreturn]] virtual void exitCurrentTest() const = 0;
+    virtual void exitCurrentTest() const = 0;
     virtual ~TestTerminator();
 };
 
 class NormalTestTerminator : public TestTerminator {
 public:
-    [[noreturn]] virtual void exitCurrentTest() const override;
+    virtual void exitCurrentTest() const override;
     ~NormalTestTerminator() override;
 };
 
 class TestTerminatorWithoutExceptions : public TestTerminator {
 public:
-    [[noreturn]] virtual void exitCurrentTest() const override;
+    virtual void exitCurrentTest() const override;
     ~TestTerminatorWithoutExceptions() override;
 };
 
 class CrashingTestTerminator : public NormalTestTerminator {
 public:
-    [[noreturn]] virtual void exitCurrentTest() const override;
+    virtual void exitCurrentTest() const override;
     ~CrashingTestTerminator() override;
 };
 
@@ -139,8 +136,8 @@ public:
     virtual void assertBinaryEqual(const void* expected, const void* actual, size_t length, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertBitsEqual(unsigned long expected, unsigned long actual, unsigned long mask, size_t byteCount, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
     virtual void assertCompare(bool comparison, const char* checkString, const char* comparisonString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    [[noreturn]] virtual void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
-    [[noreturn]] virtual void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
+    void fail(const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator = getCurrentTestTerminator());
+    void exitTest(const TestTerminator& testTerminator = getCurrentTestTerminator());
 
     virtual void print(const char* text, const char* fileName, size_t lineNumber);
     virtual void print(const std::string& text, const char* fileName, size_t lineNumber);
@@ -166,8 +163,8 @@ public:
     virtual void runOneTest(TestPlugin* plugin, TestResult& result);
     virtual void runOneTestInCurrentProcess(TestPlugin* plugin, TestResult& result);
 
-    [[noreturn]] virtual void failWith(const TestFailure& failure);
-    [[noreturn]] virtual void failWith(const TestFailure& failure, const TestTerminator& terminator);
+    void failWith(const TestFailure& failure);
+    void failWith(const TestFailure& failure, const TestTerminator& terminator);
 
     virtual void addFailure(const TestFailure& failure);
 

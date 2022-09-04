@@ -44,12 +44,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef __GNUC__
-#define UNREACHABLE __builtin_unreachable()
-#else
-#define UNREACHABLE do {} while(1)
-#endif
-
 namespace cpputest {
 
 namespace {
@@ -503,14 +497,12 @@ bool UtestShell::shouldRun(const TestFilter* groupFilters, const TestFilter* nam
 void UtestShell::failWith(const TestFailure& failure)
 {
     failWith(failure, getCurrentTestTerminator());
-    UNREACHABLE; // LCOV_EXCL_LINE
 }
 
 void UtestShell::failWith(const TestFailure& failure, const TestTerminator& terminator)
 {
     addFailure(failure);
     terminator.exitCurrentTest();
-    UNREACHABLE; // LCOV_EXCL_LINE
 }
 
 void UtestShell::addFailure(const TestFailure& failure)
@@ -519,10 +511,9 @@ void UtestShell::addFailure(const TestFailure& failure)
     getTestResult()->addFailure(failure);
 }
 
-[[noreturn]] void UtestShell::exitTest(const TestTerminator& terminator)
+void UtestShell::exitTest(const TestTerminator& terminator)
 {
     terminator.exitCurrentTest();
-    UNREACHABLE; // LCOV_EXCL_LINE
 }
 
 void UtestShell::assertTrue(bool condition, const char* checkString, const char* conditionString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
@@ -536,7 +527,6 @@ void UtestShell::fail(const char* text, const char* fileName, size_t lineNumber,
 {
     getTestResult()->countCheck();
     failWith(FailFailure(this, fileName, lineNumber, text), testTerminator);
-    UNREACHABLE; // LCOV_EXCL_LINE
 }
 
 void UtestShell::assertCstrEqual(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
