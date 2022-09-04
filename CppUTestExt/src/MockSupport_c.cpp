@@ -52,9 +52,7 @@ public:
         TestTerminatorWithoutExceptions::exitCurrentTest();
     }
 
-    ~MockFailureReporterTestTerminatorForInCOnlyCode() override
-    {
-    }
+    ~MockFailureReporterTestTerminatorForInCOnlyCode() override = default;
 
 private:
     bool crashOnFailure_;
