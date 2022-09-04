@@ -59,7 +59,7 @@ namespace extensions {
             IEEE754_CHECK_CLEAR(test, result, FE_DIVBYZERO);
             IEEE754_CHECK_CLEAR(test, result, FE_OVERFLOW);
             IEEE754_CHECK_CLEAR(test, result, FE_UNDERFLOW);
-            IEEE754_CHECK_CLEAR(test, result, FE_INVALID); // LCOV_EXCL_LINE (not all platforms support this)
+            IEEE754_CHECK_CLEAR(test, result, FE_INVALID);
             IEEE754_CHECK_CLEAR(test, result, FE_INEXACT);
         }
     }

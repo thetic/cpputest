@@ -196,7 +196,7 @@ void FAIL_TEXT_C_LOCATION(const char* text, const char* fileName, size_t lineNum
         fileName,
         lineNumber,
         cpputest::TestTerminatorWithoutExceptions());
-} // LCOV_EXCL_LINE
+}
 
 void FAIL_C_LOCATION(const char* fileName, size_t lineNumber)
 {
@@ -205,7 +205,7 @@ void FAIL_C_LOCATION(const char* fileName, size_t lineNumber)
         fileName,
         lineNumber,
         cpputest::TestTerminatorWithoutExceptions());
-} // LCOV_EXCL_LINE
+}
 
 void CHECK_C_LOCATION(int condition, const char* conditionString, const char* text, const char* fileName, size_t lineNumber)
 {

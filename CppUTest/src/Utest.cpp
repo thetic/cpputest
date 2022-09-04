@@ -110,9 +110,9 @@ namespace {
         }
 
         if (cpid == 0) { /* Code executed by child */
-            const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
-            shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
-            _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+            const size_t initialFailureCount = result->getFailureCount();
+            shell->runOneTestInCurrentProcess(plugin, *result);
+            _exit(initialFailureCount < result->getFailureCount());
         } else { /* Code executed by parent */
             size_t amountOfRetries = 0;
             do {
@@ -303,7 +303,6 @@ UtestShell::~UtestShell()
 {
 }
 
-// LCOV_EXCL_START - actually covered but not in .gcno due to race condition
 #ifdef NEEDS_DISABLE_NULL_WARNING
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnonnull"
@@ -317,7 +316,6 @@ static void defaultCrashMethod()
 #ifdef NEEDS_DISABLE_NULL_WARNING
 #pragma GCC diagnostic pop
 #endif /* NEEDS_DISABLE_NULL_WARNING */
-// LCOV_EXCL_STOP
 
 static void (*pleaseCrashMeRightNow)() = defaultCrashMethod;
 
@@ -523,13 +521,13 @@ bool UtestShell::shouldRun(const TestFilter* groupFilters, const TestFilter* nam
 void UtestShell::failWith(const TestFailure& failure)
 {
     failWith(failure, getCurrentTestTerminator());
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::failWith(const TestFailure& failure, const TestTerminator& terminator)
 {
     addFailure(failure);
     terminator.exitCurrentTest();
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::addFailure(const TestFailure& failure)
 {
@@ -540,7 +538,7 @@ void UtestShell::addFailure(const TestFailure& failure)
 void UtestShell::exitTest(const TestTerminator& terminator)
 {
     terminator.exitCurrentTest();
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::assertTrue(bool condition, const char* checkString, const char* conditionString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
@@ -553,7 +551,7 @@ void UtestShell::fail(const char* text, const char* fileName, size_t lineNumber,
 {
     getTestResult()->countCheck();
     failWith(FailFailure(this, fileName, lineNumber, text), testTerminator);
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::assertCstrEqual(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
@@ -892,7 +890,7 @@ NormalTestTerminator::~NormalTestTerminator()
 void TestTerminatorWithoutExceptions::exitCurrentTest() const
 {
     do_long_jump();
-} // LCOV_EXCL_LINE
+}
 
 TestTerminatorWithoutExceptions::~TestTerminatorWithoutExceptions()
 {

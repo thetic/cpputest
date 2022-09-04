@@ -50,12 +50,12 @@ public:
             UT_CRASH();
 
         TestTerminatorWithoutExceptions::exitCurrentTest();
-    } // LCOV_EXCL_LINE
-    // LCOV_EXCL_START
+    }
+
     ~MockFailureReporterTestTerminatorForInCOnlyCode() override
     {
     }
-    // LCOV_EXCL_STOP
+
 private:
     bool crashOnFailure_;
 };
@@ -66,7 +66,7 @@ public:
     {
         if (!getTestToFail()->hasFailed())
             getTestToFail()->failWith(failure, MockFailureReporterTestTerminatorForInCOnlyCode(crashOnFailure_));
-    } // LCOV_EXCL_LINE
+    }
 };
 
 cpputest::extensions::MockSupport* currentMockSupport = nullptr;
