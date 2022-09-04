@@ -173,7 +173,6 @@ public:
 
 protected:
     UtestShell();
-    UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber, UtestShell* nextTest);
 
     virtual std::string getMacroName() const;
     TestResult* getTestResult();

@@ -290,17 +290,6 @@ UtestShell::UtestShell(const char* groupName, const char* testName, const char* 
 {
 }
 
-UtestShell::UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber, UtestShell* nextTest)
-    : group_(groupName)
-    , name_(testName)
-    , file_(fileName)
-    , lineNumber_(lineNumber)
-    , next_(nextTest)
-    , isRunAsSeperateProcess_(false)
-    , hasFailed_(false)
-{
-}
-
 UtestShell::~UtestShell()
 {
 }
