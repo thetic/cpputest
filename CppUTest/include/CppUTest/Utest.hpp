@@ -62,7 +62,7 @@ public:
 
 class TestTerminator {
 public:
-    virtual void exitCurrentTest() const = 0;
+    [[noreturn]] virtual void exitCurrentTest() const = 0;
     virtual ~TestTerminator();
 };
 
@@ -166,8 +166,8 @@ public:
     virtual void runOneTest(TestPlugin* plugin, TestResult& result);
     virtual void runOneTestInCurrentProcess(TestPlugin* plugin, TestResult& result);
 
-    virtual void failWith(const TestFailure& failure);
-    virtual void failWith(const TestFailure& failure, const TestTerminator& terminator);
+    [[noreturn]] virtual void failWith(const TestFailure& failure);
+    [[noreturn]] virtual void failWith(const TestFailure& failure, const TestTerminator& terminator);
 
     virtual void addFailure(const TestFailure& failure);
 
