@@ -44,7 +44,6 @@ public:
     void installPlugin(TestPlugin* plugin);
 
     void setTestFunction(void (*testFunction)());
-    void setTestFunction(ExecFunction* testFunction);
     void setSetup(void (*setupFunction)());
     void setTeardown(void (*teardownFunction)());
 
