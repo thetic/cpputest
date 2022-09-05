@@ -121,6 +121,10 @@ void TestOutput::color()
     color_ = true;
 }
 
+void TestOutput::printBuffer(const char*)
+{
+}
+
 void TestOutput::print(const char* str)
 {
     printBuffer(str);
@@ -326,6 +330,10 @@ void TestOutput::printVeryVerbose(const char* str)
 {
     if (verbose_ == level_veryVerbose)
         printBuffer(str);
+}
+
+void TestOutput::flush()
+{
 }
 
 void ConsoleTestOutput::printBuffer(const char* s)

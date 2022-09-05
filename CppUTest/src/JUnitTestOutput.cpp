@@ -308,25 +308,9 @@ void JUnitTestOutput::writeTestGroupToFile()
     closeFile();
 }
 
-void JUnitTestOutput::printBuffer(const char*)
-{
-}
-
 void JUnitTestOutput::print(const char* output)
 {
     impl_->stdOutput_ += output;
-}
-
-void JUnitTestOutput::print(long)
-{
-}
-
-void JUnitTestOutput::print(size_t)
-{
-}
-
-void JUnitTestOutput::flush()
-{
 }
 
 void JUnitTestOutput::printFailure(const TestFailure& failure)
