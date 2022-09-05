@@ -84,15 +84,6 @@ void TestTestingFixture::setTestFunction(void (*testFunction)())
     ownsExecFunction_ = true;
 }
 
-void TestTestingFixture::setTestFunction(ExecFunction* testFunction)
-{
-    clearExecFunction();
-
-    genTest_->testFunction_ = testFunction;
-
-    ownsExecFunction_ = false;
-}
-
 void TestTestingFixture::setSetup(void (*setupFunction)())
 {
     genTest_->setup_ = setupFunction;

@@ -11,7 +11,7 @@
       "cacheVariables": {
         "CMAKE_C_EXTENSIONS": false,
         "CMAKE_CXX_EXTENSIONS": false,
-        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_EXPORT_COMPILE_COMMANDS": true
       }
     },
@@ -54,6 +54,7 @@
       "name": "coverage",
       "inherits": ["gcc"],
       "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
         "CPPUTEST_DISCOVER": false,
         "CPPUTEST_EXAMPLES": false
       },

@@ -618,7 +618,7 @@ void failedCallToMockC()
 {
     cpputest::SetBooleanOnDestructorCall setOneDestructor(destructorWasCalled);
     mock_c()->actualCall("Not a call");
-} // LCOV_EXCL_LINE
+}
 }
 
 // Silly wrapper because of a test that only fails in Visual C++ due to different
@@ -685,7 +685,7 @@ void failingCallToMockCWithParameterOfType_()
 {
     mock_c()->expectOneCall("bar")->withParameterOfType("typeName", "name", (const void*)1);
     mock_c()->actualCall("bar")->withParameterOfType("typeName", "name", (const void*)2);
-} // LCOV_EXCL_LINE
+}
 }
 
 TEST(MockSupport_c, failureWithParameterOfTypeCoversValueToString)
@@ -728,7 +728,7 @@ void failingCallToMockCWithMemoryBuffer_()
     mock_c()->expectOneCall("bar")->withMemoryBufferParameter("name", memBuffer1, sizeof(memBuffer1));
     mock_c()->actualCall("bar")->withMemoryBufferParameter("name", memBuffer2, sizeof(memBuffer2));
 }
-} // LCOV_EXCL_LINE
+}
 
 TEST(MockSupport_c, expectOneMemBufferParameterAndValueFailsDueToContents)
 {

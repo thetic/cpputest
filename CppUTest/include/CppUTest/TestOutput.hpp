@@ -67,7 +67,7 @@ public:
 
     virtual void verbose(VerbosityLevel level);
     virtual void color();
-    virtual void printBuffer(const char*) = 0;
+    virtual void printBuffer(const char*);
     virtual void print(const char*);
     virtual void print(long);
     virtual void print(size_t);
@@ -78,7 +78,7 @@ public:
 
     virtual void printVeryVerbose(const char*);
 
-    virtual void flush() = 0;
+    virtual void flush();
 
     static void setWorkingEnvironment(WorkingEnvironment workEnvironment);
     static WorkingEnvironment getWorkingEnvironment();

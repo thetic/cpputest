@@ -44,10 +44,6 @@
 #include <unistd.h>
 #endif
 
-#if defined(__GNUC__) && __GNUC__ >= 11
-#define NEEDS_DISABLE_NULL_WARNING
-#endif /* GCC >= 11 */
-
 namespace cpputest {
 
 namespace {
@@ -110,25 +106,30 @@ namespace {
         }
 
         if (cpid == 0) { /* Code executed by child */
-            const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
-            shell->runOneTestInCurrentProcess(plugin, *result); // LCOV_EXCL_LINE
-            _exit(initialFailureCount < result->getFailureCount()); // LCOV_EXCL_LINE
+            const size_t initialFailureCount = result->getFailureCount();
+            shell->runOneTestInCurrentProcess(plugin, *result);
+            _exit(initialFailureCount < result->getFailureCount());
         } else { /* Code executed by parent */
+            #ifdef __APPLE__
             size_t amountOfRetries = 0;
+            #endif
             do {
                 w = waitpid(cpid, &status, WUNTRACED);
                 if (w == syscallError) {
                     // OS X debugger causes EINTR
+                    #ifdef __APPLE__
                     if (EINTR == errno) {
                         if (amountOfRetries > 30) {
                             result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
                             return;
                         }
                         amountOfRetries++;
-                    } else {
-                        result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
-                        return;
+                        continue;
                     }
+                    #endif
+
+                    result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
+                    return;
                 } else {
                     SetTestFailureByStatusCode(shell, result, status);
                     if (WIFSTOPPED(status))
@@ -288,36 +289,14 @@ UtestShell::UtestShell(const char* groupName, const char* testName, const char* 
 {
 }
 
-UtestShell::UtestShell(const char* groupName, const char* testName, const char* fileName, size_t lineNumber, UtestShell* nextTest)
-    : group_(groupName)
-    , name_(testName)
-    , file_(fileName)
-    , lineNumber_(lineNumber)
-    , next_(nextTest)
-    , isRunAsSeperateProcess_(false)
-    , hasFailed_(false)
-{
-}
-
 UtestShell::~UtestShell()
 {
 }
-
-// LCOV_EXCL_START - actually covered but not in .gcno due to race condition
-#ifdef NEEDS_DISABLE_NULL_WARNING
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wnonnull"
-#endif /* NEEDS_DISABLE_NULL_WARNING */
 
 static void defaultCrashMethod()
 {
     std::raise(SIGSEGV);
 }
-
-#ifdef NEEDS_DISABLE_NULL_WARNING
-#pragma GCC diagnostic pop
-#endif /* NEEDS_DISABLE_NULL_WARNING */
-// LCOV_EXCL_STOP
 
 static void (*pleaseCrashMeRightNow)() = defaultCrashMethod;
 
@@ -523,13 +502,13 @@ bool UtestShell::shouldRun(const TestFilter* groupFilters, const TestFilter* nam
 void UtestShell::failWith(const TestFailure& failure)
 {
     failWith(failure, getCurrentTestTerminator());
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::failWith(const TestFailure& failure, const TestTerminator& terminator)
 {
     addFailure(failure);
     terminator.exitCurrentTest();
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::addFailure(const TestFailure& failure)
 {
@@ -540,7 +519,7 @@ void UtestShell::addFailure(const TestFailure& failure)
 void UtestShell::exitTest(const TestTerminator& terminator)
 {
     terminator.exitCurrentTest();
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::assertTrue(bool condition, const char* checkString, const char* conditionString, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
@@ -553,7 +532,7 @@ void UtestShell::fail(const char* text, const char* fileName, size_t lineNumber,
 {
     getTestResult()->countCheck();
     failWith(FailFailure(this, fileName, lineNumber, text), testTerminator);
-} // LCOV_EXCL_LINE
+}
 
 void UtestShell::assertCstrEqual(const char* expected, const char* actual, const char* text, const char* fileName, size_t lineNumber, const TestTerminator& testTerminator)
 {
@@ -892,7 +871,7 @@ NormalTestTerminator::~NormalTestTerminator()
 void TestTerminatorWithoutExceptions::exitCurrentTest() const
 {
     do_long_jump();
-} // LCOV_EXCL_LINE
+}
 
 TestTerminatorWithoutExceptions::~TestTerminatorWithoutExceptions()
 {

@@ -50,7 +50,7 @@ namespace extensions {
                 UT_CRASH();
 
             UtestShell::getCurrentTestTerminator().exitCurrentTest();
-        } // LCOV_EXCL_LINE
+        }
 
         ~MockFailureReporterTestTerminator() override
         {
@@ -64,7 +64,7 @@ namespace extensions {
     {
         if (!getTestToFail()->hasFailed())
             getTestToFail()->failWith(failure, MockFailureReporterTestTerminator(crashOnFailure_));
-    } // LCOV_EXCL_LINE
+    }
 
     UtestShell* MockFailureReporter::getTestToFail()
     {

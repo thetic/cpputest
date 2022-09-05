@@ -80,7 +80,7 @@ static void failBoolMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_BOOL(1, 0);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkBool)
 {
@@ -97,7 +97,7 @@ static void failBoolTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_BOOL_TEXT(1, 0, "BoolTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkBoolText)
 {
@@ -115,7 +115,7 @@ static void failIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_INT(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkInt)
 {
@@ -131,7 +131,7 @@ static void failIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_INT_TEXT(1, 2, "IntTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkIntText)
 {
@@ -148,7 +148,7 @@ static void failUnsignedIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_UINT(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedInt)
 {
@@ -164,7 +164,7 @@ static void failUnsignedIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_UINT_TEXT(1, 2, "UnsignedIntTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedIntText)
 {
@@ -181,7 +181,7 @@ static void failLongIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_LONG(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkLongInt)
 {
@@ -197,7 +197,7 @@ static void failLongIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_LONG_TEXT(1, 2, "LongIntTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkLongIntText)
 {
@@ -214,7 +214,7 @@ static void failUnsignedLongIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_ULONG(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedLongInt)
 {
@@ -230,7 +230,7 @@ static void failUnsignedLongIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_ULONG_TEXT(1, 2, "UnsignedLongIntTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedLongIntText)
 {
@@ -247,7 +247,7 @@ static void failLongLongIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_LONGLONG(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkLongLongInt)
 {
@@ -263,7 +263,7 @@ static void failLongLongIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_LONGLONG_TEXT(1, 2, "LongLongTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkLongLongIntText)
 {
@@ -280,7 +280,7 @@ static void failUnsignedLongLongIntMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_ULONGLONG(1, 2);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedLongLongInt)
 {
@@ -296,7 +296,7 @@ static void failUnsignedLongLongIntTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_ULONGLONG_TEXT(1, 2, "UnsignedLongLongTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkUnsignedLongLongIntText)
 {
@@ -313,7 +313,7 @@ static void failRealMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_REAL(1.0, 2.0, 0.5);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkReal)
 {
@@ -329,7 +329,7 @@ static void failRealTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_REAL_TEXT(1.0, 2.0, 0.5, "RealTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkRealText)
 {
@@ -445,7 +445,7 @@ static void failStringMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_STRING("Hello", "Hello World");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkString)
 {
@@ -463,7 +463,7 @@ static void failStringTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_EQUAL_C_STRING_TEXT("Hello", "Hello World", "StringTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkStringText)
 {
@@ -548,7 +548,7 @@ static void failTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     FAIL_TEXT_C("Booo");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkFailText)
 {
@@ -563,7 +563,7 @@ static void failMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     FAIL_C();
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkFail)
 {
@@ -578,7 +578,7 @@ static void CheckMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_C(false);
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkCheck)
 {
@@ -593,7 +593,7 @@ static void CheckTextMethod_()
 {
     HasTheDestructorBeenCalledChecker checker;
     CHECK_C_TEXT(false, "CheckTestText");
-} // LCOV_EXCL_LINE
+}
 
 TEST(TestHarness_c, checkCheckText)
 {

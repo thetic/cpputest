@@ -308,30 +308,10 @@ void JUnitTestOutput::writeTestGroupToFile()
     closeFile();
 }
 
-// LCOV_EXCL_START
-
-void JUnitTestOutput::printBuffer(const char*)
-{
-}
-
 void JUnitTestOutput::print(const char* output)
 {
     impl_->stdOutput_ += output;
 }
-
-void JUnitTestOutput::print(long)
-{
-}
-
-void JUnitTestOutput::print(size_t)
-{
-}
-
-void JUnitTestOutput::flush()
-{
-}
-
-// LCOV_EXCL_STOP
 
 void JUnitTestOutput::printFailure(const TestFailure& failure)
 {

@@ -49,13 +49,8 @@ public:
     void printCurrentGroupStarted(const UtestShell& test) override;
     void printCurrentGroupEnded(const TestResult& res) override;
 
-    void printBuffer(const char*) override;
     void print(const char*) override;
-    void print(long) override;
-    void print(size_t) override;
     void printFailure(const TestFailure& failure) override;
-
-    void flush() override;
 
     virtual std::string createFileName(const std::string& group);
     void setPackageName(const std::string& package);

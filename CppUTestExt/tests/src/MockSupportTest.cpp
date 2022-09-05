@@ -230,7 +230,7 @@ static void crashMethod()
 static void unexpectedCallTestFunction_(void)
 {
     mock().actualCall("unexpected");
-} // LCOV_EXCL_LINE
+}
 
 TEST(MockSupportTestWithFixture, shouldCrashOnFailure)
 {
