@@ -110,21 +110,26 @@ namespace {
             shell->runOneTestInCurrentProcess(plugin, *result);
             _exit(initialFailureCount < result->getFailureCount());
         } else { /* Code executed by parent */
+            #ifdef __APPLE__
             size_t amountOfRetries = 0;
+            #endif
             do {
                 w = waitpid(cpid, &status, WUNTRACED);
                 if (w == syscallError) {
                     // OS X debugger causes EINTR
+                    #ifdef __APPLE__
                     if (EINTR == errno) {
                         if (amountOfRetries > 30) {
                             result->addFailure(TestFailure(shell, "Call to waitpid() failed with EINTR. Tried 30 times and giving up! Sometimes happens in debugger"));
                             return;
                         }
                         amountOfRetries++;
-                    } else {
-                        result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
-                        return;
+                        continue;
                     }
+                    #endif
+
+                    result->addFailure(TestFailure(shell, "Call to waitpid() failed"));
+                    return;
                 } else {
                     SetTestFailureByStatusCode(shell, result, status);
                     if (WIFSTOPPED(status))
