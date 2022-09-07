@@ -92,3 +92,4 @@ generated/
 #IAR automatically generated files
 *.dep
 *.ewt
+/cpputest_build/
