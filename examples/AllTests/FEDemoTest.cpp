@@ -38,9 +38,7 @@
  *
  */
 
-extern "C" {
-    #include <fenv.h>
-}
+#include <fenv.h>
 
 #include <limits>
 

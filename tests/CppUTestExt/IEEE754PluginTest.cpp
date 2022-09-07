@@ -32,9 +32,10 @@
 #include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
 #if CPPUTEST_HAVE_FENV
-#if CPPUTEST_FENV_IS_WORKING_PROPERLY
 
 #include "IEEE754PluginTest_c.h"
+
+#include <fenv.h>
 
 TEST_GROUP(FE_with_Plugin)
 {
@@ -46,27 +47,34 @@ TEST_GROUP(FE_with_Plugin)
     }
 };
 
+#ifdef FE_DIVBYZERO
 TEST(FE_with_Plugin, should_fail_when_FE_DIVBYZERO_is_set)
 {
     fixture.setTestFunction(set_divisionbyzero_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_DIVBYZERO) failed");
 }
+#endif
 
+#ifdef FE_OVERFLOW
 TEST(FE_with_Plugin, should_fail_when_FE_OVERFLOW_is_set)
 {
     fixture.setTestFunction(set_overflow_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_OVERFLOW) failed");
 }
+#endif
 
+#ifdef FE_UNDERFLOW
 TEST(FE_with_Plugin, should_fail_when_FE_UNDERFLOW_is_set)
 {
     fixture.setTestFunction(set_underflow_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_UNDERFLOW) failed");
 }
+#endif
 
+#ifdef FE_INEXACT
 TEST(FE_with_Plugin, should_fail_when_FE_INEXACT_is_set_and_enabled)
 {
     IEEE754ExceptionsPlugin::enableInexact();
@@ -92,7 +100,12 @@ TEST(FE_with_Plugin, should_succeed_with_5_checks_when_no_flags_are_set)
     fixture.assertPrintContains("OK (1 tests, 1 ran, 5 checks, 0 ignored, 0 filtered out");
     IEEE754ExceptionsPlugin::disableInexact();
 }
+#endif
 
+#if defined(FE_DIVBYZERO) && \
+    defined(FE_OVERFLOW) && \
+    defined(FE_UNDERFLOW) && \
+    defined(FE_INEXACT)
 TEST(FE_with_Plugin, should_check_five_times_when_all_flags_are_set)
 {
     fixture.setTestFunction(set_everything_c);
@@ -124,6 +137,7 @@ TEST(FE_with_Plugin, should_not_fail_again_when_test_has_already_failed)
     LONGS_EQUAL(1, fixture.getCheckCount());
     LONGS_EQUAL(1, fixture.getFailureCount());
 }
+#endif
 
 static IEEE754ExceptionsPlugin ip;
 
@@ -140,5 +154,4 @@ IGNORE_TEST(IEEE754ExceptionsPlugin2, should_not_fail_in_ignored_test)
     set_everything_c();
 }
 
-#endif
 #endif
