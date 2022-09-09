@@ -48,7 +48,7 @@ static volatile float f;
 
 TEST_GROUP(FE_Demo)
 {
-    void setup()
+    TEST_SETUP()
     {
         IEEE754ExceptionsPlugin::disableInexact();
     }

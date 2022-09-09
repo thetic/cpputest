@@ -33,11 +33,11 @@ TEST_GROUP(CircularBuffer)
 {
     CircularBuffer* buffer;
 
-    void setup()
+    TEST_SETUP()
     {
         buffer = new CircularBuffer();
     }
-    void teardown()
+    TEST_TEARDOWN()
     {
         delete buffer;
     }

@@ -34,12 +34,12 @@ TEST_GROUP(Printer)
     Printer* printer;
     MockPrinter* mockPrinter;
 
-    void setup()
+    TEST_SETUP()
     {
         mockPrinter = new MockPrinter();
         printer = mockPrinter;
     }
-    void teardown()
+    TEST_TEARDOWN()
     {
         delete printer;
     }
