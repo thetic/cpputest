@@ -65,6 +65,7 @@ else (MSVC)
     if (DEFINED CMAKE_CXX_STANDARD AND NOT CMAKE_CXX_STANDARD EQUAL 98)
         set(WARNING_CXX_FLAGS
            ${WARNING_CXX_FLAGS}
+           Wsuggest-override
            Wno-c++98-compat
            Wno-c++98-compat-pedantic
            Wno-c++14-compat
