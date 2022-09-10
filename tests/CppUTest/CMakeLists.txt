@@ -1,6 +1,7 @@
+set(CppUTestTestsSourceLists)
+
 if(CPPUTEST_SPLIT_TESTS)
-    add_executable(CppUTestTests1
-        AllTests.cpp
+    set(CppUTestTestsSources1
         AllocLetTestFree.c
         AllocLetTestFreeTest.cpp
         CheatSheetTest.cpp
@@ -9,11 +10,9 @@ if(CPPUTEST_SPLIT_TESTS)
         CommandLineTestRunnerTest.cpp
         JUnitOutputTest.cpp
     )
-    target_link_libraries(CppUTestTests1 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests1 PROPERTIES OUTPUT_NAME CPPU1)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources1)
 
-    add_executable(CppUTestTests2
-        AllTests.cpp
+    set(CppUTestTestsSources2
         DummyMemoryLeakDetector.cpp
         MemoryLeakWarningTest.cpp
         PluginTest.cpp
@@ -25,65 +24,51 @@ if(CPPUTEST_SPLIT_TESTS)
         TestFailureTest.cpp
         TestResultTest.cpp
     )
-    target_link_libraries(CppUTestTests2 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests2 PROPERTIES OUTPUT_NAME CPPU2)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources2)
 
-    add_executable(CppUTestTests3
-        AllTests.cpp
+    set(CppUTestTestsSources3
         MemoryLeakDetectorTest.cpp
         SimpleStringTest.cpp
         SimpleStringCacheTest.cpp
     )
-    target_link_libraries(CppUTestTests3 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests3 PROPERTIES OUTPUT_NAME CPPU3)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources3)
 
-    add_executable(CppUTestTests4
-        AllTests.cpp
+    set(CppUTestTestsSources4
         TestOutputTest.cpp
         TestRegistryTest.cpp
     )
-    target_link_libraries(CppUTestTests4 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests4 PROPERTIES OUTPUT_NAME CPPU4)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources4)
 
-    add_executable(CppUTestTests5
-        AllTests.cpp
+    set(CppUTestTestsSources5
         AllocationInCFile.c
         AllocationInCppFile.cpp
         MemoryOperatorOverloadTest.cpp
         TeamCityOutputTest.cpp
     )
-    target_link_libraries(CppUTestTests5 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests5 PROPERTIES OUTPUT_NAME CPPU5)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources5)
 
-    add_executable(CppUTestTests6
-        AllTests.cpp
+    set(CppUTestTestsSources6
         TestFilterTest.cpp
         TestHarness_cTest.cpp
         TestHarness_cTestCFile.c
         TestInstallerTest.cpp
     )
-    target_link_libraries(CppUTestTests6 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests6 PROPERTIES OUTPUT_NAME CPPU6)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources6)
 
-    add_executable(CppUTestTests7
-        AllTests.cpp
+    set(CppUTestTestsSources7
         TestMemoryAllocatorTest.cpp
         TestUTestMacro.cpp
     )
-    target_link_libraries(CppUTestTests7 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests7 PROPERTIES OUTPUT_NAME CPPU7)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources7)
 
-    add_executable(CppUTestTests8
-        AllTests.cpp
+    set(CppUTestTestsSources8
         UtestPlatformTest.cpp
         UtestTest.cpp
         TestUTestStringMacro.cpp
     )
-    target_link_libraries(CppUTestTests8 PRIVATE ${CppUTestLibName})
-    set_target_properties(CppUTestTests8 PROPERTIES OUTPUT_NAME CPPU8)
+    list(APPEND CppUTestTestsSourceLists CppUTestTestSources8)
 else()
-    add_executable(CppUTestTests
-        AllTests.cpp
+    set(CppUTestTestsSources
         SetPluginTest.cpp
         CheatSheetTest.cpp
         SimpleStringTest.cpp
@@ -119,24 +104,43 @@ else()
         UtestPlatformTest.cpp
         TeamCityOutputTest.cpp
     )
-
-    if (MSVC)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4723")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4723")
-    endif (MSVC)
-
-    if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
-        set(THREADS_PREFER_PTHREAD_FLAG ON)
-        find_package(Threads)
-        if(CMAKE_USE_PTHREADS_INIT)
-            target_link_libraries(CppUTestTests PRIVATE Threads::Threads)
-        endif()
-    endif()
-
-    cpputest_normalize_test_output_location(CppUTestTests)
-    target_link_libraries(CppUTestTests PRIVATE ${CppUTestLibName})
-
-    if (CPPUTEST_TEST_DISCOVERY)
-        cpputest_buildtime_discover_tests(CppUTestTests)
-    endif()
+    list(APPEND CppUTestTestsSourceLists CppUTestTestsSources)
 endif()
+
+if (MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4723")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4723")
+endif (MSVC)
+
+if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads)
+endif()
+
+foreach(SourceList IN LISTS CppUTestTestsSourceLists)
+    string(REGEX REPLACE "Sources" "" TestName ${SourceList})
+
+    add_executable(${TestName}
+        AllTests.cpp
+        ${${SourceList}}
+    )
+
+    target_link_libraries(${TestName}
+        PRIVATE
+            ${CppUTestLibName}
+            $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:Threads::Threads>
+    )
+
+    if(DOS)
+        # Use a shorter file name
+        string(REGEX MATCH "\\d+\$" TestNumber ${SourceList})
+        set_target_properties(${TestName} PROPERTIES
+            OUTPUT_NAME CPPU${TestNumber}
+        )
+    endif()
+
+    cpputest_normalize_test_output_location(${TestName})
+    if (CPPUTEST_TEST_DISCOVERY)
+        cpputest_buildtime_discover_tests(${TestName})
+    endif()
+endforeach()

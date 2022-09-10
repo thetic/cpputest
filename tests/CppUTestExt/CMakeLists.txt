@@ -1,17 +1,16 @@
+set(CppUTestExtTestsSourceLists)
+
 if(CPPUTEST_SPLIT_TESTS)
-    add_executable(CppUTestExtTests1
-        AllTests.cpp
+    set(CppUTestExtTestsSources1
         MockFailureReporterForTest.cpp
         ExpectedFunctionsListTest.cpp
         GMockTest.cpp
         GTest1Test.cpp
         GTest2ConvertorTest.cpp
     )
-    target_link_libraries(CppUTestExtTests1 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests1 PROPERTIES OUTPUT_NAME CPPUX1)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources1)
 
-    add_executable(CppUTestExtTests2
-        AllTests.cpp
+    set(CppUTestExtTestsSources2
         MockFailureReporterForTest.cpp
         MemoryReportAllocatorTest.cpp
         MemoryReportFormatterTest.cpp
@@ -22,69 +21,55 @@ if(CPPUTEST_SPLIT_TESTS)
         MockExpectedCallTest.cpp
         MockHierarchyTest.cpp
     )
-    target_link_libraries(CppUTestExtTests2 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests2 PROPERTIES OUTPUT_NAME CPPUX2)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources2)
 
-    add_executable(CppUTestExtTests3
-        AllTests.cpp
+    set(CppUTestExtTestsSources3
         MockFailureReporterForTest.cpp
         CodeMemoryReporterTest.cpp
         OrderedTestTest.cpp
         OrderedTestTest_c.c
     )
-    target_link_libraries(CppUTestExtTests3 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests3 PROPERTIES OUTPUT_NAME CPPUX3)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources3)
 
-    add_executable(CppUTestExtTests4
-        AllTests.cpp
+    set(CppUTestExtTestsSources4
         MockFailureReporterForTest.cpp
         MockReturnValueTest.cpp
         MockNamedValueTest.cpp
     )
-    target_link_libraries(CppUTestExtTests4 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests4 PROPERTIES OUTPUT_NAME CPPUX4)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources4)
 
-    add_executable(CppUTestExtTests5
-        AllTests.cpp
+    set(CppUTestExtTestsSources5
         MockFailureReporterForTest.cpp
         MockPluginTest.cpp
         MockSupport_cTest.cpp
         MockSupport_cTestCFile.c
     )
-    target_link_libraries(CppUTestExtTests5 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests5 PROPERTIES OUTPUT_NAME CPPUX5)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources5)
 
-    add_executable(CppUTestExtTests6
-        AllTests.cpp
+    set(CppUTestExtTestsSources6
         MockFailureReporterForTest.cpp
         ExpectedFunctionsListTest.cpp
         MockCallTest.cpp
     )
-    target_link_libraries(CppUTestExtTests6 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests6 PROPERTIES OUTPUT_NAME CPPUX6)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources6)
 
-    add_executable(CppUTestExtTests7
-        AllTests.cpp
+    set(CppUTestExtTestsSources7
         MockFailureReporterForTest.cpp
         MockComparatorCopierTest.cpp
         MockHierarchyTest.cpp
         MockParameterTest.cpp
     )
-    target_link_libraries(CppUTestExtTests7 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests7 PROPERTIES OUTPUT_NAME CPPUX7)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources7)
 
-    add_executable(CppUTestExtTests8
-        AllTests.cpp
+    set(CppUTestExtTestsSources8
         MockFailureReporterForTest.cpp
         IEEE754PluginTest.cpp
         IEEE754PluginTest_c.c
         MockComparatorCopierTest.cpp
     )
-    target_link_libraries(CppUTestExtTests8 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests8 PROPERTIES OUTPUT_NAME CPPUX8)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources8)
 
-    add_executable(CppUTestExtTests9
-        AllTests.cpp
+    set(CppUTestExtTestsSources9
         MockFailureReporterForTest.cpp
         MockFailureTest.cpp
         MockHierarchyTest.cpp
@@ -93,11 +78,9 @@ if(CPPUTEST_SPLIT_TESTS)
         MockStrictOrderTest.cpp
         MockSupportTest.cpp
     )
-    target_link_libraries(CppUTestExtTests9 PRIVATE ${CppUTestExtLibName})
-    set_target_properties(CppUTestExtTests9 PROPERTIES OUTPUT_NAME CPPUX9)
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources9)
 else()
-    add_executable(CppUTestExtTests
-        AllTests.cpp
+    set(CppUTestExtTestsSources
         CodeMemoryReporterTest.cpp
         GMockTest.cpp
         GTest1Test.cpp
@@ -126,23 +109,39 @@ else()
         OrderedTestTest_c.c
         OrderedTestTest.cpp
     )
+    list(APPEND CppUTestExtTestsSourceLists CppUTestExtTestsSources)
+endif()
 
-    if(MINGW)
-        set(THREADS_PREFER_PTHREAD_FLAG ON)
-        find_package(Threads)
-        if(CMAKE_USE_PTHREADS_INIT)
-            target_link_libraries(CppUTestExtTests PRIVATE Threads::Threads)
-        endif()
-    endif()
+if(MINGW)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads)
+endif()
 
-    cpputest_normalize_test_output_location(CppUTestExtTests)
-    target_link_libraries(CppUTestExtTests
+foreach(SourceList IN LISTS CppUTestExtTestsSourceLists)
+    string(REGEX REPLACE "Sources" "" TestName ${SourceList})
+
+    add_executable(${TestName}
+        AllTests.cpp
+        ${${SourceList}}
+    )
+
+    target_link_libraries(${TestName}
         PRIVATE
             ${CppUTestLibName}
             ${CppUTestExtLibName}
+            $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:Threads::Threads>
     )
 
-    if (CPPUTEST_TEST_DISCOVERY)
-        cpputest_buildtime_discover_tests(CppUTestExtTests)
+    if(DOS)
+        # Use a shorter file name
+        string(REGEX MATCH ".\$" TestNumber ${SourceList})
+        set_target_properties(${TestName} PROPERTIES
+            OUTPUT_NAME CPPUX${TestNumber}
+        )
     endif()
-endif()
+
+    cpputest_normalize_test_output_location(${TestName})
+    if (CPPUTEST_TEST_DISCOVERY)
+        cpputest_buildtime_discover_tests(${TestName})
+    endif()
+endforeach()
