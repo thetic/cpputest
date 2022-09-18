@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "IEEE754PluginTest_c.h"
 
 #include "CppUTest/CommandLineTestRunner.h"
 #include "CppUTest/TestHarness.h"
@@ -31,10 +32,9 @@
 #include "CppUTest/TestTestingFixture.h"
 #include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
-#if CPPUTEST_HAVE_FENV
-#if CPPUTEST_FENV_IS_WORKING_PROPERLY
+#include <fenv.h>
 
-#include "IEEE754PluginTest_c.h"
+#if FE_ALL_EXCEPT
 
 TEST_GROUP(FE_with_Plugin)
 {
@@ -46,27 +46,34 @@ TEST_GROUP(FE_with_Plugin)
     }
 };
 
+#if FE_DIVBYZERO
 TEST(FE_with_Plugin, should_fail_when_FE_DIVBYZERO_is_set)
 {
     fixture.setTestFunction(set_divisionbyzero_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_DIVBYZERO) failed");
 }
+#endif
 
+#if FE_OVERFLOW
 TEST(FE_with_Plugin, should_fail_when_FE_OVERFLOW_is_set)
 {
     fixture.setTestFunction(set_overflow_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_OVERFLOW) failed");
 }
+#endif
 
+#if FE_UNDERFLOW
 TEST(FE_with_Plugin, should_fail_when_FE_UNDERFLOW_is_set)
 {
     fixture.setTestFunction(set_underflow_c);
     fixture.runAllTests();
     fixture.assertPrintContains("IEEE754_CHECK_CLEAR(FE_UNDERFLOW) failed");
 }
+#endif
 
+#ifdef FE_INEXACT
 TEST(FE_with_Plugin, should_fail_when_FE_INEXACT_is_set_and_enabled)
 {
     IEEE754ExceptionsPlugin::enableInexact();
@@ -83,6 +90,7 @@ TEST(FE_with_Plugin, should_succeed_when_FE_INEXACT_is_set_and_disabled)
     fixture.runAllTests();
     fixture.assertPrintContains("OK");
 }
+#endif
 
 TEST(FE_with_Plugin, should_succeed_with_5_checks_when_no_flags_are_set)
 {
@@ -140,5 +148,4 @@ IGNORE_TEST(IEEE754ExceptionsPlugin2, should_not_fail_in_ignored_test)
     set_everything_c();
 }
 
-#endif
 #endif

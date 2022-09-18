@@ -11,8 +11,6 @@
 
 #cmakedefine CPPUTEST_HAVE_GETTIMEOFDAY
 
-#cmakedefine01 CPPUTEST_HAVE_FENV
-
 #cmakedefine CPPUTEST_HAVE_STRUCT_TIMESPEC
 #ifdef CPPUTEST_HAVE_STRUCT_TIMESPEC
 /* Apply workaround for MinGW timespec redefinition (pthread.h / time.h) */

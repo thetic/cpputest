@@ -28,9 +28,7 @@
 #include "CppUTest/CommandLineTestRunner.h"
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestRegistry.h"
-
-#if CPPUTEST_HAVE_FENV
-    #include "CppUTestExt/IEEE754ExceptionsPlugin.h"
+#include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
 /*
  * To see a demonstration of tests failing as a result of IEEE754ExceptionsPlugin
@@ -38,11 +36,11 @@
  *
  */
 
-extern "C" {
-    #include <fenv.h>
-}
+#include <fenv.h>
 
-    #include <limits>
+#include <limits>
+
+#if FE_ALL_EXCEPT
 
 static volatile float f;
 
