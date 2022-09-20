@@ -76,6 +76,10 @@ jobs:
             cpp_version: 17
             cxx: clang++
             cc: clang
+          - os: ubuntu-latest
+            cpp_version: 20
+            cxx: clang++
+            cc: clang
           #   CMake different C++ versions with gcc
           - os: ubuntu-latest
             cpp_version: 98
@@ -91,6 +95,10 @@ jobs:
             cc: gcc
           - os: ubuntu-latest
             cpp_version: 17
+            cxx: g++
+            cc: gcc
+          - os: ubuntu-latest
+            cpp_version: 20
             cxx: g++
             cc: gcc
           # Mac OSX
