@@ -123,13 +123,13 @@ jobs:
       - name: Configure
         run: >
           cmake
-          -B build
+          -B cpputest_build
           -S .
           -D CMAKE_CXX_STANDARD=${{ matrix.cpp_version }}
       - name: Build
-        run: cmake --build build --verbose
+        run: cmake --build cpputest_build --verbose -j
       - name: Test
-        run: ctest --test-dir build
+        run: ctest --test-dir cpputest_build -j
 
   visualstudio-clangcl:
     runs-on: windows-latest
@@ -139,10 +139,10 @@ jobs:
       - name: Configure
         run: >
           cmake
-          -B build
+          -B cpputest_build
           -G "Visual Studio 17 2022"
           -T ClangCL
       - name: Build
-        run: cmake --build build --verbose
+        run: cmake --build cpputest_build --verbose -j
       - name: Test
-        run: ctest --test-dir build
+        run: ctest --test-dir cpputest_build -j

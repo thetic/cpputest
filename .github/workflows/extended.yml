@@ -40,9 +40,9 @@ jobs:
           -D CPPUTEST_COVERAGE=ON
           -D CPPUTEST_EXAMPLES=OFF
       - name: Build
-        run: cmake --build cpputest_build
+        run: cmake --build cpputest_build -j
       - name: Test
-        run: ctest --test-dir cpputest_build
+        run: ctest --test-dir cpputest_build -j
       - name: Coverage
         run: |
           lcov --capture --directory . --no-external --output-file lcov.info
@@ -90,14 +90,14 @@ jobs:
       - name: Configure
         run: >
           cmake
-          -B build
+          -B cpputest_build
           -S .
           -D CMAKE_SYSTEM_NAME=Windows
           -D CMAKE_CROSSCOMPILING_EMULATOR=wine
       - name: Build
-        run: cmake --build build --verbose
+        run: cmake --build cpputest_build --verbose -j
       - name: Test
-        run: ctest --test-dir build
+        run: ctest --test-dir cpputest_build -j
 
   cmake_no_exceptions:
     runs-on: ubuntu-latest
@@ -112,9 +112,9 @@ jobs:
       - name: Configure
         run: cmake -B cpputest_build -S .
       - name: Build
-        run: cmake --build cpputest_build --verbose
+        run: cmake --build cpputest_build --verbose -j
       - name: Test
-        run: ctest --test-dir cpputest_build
+        run: ctest --test-dir cpputest_build -j
 
   cmake_install:
     runs-on: ubuntu-latest
@@ -125,13 +125,13 @@ jobs:
         run: |
           cmake -B cpputest_build/ -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo
           cmake --build cpputest_build/ -j
-          ctest --test-dir cpputest_build/
+          ctest --test-dir cpputest_build/ -j
           sudo cmake --install cpputest_build/
       - name: Use
         run: |
           cmake -B build -S examples
           cmake --build build -j
-          ctest --test-dir build
+          ctest --test-dir build -j
 
   arm-embedded:
     runs-on: ubuntu-latest
@@ -145,7 +145,7 @@ jobs:
           -B cpputest_build
           -D CMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi-gcc.toolchain.cmake
       - name: Build
-        run: cmake --build cpputest_build
+        run: cmake --build cpputest_build -j
       - name: Test
         # This won't do anything, because there is no way to run the tests.
-        run: ctest --test-dir cpputest_build
+        run: ctest --test-dir cpputest_build -j
