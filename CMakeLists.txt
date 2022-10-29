@@ -68,9 +68,6 @@ cmake_dependent_option(CPPUTEST_EXAMPLES "Compile and make examples?"
   ${PROJECT_IS_TOP_LEVEL} "NOT CPPUTEST_STD_CPP_LIB_DISABLED" OFF)
 option(CPPUTEST_VERBOSE_CONFIG "Print configuration to stdout during generation" ${PROJECT_IS_TOP_LEVEL})
 
-cmake_dependent_option(CPPUTEST_LIBNAME_POSTFIX_BITSIZE "Add architecture bitsize (32/64) to the library name?"
-  OFF "PROJECT_IS_TOP_LEVEL" OFF)
-
 if(DEFINED CPP_PLATFORM)
   message(DEPRECATION
     "The CPP_PLATFORM variable has been deprecated. "
@@ -127,19 +124,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) # Don't change users' build type.
   endif()
 endif()
 
-set( CppUTestLibName "CppUTest" )
-set( CppUTestExtLibName "CppUTestExt" )
-
-if(CPPUTEST_LIBNAME_POSTFIX_BITSIZE)
-  if( "${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" )
-      set( CppUTestLibName "${CppUTestLibName}64" )
-      set( CppUTestExtLibName "${CppUTestExtLibName}64" )
-  elseif( "${CMAKE_SIZEOF_VOID_P}" STREQUAL "4" )
-      set( CppUTestLibName "${CppUTestLibName}32" )
-      set( CppUTestExtLibName "${CppUTestExtLibName}32" )
-  endif()
-endif()
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 if(NOT PROJECT_IS_TOP_LEVEL)
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
@@ -186,11 +170,11 @@ configure_file (
     "${PROJECT_SOURCE_DIR}/config.h.cmake"
     "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
     )
-target_include_directories(${CppUTestLibName}
+target_include_directories(CppUTest
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
 )
-target_compile_definitions(${CppUTestLibName}
+target_compile_definitions(CppUTest
   PUBLIC
     HAVE_CONFIG_H
 )
@@ -305,9 +289,6 @@ Features configured in CppUTest:
 
     Compile and run self-tests          ${CPPUTEST_BUILD_TESTING}
     Run self-tests separately           ${CPPUTEST_TESTS_DETAILED}
-
-Library name options:
-    Add architecture bitsize (32/64)    ${CPPUTEST_LIBNAME_POSTFIX_BITSIZE}
 
 -------------------------------------------------------
 ")

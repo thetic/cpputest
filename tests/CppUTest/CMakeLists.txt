@@ -50,7 +50,7 @@ if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
 endif()
 
 cpputest_normalize_test_output_location(CppUTestTests)
-target_link_libraries(CppUTestTests PRIVATE ${CppUTestLibName})
+target_link_libraries(CppUTestTests PRIVATE CppUTest)
 
 if (CPPUTEST_TEST_DISCOVERY)
     cpputest_buildtime_discover_tests(CppUTestTests)

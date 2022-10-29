@@ -1,4 +1,4 @@
-add_library(${CppUTestLibName}
+add_library(CppUTest
         CommandLineArguments.cpp
         MemoryLeakWarningPlugin.cpp
         TestHarness_c.cpp
@@ -49,37 +49,37 @@ add_library(${CppUTestLibName}
 
 #[[Set CPPUTEST_PLATFORM in a parent CMakeLists.txt if reusing one of the provided platforms, else supply the missing definitions]]
 if(CPPUTEST_PLATFORM)
-    target_sources(${CppUTestLibName}
+    target_sources(CppUTest
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/../Platforms/${CPPUTEST_PLATFORM}/UtestPlatform.cpp
     )
-    target_include_directories(${CppUTestLibName}
+    target_include_directories(CppUTest
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../../include/Platforms/${CPPUTEST_PLATFORM}>
     )
 endif()
 
 #[[Arrange for the include directory to be added to the include paths of any CMake target depending on CppUTest.]]
-target_include_directories(${CppUTestLibName}
+target_include_directories(CppUTest
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_definitions(${CppUTestLibName}
+target_compile_definitions(CppUTest
     PRIVATE
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
 )
 
 if (WIN32)
-    target_link_libraries(${CppUTestLibName} winmm)
+    target_link_libraries(CppUTest winmm)
 endif (WIN32)
 
-add_library(CppUTest::CppUTest ALIAS ${CppUTestLibName})
+add_library(CppUTest::CppUTest ALIAS CppUTest)
 
 if(PROJECT_IS_TOP_LEVEL)
     install(
-        TARGETS ${CppUTestLibName}
+        TARGETS CppUTest
         EXPORT CppUTestTargets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
