@@ -15,6 +15,4 @@
 
 #cmakedefine CPPUTEST_STD_CPP_LIB_DISABLED
 
-#cmakedefine INCLUDE_GTEST_TESTS
-
 #endif

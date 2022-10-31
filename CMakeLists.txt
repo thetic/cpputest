@@ -104,7 +104,6 @@ if(NOT PROJECT_IS_TOP_LEVEL)
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endif()
 
-include(CppUTestConfigurationOptions)
 if(PROJECT_IS_TOP_LEVEL)
   include(CppUTestWarningFlags)
 endif()
