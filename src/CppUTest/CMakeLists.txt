@@ -1,3 +1,8 @@
+configure_file (
+    "${PROJECT_SOURCE_DIR}/config.h.cmake"
+    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
+)
+
 add_library(CppUTest
         CommandLineArguments.cpp
         MemoryLeakWarningPlugin.cpp
@@ -69,9 +74,12 @@ target_include_directories(CppUTest
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
 )
 
 target_compile_definitions(CppUTest
+    PUBLIC
+        HAVE_CONFIG_H
     PRIVATE
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
@@ -93,9 +101,14 @@ if(NOT CPPUTEST_MEM_LEAK_DETECTION_DISABLED)
     )
 endif()
 
-if (WIN32)
-    target_link_libraries(CppUTest winmm)
-endif (WIN32)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+
+target_link_libraries(CppUTest
+    PRIVATE
+        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:Threads::Threads>
+        $<$<BOOL:${WIN32}>:winmm>
+)
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 

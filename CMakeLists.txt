@@ -105,7 +105,7 @@ if(NOT PROJECT_IS_TOP_LEVEL)
 endif()
 
 if(PROJECT_IS_TOP_LEVEL)
-  include(CppUTestWarningFlags)
+  include(cmake/warnings.cmake)
 endif()
 include(GNUInstallDirs)
 
@@ -127,21 +127,7 @@ if(HAVE_SIZEOF_LONGLONG)
     set(CPPUTEST_HAVE_LONG_LONG_INT ON)
 endif()
 
-configure_file (
-    "${PROJECT_SOURCE_DIR}/config.h.cmake"
-    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
-)
-
 add_subdirectory(src)
-
-target_include_directories(CppUTest
-    PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
-)
-target_compile_definitions(CppUTest
-  PUBLIC
-    HAVE_CONFIG_H
-)
 
 if (CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)
