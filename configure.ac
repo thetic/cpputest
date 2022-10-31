@@ -415,17 +415,7 @@ AC_ARG_ENABLE([sanitize-address], [AC_HELP_STRING([--enable-sanitize-address], [
 
 AM_CONDITIONAL([INCLUDE_CPPUTEST_EXT], [test "x${cpputest_ext}" = xyes])
 
-# Dealing with not having a Standard C library... (usually for Kernel development)
-if test "x${use_std_c}" = xno; then
-	use_std_cpp=no
-	memory_leak_detection=no
-    CPPUTEST_CPPFLAGS="${CPPUTEST_CPPFLAGS} -nostdinc"
-    CPPUTEST_LDFLAGS="${CPPUTEST_LDFLAGS} -nostdlib"
-    AC_DEFINE([STD_C_LIB_DISABLED], [1], [Standard C library disabled])
-    CPP_PLATFORM="GccNoStdC"
-else
-	CPP_PLATFORM="Gcc"
-fi
+CPP_PLATFORM="Gcc"
 
 # Using standard C++
 if test "x${use_std_cpp}" = xno; then
