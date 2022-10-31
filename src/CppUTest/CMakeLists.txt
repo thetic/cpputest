@@ -106,7 +106,7 @@ find_package(Threads)
 
 target_link_libraries(CppUTest
     PRIVATE
-        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:Threads::Threads>
+        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
         $<$<BOOL:${WIN32}>:winmm>
 )
 
