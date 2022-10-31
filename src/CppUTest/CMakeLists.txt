@@ -1,8 +1,3 @@
-configure_file (
-    "${PROJECT_SOURCE_DIR}/config.h.cmake"
-    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
-)
-
 add_library(CppUTest
         CommandLineArguments.cpp
         MemoryLeakWarningPlugin.cpp
@@ -50,24 +45,13 @@ add_library(CppUTest
         ${PROJECT_SOURCE_DIR}/include/CppUTest/TestHarness_c.h
         ${PROJECT_SOURCE_DIR}/include/CppUTest/UtestMacros.h
         ${PROJECT_SOURCE_DIR}/include/CppUTest/SimpleMutex.h
+        "$<$<BOOL:${CPPUTEST_PLATFORM}>:${PROJECT_SOURCE_DIR}/src/Platforms/${CPPUTEST_PLATFORM}/UtestPlatform.cpp>"
 )
 
-#[[Set CPPUTEST_PLATFORM in a parent CMakeLists.txt if reusing one of the provided platforms, else supply the missing definitions]]
-if(CPPUTEST_PLATFORM)
-    target_sources(CppUTest
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/../Platforms/${CPPUTEST_PLATFORM}/UtestPlatform.cpp
-    )
-    target_include_directories(CppUTest
-        PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../../include/Platforms/${CPPUTEST_PLATFORM}>
-    )
-endif()
-
-if (MINGW)
-    include(CheckStructHasMember)
-    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
-endif()
+configure_file (
+    "${PROJECT_SOURCE_DIR}/config.h.cmake"
+    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
+)
 
 #[[Arrange for the include directory to be added to the include paths of any CMake target depending on CppUTest.]]
 target_include_directories(CppUTest
@@ -75,13 +59,22 @@ target_include_directories(CppUTest
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+        $<$<BOOL:${CPPUTEST_PLATFORM}>:$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/Platforms/${CPPUTEST_PLATFORM}>>
 )
+
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(fopen_s "stdio.h" HAVE_SECURE_STDLIB)
+
+if (MINGW)
+    include(CheckStructHasMember)
+    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
+endif()
 
 target_compile_definitions(CppUTest
     PUBLIC
         HAVE_CONFIG_H
     PRIVATE
-        $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
+        $<$<BOOL:${HAVE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )
