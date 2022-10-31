@@ -86,7 +86,6 @@ set_property(
     C2000
     Dos
     Gcc
-    GccNoStdC
     Iar
     Keil
     Symbian
