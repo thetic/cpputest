@@ -35,7 +35,6 @@ if(MINGW)
     endif()
 endif()
 
-cpputest_normalize_test_output_location(CppUTestExtTests)
 target_link_libraries(CppUTestExtTests
     PRIVATE
         CppUTest
@@ -51,6 +50,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13")
     )
 endif()
 
+include(CppUTestNormalizeTestOutputLocation)
+cpputest_normalize_test_output_location(CppUTestExtTests)
+
 if (CPPUTEST_TEST_DISCOVERY)
+    include(CppUTestBuildTimeDiscoverTests)
     cpputest_buildtime_discover_tests(CppUTestExtTests)
 endif()
