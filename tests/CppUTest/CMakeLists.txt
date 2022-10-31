@@ -45,7 +45,7 @@ if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
 endif()
 
 cpputest_normalize_test_output_location(CppUTestTests)
-target_link_libraries(CppUTestTests PRIVATE ${CppUTestLibName})
+target_link_libraries(CppUTestTests PRIVATE CppUTest)
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13")
     target_link_options(CppUTestTests

@@ -40,8 +40,8 @@ endif()
 cpputest_normalize_test_output_location(CppUTestExtTests)
 target_link_libraries(CppUTestExtTests
     PRIVATE
-        ${CppUTestLibName}
-        ${CppUTestExtLibName}
+        CppUTest
+        CppUTestExt
 )
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13")
