@@ -37,6 +37,18 @@ if(MINGW)
     endif()
 endif()
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.14")
+    include(FetchContent)
+    FetchContent_Declare(googletest
+        URL https://github.com/google/googletest/archive/release-1.8.0.zip
+    )
+    FetchContent_MakeAvailable(googletest)
+else()
+    message(WARNING
+        "Build is incompatible with googletest. GTest integration with not be tested."
+    )
+endif()
+
 cpputest_normalize_test_output_location(CppUTestExtTests)
 target_link_libraries(CppUTestExtTests
     PRIVATE
