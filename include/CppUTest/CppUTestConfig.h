@@ -176,22 +176,6 @@
  #endif
 #endif
 
-#ifndef CPPUTEST_HAVE_FENV
- #ifdef CPPUTEST_FENV_DISABLED
-  #define CPPUTEST_HAVE_FENV 0
- #else
-  #define CPPUTEST_HAVE_FENV 1
- #endif
-#endif
-
-#if CPPUTEST_HAVE_FENV
-#if defined(__WATCOMC__) || defined(__ARMEL__) || defined(__m68k__)
-#define CPPUTEST_FENV_IS_WORKING_PROPERLY 0
-#else
-#define CPPUTEST_FENV_IS_WORKING_PROPERLY 1
-#endif
-#endif
-
 #ifdef __cplusplus
   /*
    * Detection of run-time type information (RTTI) presence. Since it's a

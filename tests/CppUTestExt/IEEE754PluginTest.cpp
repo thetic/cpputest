@@ -32,7 +32,8 @@
 #include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
 #if CPPUTEST_HAVE_FENV
-#if CPPUTEST_FENV_IS_WORKING_PROPERLY
+// These are known to have dysfunctional fenv support.
+#if !defined(__WATCOMC__) && !defined(__ARMEL__) && !defined(__m68k__)
 
 #include "IEEE754PluginTest_c.h"
 
