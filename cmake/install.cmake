@@ -19,7 +19,7 @@ install(
 )
 
 install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
+    FILES "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
     DESTINATION "${INCLUDE_INSTALL_DIR}/generated"
 )
 
