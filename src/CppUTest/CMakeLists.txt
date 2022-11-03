@@ -77,10 +77,12 @@ target_include_directories(${CppUTestLibName}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
 target_compile_definitions(${CppUTestLibName}
     PUBLIC
         HAVE_CONFIG_H
     PRIVATE
+        $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>

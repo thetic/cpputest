@@ -121,7 +121,6 @@ include(CheckStructHasMember)
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 check_cxx_symbol_exists(fork "unistd.h" CPPUTEST_HAVE_FORK)
 check_cxx_symbol_exists(waitpid "sys/wait.h" CPPUTEST_HAVE_WAITPID)
-check_cxx_symbol_exists(gettimeofday "sys/time.h" CPPUTEST_HAVE_GETTIMEOFDAY)
 check_cxx_symbol_exists(pthread_mutex_lock "pthread.h" CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK)
 
 if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
