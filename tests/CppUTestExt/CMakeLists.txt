@@ -29,6 +29,12 @@ add_executable(CppUTestExtTests
     OrderedTestTest.cpp
 )
 
+find_package(GTest)
+if(GTEST_FOUND)
+    target_compile_definitions(CppUTestExtTests PRIVATE INCLUDE_GTEST_TESTS)
+    target_link_libraries(CppUTestExtTests PRIVATE ${GTEST_LIBRARIES})
+endif()
+
 if(MINGW)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads)
