@@ -131,6 +131,10 @@ jobs:
             cpp_version: 11
             preset: coverage
             apt_packages: lcov
+          - name: Google Test
+            os: ubuntu-latest
+            cpp_version: 98
+            preset: gtest
           - name: GCC ARM embedded
             os: ubuntu-latest
             cpp_version: 11
