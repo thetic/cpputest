@@ -11,9 +11,6 @@
 #include "AllocationInCFile.h"
 
 #if defined(__GNUC__)
-# if __GNUC__ >= 11
-#  define NEEDS_DISABLE_FREE_NON_HEEP_WARNING
-# endif /* GCC >= 11 */
 # if __GNUC__ >= 12
 #  define NEEDS_DISABLE_USE_AFTER_FREE
 # endif /* GCC >= 12 */
