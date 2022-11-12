@@ -135,6 +135,7 @@ jobs:
             os: ubuntu-latest
             cpp_version: 98
             preset: gtest
+            apt_packages: python2
           - name: GCC ARM embedded
             os: ubuntu-latest
             cpp_version: 11

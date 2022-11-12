@@ -114,7 +114,6 @@
       "name": "gtest",
       "inherits": ["defaults"],
       "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "98",
         "CPPUTEST_TEST_GTEST": true,
         "gtest_build_tests": true
       }
