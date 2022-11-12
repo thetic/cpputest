@@ -196,7 +196,9 @@ jobs:
       # POST PROCESSING
 
       - name: Install
-        run: sudo cmake --install cpputest_build/
+        run: |
+          sudo cmake --install cpputest_build/
+          pkg-config --print-provides cpputest
         if: ${{ matrix.install }}
       - name: Use install
         run: |
