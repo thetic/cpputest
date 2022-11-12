@@ -196,7 +196,7 @@ jobs:
       - name: Build
         run: cmake --build cpputest_build --verbose
       - name: Test
-        run: ctest --test-dir cpputest_build
+        run: ctest --test-dir cpputest_build --output-on-failure
 
       # POST PROCESSING
 
