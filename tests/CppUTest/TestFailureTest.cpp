@@ -438,12 +438,14 @@ TEST(TestFailure, UnexpectedExceptionFailure_StandardException)
 {
     std::runtime_error e("Some error");
     UnexpectedExceptionFailure f(test, e);
+    STRCMP_CONTAINS("Unexpected exception of ", f.getMessage().asCharString());
+    STRCMP_CONTAINS(
 #if CPPUTEST_HAVE_RTTI
-    STRCMP_CONTAINS("Unexpected exception of type '", f.getMessage().asCharString());
-    STRCMP_CONTAINS("runtime_error", f.getMessage().asCharString());
-    STRCMP_CONTAINS("' was thrown: Some error", f.getMessage().asCharString());
+        "runtime_error' was thrown: Some error",
 #else
-    FAILURE_EQUAL("Unexpected exception of unknown type was thrown.", f);
+        "unknown type was thrown.",
 #endif
+        f.getMessage().asCharString()
+    );
 }
 #endif // CPPUTEST_USE_STD_CPP_LIB

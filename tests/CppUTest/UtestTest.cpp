@@ -263,13 +263,14 @@ TEST(UtestShell, TestStopsAfterStandardExceptionIsThrown)
     fixture.setTestFunction(thrownStandardExceptionMethod_);
     fixture.runAllTests();
     LONGS_EQUAL(1, fixture.getFailureCount());
+    fixture.assertPrintContains("Unexpected exception of ");
+    fixture.assertPrintContains(
 #if CPPUTEST_HAVE_RTTI
-    fixture.assertPrintContains("Unexpected exception of type '");
-    fixture.assertPrintContains("runtime_error");
-    fixture.assertPrintContains("' was thrown: exception text");
+        "runtime_error' was thrown: exception text"
 #else
-    fixture.assertPrintContains("Unexpected exception of unknown type was thrown");
+        "unknown type was thrown"
 #endif
+    );
     LONGS_EQUAL(0, stopAfterFailure);
     UtestShell::setRethrowExceptions(initialRethrowExceptions);
 }
