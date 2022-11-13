@@ -16,30 +16,61 @@ jobs:
           clangFormatVersion: 14
           source: examples
 
-  automake:
+  autotools:
     strategy:
       matrix:
         include:
-          # Mac OSX
-          - os: macos-latest
+          - name: Mac GNU
+            os: macos-latest
             cc: gcc
             cxx: g++
-          - os: macos-latest
+            target: tdd
+          - name: Mac Clang
+            os: macos-latest
             cc: clang
             cxx: clang++
-          # Linux
-          - os: ubuntu-latest
+            target: tdd
+          - name: Linux GNU
+            os: ubuntu-latest
             cc: gcc
             cxx: g++
-          - os: ubuntu-latest
+            target: tdd
+          - name: Linux Clang
+            os: ubuntu-latest
             cc: clang
             cxx: clang++
+            target: tdd
+          - name: No long long
+            os: ubuntu-latest
+            configure_flags: --disable-longlong
+            target: tdd
+          - name: Google Test 1.5
+            os: ubuntu-latest
+            target: check_gtest15
+            apt_packages: python2
+          - name: Google Test 1.6
+            os: ubuntu-latest
+            target: check_gtest16
+            apt_packages: python2
+          - name: Google Test 1.7
+            os: ubuntu-latest
+            target: check_gtest17
+            apt_packages: python2
+          - name: Google Test 1.8
+            os: ubuntu-latest
+            target: check_gtest18
+            apt_packages: python2
+    name: "autotools: ${{ matrix.name }}"
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Install packages (Linux)
+        run: sudo apt install -y ${{ matrix.apt_packages }}
+        if: ${{ matrix.apt_packages }}
+      - name: Install packages (Mac)
+        run: brew install automake
+        if: ${{ startswith(matrix.os, 'macos') }}
       - name: Checkout
         uses: actions/checkout@main
-      - run: brew install automake
-        if: ${{ startswith(matrix.os, 'macos') }}
       - if: ${{ matrix.cxx }}
         run: echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
       - if: ${{ matrix.cc }}
@@ -47,9 +78,9 @@ jobs:
       - name: Configure
         run: |
           autoreconf -i .
-          ./configure
+          ./configure ${{ matrix.configure_flags }}
       - name: Build and test
-        run: make tdd
+        run: make ${{ matrix.target }}
 
   cmake:
     strategy:
@@ -157,7 +188,7 @@ jobs:
             cpp_version: 98
             preset: DOS
             apt_packages: dosbox
-    name: ${{ matrix.name }}
+    name: "CMake: ${{ matrix.name }}"
     runs-on: ${{ matrix.os }}
     steps:
       ### SETUP
@@ -216,3 +247,28 @@ jobs:
           path-to-lcov: lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.name == 'Coverage' }}
+
+  make_dos:
+    runs-on: ubuntu-latest
+    name: "Make: DOS"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Install tools
+        run: |
+          sudo apt-get install -y dosbox
+          git clone https://github.com/cpputest/watcom-compiler.git watcom
+          echo "WATCOM=$GITHUB_WORKSPACE/watcom" >> $GITHUB_ENV
+          echo "CC=wcl" >> $GITHUB_ENV
+          echo "CXX=wcl" >> $GITHUB_ENV
+          echo "$GITHUB_WORKSPACE/watcom/binl" >> $GITHUB_PATH
+          echo "CPPUTEST_HOME=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      - name: Build
+        run: |
+          $CC --version
+          make -f $CPPUTEST_HOME/platforms/Dos/Makefile clean
+          make -f $CPPUTEST_HOME/platforms/Dos/Makefile
+      - name: Test
+        env:
+          TERM: linux
+        run: $CPPUTEST_HOME/platforms/Dos/alltests.sh
