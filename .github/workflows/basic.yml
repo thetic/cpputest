@@ -71,7 +71,7 @@ jobs:
           - name: Windows Clang
             os: windows-latest
             cpp_version: 14
-            preset: Clang
+            preset: LLVM
           - name: Linux Clang 98
             os: ubuntu-latest
             cpp_version: 98

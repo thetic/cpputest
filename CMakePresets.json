@@ -44,6 +44,11 @@
       "toolset": "ClangCL"
     },
     {
+      "name": "LLVM",
+      "inherits": "Clang",
+      "generator": "Ninja"
+    },
+    {
       "name": "MinGW",
       "inherits": ["GNU"],
       "environment": {
