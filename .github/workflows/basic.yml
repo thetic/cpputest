@@ -157,14 +157,34 @@ jobs:
             cpp_version: 98
             preset: DOS
             apt_packages: dosbox
+          - name: MSYS2
+            os: windows-latest
+            cpp_version: 11
+            preset: GNU
+            msys_packages: >
+              git
+              mingw-w64-x86_64-cc
+              mingw-w64-x86_64-cmake
+              mingw-w64-x86_64-make
+            defaults:
+              run:
+                shell: msys2 {0}
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
+    defaults: ${{ matrix.defaults }}
     steps:
       ### SETUP
 
-      - name: Install packages
+      - name: Install apt packages
         run: sudo apt install -y ${{ matrix.apt_packages }}
         if: ${{ matrix.apt_packages }}
+
+      - name: Install msys
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: ${{ matrix.msys_packages }}
+        if: ${{ matrix.msys_packages }}
 
       - uses: carlosperate/arm-none-eabi-gcc-action@v1
         if: ${{ matrix.name == 'GCC ARM embedded' }}
