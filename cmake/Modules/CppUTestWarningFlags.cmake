@@ -28,6 +28,7 @@ if(
     )
 
     set(WARNING_CXX_FLAGS
+        -Wtemplates
         -Woverloaded-virtual
         -Wno-global-constructors
         -Wno-exit-time-destructors
