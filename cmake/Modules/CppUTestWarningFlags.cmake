@@ -16,32 +16,20 @@ if(
         -Wswitch-enum
         -Wconversion
         -Wsign-conversion
-        -Wno-padded
-        -Wno-disabled-macro-expansion
-        -Wno-reserved-id-macro
-        -Wno-keyword-macro
-        -Wno-long-long
     )
 
     set(WARNING_C_FLAGS
         -Wstrict-prototypes
+        -Wno-long-long
     )
 
     set(WARNING_CXX_FLAGS
         -Wtemplates
         -Woverloaded-virtual
-        -Wno-global-constructors
-        -Wno-exit-time-destructors
-        -Wno-weak-vtables
-        -Wno-old-style-cast
     )
 
     if(DEFINED CMAKE_CXX_STANDARD AND NOT CMAKE_CXX_STANDARD EQUAL 98)
         list(APPEND WARNING_CXX_FLAGS
-            -Wno-c++98-compat
-            -Wno-c++98-compat-pedantic
-            -Wno-c++14-compat
-            -Wno-inconsistent-missing-destructor-override
             -Wsuggest-override
         )
     endif()
