@@ -128,7 +128,6 @@ check_cxx_symbol_exists(pthread_mutex_lock "pthread.h" CPPUTEST_HAVE_PTHREAD_MUT
 if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
   check_cxx_symbol_exists(strdup "string.h" CPPUTEST_HAVE_STRDUP)
 endif()
-check_type_size("long long" SIZEOF_LONGLONG LANGUAGE CXX)
 if(HAVE_SIZEOF_LONGLONG)
     set(CPPUTEST_HAVE_LONG_LONG_INT ON)
 endif()
