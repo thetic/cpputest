@@ -50,14 +50,6 @@ target_compile_definitions(CppUTestTests
         $<$<BOOL:${CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
 )
 
-if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads)
-    if(CMAKE_USE_PTHREADS_INIT)
-        target_link_libraries(CppUTestTests PRIVATE Threads::Threads)
-    endif()
-endif()
-
 target_link_libraries(CppUTestTests PRIVATE ${CppUTestLibName})
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13")

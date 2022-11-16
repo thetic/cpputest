@@ -41,14 +41,6 @@ target_compile_definitions(CppUTestExtTests
         $<$<BOOL:${CPPUTEST_INCLUDE_GTEST_TESTS}>:CPPUTEST_INCLUDE_GTEST_TESTS>
 )
 
-if(MINGW)
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads)
-    if(CMAKE_USE_PTHREADS_INIT)
-        target_link_libraries(CppUTestExtTests PRIVATE Threads::Threads)
-    endif()
-endif()
-
 target_link_libraries(CppUTestExtTests
     PRIVATE
         ${CppUTestLibName}
