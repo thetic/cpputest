@@ -43,6 +43,11 @@ if(CPPUTEST_STD_C_LIB_DISABLED)
     )
 endif()
 
+target_compile_definitions(CppUTestTests
+    PRIVATE
+        $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
+)
+
 if(MINGW OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "OpenBSD"))
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads)
