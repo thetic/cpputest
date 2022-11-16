@@ -59,11 +59,6 @@ if(CPPUTEST_PLATFORM)
     )
 endif()
 
-if (MINGW)
-    include(CheckStructHasMember)
-    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
-endif()
-
 configure_file (
     CppUTestGeneratedConfig.h.cmake
     "${CMAKE_CURRENT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
@@ -76,11 +71,20 @@ target_include_directories(${CppUTestLibName}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
+
+if (MINGW)
+    include(CheckStructHasMember)
+    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
+endif()
+
 target_compile_definitions(${CppUTestLibName}
     PUBLIC
         HAVE_CONFIG_H
     PRIVATE
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
+        $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )
