@@ -36,6 +36,11 @@ if(CPPUTEST_STD_C_LIB_DISABLED)
     )
 endif()
 
+target_compile_definitions(CppUTestExtTests
+    PRIVATE
+        $<$<BOOL:${CPPUTEST_INCLUDE_GTEST_TESTS}>:CPPUTEST_INCLUDE_GTEST_TESTS>
+)
+
 if(MINGW)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads)
