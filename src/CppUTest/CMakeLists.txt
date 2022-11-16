@@ -65,14 +65,14 @@ if (MINGW)
 endif()
 
 configure_file (
-    "${PROJECT_SOURCE_DIR}/config.h.cmake"
-    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
+    CppUTestGeneratedConfig.h.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
 )
 
 target_include_directories(${CppUTestLibName}
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
