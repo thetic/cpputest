@@ -132,21 +132,7 @@ if(HAVE_SIZEOF_LONGLONG)
     set(CPPUTEST_HAVE_LONG_LONG_INT ON)
 endif()
 
-configure_file (
-    "${PROJECT_SOURCE_DIR}/config.h.cmake"
-    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
-)
-
 add_subdirectory(src)
-
-target_include_directories(${CppUTestLibName}
-    PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
-)
-target_compile_definitions(${CppUTestLibName}
-  PUBLIC
-    HAVE_CONFIG_H
-)
 
 if (CPPUTEST_BUILD_TESTING)
     add_subdirectory(tests)

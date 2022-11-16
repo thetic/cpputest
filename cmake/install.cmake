@@ -18,11 +18,6 @@ install(
     DESTINATION ${LIB_INSTALL_DIR}/pkgconfig
 )
 
-install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
-    DESTINATION "${INCLUDE_INSTALL_DIR}/generated"
-)
-
 # Try to include helper module
 include(CMakePackageConfigHelpers OPTIONAL
     RESULT_VARIABLE PkgHelpers_AVAILABLE
