@@ -11,7 +11,7 @@ else()
 endif()
 
 if(PROJECT_IS_TOP_LEVEL)
-  find_package(CppUTest 4.0 REQUIRED)
+  find_package(CppUTest 5.0 REQUIRED)
 endif()
 
 include(CTest)

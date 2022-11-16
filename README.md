@@ -211,7 +211,7 @@ CppUTest is available through [conan-center][conan-center].
 
 ```ini
 [requires]
-cpputest/4.0
+cpputest/5.0
 
 [generators]
 cmake_find_package
