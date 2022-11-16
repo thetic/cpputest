@@ -59,11 +59,24 @@ if(CPPUTEST_PLATFORM)
     )
 endif()
 
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(FE_DIVBYZERO "fenv.h" CPPUTEST_HAVE_FENV)
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
+  check_cxx_symbol_exists(strdup "string.h" CPPUTEST_HAVE_STRDUP)
+endif()
+
+include(CheckTypeSize)
+check_type_size("long long" SIZEOF_LONGLONG)
+if(HAVE_SIZEOF_LONGLONG)
+    set(CPPUTEST_HAVE_LONG_LONG_INT ON)
+endif()
+
 configure_file (
     CppUTestGeneratedConfig.h.cmake
     "${CMAKE_CURRENT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
 )
 
+include(GNUInstallDirs)
 target_include_directories(${CppUTestLibName}
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -71,7 +84,6 @@ target_include_directories(${CppUTestLibName}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-include(CheckCXXSymbolExists)
 check_cxx_symbol_exists(gettimeofday "sys/time.h" HAVE_GETTIMEOFDAY)
 
 if (MINGW)
@@ -84,10 +96,10 @@ target_compile_definitions(${CppUTestLibName}
         HAVE_CONFIG_H
     PRIVATE
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
-        $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
         $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
         $<$<BOOL:${CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
+        $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )

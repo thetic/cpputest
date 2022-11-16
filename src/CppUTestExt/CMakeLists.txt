@@ -39,7 +39,7 @@ add_library(${CppUTestExtLibName} STATIC
 
 target_link_libraries(${CppUTestExtLibName} PUBLIC ${CppUTestLibName})
 
-#[[Arrange for the include directory to be added to the include paths of any CMake target depending on CppUTestExt.]]
+include(GNUInstallDirs)
 target_include_directories(${CppUTestExtLibName}
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

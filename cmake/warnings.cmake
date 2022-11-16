@@ -45,7 +45,7 @@ if(
         )
     endif()
 
-    set(CMAKE_REQUIRED_FLAGS "-Wno-error")
+    set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -Wno-error")
 endif()
 
 include(CheckCCompilerFlag)
