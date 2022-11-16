@@ -86,6 +86,8 @@ target_compile_definitions(${CppUTestLibName}
         $<$<BOOL:${CPPUTEST_USE_SECURE_STDLIB}>:STDC_WANT_SECURE_LIB>
         $<$<BOOL:${HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
         $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
+        $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
+        $<$<BOOL:${CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
         # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )
