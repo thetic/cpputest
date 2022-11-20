@@ -236,3 +236,12 @@ jobs:
           path-to-lcov: lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.name == 'Coverage' }}
+
+  msbuild:
+    runs-on: windows-latest
+    steps:
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Checkout
+        uses: actions/checkout@main
+      - run: msbuild /ToolsVersion:Current CppUTest_VS201x.sln
