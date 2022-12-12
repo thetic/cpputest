@@ -22,32 +22,6 @@ TEST(BasicBehavior, CanDeleteNullPointers)
 
 #if CPPUTEST_USE_MEM_LEAK_DETECTION
 
-static void deleteArrayInvalidatesMemory()
-{
-    unsigned char* memory = new unsigned char[10];
-    PlatformSpecificMemset(memory, 0xAB, 10);
-    delete [] memory;
-    CHECK(memory[5] != 0xCB);
-}
-
-static void deleteInvalidatesMemory()
-{
-    unsigned char* memory = new unsigned char;
-    *memory = 0xAD;
-    delete memory;
-    CHECK(*memory != 0xAD);
-}
-
-TEST(BasicBehavior, deleteArrayInvalidatesMemory)
-{
-    deleteArrayInvalidatesMemory();
-}
-
-TEST(BasicBehavior, deleteInvalidatesMemory)
-{
-    deleteInvalidatesMemory();
-}
-
 #if __cplusplus >= 201402L
 TEST(BasicBehavior, DeleteWithSizeParameterWorks)
 {
@@ -57,27 +31,6 @@ TEST(BasicBehavior, DeleteWithSizeParameterWorks)
     ::operator delete[](charArrayMemory, sizeof(char)* 10);
 }
 #endif
-
-static void deleteUnallocatedMemory()
-{
-    delete (char*) 0x1234678;
-    FAIL("Should never come here"); // LCOV_EXCL_LINE
-} // LCOV_EXCL_LINE
-
-TEST(BasicBehavior, deleteWillNotThrowAnExceptionWhenDeletingUnallocatedMemoryButCanStillCauseTestFailures)
-{
-    /*
-     * Test failure might cause an exception. But according to C++ standard, you aren't allowed
-     * to throw exceptions in the delete function. If you do that, it will call std::terminate.
-     * Therefore, the delete will need to fail without exceptions.
-     */
-    MemoryLeakFailure* defaultReporter = MemoryLeakWarningPlugin::getGlobalFailureReporter();
-    TestTestingFixture fixture;
-    fixture.setTestFunction(deleteUnallocatedMemory);
-    fixture.runAllTests();
-    LONGS_EQUAL(1, fixture.getFailureCount());
-    POINTERS_EQUAL(defaultReporter, MemoryLeakWarningPlugin::getGlobalFailureReporter());
-}
 
 #endif
 
