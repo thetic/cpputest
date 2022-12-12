@@ -125,22 +125,6 @@ TEST(TestMemoryAllocatorTest, NullUnknownNames)
     STRCMP_EQUAL("unknown", allocator->free_name());
 }
 
-#define MAX_SIZE_FOR_ALLOC ((size_t) -1 > (unsigned short)-1) ? (size_t)(-97) : (size_t)(-1)
-
-static void failTryingToAllocateTooMuchMemory(void)
-{
-    TestMemoryAllocator allocator;
-    allocator.alloc_memory(MAX_SIZE_FOR_ALLOC, "file", 1);
-} // LCOV_EXCL_LINE
-
-TEST(TestMemoryAllocatorTest, TryingToAllocateTooMuchFailsTest)
-{
-    TestTestingFixture fixture;
-    fixture.setTestFunction(&failTryingToAllocateTooMuchMemory);
-    fixture.runAllTests();
-    fixture.assertPrintContains("malloc returned null pointer");
-}
-
 TEST_GROUP(MemoryLeakAllocator)
 {
     MemoryLeakAllocator* allocator;

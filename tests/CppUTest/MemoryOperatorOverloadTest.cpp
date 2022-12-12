@@ -52,22 +52,6 @@ TEST(BasicBehavior, bothMallocAndFreeAreOverloaded)
 
 #endif
 
-#if CPPUTEST_USE_MEM_LEAK_DETECTION
-
-static void freeInvalidatesMemory()
-{
-    unsigned char* memory = (unsigned char*) cpputest_malloc(sizeof(unsigned char));
-    *memory = 0xAD;
-    cpputest_free(memory);
-    CHECK(*memory != 0xAD);
-}
-
-TEST(BasicBehavior, freeInvalidatesMemory)
-{
-    freeInvalidatesMemory();
-}
-#endif
-
 TEST_GROUP(MemoryLeakOverridesToBeUsedInProductionCode)
 {
     MemoryLeakDetector* memLeakDetector;
