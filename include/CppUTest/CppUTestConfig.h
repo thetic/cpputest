@@ -40,13 +40,6 @@
  *
  */
 
-#ifdef __clang__
- #pragma clang diagnostic push
- #if (__clang_major__ == 3 && __clang_minor__ >= 6) || __clang_major__ >= 4
-  #pragma clang diagnostic ignored "-Wreserved-id-macro"
- #endif
-#endif
-
 /*
  * Lib C dependencies that are currently still left:
  *
@@ -127,39 +120,6 @@
     #define DEFAULT_COPY_CONSTRUCTOR(classname) classname(const classname &) = default;
 #else
     #define DEFAULT_COPY_CONSTRUCTOR(classname)
-#endif
-
-/*
- * Address sanitizer is a good thing... and it causes some conflicts with the CppUTest tests
- * To check whether it is on or off, we create a CppUTest define here.
-*/
-#if defined(__has_feature)
-#if __has_feature(address_sanitizer)
-#define CPPUTEST_SANITIZE_ADDRESS 1
-#endif
-#endif
-
-#ifdef __SANITIZE_ADDRESS__
-#define CPPUTEST_SANITIZE_ADDRESS 1
-#endif
-
-#ifndef CPPUTEST_SANITIZE_ADDRESS
-#define CPPUTEST_SANITIZE_ADDRESS 0
-#endif
-
-#if CPPUTEST_SANITIZE_ADDRESS
-#define CPPUTEST_SANITIZE_ADDRESS 1
-#define CPPUTEST_DO_NOT_SANITIZE_ADDRESS __attribute__((no_sanitize_address))
-  #if defined(__linux__) && defined(__clang__)
-    #if CPPUTEST_USE_MEM_LEAK_DETECTION
-    #warning Compiling with Address Sanitizer with clang on linux will cause duplicate symbols for operator new. Turning off memory leak detection. Compile with -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED to get rid of this warning.
-    #undef CPPUTEST_USE_MEM_LEAK_DETECTION
-    #define CPPUTEST_USE_MEM_LEAK_DETECTION 0
-    #endif
-  #endif
-#else
-#define CPPUTEST_SANITIZER_ADDRESS 0
-#define CPPUTEST_DO_NOT_SANITIZE_ADDRESS
 #endif
 
 /*
@@ -352,10 +312,6 @@ typedef struct
   #else
     #define _destructor_override
   #endif
-#endif
-
-#ifdef __clang__
- #pragma clang diagnostic pop
 #endif
 
 #endif

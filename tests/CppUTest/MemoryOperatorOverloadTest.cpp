@@ -10,16 +10,6 @@
 #include "CppUTest/TestHarness_c.h"
 #include "AllocationInCFile.h"
 
-#if defined(__GNUC__)
-# if __GNUC__ >= 11
-#  define NEEDS_DISABLE_FREE_NON_HEEP_WARNING
-# endif /* GCC >= 11 */
-# if __GNUC__ >= 12
-#  define NEEDS_DISABLE_USE_AFTER_FREE
-# endif /* GCC >= 12 */
-#endif /* GCC */
-
-
 TEST_GROUP(BasicBehavior)
 {
 };
@@ -32,12 +22,6 @@ TEST(BasicBehavior, CanDeleteNullPointers)
 
 #if CPPUTEST_USE_MEM_LEAK_DETECTION
 
-#ifdef NEEDS_DISABLE_USE_AFTER_FREE
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wuse-after-free"
-#endif /* NEEDS_DISABLE_USE_AFTER_FREE */
-
-CPPUTEST_DO_NOT_SANITIZE_ADDRESS
 static void deleteArrayInvalidatesMemory()
 {
     unsigned char* memory = new unsigned char[10];
@@ -46,7 +30,6 @@ static void deleteArrayInvalidatesMemory()
     CHECK(memory[5] != 0xCB);
 }
 
-CPPUTEST_DO_NOT_SANITIZE_ADDRESS
 static void deleteInvalidatesMemory()
 {
     unsigned char* memory = new unsigned char;
@@ -54,10 +37,6 @@ static void deleteInvalidatesMemory()
     delete memory;
     CHECK(*memory != 0xAD);
 }
-
-#ifdef NEEDS_DISABLE_USE_AFTER_FREE
-# pragma GCC diagnostic pop
-#endif /* NEEDS_DISABLE_USE_AFTER_FREE */
 
 TEST(BasicBehavior, deleteArrayInvalidatesMemory)
 {
@@ -79,21 +58,11 @@ TEST(BasicBehavior, DeleteWithSizeParameterWorks)
 }
 #endif
 
-#ifdef NEEDS_DISABLE_FREE_NON_HEEP_WARNING
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
-#endif /* NEEDS_DISABLE_FREE_NON_HEEP_WARNING */
-
 static void deleteUnallocatedMemory()
 {
     delete (char*) 0x1234678;
     FAIL("Should never come here"); // LCOV_EXCL_LINE
 } // LCOV_EXCL_LINE
-
-#ifdef NEEDS_DISABLE_FREE_NON_HEEP_WARNING
-# pragma GCC diagnostic pop
-#endif /* NEEDS_DISABLE_FREE_NON_HEEP_WARNING */
-
 
 TEST(BasicBehavior, deleteWillNotThrowAnExceptionWhenDeletingUnallocatedMemoryButCanStillCauseTestFailures)
 {
@@ -132,7 +101,6 @@ TEST(BasicBehavior, bothMallocAndFreeAreOverloaded)
 
 #if CPPUTEST_USE_MEM_LEAK_DETECTION
 
-CPPUTEST_DO_NOT_SANITIZE_ADDRESS
 static void freeInvalidatesMemory()
 {
     unsigned char* memory = (unsigned char*) cpputest_malloc(sizeof(unsigned char));

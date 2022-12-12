@@ -122,11 +122,9 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, FailureInSepa
     fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out");
 }
 
-#if (! CPPUTEST_SANITIZE_ADDRESS)
-
 static int accessViolationTestFunction_()
 {
-    return *(volatile int*) NULLPTR; // NOLINT(clang-analyzer-core.NullDereference)
+    return *(volatile int*) NULLPTR;
 }
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, AccessViolationInSeparateProcessWorks)
@@ -137,8 +135,6 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, AccessViolati
     fixture.assertPrintContains("Failed in separate process - killed by signal 11");
     fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran");
 }
-
-#endif
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, StoppedInSeparateProcessWorks)
 {

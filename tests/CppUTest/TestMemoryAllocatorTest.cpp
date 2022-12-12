@@ -125,8 +125,6 @@ TEST(TestMemoryAllocatorTest, NullUnknownNames)
     STRCMP_EQUAL("unknown", allocator->free_name());
 }
 
-#if (! CPPUTEST_SANITIZE_ADDRESS)
-
 #define MAX_SIZE_FOR_ALLOC ((size_t) -1 > (unsigned short)-1) ? (size_t)(-97) : (size_t)(-1)
 
 static void failTryingToAllocateTooMuchMemory(void)
@@ -142,8 +140,6 @@ TEST(TestMemoryAllocatorTest, TryingToAllocateTooMuchFailsTest)
     fixture.runAllTests();
     fixture.assertPrintContains("malloc returned null pointer");
 }
-
-#endif
 
 TEST_GROUP(MemoryLeakAllocator)
 {
