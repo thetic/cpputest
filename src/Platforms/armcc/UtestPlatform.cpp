@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -43,8 +43,6 @@
 #undef strndup
 
 #define  far  // eliminate "meaningless type qualifier" warning
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

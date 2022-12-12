@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/MemoryReporterPlugin.h"
 
 #include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MemoryReporterPlugin.h"
 #include "CppUTestExt/MemoryReportFormatter.h"
 #include "CppUTestExt/CodeMemoryReportFormatter.h"
 

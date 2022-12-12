@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include <stdlib.h>
 #include "CppUTest/TestHarness.h"
@@ -56,8 +57,6 @@
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
 #include <pthread.h>
 #endif
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 const std::nothrow_t std::nothrow;
 

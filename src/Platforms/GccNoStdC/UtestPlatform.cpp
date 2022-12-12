@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include "CppUTest/TestHarness.h"
 #undef malloc
@@ -32,8 +33,6 @@
 #undef realloc
 #undef strdup
 #undef strndup
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, TestResult*) = NULLPTR;
 int (*PlatformSpecificFork)() = NULLPTR;

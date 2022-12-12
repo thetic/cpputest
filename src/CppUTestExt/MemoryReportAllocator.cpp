@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/MemoryReportAllocator.h"
 
 #include "CppUTest/TestHarness.h"
-#include "CppUTestExt/MemoryReportAllocator.h"
 #include "CppUTestExt/MemoryReportFormatter.h"
 
 MemoryReportAllocator::MemoryReportAllocator() : result_(NULLPTR), realAllocator_(NULLPTR), formatter_(NULLPTR)

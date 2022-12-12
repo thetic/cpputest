@@ -28,6 +28,8 @@
 #ifndef D_MemoryLeakDetector_h
 #define D_MemoryLeakDetector_h
 
+#include "CppUTest/TestHarness.h"
+
 enum MemLeakPeriod
 {
     mem_leak_period_all,

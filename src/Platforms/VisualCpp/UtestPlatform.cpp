@@ -1,3 +1,5 @@
+#include "CppUTest/PlatformSpecificFunctions.h"
+
 #include <stdlib.h>
 #include "CppUTest/TestHarness.h"
 #undef malloc
@@ -14,7 +16,6 @@
 #include <math.h>
 #include <float.h>
 #include <time.h>
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include <Windows.h>
 #include <mmsystem.h>

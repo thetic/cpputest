@@ -28,12 +28,11 @@
 #ifndef D_MockSupport_c_h
 #define D_MockSupport_c_h
 
+#include "CppUTest/StandardCLibrary.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "CppUTest/CppUTestConfig.h"
-#include "CppUTest/StandardCLibrary.h"
 
 typedef enum {
     MOCKVALUETYPE_BOOL,

@@ -31,6 +31,9 @@
 #include "TestRegistry.h"
 #include "TestOutput.h"
 
+class ExecFunction;
+class ExecFunctionTestShell;
+
 class TestTestingFixture
 {
 public:

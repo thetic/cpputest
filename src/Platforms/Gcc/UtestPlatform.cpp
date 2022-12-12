@@ -25,6 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/PlatformSpecificFunctions.h"
+
 #include <stdlib.h>
 #include "CppUTest/TestHarness.h"
 #undef malloc
@@ -55,8 +57,6 @@
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
 #include <pthread.h>
 #endif
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

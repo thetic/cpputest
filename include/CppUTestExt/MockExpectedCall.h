@@ -31,6 +31,7 @@
 #include "CppUTest/CppUTestConfig.h"
 
 class MockNamedValue;
+class SimpleString;
 
 extern SimpleString StringFrom(const MockNamedValue& parameter);
 

@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTest/CommandLineTestRunner.h"
 
 #include "CppUTest/TestHarness.h"
-#include "CppUTest/CommandLineTestRunner.h"
 #include "CppUTest/TestOutput.h"
 #include "CppUTest/JUnitTestOutput.h"
 #include "CppUTest/PlatformSpecificFunctions.h"

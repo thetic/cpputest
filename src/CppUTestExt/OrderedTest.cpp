@@ -24,10 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/OrderedTest.h"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestRegistry.h"
-#include "CppUTestExt/OrderedTest.h"
 
 OrderedTestShell* OrderedTestShell::_orderedTestsHead = NULLPTR;
 

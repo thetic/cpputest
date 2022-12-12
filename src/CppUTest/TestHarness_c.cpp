@@ -25,11 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/TestHarness_c.h"
+
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/MemoryLeakDetector.h"
 #include "CppUTest/TestMemoryAllocator.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
-#include "CppUTest/TestHarness_c.h"
 
 extern "C"
 {

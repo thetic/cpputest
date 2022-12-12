@@ -24,6 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include <stdlib.h>
 #include "CppUTest/TestHarness.h"
@@ -42,8 +43,6 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

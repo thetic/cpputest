@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
 #include "CppUTest/TestHarness.h"
-#include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
 #if CPPUTEST_HAVE_FENV
 

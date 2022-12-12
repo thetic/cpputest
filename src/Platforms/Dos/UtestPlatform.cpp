@@ -25,6 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "CppUTest/PlatformSpecificFunctions.h"
+
 /* Un-comment to use buffer instead of std out */
 // #define USE_BUFFER_OUTPUT 1
 #include <cstdlib>
@@ -46,8 +48,6 @@
 #include <math.h>
 #include <ctype.h>
 #undef far
-
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 static jmp_buf test_exit_jmp_buf[10];
 static int jmp_buf_index = 0;

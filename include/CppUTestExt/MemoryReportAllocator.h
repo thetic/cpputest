@@ -31,6 +31,7 @@
 #include "CppUTest/TestMemoryAllocator.h"
 
 class MemoryReportFormatter;
+class TestResult;
 
 class MemoryReportAllocator : public TestMemoryAllocator
 {

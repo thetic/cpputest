@@ -28,7 +28,11 @@
 #ifndef D_MemoryReportFormatter_h
 #define D_MemoryReportFormatter_h
 
+#include "CppUTest/StandardCLibrary.h"
+
+class TestMemoryAllocator;
 class TestOutput;
+class TestResult;
 class UtestShell;
 
 class MemoryReportFormatter

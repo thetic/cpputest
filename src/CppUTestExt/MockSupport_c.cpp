@@ -24,13 +24,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include "CppUTestExt/MockSupport_c.h"
 
 #include "CppUTest/CppUTestConfig.h"
 #include "CppUTest/Utest.h"
 #include "CppUTest/UtestMacros.h"
 #include "CppUTest/PlatformSpecificFunctions_c.h"
 #include "CppUTestExt/MockSupport.h"
-#include "CppUTestExt/MockSupport_c.h"
 
 typedef void (*cpputest_cpp_function_pointer)();  /* Cl2000 requires cast to C++ function */
 
