@@ -284,14 +284,6 @@ void JUnitTestOutput::print(const char *output)
     impl_->stdOutput_ += output;
 }
 
-void JUnitTestOutput::print(long)
-{
-}
-
-void JUnitTestOutput::print(size_t)
-{
-}
-
 void JUnitTestOutput::flush()
 {
 }
