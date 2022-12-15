@@ -19,6 +19,14 @@ jobs:
           clangFormatVersion: 14
           source: examples
 
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+
   codeql:
     runs-on: ubuntu-20.04
     env:
