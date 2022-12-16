@@ -121,16 +121,19 @@ jobs:
             os: windows-latest
             preset: MSVC
             install: true
+            build_args: --config RelWithDebInfo
             ctest_args: -C RelWithDebInfo
           - name: MSVC 20
             os: windows-latest
             cmake_args: -DCMAKE_CXX_STANDARD=20
             preset: MSVC
+            build_args: --config RelWithDebInfo
             ctest_args: -C RelWithDebInfo
           - name: ClangCL
             os: windows-latest
             cmake_args: -DCMAKE_CXX_STANDARD=17
             preset: ClangCL
+            build_args: --config RelWithDebInfo
             ctest_args: -C RelWithDebInfo
           - name: Clang-Tidy
             os: ubuntu-latest
@@ -283,7 +286,12 @@ jobs:
       - name: Configure
         run: cmake --preset ${{ matrix.preset }} ${{ matrix.cmake_args }}
       - name: Build
-        run: cmake --build cpputest_build --verbose -j
+        run: >
+          cmake
+          --build cpputest_build
+          ${{ matrix.build_args }}
+          --verbose
+          -j
       - name: Save map files
         uses: actions/upload-artifact@v3
         with:
