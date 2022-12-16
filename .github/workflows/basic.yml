@@ -121,17 +121,17 @@ jobs:
             os: windows-latest
             preset: MSVC
             install: true
-            ctest_args: -C Debug
+            ctest_args: -C RelWithDebInfo
           - name: MSVC 20
             os: windows-latest
             cmake_args: -DCMAKE_CXX_STANDARD=20
             preset: MSVC
-            ctest_args: -C Debug
+            ctest_args: -C RelWithDebInfo
           - name: ClangCL
             os: windows-latest
             cmake_args: -DCMAKE_CXX_STANDARD=17
             preset: ClangCL
-            ctest_args: -C Debug
+            ctest_args: -C RelWithDebInfo
           - name: Clang-Tidy
             os: ubuntu-latest
             preset: clang-tidy
@@ -304,7 +304,7 @@ jobs:
           pkg-config --print-provides cpputest
         if: ${{ matrix.install && !startswith(matrix.os, 'windows')}}
       - name: Install (Windows)
-        run: cmake --install cpputest_build/ --config=Debug
+        run: cmake --install cpputest_build/ --config=RelWithDebInfo
         if: ${{ matrix.install && startswith(matrix.os, 'windows')}}
       - name: Use install
         run: |
