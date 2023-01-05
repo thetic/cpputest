@@ -109,9 +109,9 @@ static void GccPlatformSpecificRunTestInASeperateProcess(UtestShell* shell, Test
     }
 
     if (cpid == 0) {            /* Code executed by child */
-        const size_t initialFailureCount = result->getFailureCount(); // LCOV_EXCL_LINE
-        shell->runOneTestInCurrentProcess(plugin, *result);        // LCOV_EXCL_LINE
-        _exit(initialFailureCount < result->getFailureCount());    // LCOV_EXCL_LINE
+        const size_t initialFailureCount = result->getFailureCount();
+        shell->runOneTestInCurrentProcess(plugin, *result);
+        _exit(initialFailureCount < result->getFailureCount());
     } else {                    /* Code executed by parent */
         size_t amountOfRetries = 0;
         do {
@@ -228,14 +228,6 @@ static const char* TimeStringImplementation()
 long (*GetPlatformSpecificTimeInMillis)() = TimeInMillisImplementation;
 const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
-/* Wish we could add an attribute to the format for discovering mis-use... but the __attribute__(format) seems to not work on va_list */
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
-#endif
-
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wused-but-marked-unused"
-#endif
 int (*PlatformSpecificVSNprintf)(char *str, size_t size, const char* format, va_list va_args_list) = vsnprintf;
 
 static PlatformSpecificFile PlatformSpecificFOpenImplementation(const char* filename, const char* flag)
@@ -277,13 +269,6 @@ void* (*PlatformSpecificRealloc)(void*, size_t) = realloc;
 void (*PlatformSpecificFree)(void* memory) = free;
 void* (*PlatformSpecificMemCpy)(void*, const void*, size_t) = memcpy;
 void* (*PlatformSpecificMemset)(void*, int, size_t) = memset;
-
-/* GCC 4.9.x introduces -Wfloat-conversion, which causes a warning / error
- * in GCC's own (macro) implementation of isnan() and isinf().
- */
-#if defined(__GNUC__) && (__GNUC__ >= 5 || (__GNUC__ == 4 && __GNUC_MINOR__ > 8))
-#pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif
 
 static int IsNanImplementation(double d)
 {
