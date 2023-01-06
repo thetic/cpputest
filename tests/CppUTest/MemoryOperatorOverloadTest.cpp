@@ -43,7 +43,7 @@ static void deleteArrayInvalidatesMemory()
     unsigned char* memory = new unsigned char[10];
     PlatformSpecificMemset(memory, 0xAB, 10);
     delete [] memory;
-    CHECK(memory[5] != 0xCB);
+    CHECK(memory[5] != 0xAB);
 }
 
 #ifdef NEEDS_DISABLE_USE_AFTER_FREE
