@@ -18,8 +18,6 @@ if(
         -Wsign-conversion
         -Wno-padded
         -Wno-disabled-macro-expansion
-        -Wno-reserved-id-macro
-        -Wno-keyword-macro
         -Wno-long-long
     )
 
@@ -40,12 +38,11 @@ if(
             -Wno-c++98-compat
             -Wno-c++98-compat-pedantic
             -Wno-c++14-compat
-            -Wno-inconsistent-missing-destructor-override
             -Wsuggest-override
         )
     endif()
 
-    set(CMAKE_REQUIRED_FLAGS "-Wno-error")
+    set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -Wno-error")
 endif()
 
 include(CheckCCompilerFlag)
