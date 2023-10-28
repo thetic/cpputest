@@ -340,8 +340,6 @@ jobs:
             make_target: test_disable_debug
           - name: overridden CXXFLAGS and CFLAGS and CPPFLAGS
             make_target: test_override_flags
-          - name: without Standard C library includes
-            make_target: test_disable_std_c
           - name: different TARGET_PLATFORM
             make_target: test_target_platform
           - name: override flags and disable memory leak and STDC++

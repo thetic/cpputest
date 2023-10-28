@@ -45,7 +45,10 @@ static int VisualCppSetJmp(void (*function) (void* data), void* data)
     return 0;
 }
 
-__declspec(noreturn) static void VisualCppLongJmp()
+#if __has_attribute(noreturn)
+__attribute__((noreturn))
+#endif
+static void VisualCppLongJmp()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
@@ -57,7 +60,10 @@ static void VisualCppRestoreJumpBuffer()
 }
 
 int (*PlatformSpecificSetJmp)(void (*function) (void*), void* data) = VisualCppSetJmp;
-__declspec(noreturn) void (*PlatformSpecificLongJmp)(void) = VisualCppLongJmp;
+#if __has_attribute(noreturn)
+__attribute__((noreturn))
+#endif
+void (*PlatformSpecificLongJmp)(void) = VisualCppLongJmp;
 void (*PlatformSpecificRestoreJumpBuffer)(void) = VisualCppRestoreJumpBuffer;
 
 static void VisualCppRunTestInASeperateProcess(UtestShell* shell, TestPlugin* /* plugin */, TestResult* result)
