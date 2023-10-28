@@ -94,21 +94,34 @@
 /* Should be the only #include here. Standard C library wrappers */
 #include "StandardCLibrary.h"
 
-/* Create a _no_return_ macro, which is used to flag a function as not returning.
- * Used for functions that always throws for instance.
- *
- * This is needed for compiling with clang, without breaking other compilers.
- */
 #ifndef __has_attribute
   #define __has_attribute(x) 0
 #endif
 
-#if defined (__cplusplus) && __cplusplus >= 201103L
-   #define _no_return_ [[noreturn]]
-#elif __has_attribute(noreturn)
-   #define _no_return_ __attribute__((noreturn))
-#else
-   #define _no_return_
+/* Create a CPPUTEST_NORETURN macro, which is used to flag a function as not returning.
+ * Used for functions that always throws for instance.
+ *
+ * This is needed for compiling with clang, without breaking other compilers.
+ */
+#ifdef __cplusplus // C++
+  #if __cplusplus >= 201103L
+    #define CPPUTEST_NORETURN [[noreturn]]
+  #endif
+#else // C
+  #if __STDC_VERSION__ >= 202311L
+    #define CPPUTEST_NORETURN [[noreturn]]
+  #elif __STDC_VERSION__ >= 201112L
+    #define CPPUTEST_NORETURN _Noreturn
+  #endif
+#endif
+#ifndef CPPUTEST_NORETURN
+  #if __has_attribute(noreturn)
+    #define CPPUTEST_NORETURN __attribute__((noreturn))
+  #elif defined(_MSC_VER)
+    #define CPPUTEST_NORETURN __declspec(noreturn)
+  #else
+    #define CPPUTEST_NORETURN
+  #endif
 #endif
 
 #if defined(__MINGW32__)

@@ -178,7 +178,7 @@ static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), v
  */
 #ifdef __clang__
  #if !((__clang_major__ == 3) && (__clang_minor__ == 0))
- _no_return_
+ CPPUTEST_NORETURN
  #endif
 #endif
 static void PlatformSpecificLongJmpImplementation()
