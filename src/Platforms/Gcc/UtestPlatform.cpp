@@ -172,15 +172,7 @@ static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), v
     return 0;
 }
 
-/*
- * MacOSX clang 3.0 doesn't seem to recognize longjmp and thus complains about _no_return_.
- * The later clang compilers complain when it isn't there. So only way is to check the clang compiler here :(
- */
-#ifdef __clang__
- #if !((__clang_major__ == 3) && (__clang_minor__ == 0))
- CPPUTEST_NORETURN
- #endif
-#endif
+__attribute__((noreturn))
 static void PlatformSpecificLongJmpImplementation()
 {
     jmp_buf_index--;
@@ -192,7 +184,7 @@ static void PlatformSpecificRestoreJumpBufferImplementation()
     jmp_buf_index--;
 }
 
-void (*PlatformSpecificLongJmp)() = PlatformSpecificLongJmpImplementation;
+__attribute__((noreturn)) void (*PlatformSpecificLongJmp)() = PlatformSpecificLongJmpImplementation;
 int (*PlatformSpecificSetJmp)(void (*)(void*), void*) = PlatformSpecificSetJmpImplementation;
 void (*PlatformSpecificRestoreJumpBuffer)() = PlatformSpecificRestoreJumpBufferImplementation;
 

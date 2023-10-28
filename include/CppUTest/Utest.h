@@ -62,28 +62,28 @@ public:
 class TestTerminator
 {
 public:
-    virtual void exitCurrentTest() const=0;
+    CPPUTEST_NORETURN virtual void exitCurrentTest() const = 0;
     virtual ~TestTerminator();
 };
 
 class NormalTestTerminator : public TestTerminator
 {
 public:
-    virtual void exitCurrentTest() const _override;
+    CPPUTEST_NORETURN virtual void exitCurrentTest() const _override;
     virtual ~NormalTestTerminator() _destructor_override;
 };
 
-class TestTerminatorWithoutExceptions  : public TestTerminator
+class TestTerminatorWithoutExceptions : public TestTerminator
 {
 public:
-    virtual void exitCurrentTest() const _override;
+    CPPUTEST_NORETURN virtual void exitCurrentTest() const _override;
     virtual ~TestTerminatorWithoutExceptions() _destructor_override;
 };
 
 class CrashingTestTerminator : public NormalTestTerminator
 {
 public:
-    virtual void exitCurrentTest() const _override;
+    CPPUTEST_NORETURN virtual void exitCurrentTest() const _override;
     virtual ~CrashingTestTerminator() _destructor_override;
 };
 

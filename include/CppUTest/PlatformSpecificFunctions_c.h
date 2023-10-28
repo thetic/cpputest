@@ -42,7 +42,13 @@ extern "C" {
 #endif
 
 /* Jumping operations. They manage their own jump buffers */
-extern int (*PlatformSpecificSetJmp)(void (*function) (void*), void* data);
+extern int (*PlatformSpecificSetJmp)(void (*function)(void*), void* data);
+// Attributes cannot be applied to function pointers.
+#if __has_attribute(noreturn)
+__attribute__((noreturn))
+#elif defined(_MSC_VER)
+__declspec(noreturn)
+#endif
 extern void (*PlatformSpecificLongJmp)(void);
 extern void (*PlatformSpecificRestoreJumpBuffer)(void);
 

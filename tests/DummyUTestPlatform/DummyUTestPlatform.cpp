@@ -27,13 +27,13 @@ static int fakeSetJmp(void (*function)(void* data), void* data)
 }
 int (*PlatformSpecificSetJmp)(void (*function)(void*), void* data) = fakeSetJmp;
 
-extern "C" void longjmp(jmp_buf, int);
-static void fakeLongJmp(void)
+extern "C" void longjmp(jmp_buf, int) __attribute__((noreturn));
+__attribute__((noreturn)) static void fakeLongJmp(void)
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
 }
-void (*PlatformSpecificLongJmp)(void) = fakeLongJmp;
+__attribute((noreturn)) void (*PlatformSpecificLongJmp)(void) = fakeLongJmp;
 
 static void fakeRestoreJumpBuffer()
 {
