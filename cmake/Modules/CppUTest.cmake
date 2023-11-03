@@ -37,7 +37,7 @@ function(cpputest_discover_tests target)
     endif()
 
     if(NOT DEFINED _EXTRA_ARGS)
-        set(_EXTRA_ARGS -v)
+        set(_EXTRA_ARGS -vv)
     endif()
 
     if(NOT DEFINED _DETAILED)
