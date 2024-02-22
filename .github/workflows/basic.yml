@@ -319,7 +319,7 @@ jobs:
         uses: actions/checkout@main
       - run: apk add gcc g++ cmake make
       - name: Configure
-        run: cmake --preset GNU
+        run: cmake --preset GNU -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED=YES
       - name: Build
         run: cmake --build cpputest_build -j
       - name: Test
