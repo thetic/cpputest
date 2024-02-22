@@ -293,6 +293,28 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.name == 'Coverage' }}
 
+  alpine:
+    name: musl
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - run: apk add gcc g++ cmake make
+      - name: Configure
+        run: cmake --preset GNU
+      - name: Build
+        run: cmake --build cpputest_build -j
+      - name: Test
+        run: ctest --test-dir cpputest_build --output-on-failure
+      - name: Install
+        run: cmake --install cpputest_build
+      - name: Use
+        run: |
+          cmake -B build -S examples
+          cmake --build build -j
+          ctest --test-dir build
+
   test_report:
     name: JUnit Test Report
     runs-on: ubuntu-latest
