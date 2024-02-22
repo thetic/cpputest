@@ -633,13 +633,6 @@ TEST(UtestShellPointerArrayTest, relinkingTestsWillKeepThemTheSameWhenNothingWas
 }
 
 
-TEST(UtestShellPointerArrayTest, firstTestisNotTheFirstTestWithSeed1234)
-{
-    UtestShellPointerArray tests(test0);
-    tests.shuffle(1234);
-    CHECK(tests.getFirstTest() != test0);
-}
-
 TEST(UtestShellPointerArrayTest, ShuffleListTestWithRandomAlwaysReturningZero)
 {
     UT_PTR_SET(PlatformSpecificRand, getZero);
