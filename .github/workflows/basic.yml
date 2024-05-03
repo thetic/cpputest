@@ -110,10 +110,6 @@ jobs:
             cmake_args: -DCMAKE_CXX_STANDARD=17
             preset: ClangCL
             ctest_args: -C Debug
-          - name: Windows Clang
-            os: windows-latest
-            cmake_args: -G Ninja
-            preset: Clang
           - name: Clang-Tidy
             os: ubuntu-latest
             preset: clang-tidy
@@ -266,10 +262,6 @@ jobs:
             gcc-g++
             make
         if: ${{ matrix.name == 'Cygwin' }}
-
-      - name: Install Ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
-        if: ${{ startswith(matrix.os, 'windows') }}
 
       ## BUILD AND TEST
 
