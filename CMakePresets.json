@@ -4,6 +4,12 @@
     {
       "name": "defaults",
       "binaryDir": "cpputest_build",
+      "warnings": {
+        "deprecated": true
+      },
+      "errors": {
+        "dev": true
+      },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_CXX_EXTENSIONS": false
