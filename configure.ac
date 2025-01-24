@@ -144,38 +144,7 @@ AC_MSG_CHECKING([whether CXX supports -stdlib=libc++])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cstdio>]])], [AC_MSG_RESULT([yes]); CPPUTEST_CPP11FLAG="${CPPUTEST_CPP11FLAG} -stdlib=libc++" ], [AC_MSG_RESULT([no])])
 CXXFLAGS="$saved_cxxflags"
 
-# Flag -Wno-c++98-compat
-CXXFLAGS="-Werror -Wno-c++98-compat"
-AC_MSG_CHECKING([whether CXX supports -Wno-c++98-compat])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-c++98-compat" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-c++98-compat-pedantic
-CXXFLAGS="-Werror -Wno-c++98-compat-pedantic"
-AC_MSG_CHECKING([whether CXX supports -Wno-c++98-compat-pedantic])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-c++98-compat-pedantic" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-c++14-compat
-CXXFLAGS="-Werror -Wno-c++14-compat"
-AC_MSG_CHECKING([whether CXX supports -Wno-c++14-compat])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-c++14-compat" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
 AC_LANG_POP
-
-# Flag -Wno-c++11-long-long. This must be on if it is available as otherwise long long is supported but causes a warning.
-CFLAGS="-Werror -Wno-c++11-long-long"
-AC_MSG_CHECKING([whether CC and CXX supports -Wno-c++11-long-long])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CWARNINGFLAGS="${CPPUTEST_CWARNINGFLAGS} -Wno-c++11-long-long" CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-c++11-long-long" ], [AC_MSG_RESULT([no])])
-CFLAGS="$saved_cflags"
-
-# Flag -Wno-long-long must be on for C.
-CFLAGS="-Werror -Wno-long-long"
-AC_MSG_CHECKING([whether CC and CXX supports -Wno-long-long])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CWARNINGFLAGS="${CPPUTEST_CWARNINGFLAGS} -Wno-long-long" CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-long-long"], [AC_MSG_RESULT([no])])
-CFLAGS="$saved_cflags"
-
 
 #####################################################################################
 # Flag -Wall.
@@ -261,50 +230,6 @@ AC_MSG_CHECKING([whether CC supports -Wstrict-prototypes])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CWARNINGFLAGS="${CPPUTEST_CWARNINGFLAGS} -Wstrict-prototypes" ], [AC_MSG_RESULT([no])])
 CFLAGS="$saved_cflags"
 
-
-#####################################################################################
-##### Less of these warnings
-#
-# Disable some warnings as CppUTest has this and can't be prevented at the moment.
-# Flag -Wno-disabled-macro-expansion.
-CFLAGS="-Werror -Wno-disabled-macro-expansion"
-AC_MSG_CHECKING([whether CC and CXX supports -Wno-disabled-macro-expansion])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CWARNINGFLAGS="${CPPUTEST_CWARNINGFLAGS} -Wno-disabled-macro-expansion"; CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-disabled-macro-expansion" ], [AC_MSG_RESULT([no])])
-CFLAGS="$saved_cflags"
-
-# Flag -Wno-padded.
-CFLAGS="-Werror -Wno-padded"
-AC_MSG_CHECKING([whether CC and CXX supports -Wno-padded])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CWARNINGFLAGS="${CPPUTEST_CWARNINGFLAGS} -Wno-padded"; CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-padded" ], [AC_MSG_RESULT([no])])
-CFLAGS="$saved_cflags"
-
-AC_LANG_PUSH([C++])
-# Flag -Wno-global-constructors.
-CXXFLAGS="-Werror -Wno-global-constructors"
-AC_MSG_CHECKING([whether CXX supports -Wno-global-constructors])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-global-constructors" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-exit-time-destructors.
-CXXFLAGS="-Werror -Wno-exit-time-destructors"
-AC_MSG_CHECKING([whether CXX supports -Wno-exit-time-destructors])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-exit-time-destructors" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-weak-vtables.
-CXXFLAGS="-Werror -Wno-weak-vtables"
-AC_MSG_CHECKING([whether CXX supports -Wno-weak-vtables])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-weak-vtables" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-old-style-cast.
-CXXFLAGS="-Werror -Wno-old-style-cast"
-AC_MSG_CHECKING([whether CXX supports -Wno-old-style-cast])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXXWARNINGFLAGS="${CPPUTEST_CXXWARNINGFLAGS} -Wno-old-style-cast" ], [AC_MSG_RESULT([no])])
-CXXFLAGS="$saved_cxxflags"
-
-AC_LANG_POP
-
 #####################################################
 ######## End warning section
 
@@ -332,12 +257,6 @@ CXXFLAGS="$saved_cxxflags"
 CXXFLAGS="-Werror"
 AC_MSG_CHECKING([whether CXX supports operator new with exception handling specifier])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <new>\nvoid* operator new(size_t size) throw(std::bad_alloc);;])], [AC_MSG_RESULT([yes])], [AC_MSG_RESULT([no]); UT_NEW_CANT_HAVE_EXCEPTION_SPECIFIER="yes"])
-CXXFLAGS="$saved_cxxflags"
-
-# Flag -Wno-missing-exception-spec
-CXXFLAGS="-Werror -Wno-missing-exception-spec"
-AC_MSG_CHECKING([whether CXX supports -Wno-missing-exception-spec])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); CPPUTEST_CXX_NO_INC_WARNINGFLAGS="${CPPUTEST_CXX_NO_INC_WARNINGFLAGS} -Wno-missing-exception-spec" ], [AC_MSG_RESULT([no])])
 CXXFLAGS="$saved_cxxflags"
 
 AC_LANG_POP

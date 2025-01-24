@@ -180,7 +180,7 @@ endif
 
 # Default warnings
 ifndef CPPUTEST_WARNINGFLAGS
-	CPPUTEST_WARNINGFLAGS =  -Wall -Wextra -Werror -Wshadow -Wswitch-default -Wswitch-enum -Wconversion -Wno-long-long
+	CPPUTEST_WARNINGFLAGS =  -Wall -Wextra -Werror -Wshadow -Wswitch-default -Wswitch-enum -Wconversion
 ifeq ($(CPPUTEST_PEDANTIC_ERRORS), Y)
 	CPPUTEST_WARNINGFLAGS += -pedantic-errors
 endif
@@ -193,15 +193,8 @@ endif
 
 #Wonderful extra compiler warnings with clang
 ifeq ($(COMPILER_NAME),$(CLANG_STR))
-# -Wno-disabled-macro-expansion -> Have to disable the macro expansion warning as the operator new overload warns on that.
-# -Wno-padded -> I sort-of like this warning but if there is a bool at the end of the class, it seems impossible to remove it! (except by making padding explicit)
-# -Wno-global-constructors Wno-exit-time-destructors -> Great warnings, but in CppUTest it is impossible to avoid as the automatic test registration depends on the global ctor and dtor
-# -Wno-weak-vtables -> The TEST_GROUP macro declares a class and will automatically inline its methods. That's ok as they are only in one translation unit. Unfortunately, the warning can't detect that, so it must be disabled.
-# -Wno-old-style-casts -> We only use old style casts by decision
-# -Wno-c++11-long-long -> When it detects long long, then we can use it and no need for a warning about that
-# -Wno-c++98-compat-pedantic -> Incompatibilities with C++98, these are happening through #define.
-	CPPUTEST_CXX_WARNINGFLAGS += -Wno-disabled-macro-expansion -Wno-padded -Wno-global-constructors -Wno-exit-time-destructors -Wno-weak-vtables -Wno-old-style-cast -Wno-c++11-long-long -Wno-c++98-compat-pedantic -Wreserved-id-macro
-	CPPUTEST_C_WARNINGFLAGS += -Wno-padded -Wreserved-id-macro
+	CPPUTEST_CXX_WARNINGFLAGS += -Wreserved-id-macro
+	CPPUTEST_C_WARNINGFLAGS += -Wreserved-id-macro
 
 # Clang 7 and 12 introduced new warnings by default that don't exist on previous versions of clang and cause errors when present.
 CLANG_VERSION := $(shell echo $(CC_VERSION_OUTPUT) | sed -n 's/.* \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p')
@@ -213,21 +206,6 @@ CLANG_VERSION_NUM_GT_1205 := $(shell [ "$(CLANG_VERSION_NUM)" -ge 1205 ] && echo
 ifeq ($(CLANG_VERSION_NUM_GT_700), Y)
 	CPPUTEST_CXX_WARNINGFLAGS += -Wkeyword-macro
 	CPPUTEST_C_WARNINGFLAGS += -Wkeyword-macro
-endif
-
-ifeq ($(UNAME_OS),$(MACOSX_STR))
-#apple clang has some special behavior
-ifeq ($(CLANG_VERSION_NUM_GT_1200), Y)
-# -Wno-poison-system-directories -> Apparently apple clang thinks everything is a cross compile, making this useless
-	CPPUTEST_CXX_WARNINGFLAGS += -Wno-poison-system-directories
-	CPPUTEST_C_WARNINGFLAGS += -Wno-poison-system-directories
-endif # clang 1200
-
-ifeq ($(CLANG_VERSION_NUM_GT_1205), Y)
-# Not sure why apple clang throws these warnings on cpputest code when clang doesn't
-	CPPUTEST_CXX_WARNINGFLAGS += -Wno-suggest-override -Wno-suggest-destructor-override
-	CPPUTEST_C_WARNINGFLAGS += -Wno-suggest-override -Wno-suggest-destructor-override
-endif
 endif
 endif
 
