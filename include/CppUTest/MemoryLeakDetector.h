@@ -223,7 +223,6 @@ public:
     void deallocAllMemoryInCurrentAllocationStage();
     char* reallocMemory(TestMemoryAllocator* allocator, char* memory, size_t size, const char* file, size_t line, bool allocatNodesSeperately = false);
 
-    void invalidateMemory(char* memory);
     void removeMemoryLeakInformationWithoutCheckingOrDeallocatingTheMemoryButDeallocatingTheAccountInformation(TestMemoryAllocator* allocator, void* memory, bool allocatNodesSeperately);
     enum
     {

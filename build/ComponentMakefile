@@ -37,15 +37,6 @@ ifeq ("$(LIB_DIR)", "")
     LIB_DIR = lib
 endif
 
-ifeq ("$CPPUTEST_USE_MALLOC_LEAK_DETECTION","")
-    CPPUTEST_USE_MALLOC_LEAK_DETECTION = Y
-    echo "leak on by default"
-endif
-
-#CPPUTEST_USE_OPERATOR_NEW_LEAK_DETECTION = Y
-#CXXFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
-#CFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
-
 TARGET_LIB = \
     $(LIB_DIR)/lib$(COMPONENT_NAME).a
 

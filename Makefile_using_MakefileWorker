@@ -31,8 +31,6 @@ include $(CPPUTEST_HOME)/build/MakefileWorker.mk
 test_all: start
 	$(MAKE_CMD) test_defaults
 	$(MAKE_CMD) test_disable_std_cpp
-	$(MAKE_CMD) test_disable_memory_leak_detection
-	$(MAKE_CMD) test_disable_std_cpp_and_leak_detection
 	$(MAKE_CMD) test_disable_debug
 	$(MAKE_CMD) test_override_flags
 	$(MAKE_CMD) test_disable_std_c
@@ -57,18 +55,6 @@ test_disable_std_cpp: start
 	@echo Building with the STDC++ new disabled.
 	$(TIME) $(MAKE_CMD) CPPUTEST_USE_STD_CPP_LIB=N extensions
 	$(MAKE_CMD) CPPUTEST_USE_STD_CPP_LIB=N cleanExtensions
-
-.PHONY: test_disable_memory_leak_detection
-test_disable_memory_leak_detection: start
-	@echo Building with Memory Leak Detection disabled
-	$(TIME) $(MAKE_CMD) CPPUTEST_USE_MEM_LEAK_DETECTION=N extensions
-	$(MAKE_CMD) CPPUTEST_USE_MEM_LEAK_DETECTION=N cleanExtensions
-
-.PHONY: test_disable_std_cpp_and_leak_detection
-test_disable_std_cpp_and_leak_detection: start
-	@echo Building with Memory Leak Detection disabled and STD C++ disabled
-	$(TIME) $(MAKE_CMD) CPPUTEST_USE_MEM_LEAK_DETECTION=N CPPUTEST_USE_STD_CPP_LIB=Y extensions
-	$(MAKE_CMD) CPPUTEST_USE_MEM_LEAK_DETECTION=N CPPUTEST_USE_STD_CPP_LIB=Y cleanExtensions
 
 .PHONY: test_disable_debug
 test_disable_debug: start
@@ -96,8 +82,8 @@ test_target_platform: start
 .PHONY: test_override_and_disable
 test_override_and_disable: start
 	@echo Building with overridden CXXFLAGS and CFLAGS and memory leak and STDC++ disabled
-	$(TIME) $(MAKE_CMD) CFLAGS="" CXXFLAGS="" CPPFLAGS="-Iinclude -DCPPUTEST_STD_CPP_LIB_DISABLED -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED"
-	$(MAKE_CMD) CFLAGS="" CXXFLAGS="" CPPFLAGS="-DCPPUTEST_STD_CPP_LIB_DISABLED -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED" clean
+	$(TIME) $(MAKE_CMD) CFLAGS="" CXXFLAGS="" CPPFLAGS="-Iinclude -DCPPUTEST_STD_CPP_LIB_DISABLED"
+	$(MAKE_CMD) CFLAGS="" CXXFLAGS="" CPPFLAGS="-DCPPUTEST_STD_CPP_LIB_DISABLED" clean
 
 .PHONY: test_examples
 test_examples: start
@@ -144,16 +130,16 @@ test_vpath_install: start
 
 .PHONY: examples
 examples: $(TEST_TARGET) extensions
-	+$(TIME) $(MAKE) -C examples  all CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) CPPUTEST_USE_MEM_LEAK_DETECTION=$(CPPUTEST_USE_MEM_LEAK_DETECTION)
+	+$(TIME) $(MAKE) -C examples  all CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB)
 
 extensions: $(TEST_TARGET)
-	+$(TIME) $(MAKE) -f Makefile_CppUTestExt all CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) CPPUTEST_USE_MEM_LEAK_DETECTION=$(CPPUTEST_USE_MEM_LEAK_DETECTION) TARGET_PLATFORM=$(TARGET_PLATFORM)
+	+$(TIME) $(MAKE) -f Makefile_CppUTestExt all CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) TARGET_PLATFORM=$(TARGET_PLATFORM)
 
 cleanExtensions: clean
-	+$(TIME) $(MAKE) -f Makefile_CppUTestExt clean CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) CPPUTEST_USE_MEM_LEAK_DETECTION=$(CPPUTEST_USE_MEM_LEAK_DETECTION) TARGET_PLATFORM=$(TARGET_PLATFORM)
+	+$(TIME) $(MAKE) -f Makefile_CppUTestExt clean CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) TARGET_PLATFORM=$(TARGET_PLATFORM)
 
 cleanExamples: clean cleanExtensions
-	+$(TIME) $(MAKE) -C examples clean CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB) CPPUTEST_USE_MEM_LEAK_DETECTION=$(CPPUTEST_USE_MEM_LEAK_DETECTION)
+	+$(TIME) $(MAKE) -C examples clean CPPUTEST_USE_STD_CPP_LIB=$(CPPUTEST_USE_STD_CPP_LIB)
 
 .PHONY: everythingInstall
 everythingInstall: all extensions examples

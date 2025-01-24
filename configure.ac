@@ -470,14 +470,6 @@ if test "x${use_std_cpp20}" = xyes; then
   cpp_standard_used="C++20"
 fi
 
-# Dealing with memory leak detection
-if test "x${memory_leak_detection}" = xno; then
-	AC_DEFINE([MEM_LEAK_DETECTION_DISABLED], 1, [memory leak detection disabled])
-else
-	CPPUTEST_CXXFLAGS="${CPPUTEST_CXXFLAGS} -include ${srcdir}/include/CppUTest/MemoryLeakDetectorNewMacros.h"
-	CPPUTEST_CPPFLAGS="${CPPUTEST_CPPFLAGS} -include ${srcdir}/include/CppUTest/MemoryLeakDetectorMallocMacros.h"
-fi
-
 # Disabling long long support
 if test "x${use_longlong}" = xno; then
   AC_DEFINE([LONG_LONG_DISABLED], 1, [disable long long])

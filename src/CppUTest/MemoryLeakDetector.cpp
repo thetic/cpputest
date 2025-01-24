@@ -579,15 +579,6 @@ char* MemoryLeakDetector::reallocateMemoryAndLeakInformation(TestMemoryAllocator
     return node->memory_;
 }
 
-void MemoryLeakDetector::invalidateMemory(char* memory)
-{
-#ifndef CPPUTEST_DISABLE_HEAP_POISON
-  MemoryLeakDetectorNode* node = memoryTable_.retrieveNode(memory);
-  if (node)
-    PlatformSpecificMemset(memory, 0xCD, node->size_);
-#endif
-}
-
 void MemoryLeakDetector::addMemoryCorruptionInformation(char* memory)
 {
    for (size_t i=0; i<memory_corruption_buffer_size; i++)

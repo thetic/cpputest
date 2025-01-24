@@ -43,7 +43,6 @@
 #   CPPUTEST_OBJS_DIR - a directory where o and d files go
 #   CPPUTEST_LIB_DIR - a directory where libs go
 #   CPPUTEST_ENABLE_DEBUG - build for debug
-#   CPPUTEST_USE_MEM_LEAK_DETECTION - Links with overridden new and delete
 #   CPPUTEST_USE_STD_CPP_LIB - Set to N to keep the standard C++ library out
 #		of the test harness
 #   CPPUTEST_USE_GCOV - Turn on coverage analysis
@@ -148,11 +147,6 @@ endif
 # Debug on by default
 ifndef CPPUTEST_ENABLE_DEBUG
 	CPPUTEST_ENABLE_DEBUG = Y
-endif
-
-# new and delete for memory leak detection on by default
-ifndef CPPUTEST_USE_MEM_LEAK_DETECTION
-	CPPUTEST_USE_MEM_LEAK_DETECTION = Y
 endif
 
 # Use the standard C library
@@ -293,20 +287,8 @@ endif
 # Without the C library, we'll need to disable the C++ library and ...
 ifeq ($(CPPUTEST_USE_STD_C_LIB), N)
 	CPPUTEST_USE_STD_CPP_LIB = N
-	CPPUTEST_USE_MEM_LEAK_DETECTION = N
 	CPPUTEST_CPPFLAGS += -DCPPUTEST_STD_C_LIB_DISABLED
 	CPPUTEST_CPPFLAGS += -nostdinc
-endif
-
-ifeq ($(CPPUTEST_USE_MEM_LEAK_DETECTION), N)
-	CPPUTEST_CPPFLAGS += -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED
-else
-    ifndef CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE
-	    	CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
-    endif
-    ifndef CPPUTEST_MEMLEAK_DETECTOR_MALLOC_MACRO_FILE
-	    CPPUTEST_MEMLEAK_DETECTOR_MALLOC_MACRO_FILE = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
-	endif
 endif
 
 ifeq ($(CPPUTEST_USE_LONG_LONG), Y)
@@ -350,8 +332,6 @@ endif
 
 CPPUTEST_CXXFLAGS += $(CPPUTEST_WARNINGFLAGS) $(CPPUTEST_CXX_WARNINGFLAGS)
 CPPUTEST_CPPFLAGS += $(CPPUTEST_WARNINGFLAGS)
-CPPUTEST_CXXFLAGS += $(CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE)
-CPPUTEST_CPPFLAGS += $(CPPUTEST_MEMLEAK_DETECTOR_MALLOC_MACRO_FILE)
 CPPUTEST_CFLAGS += $(CPPUTEST_C_WARNINGFLAGS)
 
 TARGET_MAP = $(COMPONENT_NAME).map.txt

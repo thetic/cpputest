@@ -1,6 +1,8 @@
 #ifndef ALLOCATIONINCPPFILE_H
 #define ALLOCATIONINCPPFILE_H
 
+#include "CppUTest/CppUTestConfig.h"
+
 char* newAllocation();
 char* newArrayAllocation();
 

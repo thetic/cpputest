@@ -19,7 +19,6 @@ For compiling CppUTest library using ARMCC, please adjust Makefile:
 3. # source CppUTest files
 	CPPUTEST_HOME := ../..
 4. other options explained in $(CPPUTEST_HOME)/build/MakefileWorker.mk
-	CPPUTEST_USE_MEM_LEAK_DETECTION := Y
 	CPPUTEST_USE_STD_CPP_LIB := N
 	CPPUTEST_USE_VPATH := Y
 	CPPUTEST_USE_STD_C_LIB := Y

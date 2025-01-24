@@ -78,7 +78,6 @@ add_cpputest_test(4
 add_cpputest_test(5
     AllocationInCFile.c
     AllocationInCppFile.cpp
-    MemoryOperatorOverloadTest.cpp
     TeamCityOutputTest.cpp
 )
 

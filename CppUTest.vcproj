@@ -948,14 +948,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\CppUTest\MemoryLeakDetectorMallocMacros.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\CppUTest\MemoryLeakDetectorNewMacros.h"
-				>
-			</File>
-			<File
 				RelativePath="include\CppUTest\MemoryLeakWarningPlugin.h"
 				>
 			</File>

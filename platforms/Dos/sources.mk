@@ -74,7 +74,6 @@ CPPU5_OBJECTS := \
   $(CPPUTEST_HOME)/tests/CppUTest/AllTests.o \
   $(CPPUTEST_HOME)/tests/CppUTest/AllocationInCFile.o \
   $(CPPUTEST_HOME)/tests/CppUTest/AllocationInCppFile.o \
-  $(CPPUTEST_HOME)/tests/CppUTest/MemoryOperatorOverloadTest.o \
   $(CPPUTEST_HOME)/tests/CppUTest/TeamCityOutputTest.o
 
 CPPU6_OBJECTS := \

@@ -261,11 +261,6 @@
           <state>0</state>
         </option>
         <option>
-          <name>IExtraOptions</name>
-          <state>--preinclude $PROJ_DIR$\..\..\include\CppUTest\MemoryLeakDetectorNewMacros.h</state>
-          <state>--preinclude $PROJ_DIR$\..\..\include\CppUTest\MemoryLeakDetectorMallocMacros.h</state>
-        </option>
-        <option>
           <name>CCLangConformance</name>
           <state>1</state>
         </option>
@@ -1971,9 +1966,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\tests\CppUTest\MemoryLeakWarningTest.cpp</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\tests\CppUTest\MemoryOperatorOverloadTest.cpp</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\tests\CppUTest\PluginTest.cpp</name>

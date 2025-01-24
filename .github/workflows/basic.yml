@@ -332,10 +332,6 @@ jobs:
             make_target: test_defaults
           - name: STDC++ disabled
             make_target: test_disable_std_cpp
-          - name: Memory Leak Detection disabled
-            make_target: test_disable_memory_leak_detection
-          - name: Disable Leak Detection and STD C++
-            make_target: test_disable_std_cpp_and_leak_detection
           - name: debug disabled
             make_target: test_disable_debug
           - name: overridden CXXFLAGS and CFLAGS and CPPFLAGS

@@ -29,6 +29,7 @@ else()
     set(select_arg "-sg")
 endif()
 
+set(ENV{ASAN_OPTIONS} "allocator_may_return_null=1")
 execute_process(
     COMMAND ${EMULATOR} "${EXECUTABLE}" ${discovery_arg}
     OUTPUT_VARIABLE discovered_tests

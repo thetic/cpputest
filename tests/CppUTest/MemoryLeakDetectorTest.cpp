@@ -527,21 +527,6 @@ TEST(MemoryLeakDetectorTest, allocateWithANullAllocatorCausesNoProblems)
     detector->deallocMemory(NullUnknownAllocator::defaultAllocator(), mem);
 }
 
-TEST(MemoryLeakDetectorTest, invalidateMemory)
-{
-  unsigned char* mem = (unsigned char*)detector->allocMemory(defaultMallocAllocator(), 2);
-
-  detector->invalidateMemory((char*)mem);
-  CHECK(mem[0] == 0xCD);
-  CHECK(mem[1] == 0xCD);
-  detector->deallocMemory(defaultMallocAllocator(), mem);
-}
-
-TEST(MemoryLeakDetectorTest, invalidateMemoryNULLShouldWork)
-{
-  detector->invalidateMemory(NULLPTR);
-}
-
 TEST_GROUP(MemoryLeakDetectorListTest)
 {
 };

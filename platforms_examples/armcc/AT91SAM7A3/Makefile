@@ -25,7 +25,6 @@ CPPUTEST_OBJS_DIR = objs
 # directory for appication library
 CPPUTEST_LIB_DIR = lib
 
-CPPUTEST_USE_MEM_LEAK_DETECTION = N
 CPPUTEST_USE_STD_CPP_LIB = Y
 CPPUTEST_USE_VPATH = Y
 CPPUTEST_USE_STD_C_LIB = Y
@@ -120,11 +119,6 @@ CPPUTEST_LDFLAGS =$(CPUFLAGS) \
 ARFLAGS = --debug_symbols
 
 
-# new and delete for memory leak detection on by default
-ifndef CPPUTEST_USE_MEM_LEAK_DETECTION
-	CPPUTEST_USE_MEM_LEAK_DETECTION = Y
-endif
-
 # Use the standard C library
 ifndef CPPUTEST_USE_STD_C_LIB
 	CPPUTEST_USE_STD_C_LIB = Y
@@ -152,23 +146,10 @@ endif
 # Without the C library, we'll need to disable the C++ library and ... 
 ifeq ($(CPPUTEST_USE_STD_C_LIB), N)
 	CPPUTEST_USE_STD_CPP_LIB = N
-	CPPUTEST_USE_MEM_LEAK_DETECTION = N
 	CPPUTEST_CPPFLAGS += -DCPPUTEST_STD_C_LIB_DISABLED
 	CPPUTEST_LDFLAGS +=--no_scanlib
 else
 	INCLUDE_DIRS +=$(SYS_INCLUDE_DIRS)
-endif
-
-
-ifeq ($(CPPUTEST_USE_MEM_LEAK_DETECTION), N)
-	CPPUTEST_CPPFLAGS += -DCPPUTEST_MEM_LEAK_DETECTION_DISABLED
-else
-    ifndef CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE
-	    	CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
-    endif
-    ifndef CPPUTEST_MEMLEAK_DETECTOR_MALLOC_MACRO_FILE
-	    CPPUTEST_MEMLEAK_DETECTOR_MALLOC_MACRO_FILE = -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
-	endif	
 endif
 
 

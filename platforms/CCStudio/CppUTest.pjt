@@ -49,5 +49,5 @@ Source="..\..\src\Platforms\C2000\UtestPlatform.cpp"
 Options=-r -o"..\..\lib\c2000\CppUTestd.lib"
 
 ["Compiler" Settings: "Debug"]
-Options=-g -rtti -pdsw225 -pden -pds1 -fr"$(Proj_dir)\Debug" -i"$(Proj_dir)\..\..\include" -d"_DEBUG" -d"LARGE_MODEL" -d"CPPUTEST_STD_CPP_LIB_DISABLED" -d"CPPUTEST_USE_MEM_LEAK_DETECTION" -ml -v28
+Options=-g -rtti -pdsw225 -pden -pds1 -fr"$(Proj_dir)\Debug" -i"$(Proj_dir)\..\..\include" -d"_DEBUG" -d"LARGE_MODEL" -d"CPPUTEST_STD_CPP_LIB_DISABLED" -ml -v28
 

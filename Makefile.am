@@ -77,8 +77,6 @@ include_cpputest_HEADERS = \
 	include/CppUTest/CppUTestConfig.h \
 	include/CppUTest/JUnitTestOutput.h \
 	include/CppUTest/MemoryLeakDetector.h \
-	include/CppUTest/MemoryLeakDetectorMallocMacros.h \
-	include/CppUTest/MemoryLeakDetectorNewMacros.h \
 	include/CppUTest/MemoryLeakWarningPlugin.h \
 	include/CppUTest/PlatformSpecificFunctions.h \
 	include/CppUTest/PlatformSpecificFunctions_c.h \
@@ -168,7 +166,6 @@ CppUTestTests_SOURCES = \
 	tests/CppUTest/DummyMemoryLeakDetector.cpp \
 	tests/CppUTest/JUnitOutputTest.cpp \
 	tests/CppUTest/MemoryLeakDetectorTest.cpp \
-	tests/CppUTest/MemoryOperatorOverloadTest.cpp \
 	tests/CppUTest/MemoryLeakWarningTest.cpp \
 	tests/CppUTest/PluginTest.cpp \
 	tests/CppUTest/PreprocessorTest.cpp \
@@ -238,7 +235,7 @@ if INCLUDE_GMOCKTESTS
 
 #GTestTests_CPPFLAGS = $(lib_libCppUTestExt_a_CPPFLAGS)
 #GTestTests_CFLAGS = $(lib_libCppUTestExt_a_CFLAGS)
-#GTestTests_CXXFLAGS = $(lib_libCppUTestExt_a_CXXFLAGS) -DCPPUTEST_USE_MEM_LEAK_DETECTION=0 -DGMOCK_RENAME_MAIN=1 -D_THREAD_SAFE  -DGTEST_HAS_PTHREAD=1
+#GTestTests_CXXFLAGS = $(lib_libCppUTestExt_a_CXXFLAGS) -DGMOCK_RENAME_MAIN=1 -D_THREAD_SAFE  -DGTEST_HAS_PTHREAD=1
 #GTestTests_LDADD = lib/libCppUTestExt.a lib/libCppUTest.a $(CPPUTEST_LDADD)
 #GTestTests_LDFLAGS = $(CppUTestTests_LDFLAGS)
 
