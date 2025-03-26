@@ -3,7 +3,7 @@
   "configurePresets": [
     {
       "name": "defaults",
-      "binaryDir": "cpputest_build",
+      "binaryDir": "build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_CXX_EXTENSIONS": false
@@ -11,7 +11,9 @@
     },
     {
       "name": "GNU",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "environment": {
         "CFLAGS": "-Werror",
         "CXXFLAGS": "-Werror"
@@ -23,7 +25,9 @@
     },
     {
       "name": "Clang",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
@@ -31,7 +35,9 @@
     },
     {
       "name": "clang-tidy",
-      "inherits": ["Clang"],
+      "inherits": [
+        "Clang"
+      ],
       "cacheVariables": {
         "CMAKE_CXX_CLANG_TIDY": "clang-tidy;-header-filter=.*",
         "CMAKE_C_CLANG_TIDY": "clang-tidy;-header-filter=.*"
@@ -39,7 +45,9 @@
     },
     {
       "name": "MSVC",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "environment": {
         "CFLAGS": "/WX",
         "CXXFLAGS": "/WX"
@@ -47,13 +55,17 @@
     },
     {
       "name": "ClangCL",
-      "inherits": ["MSVC"],
+      "inherits": [
+        "MSVC"
+      ],
       "generator": "Visual Studio 17 2022",
       "toolset": "ClangCL"
     },
     {
       "name": "MinGW",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "LDFLAGS": "-static"
       },
@@ -66,7 +78,9 @@
     },
     {
       "name": "arm-embedded",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "toolchainFile": "${sourceDir}/cmake/Toolchains/arm-none-eabi-gcc.toolchain.cmake",
       "cacheVariables": {
         "CMAKE_CROSSCOMPILING_EMULATOR": "docker;run;--rm;-v=${sourceDir}:${sourceDir};multiarch/qemu-user-static:arm-7.1.0-2;qemu-arm-static;-cpu;cortex-m4"
@@ -74,7 +88,9 @@
     },
     {
       "name": "coverage",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "CFLAGS": "--coverage",
         "CXXFLAGS": "--coverage"
@@ -87,7 +103,9 @@
     },
     {
       "name": "no-std-cpp",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "CXXFLAGS": "-Werror  -nostdinc++"
       },
@@ -97,21 +115,27 @@
     },
     {
       "name": "no-rtti",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "CXXFLAGS": "-Werror -fno-rtti"
       }
     },
     {
       "name": "no-exceptions",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "CXXFLAGS": "-Werror -fno-exceptions"
       }
     },
     {
       "name": "no-std-c",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "environment": {
         "CXXFLAGS": "-DCPPUTEST_CHAR_BIT=8 -Werror -nostdinc",
         "CFLAGS": "-DCPPUTEST_CHAR_BIT=8 -Werror -nostdinc"
@@ -122,14 +146,18 @@
     },
     {
       "name": "no-long-long",
-      "inherits": ["GNU"],
+      "inherits": [
+        "GNU"
+      ],
       "cacheVariables": {
         "CPPUTEST_USE_LONG_LONG": false
       }
     },
     {
       "name": "asan",
-      "inherits": ["Clang"],
+      "inherits": [
+        "Clang"
+      ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
@@ -141,14 +169,18 @@
     },
     {
       "name": "detailed",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "cacheVariables": {
         "CPPUTEST_TESTS_DETAILED": true
       }
     },
     {
       "name": "gtest",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "generator": "Ninja Multi-Config",
       "cacheVariables": {
         "CPPUTEST_TEST_GTEST": true,
@@ -157,7 +189,9 @@
     },
     {
       "name": "IAR",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "Generic",
         "CMAKE_C_COMPILER": "iccarm",
@@ -169,7 +203,9 @@
     },
     {
       "name": "DOS",
-      "inherits": ["defaults"],
+      "inherits": [
+        "defaults"
+      ],
       "generator": "Watcom WMake",
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "DOS",

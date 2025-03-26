@@ -1,28 +1,8 @@
-# 2.6.3 is needed for ctest support
-# 3.1 is needed for target_sources
-# 3.8 is needed for try_compile improvements (CMP0067)
-cmake_minimum_required(VERSION 3.8...3.31)
+cmake_minimum_required(VERSION 3.21)
 
 project(CppUTest
   VERSION 4.0
 )
-
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
-  # PROJECT_IS_TOP_LEVEL is defined automatically
-elseif (CMAKE_CURRENT_BINARY_DIR STREQUAL CMAKE_BINARY_DIR)
-  set(PROJECT_IS_TOP_LEVEL TRUE)
-else()
-  set(PROJECT_IS_TOP_LEVEL FALSE)
-endif()
-
-###############
-# Conan support
-###############
-if (EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-    message(STATUS "conan_basic_setup()")
-    conan_basic_setup()
-endif()
 
 include(CTest)
 
@@ -114,25 +94,11 @@ if(HAVE_SIZEOF_LONGLONG)
     set(CPPUTEST_HAVE_LONG_LONG_INT ON)
 endif()
 
-configure_file (
-    "${PROJECT_SOURCE_DIR}/config.h.cmake"
-    "${PROJECT_BINARY_DIR}/generated/CppUTestGeneratedConfig.h"
-)
+add_subdirectory(CppUTest)
 
-add_subdirectory(src)
-
-target_include_directories(CppUTest
-    PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
-)
-target_compile_definitions(CppUTest
-  PUBLIC
-    HAVE_CONFIG_H
-)
-
-if (CPPUTEST_BUILD_TESTING)
-    add_subdirectory(tests)
-endif ()
+if(CPPUTEST_EXTENSIONS)
+    add_subdirectory(CppUTestExt)
+endif()
 
 if (CPPUTEST_EXAMPLES)
   add_subdirectory(examples)

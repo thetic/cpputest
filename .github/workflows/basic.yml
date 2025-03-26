@@ -17,80 +17,6 @@ jobs:
           clangFormatVersion: 14
           source: examples
 
-  codeql:
-    runs-on: ubuntu-20.04
-    env:
-      CC: gcc-10
-      CXX: g++-10
-    name: "CodeQL"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: CodeQL Initialization
-        uses: github/codeql-action/init@v2
-        with:
-          languages: cpp
-          queries: +security-and-quality
-      - name: Build
-        run: |
-          mkdir _build && cd _build
-          cmake -DCMAKE_CXX_STANDARD=17 ..
-          make -j2
-      - name: CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-
-  autotools:
-    strategy:
-      matrix:
-        include:
-          - name: Mac GNU
-            os: macos-latest
-            cc: gcc
-            cxx: g++
-            make_args: tdd
-          - name: Mac Clang
-            os: macos-latest
-            cc: clang
-            cxx: clang++
-            make_args: tdd
-          - name: Linux GNU
-            os: ubuntu-latest
-            cc: gcc
-            cxx: g++
-            make_args: tdd
-          - name: Linux Clang
-            os: ubuntu-latest
-            cc: clang
-            cxx: clang++
-            make_args: tdd
-          - name: Disable long long
-            os: ubuntu-latest
-            configure_args: --disable-longlong
-            make_args: tdd
-          - name: Distribution
-            os: ubuntu-latest
-            make_args: dist dist-zip VERSION=latest
-          - name: Install
-            os: ubuntu-latest
-            make_args: DESTDIR=install_autotools install
-    runs-on: ${{ matrix.os }}
-    name: Autotools ${{ matrix.name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - run: brew install automake libtool
-        if: ${{ startswith(matrix.os, 'macos') }}
-      - if: ${{ matrix.cxx }}
-        run: echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
-      - if: ${{ matrix.cc }}
-        run: echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
-      - name: Configure
-        run: |
-          autoreconf -i .
-          ./configure ${{ matrix.configure_args }}
-      - name: Build and test
-        run: make ${{ matrix.make_args }}
-
   cmake:
     strategy:
       matrix:
@@ -268,16 +194,16 @@ jobs:
       - name: Configure
         run: cmake --preset ${{ matrix.preset }} ${{ matrix.cmake_args }}
       - name: Build
-        run: cmake --build cpputest_build --verbose -j
+        run: cmake --build build --verbose -j
       - name: Save map files
         uses: actions/upload-artifact@v4
         with:
           name: "${{ matrix.name }} map files"
-          path: cpputest_build/**/*.map
+          path: build/**/*.map
       - name: Test
         run: >
           ctest
-          --test-dir cpputest_build
+          --test-dir build
           ${{ matrix.ctest_args }}
           --output-on-failure
 
@@ -285,11 +211,14 @@ jobs:
 
       - name: Install (*nix)
         run: |
-          sudo cmake --install cpputest_build/
+          sudo cmake --install build/
+          rm -rf build
           pkg-config --print-provides cpputest
         if: ${{ matrix.install && !startswith(matrix.os, 'windows')}}
       - name: Install (Windows)
-        run: cmake --install cpputest_build/ --config=Debug
+        run: |
+          cmake --install build/ --config=Debug
+          rm build -r -fo
         if: ${{ matrix.install && startswith(matrix.os, 'windows')}}
       - name: Use install
         run: |
@@ -301,7 +230,7 @@ jobs:
       - name: Coverage
         run: |
           lcov --ignore-errors mismatch --capture --directory . --no-external --output-file lcov.info
-          lcov --remove lcov.info --output-file lcov.info '*/tests/*'
+          lcov --remove lcov.info --output-file lcov.info '*/test/*'
         if: ${{ matrix.name == 'Coverage' }}
       - name: Coveralls
         uses: coverallsapp/github-action@master
@@ -316,72 +245,13 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - run: cmake --preset=defaults -DCPPUTEST_JUNIT_REPORT=TRUE
-      - run: cmake --build cpputest_build -j
-      - run: ctest --test-dir cpputest_build
+      - run: cmake --build build -j
+      - run: ctest --test-dir build
       - uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results
-          path: "cpputest_build/**/cpputest_*.xml"
-
-  make:
-    strategy:
-      matrix:
-        include:
-          - name: Defaults
-            make_target: test_defaults
-          - name: STDC++ disabled
-            make_target: test_disable_std_cpp
-          - name: Memory Leak Detection disabled
-            make_target: test_disable_memory_leak_detection
-          - name: Disable Leak Detection and STD C++
-            make_target: test_disable_std_cpp_and_leak_detection
-          - name: debug disabled
-            make_target: test_disable_debug
-          - name: overridden CXXFLAGS and CFLAGS and CPPFLAGS
-            make_target: test_override_flags
-          - name: without Standard C library includes
-            make_target: test_disable_std_c
-          - name: different TARGET_PLATFORM
-            make_target: test_target_platform
-          - name: override flags and disable memory leak and STDC++
-            make_target: test_override_and_disable
-          - name: Examples
-            make_target: test_examples
-          - name: JUnit Output
-            make_target: test_junit_output
-          # - name: gcov
-          #   make_target: test_gcov
-          - name: VPATH usage
-            make_target: test_vpath
-          - name: VPATH Install
-            make_target: test_vpath_install
-    name: Make ${{ matrix.name }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@main
-      - name: Build
-        run: make -f Makefile_using_MakefileWorker ${{ matrix.make_target }}
-
-  make_dos:
-    name: Make OpenWatcom DOS
-    runs-on: ubuntu-latest
-    env:
-      WATCOM: "./watcom"
-      TERM: linux
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: Install tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y dosbox
-          git clone https://github.com/cpputest/watcom-compiler.git $WATCOM
-          echo "$WATCOM/binl" >> $GITHUB_PATH
-      - name: Build
-        run: make -f platforms/Dos/Makefile
-      - name: Test
-        run: make -f platforms/Dos/Makefile test
+          path: "build/**/cpputest_*.xml"
 
   cmake_msys:
     name: CMake MSYS
@@ -406,57 +276,6 @@ jobs:
       - name: Configure
         run: cmake --preset=GNU
       - name: Build
-        run: cmake --build cpputest_build -j
+        run: cmake --build build -j
       - name: Test
-        run: ctest --test-dir cpputest_build --output-on-failure
-
-  autotools_msys:
-    name: Autotools MSYS
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-    env:
-      LDFLAGS: -static
-    steps:
-      - uses: actions/checkout@v3
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW64
-          update: true
-          install: >
-            git
-            mingw-w64-x86_64-autotools
-            mingw-w64-x86_64-cc
-            mingw-w64-x86_64-make
-      - name: Configure
-        run: |
-          autoreconf -i .
-          ./configure
-      - name: Build and test
-        run: make tdd
-
-  Docker:
-    strategy:
-      matrix:
-        image: ["ubuntu", "dos"]
-    runs-on: ubuntu-latest
-    name: Docker ${{ matrix.image }}
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-        env:
-          TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: ${{ env.TOKEN != '' }}
-      - name: Build
-        uses: docker/build-push-action@v3
-        with:
-          file: docker/Dockerfile.${{ matrix.image }}
-          tags: cpputest/${{ matrix.image }}
+        run: ctest --test-dir build --output-on-failure
