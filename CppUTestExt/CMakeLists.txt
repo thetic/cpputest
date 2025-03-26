@@ -1,6 +1,5 @@
 add_library(CppUTestExt STATIC
     src/CodeMemoryReportFormatter.cpp
-    src/GTest.cpp
     src/IEEE754ExceptionsPlugin.cpp
     src/MemoryReporterPlugin.cpp
     src/MockFailure.cpp
@@ -25,12 +24,8 @@ add_library(CppUTestExt STATIC
     include/CppUTestExt/MockFailure.h
     include/CppUTestExt/MockSupport.h
     include/CppUTestExt/MockSupport_c.h
-    include/CppUTestExt/GMock.h
-    include/CppUTestExt/GTest.h
-    include/CppUTestExt/GTestSupport.h
     include/CppUTestExt/MemoryReporterPlugin.h
     include/CppUTestExt/OrderedTest.h
-    include/CppUTestExt/GTestConvertor.h
     include/CppUTestExt/MockActualCall.h
     include/CppUTestExt/MockCheckedActualCall.h
     include/CppUTestExt/MockNamedValue.h

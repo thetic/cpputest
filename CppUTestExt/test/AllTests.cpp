@@ -30,37 +30,13 @@
 #include "CppUTest/SimpleStringInternalCache.h"
 #include "CppUTestExt/MockSupportPlugin.h"
 
-#ifdef CPPUTEST_INCLUDE_GTEST_TESTS
-#include "CppUTestExt/GTestConvertor.h"
-#endif
-
 int main(int ac, const char *const *av)
 {
-    int result = 0;
     GlobalSimpleStringCache simpleStringCache;
 
-    {
-#ifdef CPPUTEST_INCLUDE_GTEST_TESTS
-        GTestConvertor convertor;
-        convertor.addAllGTestToTestRegistry();
-#endif
+    MockSupportPlugin mockPlugin;
+    TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
-        MockSupportPlugin mockPlugin;
-        TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
-
-#ifndef GMOCK_RENAME_MAIN
-        result = CommandLineTestRunner::RunAllTests(ac, av);
-#else
-        /* Don't have any memory leak detector when running the Google Test tests */
-
-        testing::GMOCK_FLAG(verbose) = testing::internal::kWarningVerbosity;
-
-        ConsoleTestOutput output;
-        CommandLineTestRunner runner(ac, av, TestRegistry::getCurrentRegistry());
-        result = runner.runAllTestsMain();
-#endif
-    }
-
-    return result;
+    return CommandLineTestRunner::RunAllTests(ac, av);
 }
 
