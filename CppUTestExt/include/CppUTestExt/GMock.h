@@ -28,10 +28,6 @@
 #ifndef GMOCK_H_
 #define GMOCK_H_
 
-#undef new
-#undef strdup
-#undef strndup
-
 #undef RUN_ALL_TESTS
 
 #define GTEST_DONT_DEFINE_TEST 1
@@ -42,13 +38,5 @@
 
 using testing::Return;
 using testing::NiceMock;
-
-#ifdef CPPUTEST_USE_NEW_MACROS
-#include "CppUTest/MemoryLeakDetectorNewMacros.h"
-#endif
-
-#ifdef CPPUTEST_USE_MALLOC_MACROS
-#include "CppUTest/MemoryLeakDetectorMallocMacros.h"
-#endif
 
 #endif

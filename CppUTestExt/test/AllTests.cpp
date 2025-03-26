@@ -28,7 +28,6 @@
 #include "CppUTest/CommandLineTestRunner.h"
 #include "CppUTest/TestRegistry.h"
 #include "CppUTest/SimpleStringInternalCache.h"
-#include "CppUTestExt/MemoryReporterPlugin.h"
 #include "CppUTestExt/MockSupportPlugin.h"
 
 #ifdef CPPUTEST_INCLUDE_GTEST_TESTS
@@ -46,9 +45,7 @@ int main(int ac, const char *const *av)
         convertor.addAllGTestToTestRegistry();
 #endif
 
-        MemoryReporterPlugin plugin;
         MockSupportPlugin mockPlugin;
-        TestRegistry::getCurrentRegistry()->installPlugin(&plugin);
         TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
 #ifndef GMOCK_RENAME_MAIN

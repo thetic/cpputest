@@ -1,7 +1,6 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#cmakedefine CPPUTEST_MEM_LEAK_DETECTION_DISABLED
 #cmakedefine01 CPPUTEST_USE_LONG_LONG
 #cmakedefine CPPUTEST_HAVE_STRDUP
 

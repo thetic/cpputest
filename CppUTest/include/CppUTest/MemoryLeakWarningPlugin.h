@@ -29,10 +29,7 @@
 #define D_MemoryLeakWarningPlugin_h
 
 #include "TestPlugin.h"
-#include "MemoryLeakDetectorNewMacros.h"
 
-#define IGNORE_ALL_LEAKS_IN_TEST() if (MemoryLeakWarningPlugin::getFirstPlugin()) MemoryLeakWarningPlugin::getFirstPlugin()->ignoreAllLeaksInTest()
-#define EXPECT_N_LEAKS(n)          if (MemoryLeakWarningPlugin::getFirstPlugin()) MemoryLeakWarningPlugin::getFirstPlugin()->expectLeaksInTest(n)
 
 extern void crash_on_allocation_number(unsigned alloc_number);
 

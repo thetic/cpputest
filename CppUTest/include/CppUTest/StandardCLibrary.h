@@ -61,10 +61,6 @@
 #define _Bool int
 #include <linux/acpi.h>
 #include <linux/types.h>
-#undef false
-#undef true
-#undef bool
-#undef new
 
 #else
 

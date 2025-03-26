@@ -26,7 +26,6 @@
  */
 
 #ifdef CPPUTEST_INCLUDE_GTEST_TESTS
-#undef new
 
 #include "CppUTestExt/GTest.h"
 #include "CppUTestExt/GMock.h"
