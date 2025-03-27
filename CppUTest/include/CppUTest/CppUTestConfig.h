@@ -267,9 +267,6 @@
 #define CPPUTEST_16BIT_INTS
 #endif
 
-typedef long long cpputest_longlong;
-typedef unsigned long long cpputest_ulonglong;
-
 #ifdef __cplusplus
   /* Visual C++ 10.0+ (2010+) supports the override keyword, but doesn't define the C++ version as C++11 */
   #if (__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1600))
