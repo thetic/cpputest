@@ -63,9 +63,6 @@ jobs:
             os: ubuntu-latest
             cmake_args: -DCMAKE_CXX_STANDARD=98
             preset: GNU
-          - name: No long long
-            os: ubuntu-latest
-            preset: no-long-long
           - name: Detailed
             os: ubuntu-latest
             preset: detailed

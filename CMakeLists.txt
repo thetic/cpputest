@@ -12,10 +12,6 @@ option(CPPUTEST_STD_C_LIB_DISABLED "Disable the standard C library")
 cmake_dependent_option(CPPUTEST_STD_CPP_LIB_DISABLED "Use the standard C++ library"
   OFF "NOT CPPUTEST_STD_C_LIB_DISABLED" ON)
 option(CPPUTEST_EXTENSIONS "Use the CppUTest extension library" ON)
-include(CheckTypeSize)
-check_type_size("long long" SIZEOF_LONGLONG)
-cmake_dependent_option(CPPUTEST_USE_LONG_LONG "Support long long"
-  YES "HAVE_SIZEOF_LONGLONG" OFF)
 
 cmake_dependent_option(CPPUTEST_BUILD_TESTING "Compile and make tests for CppUTest"
   ${PROJECT_IS_TOP_LEVEL} "BUILD_TESTING" OFF)
@@ -84,10 +80,6 @@ check_cxx_symbol_exists(pthread_mutex_lock "pthread.h" CPPUTEST_HAVE_PTHREAD_MUT
 
 if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
   check_cxx_symbol_exists(strdup "string.h" CPPUTEST_HAVE_STRDUP)
-endif()
-check_type_size("long long" SIZEOF_LONGLONG LANGUAGE CXX)
-if(HAVE_SIZEOF_LONGLONG)
-    set(CPPUTEST_HAVE_LONG_LONG_INT ON)
 endif()
 
 add_subdirectory(CppUTest)
