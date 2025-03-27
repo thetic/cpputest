@@ -28,6 +28,8 @@
 #ifndef TESTMOCKSUPPORTC_CFILE_H
 #define TESTMOCKSUPPORTC_CFILE_H
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

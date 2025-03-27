@@ -35,7 +35,6 @@ add_library(CppUTest
     include/CppUTest/TestPlugin.h
     include/CppUTest/JUnitTestOutput.h
     include/CppUTest/TeamCityTestOutput.h
-    include/CppUTest/StandardCLibrary.h
     include/CppUTest/TestRegistry.h
     include/CppUTest/MemoryLeakDetector.h
     include/CppUTest/TestFailure.h

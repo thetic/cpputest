@@ -28,6 +28,8 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestOutput.h"
 
+#include <limits.h>
+
 namespace
 {
 const int failLineNumber = 2;

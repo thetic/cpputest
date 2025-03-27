@@ -32,6 +32,8 @@
 #include "CppUTest/MemoryLeakDetector.h"
 #include "CppUTest/TestTestingFixture.h"
 
+#include <limits.h>
+
 class JustUseNewStringAllocator : public TestMemoryAllocator
 {
 public:

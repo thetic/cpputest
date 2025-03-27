@@ -1,7 +1,7 @@
-
-#include "CppUTest/StandardCLibrary.h"
-
 #include "AllocLetTestFree.h"
+
+#include <stddef.h>
+#include <stdlib.h>
 
 typedef struct AllocLetTestFreeStruct
 {

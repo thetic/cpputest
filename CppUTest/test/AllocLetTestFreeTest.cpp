@@ -1,10 +1,4 @@
-
-#include "CppUTest/StandardCLibrary.h"
-
-extern "C"
-{
 #include "AllocLetTestFree.h"
-}
 
 #include "CppUTest/TestHarness.h"
 
