@@ -18,24 +18,15 @@ cmake_dependent_option(CPPUTEST_EXAMPLES "Compile and make examples?"
 if(NOT DEFINED CPPUTEST_PLATFORM)
     if(MSVC)
         set(CPPUTEST_PLATFORM VisualCpp)
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
-        set(CPPUTEST_PLATFORM Iar)
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "ARMCC")
-        set(CPPUTEST_PLATFORM armcc)
-    elseif(DOS)
-        set(CPPUTEST_PLATFORM Dos)
-    elseif(BORLAND)
-        set(CPPUTEST_PLATFORM Borland)
     else()
         set(CPPUTEST_PLATFORM Gcc)
     endif()
-    message(STATUS "Setting CPPUTEST_PLATFORM: ${CPPUTEST_PLATFORM}")
 endif()
 set(CPPUTEST_PLATFORM "${CPPUTEST_PLATFORM}" CACHE STRING "Platform implementation")
 set_property(
     CACHE CPPUTEST_PLATFORM
     PROPERTY STRINGS
-        armcc Borland C2000 Dos Gcc Iar Keil Symbian VisualCpp OFF
+        Gcc VisualCpp
 )
 
 include(CheckCXXSymbolExists)

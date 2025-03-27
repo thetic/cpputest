@@ -54,13 +54,6 @@ if(CPPUTEST_PLATFORM)
     )
 endif()
 
-if(CPPUTEST_PLATFORM STREQUAL "Iar")
-    target_compile_options(CppUTest
-        PRIVATE
-            --dlib_config full
-    )
-endif()
-
 if (MINGW)
     include(CheckStructHasMember)
     check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
