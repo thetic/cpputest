@@ -50,6 +50,8 @@ add_library(CppUTest
     include/CppUTest/SimpleMutex.h
 )
 
+target_compile_features(CppUTest PUBLIC cxx_std_11)
+
 #[[Set CPPUTEST_PLATFORM in a parent CMakeLists.txt if reusing one of the provided platforms, else supply the missing definitions]]
 if(CPPUTEST_PLATFORM)
     target_sources(CppUTest

@@ -45,11 +45,11 @@ TEST_GROUP(TestFailureNanAndInf)
 {
     UtestShell*  test;
 
-    void setup() CPPUTEST_OVERRIDE
+    void setup() override
     {
         test = new UtestShell("groupname", "testname", failFileName, failLineNumber-1);
     }
-    void teardown() CPPUTEST_OVERRIDE
+    void teardown() override
     {
         delete test;
     }

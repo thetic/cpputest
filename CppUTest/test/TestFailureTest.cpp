@@ -38,11 +38,11 @@ TEST_GROUP(TestFailure)
 {
     UtestShell* test;
 
-    void setup() CPPUTEST_OVERRIDE
+    void setup() override
     {
         test = new UtestShell("groupname", "testname", failFileName, failLineNumber-1);
     }
-    void teardown() CPPUTEST_OVERRIDE
+    void teardown() override
     {
         delete test;
     }
@@ -78,13 +78,13 @@ TEST(TestFailure, EqualsFailure)
 
 TEST(TestFailure, EqualsFailureWithNullAsActual)
 {
-    EqualsFailure f(test, failFileName, failLineNumber, "expected", NULLPTR, "");
+    EqualsFailure f(test, failFileName, failLineNumber, "expected", nullptr, "");
     FAILURE_EQUAL("expected <expected>\n\tbut was  <(null)>", f);
 }
 
 TEST(TestFailure, EqualsFailureWithNullAsExpected)
 {
-    EqualsFailure f(test, failFileName, failLineNumber, NULLPTR, "actual", "");
+    EqualsFailure f(test, failFileName, failLineNumber, nullptr, "actual", "");
     FAILURE_EQUAL("expected <(null)>\n\tbut was  <actual>", f);
 }
 
@@ -226,14 +226,14 @@ TEST(TestFailure, StringsEqualFailureAtTheBeginning)
 
 TEST(TestFailure, StringsEqualFailureWithNullAsActual)
 {
-    StringEqualFailure f(test, failFileName, failLineNumber, "abc", NULLPTR, "");
+    StringEqualFailure f(test, failFileName, failLineNumber, "abc", nullptr, "");
     FAILURE_EQUAL("expected <abc>\n"
                 "\tbut was  <(null)>", f);
 }
 
 TEST(TestFailure, StringsEqualFailureWithNullAsExpected)
 {
-    StringEqualFailure f(test, failFileName, failLineNumber, NULLPTR, "abd", "");
+    StringEqualFailure f(test, failFileName, failLineNumber, nullptr, "abd", "");
     FAILURE_EQUAL("expected <(null)>\n"
                 "\tbut was  <abd>", f);
 }
@@ -259,14 +259,14 @@ TEST(TestFailure, StringsEqualNoCaseFailure)
 
 TEST(TestFailure, StringsEqualNoCaseFailureWithActualAsNull)
 {
-    StringEqualNoCaseFailure f(test, failFileName, failLineNumber, "ABC", NULLPTR, "");
+    StringEqualNoCaseFailure f(test, failFileName, failLineNumber, "ABC", nullptr, "");
     FAILURE_EQUAL("expected <ABC>\n"
                 "\tbut was  <(null)>", f);
 }
 
 TEST(TestFailure, StringsEqualNoCaseFailureWithExpectedAsNull)
 {
-    StringEqualNoCaseFailure f(test, failFileName, failLineNumber, NULLPTR, "abd", "");
+    StringEqualNoCaseFailure f(test, failFileName, failLineNumber, nullptr, "abd", "");
     FAILURE_EQUAL("expected <(null)>\n"
                 "\tbut was  <abd>", f);
 }
@@ -365,31 +365,31 @@ TEST(TestFailure, BinaryEqualLast)
 TEST(TestFailure, BinaryEqualActualNull)
 {
     const unsigned char expectedData[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    BinaryEqualFailure f(test, failFileName, failLineNumber, expectedData, NULLPTR, sizeof(expectedData), "");
+    BinaryEqualFailure f(test, failFileName, failLineNumber, expectedData, nullptr, sizeof(expectedData), "");
     FAILURE_EQUAL("expected <00 00 00 00 00 00 00>\n\tbut was  <(null)>", f);
 }
 
 TEST(TestFailure, BinaryEqualExpectedNull)
 {
     const unsigned char actualData[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01};
-    BinaryEqualFailure f(test, failFileName, failLineNumber, NULLPTR, actualData, sizeof(actualData), "");
+    BinaryEqualFailure f(test, failFileName, failLineNumber, nullptr, actualData, sizeof(actualData), "");
     FAILURE_EQUAL("expected <(null)>\n\tbut was  <00 00 00 00 00 00 01>", f);
 }
 
 TEST(TestFailure, BitsEqualWithText)
 {
-    BitsEqualFailure f(test, failFileName, failLineNumber, 0x0001, 0x0003, 0x00FF, 2*8/CPPUTEST_CHAR_BIT, "text");
+    BitsEqualFailure f(test, failFileName, failLineNumber, 0x0001, 0x0003, 0x00FF, 2*8/CHAR_BIT, "text");
     FAILURE_EQUAL("Message: text\n"
                   "\texpected <xxxxxxxx 00000001>\n\tbut was  <xxxxxxxx 00000011>", f);
 }
 
-#if (CPPUTEST_CHAR_BIT == 16)
+#if (CHAR_BIT == 16)
 TEST(TestFailure, BitsEqualChar)
 {
     BitsEqualFailure f(test, failFileName, failLineNumber, 0x01, 0x03, 0xFF, sizeof(char), "");
     FAILURE_EQUAL("expected <xxxxxxxx 00000001>\n\tbut was  <xxxxxxxx 00000011>", f);
 }
-#elif (CPPUTEST_CHAR_BIT == 8)
+#elif (CHAR_BIT == 8)
 TEST(TestFailure, BitsEqualChar)
 {
     BitsEqualFailure f(test, failFileName, failLineNumber, 0x01, 0x03, 0xFF, sizeof(char), "");
@@ -399,13 +399,13 @@ TEST(TestFailure, BitsEqualChar)
 
 TEST(TestFailure, BitsEqual16Bit)
 {
-    BitsEqualFailure f(test, failFileName, failLineNumber, 0x0001, 0x0003, 0xFFFF, 2*8/CPPUTEST_CHAR_BIT, "");
+    BitsEqualFailure f(test, failFileName, failLineNumber, 0x0001, 0x0003, 0xFFFF, 2*8/CHAR_BIT, "");
     FAILURE_EQUAL("expected <00000000 00000001>\n\tbut was  <00000000 00000011>", f);
 }
 
 TEST(TestFailure, BitsEqual32Bit)
 {
-    BitsEqualFailure f(test, failFileName, failLineNumber, 0x00000001, 0x00000003, 0xFFFFFFFF, 4*8/CPPUTEST_CHAR_BIT, "");
+    BitsEqualFailure f(test, failFileName, failLineNumber, 0x00000001, 0x00000003, 0xFFFFFFFF, 4*8/CHAR_BIT, "");
     FAILURE_EQUAL("expected <00000000 00000000 00000000 00000001>\n\tbut was  <00000000 00000000 00000000 00000011>", f);
 }
 

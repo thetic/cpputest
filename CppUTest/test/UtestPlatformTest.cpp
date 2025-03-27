@@ -61,7 +61,7 @@ static void failFunction_()
     FAIL("This test fails");
 }
 
-CPPUTEST_NORETURN static void exitNonZeroFunction_();
+[[noreturn]] static void exitNonZeroFunction_();
 static void exitNonZeroFunction_()
 {
     /* destructor of static objects will be called. If StringCache was there then the allocator will report invalid deallocations of static SimpleString */
@@ -76,7 +76,7 @@ static int waitpid_while_debugging_stub_forced_failures = 0;
 
 extern "C" {
 
-    static int (*original_waitpid)(int, int*, int) = NULLPTR;
+    static int (*original_waitpid)(int, int*, int) = nullptr;
 
     static int fork_failed_stub(void) { return -1; }
 
@@ -122,11 +122,9 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, FailureInSepa
     fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out");
 }
 
-#if (! CPPUTEST_SANITIZE_ADDRESS)
-
 static int accessViolationTestFunction_()
 {
-    return *(volatile int*) NULLPTR; // NOLINT(clang-analyzer-core.NullDereference)
+    return *(volatile int*) nullptr; // NOLINT(clang-analyzer-core.NullDereference)
 }
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, AccessViolationInSeparateProcessWorks)
@@ -137,8 +135,6 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, AccessViolati
     fixture.assertPrintContains("Failed in separate process - killed by signal 11");
     fixture.assertPrintContains("Errors (1 failures, 1 tests, 1 ran");
 }
-
-#endif
 
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, StoppedInSeparateProcessWorks)
 {
@@ -197,11 +193,11 @@ TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, CallToWaitPid
 TEST(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess, MultipleTestsInSeparateProcessAreCountedProperly)
 {
     fixture.setRunTestsInSeperateProcess();
-    fixture.runTestWithMethod(NULLPTR);
+    fixture.runTestWithMethod(nullptr);
     fixture.runTestWithMethod(stoppedTestFunction_);
-    fixture.runTestWithMethod(NULLPTR);
+    fixture.runTestWithMethod(nullptr);
     fixture.runTestWithMethod(exitNonZeroFunction_);
-    fixture.runTestWithMethod(NULLPTR);
+    fixture.runTestWithMethod(nullptr);
     fixture.assertPrintContains("Failed in separate process");
     fixture.assertPrintContains("Stopped in separate process");
     fixture.assertPrintContains("Errors (2 failures, 5 tests, 5 ran, 0 checks, 0 ignored, 0 filtered out");

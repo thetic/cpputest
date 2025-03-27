@@ -200,7 +200,7 @@ static unsigned long TimeInMillisImplementation()
 
 static const char* TimeStringImplementation()
 {
-    time_t theTime = time(NULLPTR);
+    time_t theTime = time(nullptr);
     static char dateTime[80];
     struct tm *tmp = localtime(&theTime);
     strftime(dateTime, 80, "%Y-%m-%dT%H:%M:%S", tmp);
@@ -274,10 +274,10 @@ static PlatformSpecificMutex PThreadMutexCreate(void)
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
     pthread_mutex_t *mutex = new pthread_mutex_t;
 
-    pthread_mutex_init(mutex, NULLPTR);
+    pthread_mutex_init(mutex, nullptr);
     return (PlatformSpecificMutex)mutex;
 #else
-    return NULLPTR;
+    return nullptr;
 #endif
 
 }

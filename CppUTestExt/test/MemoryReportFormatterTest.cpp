@@ -40,13 +40,13 @@ TEST_GROUP(NormalMemoryReportFormatter)
     TestResult* testResult;
     NormalMemoryReportFormatter formatter;
 
-    void setup() CPPUTEST_OVERRIDE
+    void setup() override
     {
         memory01 = (char*) 0x01;
         testResult = new TestResult(testOutput);
     }
 
-    void teardown() CPPUTEST_OVERRIDE
+    void teardown() override
     {
         delete testResult;
     }

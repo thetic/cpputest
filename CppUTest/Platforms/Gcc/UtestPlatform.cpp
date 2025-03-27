@@ -166,16 +166,7 @@ static int PlatformSpecificSetJmpImplementation(void (*function) (void* data), v
     return 0;
 }
 
-/*
- * MacOSX clang 3.0 doesn't seem to recognize longjmp and thus complains about CPPUTEST_NORETURN.
- * The later clang compilers complain when it isn't there. So only way is to check the clang compiler here :(
- */
-#ifdef __clang__
- #if !((__clang_major__ == 3) && (__clang_minor__ == 0))
- CPPUTEST_NORETURN
- #endif
-#endif
-static void PlatformSpecificLongJmpImplementation()
+[[noreturn]] static void PlatformSpecificLongJmpImplementation()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
@@ -205,7 +196,7 @@ static unsigned long TimeInMillisImplementation()
 
 static const char* TimeStringImplementation()
 {
-    time_t theTime = time(NULLPTR);
+    time_t theTime = time(nullptr);
     static char dateTime[80];
 #ifdef STDC_WANT_SECURE_LIB
     static struct tm lastlocaltime;
@@ -300,10 +291,10 @@ static PlatformSpecificMutex PThreadMutexCreate(void)
 #ifdef CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK
     pthread_mutex_t *mutex = new pthread_mutex_t;
 
-    pthread_mutex_init(mutex, NULLPTR);
+    pthread_mutex_init(mutex, nullptr);
     return (PlatformSpecificMutex)mutex;
 #else
-    return NULLPTR;
+    return nullptr;
 #endif
 
 }

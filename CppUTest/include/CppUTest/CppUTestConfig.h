@@ -71,7 +71,6 @@
  #endif
 #endif
 
-
 /* Do we use Standard C++ or not? */
 #ifndef CPPUTEST_USE_STD_CPP_LIB
  #ifdef CPPUTEST_STD_CPP_LIB_DISABLED
@@ -95,14 +94,6 @@
   #define CPPUTEST_HAS_ATTRIBUTE(x) __has_attribute(x)
 #endif
 
-#if defined (__cplusplus) && __cplusplus >= 201103L
-   #define CPPUTEST_NORETURN [[noreturn]]
-#elif CPPUTEST_HAS_ATTRIBUTE(noreturn)
-   #define CPPUTEST_NORETURN __attribute__((noreturn))
-#else
-   #define CPPUTEST_NORETURN
-#endif
-
 #if defined(__MINGW32__)
 #define CPPUTEST_CHECK_FORMAT_TYPE __MINGW_PRINTF_FORMAT
 #else
@@ -113,34 +104,6 @@
   #define CPPUTEST_CHECK_FORMAT(type, format_parameter, other_parameters) __attribute__ ((format (type, format_parameter, other_parameters)))
 #else
   #define CPPUTEST_CHECK_FORMAT(type, format_parameter, other_parameters) /* type, format_parameter, other_parameters */
-#endif
-
-#if defined(__cplusplus) && __cplusplus >= 201103L
-    #define DEFAULT_COPY_CONSTRUCTOR(classname) classname(const classname &) = default;
-#else
-    #define DEFAULT_COPY_CONSTRUCTOR(classname)
-#endif
-
-/*
- * Address sanitizer is a good thing... and it causes some conflicts with the CppUTest tests
- * To check whether it is on or off, we create a CppUTest define here.
-*/
-#if defined(__has_feature)
-  #if __has_feature(address_sanitizer)
-    #define CPPUTEST_SANITIZE_ADDRESS 1
-  #endif
-#elif defined(__SANITIZE_ADDRESS__)
-  #define CPPUTEST_SANITIZE_ADDRESS 1
-#endif
-
-#ifndef CPPUTEST_SANITIZE_ADDRESS
-  #define CPPUTEST_SANITIZE_ADDRESS 0
-#endif
-
-#if CPPUTEST_SANITIZE_ADDRESS
-  #define CPPUTEST_DO_NOT_SANITIZE_ADDRESS __attribute__((no_sanitize_address))
-#else
-  #define CPPUTEST_DO_NOT_SANITIZE_ADDRESS
 #endif
 
 /*
@@ -208,34 +171,6 @@
       #define UT_NOTHROW
     #endif
   #endif
-
-  /*
-   * Visual C++ doesn't define __cplusplus as C++11 yet (201103), however it doesn't want the throw(exception) either, but
-   * it does want throw().
-   */
-  #ifdef _MSC_VER
-    #undef UT_THROW
-    #define UT_THROW(exception)
-  #endif
-
-  /*
-   * g++-4.7 with stdc++11 enabled On MacOSX! will have a different exception specifier for operator new (and thank you!)
-   * I assume they'll fix this in the future, but for now, we'll change that here.
-   * (This should perhaps also be done in the configure.ac)
-   */
-  #if defined(__GXX_EXPERIMENTAL_CXX0X__) && \
-      defined(__APPLE__) && \
-      defined(_GLIBCXX_THROW)
-    #undef UT_THROW
-    #define UT_THROW(exception) _GLIBCXX_THROW(exception)
-  #endif
-
-  #if CPPUTEST_USE_STD_CPP_LIB
-    #define CPPUTEST_BAD_ALLOC std::bad_alloc
-  #else
-    class CppUTestBadAlloc {};
-    #define CPPUTEST_BAD_ALLOC CppUTestBadAlloc
-  #endif
 #endif
 
 /*
@@ -249,42 +184,10 @@
 #endif
 #endif
 
-/* Handling of systems with a different byte-width (e.g. 16 bit). Since
- * CHAR_BIT is defined in limits.h (ANSI C), the user must provide a definition
- * when building without Std C library.
- */
-#ifndef CPPUTEST_CHAR_BIT
-  #if defined(CHAR_BIT)
-    #define CPPUTEST_CHAR_BIT CHAR_BIT
-  #else
-    #error "Provide a definition for CPPUTEST_CHAR_BIT"
-  #endif
-#endif
-
 /* Handling of systems with a different int-width (e.g. 16 bit).
  */
 #if CPPUTEST_USE_STD_C_LIB && (INT_MAX == 0x7fff)
 #define CPPUTEST_16BIT_INTS
-#endif
-
-#ifdef __cplusplus
-  /* Visual C++ 10.0+ (2010+) supports the override keyword, but doesn't define the C++ version as C++11 */
-  #if (__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1600))
-    #define CPPUTEST_OVERRIDE override
-    #define NULLPTR nullptr
-  #else
-    #define CPPUTEST_OVERRIDE
-    #define NULLPTR NULL
-  #endif
-#endif
-
-#ifdef __cplusplus
-  /* Visual C++ 11.0+ (2012+) supports the override keyword on destructors */
-  #if (__cplusplus >= 201103L) || (defined(_MSC_VER) && (_MSC_VER >= 1700))
-    #define CPPUTEST_DESTRUCTOR_OVERRIDE override
-  #else
-    #define CPPUTEST_DESTRUCTOR_OVERRIDE
-  #endif
 #endif
 
 #endif

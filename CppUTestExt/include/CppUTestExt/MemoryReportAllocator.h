@@ -40,7 +40,7 @@ protected:
     MemoryReportFormatter* formatter_;
 public:
     MemoryReportAllocator();
-    virtual ~MemoryReportAllocator() CPPUTEST_DESTRUCTOR_OVERRIDE;
+    virtual ~MemoryReportAllocator() override;
 
     virtual void setFormatter(MemoryReportFormatter* formatter);
     virtual void setTestResult(TestResult* result);
@@ -48,14 +48,14 @@ public:
 
     virtual TestMemoryAllocator* getRealAllocator();
 
-    virtual char* alloc_memory(size_t size, const char* file, size_t line) CPPUTEST_OVERRIDE;
-    virtual void free_memory(char* memory, size_t size, const char* file, size_t line) CPPUTEST_OVERRIDE;
+    virtual char* alloc_memory(size_t size, const char* file, size_t line) override;
+    virtual void free_memory(char* memory, size_t size, const char* file, size_t line) override;
 
-    virtual const char* name() const CPPUTEST_OVERRIDE;
-    virtual const char* alloc_name() const CPPUTEST_OVERRIDE;
-    virtual const char* free_name() const CPPUTEST_OVERRIDE;
+    virtual const char* name() const override;
+    virtual const char* alloc_name() const override;
+    virtual const char* free_name() const override;
 
-    virtual TestMemoryAllocator* actualAllocator() CPPUTEST_OVERRIDE;
+    virtual TestMemoryAllocator* actualAllocator() override;
 };
 
 #endif

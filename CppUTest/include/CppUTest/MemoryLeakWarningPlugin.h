@@ -39,11 +39,11 @@ class MemoryLeakFailure;
 class MemoryLeakWarningPlugin: public TestPlugin
 {
 public:
-    MemoryLeakWarningPlugin(const SimpleString& name, MemoryLeakDetector* localDetector = NULLPTR);
-    virtual ~MemoryLeakWarningPlugin() CPPUTEST_DESTRUCTOR_OVERRIDE;
+    MemoryLeakWarningPlugin(const SimpleString& name, MemoryLeakDetector* localDetector = nullptr);
+    virtual ~MemoryLeakWarningPlugin() override;
 
-    virtual void preTestAction(UtestShell& test, TestResult& result) CPPUTEST_OVERRIDE;
-    virtual void postTestAction(UtestShell& test, TestResult& result) CPPUTEST_OVERRIDE;
+    virtual void preTestAction(UtestShell& test, TestResult& result) override;
+    virtual void postTestAction(UtestShell& test, TestResult& result) override;
 
     virtual const char* FinalReport(size_t toBeDeletedLeaks = 0);
 
