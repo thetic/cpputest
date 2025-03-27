@@ -102,9 +102,6 @@ jobs:
           - name: No Exceptions
             os: ubuntu-latest
             preset: no-exceptions
-          - name: No C Standard Library
-            os: ubuntu-latest
-            preset: no-std-c
           - name: Coverage
             os: ubuntu-latest
             preset: coverage

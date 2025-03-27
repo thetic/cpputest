@@ -8,7 +8,8 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
-#if CPPUTEST_USE_STD_C_LIB
+#include <stdlib.h>
+
 /*
  * This test makes sure that memory leak malloc macros are forced into .cpp and .c files
  */
@@ -31,5 +32,3 @@ TEST(AllocLetTestFree, Create)
 {
     free(allocLetTestFree);
 }
-
-#endif

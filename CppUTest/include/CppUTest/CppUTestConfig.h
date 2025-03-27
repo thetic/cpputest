@@ -62,15 +62,6 @@
  *
  */
 
-/* Do we use Standard C or not? When doing Kernel development, standard C usage is out. */
-#ifndef CPPUTEST_USE_STD_C_LIB
- #ifdef CPPUTEST_STD_C_LIB_DISABLED
-  #define CPPUTEST_USE_STD_C_LIB 0
- #else
-  #define CPPUTEST_USE_STD_C_LIB 1
- #endif
-#endif
-
 /* Do we use Standard C++ or not? */
 #ifndef CPPUTEST_USE_STD_CPP_LIB
  #ifdef CPPUTEST_STD_CPP_LIB_DISABLED
@@ -111,7 +102,7 @@
  * Predominantly works on non-Visual C++ compilers and Visual C++ 2008 and newer
  */
 #ifndef CPPUTEST_HAVE_FENV
-  #if (defined(__STDC_IEC_559__) && __STDC_IEC_559__) && CPPUTEST_USE_STD_C_LIB
+  #if defined(__STDC_IEC_559__) && __STDC_IEC_559__
     #define CPPUTEST_HAVE_FENV 1
   #else
     #define CPPUTEST_HAVE_FENV 0
@@ -186,7 +177,7 @@
 
 /* Handling of systems with a different int-width (e.g. 16 bit).
  */
-#if CPPUTEST_USE_STD_C_LIB && (INT_MAX == 0x7fff)
+#if INT_MAX == 0x7fff
 #define CPPUTEST_16BIT_INTS
 #endif
 

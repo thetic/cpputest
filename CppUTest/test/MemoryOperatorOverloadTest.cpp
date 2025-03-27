@@ -10,6 +10,8 @@
 #include "CppUTest/TestHarness_c.h"
 #include "AllocationInCFile.h"
 
+#include <stdlib.h>
+
 
 TEST_GROUP(BasicBehavior)
 {
@@ -35,15 +37,9 @@ TEST(MemoryLeakOverridesToBeUsedInProductionCode, UseNativeMallocByTemporarlySwi
 {
     size_t memLeaks = memLeakDetector->totalMemoryLeaks(mem_leak_period_checking);
 
-#if CPPUTEST_USE_STD_C_LIB
     void* memory = malloc(10);
     LONGS_EQUAL(memLeaks, memLeakDetector->totalMemoryLeaks(mem_leak_period_checking));
     free (memory);
-#else
-    void* memory = PlatformSpecificMalloc(10);
-    LONGS_EQUAL(memLeaks, memLeakDetector->totalMemoryLeaks(mem_leak_period_checking));
-    PlatformSpecificFree (memory);
-#endif
 }
 
 /* TEST... allowing for a new overload in a class */
