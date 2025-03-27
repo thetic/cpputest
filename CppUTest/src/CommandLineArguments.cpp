@@ -30,7 +30,7 @@
 #include "CppUTest/PlatformSpecificFunctions.h"
 
 CommandLineArguments::CommandLineArguments(int ac, const char *const *av) :
-    ac_(ac), av_(av), needHelp_(false), verbose_(false), veryVerbose_(false), color_(false), runTestsAsSeperateProcess_(false),
+    ac_(ac), av_(av), needHelp_(false), verbose_(false), veryVerbose_(false), color_(false),
     listTestGroupNames_(false), listTestGroupAndCaseNames_(false), listTestLocations_(false), runIgnored_(false), reversing_(false),
     crashOnFail_(false), rethrowExceptions_(true), shuffling_(false), shufflingPreSeeded_(false), repeat_(1), shuffleSeed_(0),
     groupFilters_(nullptr), nameFilters_(nullptr), outputType_(OUTPUT_ECLIPSE)
@@ -64,7 +64,6 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
         else if (argument == "-v") verbose_ = true;
         else if (argument == "-vv") veryVerbose_ = true;
         else if (argument == "-c") color_ = true;
-        else if (argument == "-p") runTestsAsSeperateProcess_ = true;
         else if (argument == "-b") reversing_ = true;
         else if (argument == "-lg") listTestGroupNames_ = true;
         else if (argument == "-ln") listTestGroupAndCaseNames_ = true;
@@ -199,12 +198,6 @@ bool CommandLineArguments::isRunIgnored() const
 {
     return runIgnored_;
 }
-
-bool CommandLineArguments::runTestsInSeperateProcess() const
-{
-    return runTestsAsSeperateProcess_;
-}
-
 
 size_t CommandLineArguments::getRepeatCount() const
 {

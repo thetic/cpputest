@@ -49,7 +49,6 @@ void TestRegistry::runAllTests(TestResult& result)
 
     result.testsStarted();
     for (UtestShell *test = tests_; test != nullptr; test = test->getNext()) {
-        if (runInSeperateProcess_) test->setRunInSeperateProcess();
         if (runIgnored_) test->setRunIgnored();
 
         if (groupStart) {

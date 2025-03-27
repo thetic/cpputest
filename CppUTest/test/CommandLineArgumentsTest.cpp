@@ -184,14 +184,6 @@ TEST(CommandLineArguments, shuffleBeforeDoesNotDisturbOtherSwitch)
     CHECK_TRUE(args->isShuffling());
 }
 
-TEST(CommandLineArguments, runningTestsInSeperateProcesses)
-{
-    int argc = 2;
-    const char* argv[] = { "tests.exe", "-p" };
-    CHECK(newArgumentParser(argc, argv));
-    CHECK(args->runTestsInSeperateProcess());
-}
-
 TEST(CommandLineArguments, setGroupFilter)
 {
     int argc = 3;
