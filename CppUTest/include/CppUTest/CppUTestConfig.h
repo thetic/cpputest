@@ -152,10 +152,4 @@
 #endif
 #endif
 
-/* Handling of systems with a different int-width (e.g. 16 bit).
- */
-#if INT_MAX == 0x7fff
-#define CPPUTEST_16BIT_INTS
-#endif
-
 #endif

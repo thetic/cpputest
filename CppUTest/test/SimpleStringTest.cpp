@@ -1221,7 +1221,8 @@ TEST(SimpleString, BracketsFormattedHexStringFromForUnsignedLong)
 	STRCMP_EQUAL("(0x1)", BracketsFormattedHexStringFrom(value).asCharString());
 }
 
-#ifdef CPPUTEST_16BIT_INTS
+/* Handling of systems with a different int-width (e.g. 16 bit). */
+#if INT_MAX == 0x7fff
 TEST(SimpleString, BracketsFormattedHexStringFromForInt)
 {
 	int value = -1;
