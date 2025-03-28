@@ -46,7 +46,6 @@ class TestResult;
 class TestOutput
 {
 public:
-    enum WorkingEnvironment {visualStudio, eclipse, detectEnvironment};
     enum VerbosityLevel {level_quiet, level_verbose, level_veryVerbose};
 
     explicit TestOutput();
@@ -74,14 +73,7 @@ public:
 
     virtual void flush()=0;
 
-    static void setWorkingEnvironment(WorkingEnvironment workEnvironment);
-    static WorkingEnvironment getWorkingEnvironment();
-
 protected:
-
-    virtual void printEclipseErrorInFileOnLine(SimpleString file, size_t lineNumber);
-    virtual void printVisualStudioErrorInFileOnLine(SimpleString file, size_t lineNumber);
-
     virtual void printProgressIndicator();
     void printFileAndLineForTestAndFailure(const TestFailure& failure);
     void printFileAndLineForFailure(const TestFailure& failure);
@@ -96,8 +88,6 @@ protected:
     VerbosityLevel verbose_;
     bool color_;
     const char* progressIndication_;
-
-    static WorkingEnvironment workingEnvironment_;
 };
 
 TestOutput& operator<<(TestOutput&, const char*);

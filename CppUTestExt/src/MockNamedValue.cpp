@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockNamedValue.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 
 MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = nullptr;

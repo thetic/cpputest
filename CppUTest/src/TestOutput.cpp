@@ -28,21 +28,6 @@
 #include "CppUTest/TestOutput.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
 
-TestOutput::WorkingEnvironment TestOutput::workingEnvironment_ = TestOutput::detectEnvironment;
-
-void TestOutput::setWorkingEnvironment(TestOutput::WorkingEnvironment workEnvironment)
-{
-    workingEnvironment_ = workEnvironment;
-}
-
-TestOutput::WorkingEnvironment TestOutput::getWorkingEnvironment()
-{
-    if (workingEnvironment_ == TestOutput::detectEnvironment)
-        return PlatformSpecificGetWorkingEnvironment();
-    return workingEnvironment_;
-}
-
-
 TestOutput::TestOutput() :
     dotCount_(0), verbose_(level_quiet), color_(false), progressIndication_(".")
 {
@@ -239,29 +224,11 @@ void TestOutput::printFailureMessage(SimpleString reason)
 
 void TestOutput::printErrorInFileOnLineFormattedForWorkingEnvironment(SimpleString file, size_t lineNumber)
 {
-    if (TestOutput::getWorkingEnvironment() == TestOutput::visualStudio)
-        printVisualStudioErrorInFileOnLine(file, lineNumber);
-    else
-        printEclipseErrorInFileOnLine(file, lineNumber);
-}
-
-void TestOutput::printEclipseErrorInFileOnLine(SimpleString file, size_t lineNumber)
-{
     print("\n");
     print(file.asCharString());
     print(":");
     print(lineNumber);
     print(":");
-    print(" error:");
-}
-
-void TestOutput::printVisualStudioErrorInFileOnLine(SimpleString file, size_t lineNumber)
-{
-    print("\n");
-    print(file.asCharString());
-    print("(");
-    print(lineNumber);
-    print("):");
     print(" error:");
 }
 

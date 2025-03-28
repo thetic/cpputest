@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestMemoryAllocator.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestTestingFixture.h"
 #include "CppUTest/MemoryLeakDetector.h"
 

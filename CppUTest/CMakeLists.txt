@@ -22,7 +22,6 @@ add_library(CppUTest
     include/CppUTest/PlatformSpecificFunctions.h
     include/CppUTest/TestMemoryAllocator.h
     include/CppUTest/CommandLineTestRunner.h
-    include/CppUTest/PlatformSpecificFunctions_c.h
     include/CppUTest/TestOutput.h
     include/CppUTest/CppUTestConfig.h
     include/CppUTest/SimpleString.h

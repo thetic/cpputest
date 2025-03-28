@@ -63,12 +63,10 @@ TEST_GROUP(TestOutput)
         result->setTotalExecutionTime(10);
         millisTime = 0;
         UT_PTR_SET(GetPlatformSpecificTimeInMillis, MockGetPlatformSpecificTimeInMillis);
-        TestOutput::setWorkingEnvironment(TestOutput::eclipse);
 
     }
     void teardown() override
     {
-        TestOutput::setWorkingEnvironment(TestOutput::detectEnvironment);
         delete printer;
         delete tst;
         delete f;
@@ -231,16 +229,6 @@ TEST(TestOutput, PrintFailureWithFailInHelper)
     const char* expected =
             "\nfile:10: error: Failure in TEST(group, test)"
             "\nfile:2: error:\n\tmessage\n\n";
-    STRCMP_EQUAL(expected, mock->getOutput().asCharString());
-}
-
-TEST(TestOutput, PrintInVisualStudioFormat)
-{
-    TestOutput::setWorkingEnvironment(TestOutput::visualStudio);
-    printer->printFailure(*f3);
-    const char* expected =
-            "\nfile(10): error: Failure in TEST(group, test)"
-            "\nfile(2): error:\n\tmessage\n\n";
     STRCMP_EQUAL(expected, mock->getOutput().asCharString());
 }
 
@@ -433,13 +421,10 @@ TEST(CompositeTestOutput, color)
 
 TEST(CompositeTestOutput, PrintTestFailure)
 {
-  TestOutput::WorkingEnvironment previousEnvironment = TestOutput::getWorkingEnvironment();
-  TestOutput::setWorkingEnvironment(TestOutput::eclipse);
   TestFailure failure(test, "file", 10, "failed");
   compositeOutput.printFailure(failure);
   STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output1->getOutput().asCharString());
   STRCMP_EQUAL("\nfile:10: error: Failure in TEST(Group, Name)\n\tfailed\n\n", output2->getOutput().asCharString());
-  TestOutput::setWorkingEnvironment(previousEnvironment);
 }
 
 TEST(CompositeTestOutput, PrintTestRun)

@@ -3,7 +3,6 @@
 #include "CppUTest/MemoryLeakDetector.h"
 #include "CppUTest/TestOutput.h"
 #include "CppUTest/TestRegistry.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestTestingFixture.h"
 #include "AllocationInCppFile.h"
 

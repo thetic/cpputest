@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestRegistry.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 TestRegistry::TestRegistry() :
     tests_(nullptr), nameFilters_(nullptr), groupFilters_(nullptr), firstPlugin_(NullTestPlugin::instance()), runInSeperateProcess_(false), currentRepetition_(0), runIgnored_(false)

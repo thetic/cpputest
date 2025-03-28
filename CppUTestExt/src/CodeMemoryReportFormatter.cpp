@@ -28,7 +28,6 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/CodeMemoryReportFormatter.h"
 #include "CppUTestExt/MemoryReportAllocator.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 
 #define MAX_VARIABLE_NAME_LINE_PART 10

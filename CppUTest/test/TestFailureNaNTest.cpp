@@ -27,7 +27,6 @@
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/TestOutput.h"
-#include "CppUTest/PlatformSpecificFunctions.h"
 
 #include <math.h>
 

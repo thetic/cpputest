@@ -54,11 +54,6 @@ int (*PlatformSpecificSetJmp)(void (*function) (void*), void* data) = VisualCppS
 void (*PlatformSpecificLongJmp)(void) = VisualCppLongJmp;
 void (*PlatformSpecificRestoreJumpBuffer)(void) = VisualCppRestoreJumpBuffer;
 
-TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
-{
-    return TestOutput::visualStudio;
-}
-
 ///////////// Time in millis
 
 static unsigned long VisualCppTimeInMillis()
