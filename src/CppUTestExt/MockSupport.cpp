@@ -393,6 +393,30 @@ void MockSupport::setData(const SimpleString& name, unsigned long int value)
     newData->setValue(value);
 }
 
+void MockSupport::setData(const SimpleString& name, cpputest_longlong value)
+{
+#if CPPUTEST_USE_LONG_LONG
+    MockNamedValue* newData = retrieveDataFromStore(name);
+    newData->setValue(value);
+#else
+    (void)name;
+    (void)value;
+    FAIL("Long Long type is not supported");
+#endif
+}
+
+void MockSupport::setData(const SimpleString& name, cpputest_ulonglong value)
+{
+#if CPPUTEST_USE_LONG_LONG
+    MockNamedValue* newData = retrieveDataFromStore(name);
+    newData->setValue(value);
+#else
+    (void)name;
+    (void)value;
+    FAIL("Unsigned Long Long type is not supported");
+#endif
+}
+
 void MockSupport::setData(const SimpleString& name, const char* value)
 {
     MockNamedValue* newData = retrieveDataFromStore(name);

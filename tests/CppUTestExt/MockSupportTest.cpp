@@ -60,6 +60,36 @@ TEST(MockSupportTest, setDataForIntegerValues)
     LONGS_EQUAL(expected_data, mock().getData("data").getIntValue());
 }
 
+TEST(MockSupportTest, setDataForUnsignedLongValues)
+{
+    unsigned long expected_data = 86UL;
+    mock().setData("data", expected_data);
+    UNSIGNED_LONGS_EQUAL(expected_data, mock().getData("data").getUnsignedLongIntValue());
+}
+
+TEST(MockSupportTest, setDataForLongValues)
+{
+    long expected_data = 47L;
+    mock().setData("data", expected_data);
+    LONGS_EQUAL(expected_data, mock().getData("data").getLongIntValue());
+}
+
+#if CPPUTEST_USE_LONG_LONG
+TEST(MockSupportTest, setDataForUnsignedLongLongValues)
+{
+    unsigned long long expected_data = 86ULL;
+    mock().setData("data", expected_data);
+    UNSIGNED_LONGLONGS_EQUAL(expected_data, mock().getData("data").getUnsignedLongLongIntValue());
+}
+
+TEST(MockSupportTest, setDataForLongLongValues)
+{
+    long long expected_data = 47LL;
+    mock().setData("data", expected_data);
+    LONGLONGS_EQUAL(expected_data, mock().getData("data").getLongLongIntValue());
+}
+#endif
+
 TEST(MockSupportTest, setDataForBooleanValues)
 {
     bool expected_data = true;
