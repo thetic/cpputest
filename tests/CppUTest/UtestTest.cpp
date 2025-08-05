@@ -36,7 +36,20 @@
 
 TEST_GROUP(UtestShell)
 {
+    static void notSrand(unsigned int) {}
+
+    static int notRand()
+    {
+        return 42;
+    }
+
     TestTestingFixture fixture;
+
+    void setup() CPPUTEST_OVERRIDE
+    {
+        UT_PTR_SET(PlatformSpecificSrand, &notSrand);
+        UT_PTR_SET(PlatformSpecificRand, &notRand);
+    }
 };
 
 static void failMethod_()
