@@ -302,7 +302,8 @@ jobs:
       - run: cmake --build cpputest_build -j
       - run: ctest --test-dir cpputest_build
       - uses: actions/upload-artifact@v4
-        if: success() || failure()
+        # run this step even if tests failed
+        if: ${{ !cancelled() }}
         with:
           name: test-results
           path: "cpputest_build/**/cpputest_*.xml"
