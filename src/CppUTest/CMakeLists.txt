@@ -63,11 +63,6 @@ if(CPPUTEST_PLATFORM STREQUAL "Iar")
     )
 endif()
 
-if (MINGW)
-    include(CheckStructHasMember)
-    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
-endif()
-
 #[[Arrange for the include directory to be added to the include paths of any CMake target depending on CppUTest.]]
 target_include_directories(CppUTest
     PUBLIC
@@ -81,24 +76,54 @@ target_compile_definitions(CppUTest
         CPPUTEST_USE_LONG_LONG=$<BOOL:${CPPUTEST_USE_LONG_LONG}>
         CPPUTEST_USE_STD_C_LIB=$<NOT:$<BOOL:${CPPUTEST_STD_C_LIB_DISABLED}>>
         CPPUTEST_USE_STD_CPP_LIB=$<NOT:$<BOOL:${CPPUTEST_STD_CPP_LIB_DISABLED}>>
-        $<$<BOOL:${CPPUTEST_HAVE_STRDUP}>:CPPUTEST_HAVE_STRDUP>
-        $<$<BOOL:${CPPUTEST_HAVE_FORK}>:CPPUTEST_HAVE_FORK>
-        $<$<BOOL:${CPPUTEST_HAVE_WAITPID}>:CPPUTEST_HAVE_WAITPID>
-        $<$<BOOL:${CPPUTEST_HAVE_KILL}>:CPPUTEST_HAVE_KILL>
-        $<$<BOOL:${CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK}>:CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK>
-    PRIVATE
-        $<$<BOOL:${CPPUTEST_HAVE_GETTIMEOFDAY}>:CPPUTEST_HAVE_GETTIMEOFDAY>
-        # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
-        $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )
+
+# Check for symbols before setting a lot of stuff
+set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
+
+if (MINGW)
+    # Apply workaround for MinGW timespec redefinition (pthread.h / time.h).
+    include(CheckStructHasMember)
+    check_struct_has_member("struct timespec" tv_sec time.h HAVE_STRUCT_TIMESPEC LANGUAGE CXX)
+    if(HAVE_STRUCT_TIMESPEC)
+        target_compile_definitions(CppUTest PRIVATE _TIMESPEC_DEFINED)
+    endif()
+endif()
+
+include(CheckCXXSymbolExists)
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "IAR")
+    check_cxx_symbol_exists(strdup "string.h" CPPUTEST_HAVE_STRDUP)
+    if (CPPUTEST_HAVE_STRDUP)
+        target_compile_definitions(CppUTest PUBLIC CPPUTEST_HAVE_STRDUP)
+    endif()
+endif()
+
+check_cxx_symbol_exists(kill "signal.h" CPPUTEST_HAVE_KILL)
+if (CPPUTEST_HAVE_KILL)
+    target_compile_definitions(CppUTest PUBLIC CPPUTEST_HAVE_KILL)
+endif()
+
+check_cxx_symbol_exists(waitpid "sys/wait.h" CPPUTEST_HAVE_WAITPID)
+if(CPPUTEST_HAVE_WAITPID)
+    target_compile_definitions(CppUTest PUBLIC CPPUTEST_HAVE_WAITPID)
+endif()
+
+check_cxx_symbol_exists(gettimeofday "sys/time.h" CPPUTEST_HAVE_GETTIMEOFDAY)
+if(CPPUTEST_HAVE_GETTIMEOFDAY)
+    target_compile_definitions(CppUTest PRIVATE CPPUTEST_HAVE_GETTIMEOFDAY)
+endif()
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
+set(CPPUTEST_HAVE_PTHREADS ${CMAKE_USE_PTHREADS_INIT} CACHE INTERNAL "Threading support")
+if(CPPUTEST_HAVE_PTHREADS)
+    target_compile_definitions(CppUTest PUBLIC CPPUTEST_HAVE_PTHREAD_MUTEX_LOCK)
+    target_link_libraries(CppUTest PRIVATE Threads::Threads)
+endif()
 
 target_link_libraries(CppUTest
     PRIVATE
         $<$<BOOL:${WIN32}>:winmm>
-        $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
 )
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)
