@@ -362,7 +362,7 @@ jobs:
         run: ./scripts/dos_build_test.sh
 
   cmake_msys:
-    name: CMake MSYS
+    name: CMake MSYS Install
     runs-on: windows-latest
     defaults:
       run:
@@ -387,6 +387,13 @@ jobs:
         run: cmake --build cpputest_build -j
       - name: Test
         run: ctest --test-dir cpputest_build --output-on-failure
+      - name: Install
+        run: cmake --install cpputest_build/
+      - name: Use
+        run: |
+          cmake -B tmp -S examples
+          cmake --build tmp -j
+          ctest --test-dir tmp
 
   autotools_msys:
     name: Autotools MSYS
