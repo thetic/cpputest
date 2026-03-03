@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget CppUTest CppUTestExt)
+foreach(_expectedTarget CppUTest::CppUTest CppUTest::CppUTestExt)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -44,17 +44,17 @@ unset(_expectedTargets)
 # Set the installation prefix from the autotools install.
 set(_IMPORT_PREFIX "%%PREFIX%%")
 
-# Create imported target CppUTest
-add_library(CppUTest STATIC IMPORTED)
+# Create imported target CppUTest::CppUTest
+add_library(CppUTest::CppUTest STATIC IMPORTED)
 
-set_target_properties(CppUTest PROPERTIES
+set_target_properties(CppUTest::CppUTest PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include;${_IMPORT_PREFIX}/include/CppUTest"
 )
 
-# Create imported target CppUTestExt
-add_library(CppUTestExt STATIC IMPORTED)
+# Create imported target CppUTest::CppUTestExt
+add_library(CppUTest::CppUTestExt STATIC IMPORTED)
 
-set_target_properties(CppUTestExt PROPERTIES
+set_target_properties(CppUTest::CppUTestExt PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include;${_IMPORT_PREFIX}/include/CppUTestExt"
 )
 
