@@ -1,4 +1,4 @@
-####### Generated from CppUTestConfig.cmake.autotools.in during 'make install' ######
+####### Template processed by 'make install' from pkg/CppUTestConfig.cmake.autotools.in ######
 
 set(PACKAGE_PREFIX_DIR "%%PREFIX%%")
 
