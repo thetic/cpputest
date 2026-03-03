@@ -1,6 +1,5 @@
 set(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
 set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
-set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
 # Pkg-config file.
 set(prefix "${CMAKE_INSTALL_PREFIX}")
@@ -48,13 +47,4 @@ install(
         ${PROJECT_SOURCE_DIR}/cmake/Modules/CppUTest.cmake
         ${PROJECT_SOURCE_DIR}/cmake/Modules/_CppUTestDiscovery.cmake
     DESTINATION "${CPPUTEST_CONFIG_DEST}/Modules"
-)
-configure_package_config_file(CppUTestConfig.cmake.build.in
-    ${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-    PATH_VARS INCLUDE_DIR CMAKE_CURRENT_BINARY_DIR
-)
-write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/CppUTestConfigVersion.cmake
-    COMPATIBILITY SameMajorVersion
 )
