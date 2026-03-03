@@ -54,16 +54,13 @@ install-data-hook:
 	    $(srcdir)/pkg/CppUTestConfig.cmake.autotools.in \
 	    > "$(DESTDIR)$(cmakedir)/CppUTestConfig.cmake"
 	sed -e "s|%%PREFIX%%|$(prefix)|g" \
+	    -e "s|%%LIBDIR%%|$(libdir)|g" \
 	    $(srcdir)/pkg/CppUTestTargets.cmake.autotools.in \
 	    > "$(DESTDIR)$(cmakedir)/CppUTestTargets.cmake"
-	sed -e "s|%%LIBDIR%%|$(libdir)|g" \
-	    $(srcdir)/pkg/CppUTestTargets-relwithdebinfo.cmake.autotools.in \
-	    > "$(DESTDIR)$(cmakedir)/CppUTestTargets-relwithdebinfo.cmake"
 
 uninstall-local:
 	rm -f "$(DESTDIR)$(cmakedir)/CppUTestConfig.cmake"
 	rm -f "$(DESTDIR)$(cmakedir)/CppUTestTargets.cmake"
-	rm -f "$(DESTDIR)$(cmakedir)/CppUTestTargets-relwithdebinfo.cmake"
 
 EXTRA_DIST = \
 	pkg/cpputest.pc.in \
