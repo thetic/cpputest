@@ -33,7 +33,9 @@ pkgconfig_DATA = cpputest.pc
 
 cmakemodulesdir = $(libdir)/CppUTest/cmake/Modules
 cmakemodules_DATA = \
-  cmake/Modules/CppUTestBuildTimeDiscoverTests.cmake
+  cmake/Modules/CppUTest.cmake \
+  cmake/Modules/CppUTestBuildTimeDiscoverTests.cmake \
+  cmake/Modules/_CppUTestDiscovery.cmake
 
 cmakescriptsdir = $(libdir)/CppUTest/cmake/Scripts
 cmakescripts_DATA = \
