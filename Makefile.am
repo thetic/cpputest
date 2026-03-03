@@ -41,10 +41,27 @@ cmakescripts_DATA = \
 
 cmakedir = $(libdir)/CppUTest/cmake
 cmake_DATA = \
-  build/cmake_package_files/CppUTestConfig.cmake \
-  build/cmake_package_files/CppUTestConfigVersion.cmake \
-  build/cmake_package_files/CppUTestTargets-relwithdebinfo.cmake \
-  build/cmake_package_files/CppUTestTargets.cmake
+  build/cmake_package_files/CppUTestConfigVersion.cmake
+
+# The three cmake files below embed the install prefix and libdir, so they must
+# be generated from templates at install time rather than copied as static files.
+# This ensures the correct paths are used even when --libdir differs from the
+# default (e.g. Debian multiarch: lib/x86_64-linux-gnu instead of lib).
+install-data-hook:
+	sed -e "s|%%PREFIX%%|$(prefix)|g" \
+	    $(srcdir)/build/cmake_package_files/CppUTestConfig.cmake.autotools.in \
+	    > "$(DESTDIR)$(cmakedir)/CppUTestConfig.cmake"
+	sed -e "s|%%PREFIX%%|$(prefix)|g" \
+	    $(srcdir)/build/cmake_package_files/CppUTestTargets.cmake.autotools.in \
+	    > "$(DESTDIR)$(cmakedir)/CppUTestTargets.cmake"
+	sed -e "s|%%LIBDIR%%|$(libdir)|g" \
+	    $(srcdir)/build/cmake_package_files/CppUTestTargets-relwithdebinfo.cmake.autotools.in \
+	    > "$(DESTDIR)$(cmakedir)/CppUTestTargets-relwithdebinfo.cmake"
+
+uninstall-local:
+	rm -f "$(DESTDIR)$(cmakedir)/CppUTestConfig.cmake"
+	rm -f "$(DESTDIR)$(cmakedir)/CppUTestTargets.cmake"
+	rm -f "$(DESTDIR)$(cmakedir)/CppUTestTargets-relwithdebinfo.cmake"
 
 EXTRA_DIST = \
 	cpputest.pc.in \
