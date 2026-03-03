@@ -12,8 +12,8 @@ set_target_properties(CppUTest::CppUTest PROPERTIES
   IMPORTED_LOCATION_RELWITHDEBINFO "%%LIBDIR%%/libCppUTest.a"
   )
 
-list(APPEND _IMPORT_CHECK_TARGETS CppUTest::CppUTest )
-list(APPEND _IMPORT_CHECK_FILES_FOR_CppUTest::CppUTest "%%LIBDIR%%/libCppUTest.a" )
+list(APPEND _cmake_import_check_targets CppUTest::CppUTest )
+list(APPEND _cmake_import_check_files_for_CppUTest::CppUTest "%%LIBDIR%%/libCppUTest.a" )
 
 # Import target "CppUTest::CppUTestExt" for configuration "RelWithDebInfo"
 set_property(TARGET CppUTest::CppUTestExt APPEND PROPERTY IMPORTED_CONFIGURATIONS RELWITHDEBINFO)
@@ -22,8 +22,8 @@ set_target_properties(CppUTest::CppUTestExt PROPERTIES
   IMPORTED_LOCATION_RELWITHDEBINFO "%%LIBDIR%%/libCppUTestExt.a"
   )
 
-list(APPEND _IMPORT_CHECK_TARGETS CppUTest::CppUTestExt )
-list(APPEND _IMPORT_CHECK_FILES_FOR_CppUTest::CppUTestExt "%%LIBDIR%%/libCppUTestExt.a" )
+list(APPEND _cmake_import_check_targets CppUTest::CppUTestExt )
+list(APPEND _cmake_import_check_files_for_CppUTest::CppUTestExt "%%LIBDIR%%/libCppUTestExt.a" )
 
 # Commands beyond this point should not need to know the version.
 set(CMAKE_IMPORT_FILE_VERSION)
