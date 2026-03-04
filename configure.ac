@@ -576,6 +576,7 @@ fi
 # Variables to substitute
 
 AC_SUBST([CPP_PLATFORM])
+AC_SUBST([memory_leak_detection])
 
 AC_SUBST([INCLUDE_CPPUTEST_EXT])
 

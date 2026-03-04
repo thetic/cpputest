@@ -45,16 +45,18 @@ cmakedir = $(libdir)/CppUTest/cmake
 cmake_DATA = \
   pkg/CppUTestConfigVersion.cmake
 
-# The three cmake files below embed the install prefix and libdir, so they must
-# be generated from templates at install time rather than copied as static files.
-# This ensures the correct paths are used even when --libdir differs from the
-# default (e.g. Debian multiarch: lib/x86_64-linux-gnu instead of lib).
+# Generate cmake package files at install time. AC_CONFIG_FILES cannot be used
+# because @libdir@ expands to ${exec_prefix}/lib rather than an absolute path
+# (valid in pkg-config, not in cmake). $(prefix) and $(libdir) are make
+# variables fully resolved at install time. @memory_leak_detection@ is a
+# configure-time substitution baked into the Makefile as a literal value.
 install-data-hook:
 	sed -e "s|%%PREFIX%%|$(prefix)|g" \
 	    $(srcdir)/pkg/CppUTestConfig.cmake.autotools.in \
 	    > "$(DESTDIR)$(cmakedir)/CppUTestConfig.cmake"
 	sed -e "s|%%PREFIX%%|$(prefix)|g" \
 	    -e "s|%%LIBDIR%%|$(libdir)|g" \
+	    -e "s|%%MEMORY_LEAK_DETECTION%%|@memory_leak_detection@|g" \
 	    $(srcdir)/pkg/CppUTestTargets.cmake.autotools.in \
 	    > "$(DESTDIR)$(cmakedir)/CppUTestTargets.cmake"
 

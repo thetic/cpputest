@@ -65,6 +65,13 @@ set_target_properties(CppUTest::CppUTestExt PROPERTIES
   IMPORTED_LOCATION "%%LIBDIR%%/libCppUTestExt.a"
 )
 
+if(NOT "%%MEMORY_LEAK_DETECTION%%" STREQUAL "no")
+  set_target_properties(CppUTest::CppUTest PROPERTIES
+    INTERFACE_COMPILE_OPTIONS
+      "$<$<COMPILE_LANGUAGE:C,CXX>:-includeCppUTest/MemoryLeakDetectorForceInclude.h>"
+  )
+endif()
+
 # Cleanup temporary variables.
 set(_IMPORT_PREFIX)
 
