@@ -9,6 +9,13 @@ void functionWithUnusedParameter(void* PUNUSED(unlessParamater))
 
 }
 
+extern void cpputest_test_property_c_caller(void);
+
+void cpputest_test_property_c_caller(void)
+{
+    TEST_PROPERTY_C("ckey", "cval");
+}
+
 /* Declared in the cpp file */
 extern int setup_teardown_was_called_in_test_group_in_C;
 extern int test_was_called_in_test_group_in_C;
@@ -33,9 +40,4 @@ TEST_C(TestGroupInC, checkThatTheTestHasRun)
 IGNORE_TEST_C(TestGroupInC, ignoreMacroForCFile)
 {
     test_was_called_in_test_group_in_C++;
-}
-
-void cpputest_test_property_c_caller(void)
-{
-    TEST_PROPERTY_C("ckey", "cval");
 }
