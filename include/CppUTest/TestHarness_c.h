@@ -138,6 +138,9 @@
 #define CHECK_C_TEXT(condition, text) \
   CHECK_C_LOCATION(condition, #condition, text, __FILE__, __LINE__)
 
+#define TEST_PROPERTY_C(name, value) \
+  cpputest_add_test_property(name, value)
+
 /******************************************************************************
  *
  * TEST macros for in C.
@@ -216,6 +219,7 @@ extern void CHECK_EQUAL_C_BITS_LOCATION(unsigned int expected, unsigned int actu
 extern void FAIL_TEXT_C_LOCATION(const char* text, const char* fileName, size_t lineNumber);
 extern void FAIL_C_LOCATION(const char* fileName, size_t lineNumber);
 extern void CHECK_C_LOCATION(int condition, const char* conditionString, const char* text, const char* fileName, size_t lineNumber);
+extern void cpputest_add_test_property(const char* name, const char* value);
 
 extern void* cpputest_malloc(size_t size);
 extern char* cpputest_strdup(const char* str);
