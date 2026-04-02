@@ -36,7 +36,15 @@ static int jmp_buf_index = 0;
 
 static int VisualCppSetJmp(void (*function) (void* data), void* data)
 {
+    // C4611: interaction between setjmp and C++ object destruction is
+    // non-portable. The warning is correct but intentional: this function
+    // owns the jmp_buf and longjmp is only ever called from
+    // VisualCppLongJmp before any C++ destructors in this frame need to
+    // run, so the non-portable behaviour is safe here.
+    #pragma warning(push)
+    #pragma warning(disable : 4611)
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
+    #pragma warning(pop)
         jmp_buf_index++;
         function(data);
         jmp_buf_index--;
