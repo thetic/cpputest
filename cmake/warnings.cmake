@@ -2,7 +2,17 @@ unset(WARNING_COMMON_FLAGS)
 unset(WARNING_C_FLAGS)
 unset(WARNING_CXX_FLAGS)
 
+# MSVC and ClangCL require MSVC-style flag syntax.
+# CMAKE_CXX_COMPILER_FRONTEND_VARIANT distinguishes ClangCL (frontend=MSVC)
+# from plain Clang (frontend=GNU), available since CMake 3.14.
 if(
+    (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") OR
+    (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+)
+    # /Wall on MSVC/ClangCL is equivalent to -Weverything; use /W4 instead.
+    set(WARNING_C_FLAGS   /W4)
+    set(WARNING_CXX_FLAGS /W4)
+elseif(
     (CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
     (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
     (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
