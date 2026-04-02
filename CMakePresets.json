@@ -6,7 +6,8 @@
       "binaryDir": "cpputest_build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "CMAKE_CXX_EXTENSIONS": false
+        "CMAKE_CXX_EXTENSIONS": false,
+        "CMAKE_PROJECT_INCLUDE": "${sourceDir}/cmake/warnings.cmake"
       }
     },
     {

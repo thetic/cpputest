@@ -97,9 +97,6 @@ if(
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-assume-sane-operators-new-delete>)
 endif()
 
-if(PROJECT_IS_TOP_LEVEL)
-  include(cmake/warnings.cmake)
-endif()
 include(GNUInstallDirs)
 
 # Check for symbols before setting a lot of stuff
