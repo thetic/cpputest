@@ -124,7 +124,7 @@ void CHECK_C_LOCATION(int condition, const char* conditionString, const char* te
     UtestShell::getCurrent()->assertTrue(condition != 0, "CHECK_C", conditionString, text, fileName, lineNumber, UtestShell::getCurrentTestTerminatorWithoutExceptions());
 }
 
-void cpputest_add_test_property(const char* name, const char* value)
+void TEST_PROPERTY_C(const char* name, const char* value)
 {
     UtestShell::getCurrent()->addTestProperty(name, value);
 }
