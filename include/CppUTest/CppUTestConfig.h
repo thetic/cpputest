@@ -116,7 +116,11 @@
    #define CPPUTEST_NORETURN
 #endif
 
-#if defined(__MINGW32__)
+#if defined(__MINGW32__) && CPPUTEST_USE_STD_C_LIB
+/* __MINGW_PRINTF_FORMAT is defined by <stdio.h> itself, based on __USE_MINGW_ANSI_STDIO.
+ * See https://dev.to/martinlicht/the-long-double-trouble-with-mingw-and-windows-55kc
+ */
+#include <stdio.h>
 #define CPPUTEST_CHECK_FORMAT_TYPE __MINGW_PRINTF_FORMAT
 #else
 #define CPPUTEST_CHECK_FORMAT_TYPE printf
